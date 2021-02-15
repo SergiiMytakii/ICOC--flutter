@@ -95,7 +95,26 @@ class SongBook extends StatelessWidget {
               size: 30,
               color: Colors.white,
             ),
-            onPressed: (() => BottomSheetFilter()),
+            onPressed: (() {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () => Navigator.pop(context),
+                          alignment: Alignment.topLeft,
+                        ),
+                        BottomSheetFilter()
+                      ],
+                    ),
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),
