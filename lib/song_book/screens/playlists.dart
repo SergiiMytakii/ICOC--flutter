@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class BottomSheetFilter extends StatelessWidget {
+class Playlists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('Cкоро будет :) '),
+      child: Center(child: Text('Плейлисты')),
     );
   }
 }
