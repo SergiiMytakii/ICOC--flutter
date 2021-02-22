@@ -1,3 +1,4 @@
+import 'package:Projects/menu/my_drawer.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
 import 'package:Projects/song_book/widgets/song_card.dart';
@@ -8,132 +9,77 @@ class SongBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: MyBottomNavigationBar(),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+        bottomNavigationBar: MyBottomNavigationBar(),
+        drawer: Drawer(
+          child: MyDrawer(),
+        ),
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              title: Text(
+                "Песенник",
+                style: TextStyle(fontSize: 28),
               ),
-              child: Text(
-                'Меню',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
+              titleTextStyle: TextStyle(fontSize: 18),
+              centerTitle: true,
+              elevation: 6,
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.filter_alt_outlined,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                  tooltip: 'Фильтр по языкам',
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return BottomSheetFilter();
+                        });
+                  },
+                ),
+              ],
+              pinned: true,
+              expandedHeight: 100.0,
+              floating: true,
+              stretch: true,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  padding: EdgeInsets.only(
+                    top: 80,
+                    left: 60,
+                    right: 60,
+                    bottom: 5,
+                  ),
+                  child: TextFormField(
+                    textAlignVertical: TextAlignVertical.bottom,
+                    style: TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 1.0),
+                        ),
+                        prefixIcon: Icon(Icons.search),
+                        border: InputBorder.none,
+                        hintText: 'Поиск песни '),
+                  ),
                 ),
               ),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.language,
-                size: 36,
-              ),
-              title: Text(
-                'Новости',
-                style: TextStyle(fontSize: 20),
-              ),
-              subtitle: Text('В разработке'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.book,
-                size: 36,
-              ),
-              title: Text(
-                'Библия',
-                style: TextStyle(fontSize: 20),
-              ),
-              subtitle: Text('В разработке'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.import_contacts,
-                size: 36,
-              ),
-              title: Text(
-                'Первые принципы',
-                style: TextStyle(fontSize: 20),
-              ),
-              subtitle: Text('В разработке'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.question_answer,
-                size: 36,
-              ),
-              title: Text(
-                'Вопросы и ответы',
-                style: TextStyle(fontSize: 20),
-              ),
-              subtitle: Text('В разработке'),
-            ),
-            SizedBox(
-              height: 100,
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(
-                'Настройки',
-                style: TextStyle(fontSize: 20),
+            SliverFixedExtentList(
+              itemExtent: 75,
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    child: SongCard(),
+                  );
+                },
               ),
             ),
           ],
-        ),
-      ),
-      appBar: AppBar(
-        title: Text(
-          "Песенник",
-          style: TextStyle(fontSize: 28),
-        ),
-        titleTextStyle: TextStyle(fontSize: 18),
-        centerTitle: true,
-        elevation: 8,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.filter_alt_outlined,
-              size: 30,
-              color: Colors.white,
-            ),
-            onPressed: (() {
-              showModalBottomSheet<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    color: Colors.transparent,
-                    child: Column(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: () => Navigator.pop(context),
-                          alignment: Alignment.topLeft,
-                        ),
-                        BottomSheetFilter()
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-          SongCard(),
-        ],
-      ),
-    );
+        ));
   }
 }
