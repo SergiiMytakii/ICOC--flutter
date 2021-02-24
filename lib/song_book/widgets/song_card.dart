@@ -3,7 +3,13 @@ import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SongCard extends StatelessWidget {
+class SongCard extends StatefulWidget {
+  @override
+  _SongCardState createState() => _SongCardState();
+}
+
+class _SongCardState extends State<SongCard> {
+  bool _favoriteStatus = false;
   final song = Song(
       id: 0,
       title: {'rus': 'Прекрасна милость'},
@@ -56,9 +62,19 @@ class SongCard extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
         ),
-        trailing: Icon(
-          Icons.favorite_border,
-          size: 32,
+        trailing: IconButton(
+          icon: _favoriteStatus
+              ? Icon(
+                  Icons.favorite_rounded,
+                  size: 32,
+                )
+              : Icon(
+                  Icons.favorite_border,
+                  size: 32,
+                ),
+          onPressed: () => setState(() {
+            _favoriteStatus = !_favoriteStatus;
+          }),
         ),
       ),
     );

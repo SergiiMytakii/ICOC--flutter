@@ -1,3 +1,6 @@
+import 'package:Projects/generated/l10n.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -5,13 +8,13 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.zero,
-      children: const <Widget>[
+      children: <Widget>[
         DrawerHeader(
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Theme.of(context).primaryColor,
           ),
           child: Text(
-            'Меню',
+            S.of(context).drawer_menu,
             style: TextStyle(
               color: Colors.white,
               fontSize: 28,
@@ -24,10 +27,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            'Новости',
+            S.of(context).drawer_news,
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text('В разработке'),
+          subtitle: Text(S.of(context).drawer_in_development),
         ),
         ListTile(
           leading: Icon(
@@ -35,10 +38,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            'Библия',
+            S.of(context).drawer_bible,
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text('В разработке'),
+          subtitle: Text(S.of(context).drawer_in_development),
         ),
         ListTile(
           leading: Icon(
@@ -46,10 +49,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            'Первые принципы',
+            S.of(context).drawer_first_principles,
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text('В разработке'),
+          subtitle: Text(S.of(context).drawer_in_development),
         ),
         ListTile(
           leading: Icon(
@@ -57,10 +60,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            'Вопросы и ответы',
+            S.of(context).drawer_q_and_a,
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text('В разработке'),
+          subtitle: Text(S.of(context).drawer_in_development),
         ),
         SizedBox(
           height: 100,
@@ -68,10 +71,16 @@ class MyDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.settings),
           title: Text(
-            'Настройки',
+            S.of(context).drawer_settings,
             style: TextStyle(fontSize: 20),
           ),
         ),
+        FlatButton(
+          //move this button to the settings page later
+          color: Theme.of(context).accentColor,
+          child: Text('Поменять тему приложения (тест)'),
+          onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
+        )
       ],
     );
   }

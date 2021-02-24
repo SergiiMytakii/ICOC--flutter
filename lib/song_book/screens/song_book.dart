@@ -1,3 +1,4 @@
+import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/menu/my_drawer.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
@@ -16,8 +17,9 @@ class SongBook extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              primary: true,
               title: Text(
-                "Песенник",
+                S.of(context).app_bar_title,
                 style: TextStyle(fontSize: 28),
               ),
               titleTextStyle: TextStyle(fontSize: 18),
@@ -28,9 +30,8 @@ class SongBook extends StatelessWidget {
                   icon: Icon(
                     Icons.filter_alt_outlined,
                     size: 30,
-                    color: Colors.white,
                   ),
-                  tooltip: 'Фильтр по языкам',
+                  tooltip: S.of(context).Icon_button_actions_app_bar_filter,
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
@@ -56,14 +57,25 @@ class SongBook extends StatelessWidget {
                     textAlignVertical: TextAlignVertical.bottom,
                     style: TextStyle(fontSize: 20),
                     decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 1.0),
-                        ),
-                        prefixIcon: Icon(Icons.search),
-                        border: InputBorder.none,
-                        hintText: 'Поиск песни '),
+                      filled: true,
+                      fillColor: Theme.of(context).backgroundColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).backgroundColor,
+                            width: 1.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).backgroundColor,
+                            width: 1.0),
+                      ),
+
+                      prefixIcon: Icon(Icons.search),
+                      //border: InputBorder.none,
+                      hintText: S.of(context).hint_search_field_in_app_bar,
+                    ),
                   ),
                 ),
               ),
@@ -71,7 +83,7 @@ class SongBook extends StatelessWidget {
             SliverFixedExtentList(
               itemExtent: 75,
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   return Container(
                     alignment: Alignment.center,
                     child: SongCard(),
