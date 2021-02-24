@@ -54,15 +54,24 @@ class SongBook extends StatelessWidget {
                     bottom: 5,
                   ),
                   child: TextFormField(
+                    onChanged: (val) {
+                      // TODO
+                      //implement search here
+                      print(val);
+                    },
                     textAlignVertical: TextAlignVertical.bottom,
                     style: TextStyle(fontSize: 20),
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Theme.of(context).backgroundColor,
+                      fillColor: Theme
+                          .of(context)
+                          .backgroundColor,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme
+                                .of(context)
+                                .backgroundColor,
                             width: 1.0),
                       ),
                       focusedBorder: OutlineInputBorder(

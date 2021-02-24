@@ -1,3 +1,4 @@
+import 'package:Projects/servises/database.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,16 +66,18 @@ class _SongCardState extends State<SongCard> {
         trailing: IconButton(
           icon: _favoriteStatus
               ? Icon(
-                  Icons.favorite_rounded,
-                  size: 32,
-                )
+            Icons.favorite_rounded,
+            size: 32,
+          )
               : Icon(
-                  Icons.favorite_border,
-                  size: 32,
-                ),
-          onPressed: () => setState(() {
-            _favoriteStatus = !_favoriteStatus;
-          }),
+            Icons.favorite_border,
+            size: 32,
+          ),
+          onPressed: () =>
+              setState(() async {
+                _favoriteStatus = !_favoriteStatus;
+                await DatabaseService().updateSongTest();
+              }),
         ),
       ),
     );

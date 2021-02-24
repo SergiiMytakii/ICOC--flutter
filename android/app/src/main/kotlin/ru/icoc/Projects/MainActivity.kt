@@ -1,4 +1,4 @@
-package ru.icoc.Projects
+package ru.app.icoc
 
 import io.flutter.embedding.android.FlutterActivity
 
