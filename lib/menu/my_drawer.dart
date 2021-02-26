@@ -1,5 +1,5 @@
 import 'package:Projects/generated/l10n.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:Projects/servises/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -76,11 +76,14 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         FlatButton(
-          //move this button to the settings page later
-          color: Theme.of(context).accentColor,
-          child: Text('Поменять тему приложения (тест)'),
-          onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
-        )
+            //move this button to the settings page later
+            color: Theme.of(context).accentColor,
+            child: Text('Поменять тему приложения (тест)'),
+            onPressed: () async {
+              await DatabaseService().updateSongTest();
+            }
+            //AdaptiveTheme.of(context).toggleThemeMode(),
+            )
       ],
     );
   }

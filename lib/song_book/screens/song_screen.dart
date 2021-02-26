@@ -9,46 +9,51 @@ class SongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: MyBottomNavigationBar(),
-      appBar: AppBar(
-        //Then we should make AppBar Theme field
-
-        title: Text(
-          //Then we should find out with language
-          song.title['rus'],
-          style: TextStyle(fontSize: 28),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        bottomNavigationBar: MyBottomNavigationBar(),
+        appBar: AppBar(
+          flexibleSpace: FlexibleSpaceBar(
+            title: Text(
+              //Then we should find out with language
+              song.title['ru'],
+              style: TextStyle(fontSize: 28),
+            ),
+            titlePadding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          ),
+          bottom: TabBar(
+            tabs: [Text('V1'), Text('V2'), Text('V3')],
+          ),
+          titleTextStyle: TextStyle(fontSize: 18),
+          centerTitle: true,
+          elevation: 8,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.share,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.play_circle_outline,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.audiotrack,
+                size: 25,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
-        titleTextStyle: TextStyle(fontSize: 18),
-        centerTitle: true,
-        elevation: 8,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.share,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.play_circle_outline,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.audiotrack,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        width: double.infinity,
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               Text(
@@ -60,7 +65,7 @@ class SongScreen extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text(
-                song.text['rus'],
+                song.text['ru'],
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18),
               ),
