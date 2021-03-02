@@ -4,14 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService {
   final CollectionReference songCollection =
       FirebaseFirestore.instance.collection('Songs');
+  //Source source = Source.server;
 
   //just to check how we can write to DB
   Future updateSongTest() async {
-    return await songCollection.doc('test').set({
-      'id': '3',
+    return await songCollection.doc('7').set({
       'text': {
-        'eng': {'v1': 'bla-bla-bla'}
-      }
+        'ru': 'Господу хвалу поем, создал мир и все, что в нем.'
+            'Дал Он Слово, дал мечту приводить людей к Христу.'
+            'Аллилуйя! Аллилу- аллилу- аллилуйя!'
+            ' Аллилуйя! Аллилу- аллилу- аллилуйя!'
+      },
+      'title': {'ru': 'Иисус - Господь'}
     });
   }
 
@@ -32,7 +36,7 @@ class DatabaseService {
 
   //get songs stream
   Stream<List<Song>> get songs {
-    // print(_songListFromSnapshot);
+    //print(_songListFromSnapshot);
     return songCollection.snapshots().map(_songListFromSnapshot);
   }
 }

@@ -10,13 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SongBook extends StatelessWidget {
+  final int numberOfPage = 0;
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<Song>>.value(
       value: DatabaseService().songs,
       catchError: (_, error) => error,
       child: Scaffold(
-          bottomNavigationBar: MyBottomNavigationBar(),
+          bottomNavigationBar: MyBottomNavigationBar(numberOfPage),
           drawer: Drawer(
             child: MyDrawer(),
           ),

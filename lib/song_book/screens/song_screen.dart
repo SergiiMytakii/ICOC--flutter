@@ -1,5 +1,6 @@
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SongScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class SongScreen extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        bottomNavigationBar: MyBottomNavigationBar(),
+        bottomNavigationBar: MyBottomNavigationBar(0),
         appBar: AppBar(
           flexibleSpace: FlexibleSpaceBar(
             title: Text(
@@ -20,9 +21,12 @@ class SongScreen extends StatelessWidget {
               song.title['ru'],
               style: TextStyle(fontSize: 28),
             ),
-            titlePadding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+            titlePadding: EdgeInsets.symmetric(horizontal: 50, vertical: 25),
           ),
           bottom: TabBar(
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
+            labelPadding: EdgeInsets.symmetric(vertical: 3),
             tabs: [Text('V1'), Text('V2'), Text('V3')],
           ),
           titleTextStyle: TextStyle(fontSize: 18),
@@ -56,14 +60,17 @@ class SongScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              Text(
-                song.description,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+              Container(
+                alignment: Alignment.topRight,
+                margin: EdgeInsets.symmetric(vertical: 7),
+                child: Text(
+                  song.description,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                textAlign: TextAlign.end,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Text(
                 song.text['ru'],
                 textAlign: TextAlign.center,

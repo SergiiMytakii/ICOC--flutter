@@ -4,23 +4,25 @@ import 'package:Projects/song_book/screens/song_book.dart';
 import 'package:flutter/material.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
+  int numberOfPage;
+
+  MyBottomNavigationBar(this.numberOfPage);
+
   @override
   _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  int _currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      currentIndex: _currentIndex,
+      currentIndex: widget.numberOfPage,
       elevation: 0,
       backgroundColor: Colors.transparent,
       onTap: (value) {
         // Respond to item press.
-        setState(() => _currentIndex = value);
+        setState(() => widget.numberOfPage = value);
         Navigator.push(context,
             // ignore: missing_return
             MaterialPageRoute(builder: (context) {
