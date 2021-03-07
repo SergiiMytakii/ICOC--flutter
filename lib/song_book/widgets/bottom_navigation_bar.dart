@@ -1,3 +1,4 @@
+import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/song_book/screens/favorites.dart';
 import 'package:Projects/song_book/screens/playlists.dart';
 import 'package:Projects/song_book/screens/song_book.dart';
@@ -23,33 +24,33 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       onTap: (value) {
         // Respond to item press.
         setState(() => widget.numberOfPage = value);
-        Navigator.push(context,
-            // ignore: missing_return
-            MaterialPageRoute(builder: (context) {
-          switch (value) {
-            case 0:
-              return SongBook();
-            case 1:
-              return Favorites();
-            case 2:
-              return Playlists();
-          }
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return routeToScreen(value);
         }));
       },
       items: [
         BottomNavigationBarItem(
-          label: 'Cписок',
+          label: S.of(context)!.bottom_navigation_list,
           icon: Icon(Icons.queue_music),
         ),
         BottomNavigationBarItem(
-          label: 'Избранное',
+          label: S.of(context)!.bottom_navigation_favorites,
           icon: Icon(Icons.favorite),
         ),
         BottomNavigationBarItem(
-          label: 'Плейлисты',
+          label: S.of(context)!.bottom_navigation_playlists,
           icon: Icon(Icons.playlist_play),
         ),
       ],
     );
+  }
+
+  Widget routeToScreen(int value) {
+    if (value == 0)
+      return SongBook();
+    else if (value == 1)
+      return Favorites();
+    else
+      return Playlists();
   }
 }

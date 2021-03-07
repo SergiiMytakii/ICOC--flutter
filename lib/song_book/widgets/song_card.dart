@@ -18,44 +18,47 @@ class _SongCardState extends State<SongCard> {
   @override
   Widget build(BuildContext context) {
     final song = widget.song;
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-      elevation: 6,
-      child: ListTile(
-        onTap: (() {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => SongScreen(song)));
-        }),
-        horizontalTitleGap: 0,
-        leading: Text(
-          song.id.toString(),
-          style: TextStyle(fontSize: 18),
-        ),
-        title: Text(
-          song.title['ru'] ?? '',
-          style: TextStyle(fontSize: 20),
-        ),
-        subtitle: Text(
-          song.text['ru'] ?? '',
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-        ),
-        trailing: IconButton(
-          icon: _favoriteStatus
-              ? Icon(
-                  Icons.favorite_rounded,
-                  size: 32,
-                )
-              : Icon(
-                  Icons.favorite_border,
-                  size: 32,
-                ),
-          onPressed: () => setState(() {
-            _favoriteStatus = !_favoriteStatus;
-            print(_favoriteStatus);
+    return Column(
+      children: [
+        ListTile(
+          onTap: (() {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SongScreen(song)));
           }),
+          horizontalTitleGap: 0,
+          leading: Text(
+            song.id.toString(),
+            style: TextStyle(fontSize: 18),
+          ),
+          title: Text(
+            song.title!['ru'] ?? '',
+            style: TextStyle(fontSize: 20),
+          ),
+          subtitle: Text(
+            song.text!['ru'] ?? '',
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+          trailing: IconButton(
+            icon: _favoriteStatus
+                ? Icon(
+                    Icons.favorite_rounded,
+                    size: 32,
+                  )
+                : Icon(
+                    Icons.favorite_border,
+                    size: 32,
+                  ),
+            onPressed: () => setState(() {
+              _favoriteStatus = !_favoriteStatus;
+              // print(_favoriteStatus);
+            }),
+          ),
         ),
-      ),
+        Divider(
+          thickness: 2,
+        ),
+      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
+import 'package:Projects/song_book/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,24 +11,25 @@ class SongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tabItemsSongs = song.text!.keys.toList();
+    final tabItemsChords = song.chords!.keys.toList();
+
     return DefaultTabController(
-      length: 3,
+      length: countTabs(),
       child: Scaffold(
         bottomNavigationBar: MyBottomNavigationBar(0),
         appBar: AppBar(
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(
-              //Then we should find out with language
-              song.title['ru'],
-              style: TextStyle(fontSize: 28),
-            ),
-            titlePadding: EdgeInsets.symmetric(horizontal: 50, vertical: 25),
+          title: Text(
+            //Then we should find out with language
+            song.title!['ru'],
+            style: TextStyle(fontSize: 26),
           ),
           bottom: TabBar(
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
-            labelPadding: EdgeInsets.symmetric(vertical: 3),
-            tabs: [Text('V1'), Text('V2'), Text('V3')],
+            isScrollable: true,
+            tabs: [
+              for (final item in tabItemsSongs) Tab(text: item),
+              for (final item in tabItemsChords) Tab(text: item),
+            ],
           ),
           titleTextStyle: TextStyle(fontSize: 18),
           centerTitle: true,
@@ -37,49 +39,41 @@ class SongScreen extends StatelessWidget {
               icon: Icon(
                 Icons.share,
                 size: 25,
-                color: Colors.white,
               ),
+              onPressed: () {},
             ),
             IconButton(
               icon: Icon(
                 Icons.play_circle_outline,
                 size: 25,
-                color: Colors.white,
               ),
+              onPressed: () {},
             ),
             IconButton(
               icon: Icon(
-                Icons.audiotrack,
+                Icons.favorite_border_outlined,
                 size: 25,
-                color: Colors.white,
               ),
+              onPressed: () {},
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.symmetric(vertical: 7),
-                child: Text(
-                  song.description,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text(
-                song.text['ru'],
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          ),
+        body: TabBarView(
+          children: [
+            for (final item in tabItemsSongs)
+              SongTextOnSongScreen(
+                  textVersion: song.text![item],
+                  description: song.description![item]),
+            for (final item in tabItemsChords)
+              SongTextOnSongScreen(textVersion: song.chords![item]),
+          ],
         ),
       ),
     );
+  }
+
+  countTabs() {
+    int amountOfTabs = song.text!.length + song.chords!.length;
+    return amountOfTabs;
   }
 }

@@ -1,6 +1,6 @@
 import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/menu/my_drawer.dart';
-import 'package:Projects/servises/database.dart';
+import 'package:Projects/services/database.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
@@ -14,9 +14,10 @@ class SongBook extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Song>>.value(
+    return StreamProvider<List<Song?>?>.value(
       value: DatabaseService().songs,
-      catchError: (_, error) => error,
+      catchError: (_, error) => error as List<Song?>?,
+      initialData: [],
       child: Scaffold(
           bottomNavigationBar: MyBottomNavigationBar(numberOfPage),
           drawer: Drawer(
@@ -27,7 +28,7 @@ class SongBook extends StatelessWidget {
               SliverAppBar(
                 primary: true,
                 title: Text(
-                  S.of(context).app_bar_title,
+                  S.of(context)!.app_bar_title,
                   style: TextStyle(fontSize: 28),
                 ),
                 titleTextStyle: TextStyle(fontSize: 18),
@@ -39,7 +40,7 @@ class SongBook extends StatelessWidget {
                       Icons.filter_alt_outlined,
                       size: 30,
                     ),
-                    tooltip: S.of(context).Icon_button_actions_app_bar_filter,
+                    tooltip: S.of(context)!.Icon_button_actions_app_bar_filter,
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
@@ -68,7 +69,7 @@ class SongBook extends StatelessWidget {
                         onChanged: (val) {
                           // TODO
                           //implement search here
-                          print(val);
+                          //print(val);
                         },
                         textAlignVertical: TextAlignVertical.bottom,
                         style: TextStyle(fontSize: 20),
@@ -90,7 +91,7 @@ class SongBook extends StatelessWidget {
 
                           prefixIcon: Icon(Icons.search),
                           //border: InputBorder.none,
-                          hintText: S.of(context).hint_search_field_in_app_bar,
+                          hintText: S.of(context)!.hint_search_field_in_app_bar,
                         ),
                       ),
                     ),

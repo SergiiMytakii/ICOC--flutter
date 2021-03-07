@@ -1,11 +1,11 @@
 class Song {
-  final String id;
-  final String description;
-  final Map title;
-  final Map text;
-  final List resources;
-  final String createdAt;
-  final Map chords;
+  final String? id;
+  final Map? description;
+  final Map? title;
+  final Map? text;
+  final List? resources;
+  final String? createdAt;
+  final Map? chords;
 
   Song(
       {this.id,

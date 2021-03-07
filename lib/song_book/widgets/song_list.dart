@@ -14,11 +14,9 @@ class _SongListState extends State<SongList> {
 
   @override
   Widget build(BuildContext context) {
-    final songs = Provider.of<List<Song>>(context) ?? [];
-    final songsEng = songs.map((song) {
-      return Song();
-    });
-    if (songs.isEmpty) {
+    final songs = Provider.of<List<Song?>?>(context);
+
+    if (songs == null) {
       setState(() {
         loaded = false;
       });
@@ -27,15 +25,15 @@ class _SongListState extends State<SongList> {
         loaded = true;
       });
     }
-    print(songs);
+    // print(songs);
     return loaded
         ? SliverFixedExtentList(
-      itemExtent: 77,
+      itemExtent: 80,
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return SongCard(songs[index]);
+                return SongCard(songs![index]!);
               },
-              childCount: songs.length,
+              childCount: songs!.length,
             ),
           )
         : SliverToBoxAdapter(child: Loading());

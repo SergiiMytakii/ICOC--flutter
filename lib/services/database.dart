@@ -8,7 +8,7 @@ class DatabaseService {
 
   //just to check how we can write to DB
   Future updateSongTest() async {
-    return await songCollection.doc('7').set({
+    return await songCollection.doc('8').set({
       'text': {
         'ru': 'Господу хвалу поем, создал мир и все, что в нем.'
             'Дал Он Слово, дал мечту приводить людей к Христу.'
@@ -20,22 +20,22 @@ class DatabaseService {
   }
 
   //song list from snapshot
-  List<Song> _songListFromSnapshot(QuerySnapshot snapshot) {
+  List<Song?>? _songListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       //print(doc.data()['title']);
       return Song(
-          id: doc.id ?? '',
-          description: doc.data()['description'] ?? '',
-          text: doc.data()['text'] ?? {},
-          title: doc.data()['title'] ?? {},
-          createdAt: doc.data()['created_at'] ?? '',
-          chords: doc.data()['chords'] ?? {},
-          resources: doc.data()['resources'] ?? []);
+          id: doc.id,
+          description: doc.data()!['description'] ?? {},
+          text: doc.data()!['text'] ?? {},
+          title: doc.data()!['title'] ?? {},
+          createdAt: doc.data()!['created_at'] ?? '',
+          chords: doc.data()!['chords'] ?? {},
+          resources: doc.data()!['resources'] ?? []);
     }).toList();
   }
 
   //get songs stream
-  Stream<List<Song>> get songs {
+  Stream<List<Song?>?> get songs {
     //print(_songListFromSnapshot);
     return songCollection.snapshots().map(_songListFromSnapshot);
   }
