@@ -30,15 +30,15 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       },
       items: [
         BottomNavigationBarItem(
-          label: S.of(context)!.bottom_navigation_list,
+          label: S.of(context)!.bottom_navigation_bar_list,
           icon: Icon(Icons.queue_music),
         ),
         BottomNavigationBarItem(
-          label: S.of(context)!.bottom_navigation_favorites,
+          label: S.of(context)!.bottom_navigation_bar_favorites,
           icon: Icon(Icons.favorite),
         ),
         BottomNavigationBarItem(
-          label: S.of(context)!.bottom_navigation_playlists,
+          label: S.of(context)!.bottom_navigation_bar_playlists,
           icon: Icon(Icons.playlist_play),
         ),
       ],

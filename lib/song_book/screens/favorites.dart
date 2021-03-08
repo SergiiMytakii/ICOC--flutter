@@ -1,3 +1,4 @@
+import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,7 @@ class Favorites extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: MyBottomNavigationBar(numberOfPage),
       appBar: AppBar(
-        title: Text('Избранное'),
+        title: Text(S.of(context)!.bottom_navigation_bar_favorites),
         centerTitle: true,
       ),
       body: Container(

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
-      initial: AdaptiveThemeMode.light,
+      initial: AdaptiveThemeMode.system,
       light: myLightTheme,
       dark: myDarkTheme,
       builder: (light, dark) => MaterialApp(

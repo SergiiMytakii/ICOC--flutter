@@ -8,5 +8,8 @@
   "drawer_q_and_a": "Вопросы и ответы",
   "drawer_bible": "Библия",
   "drawer_in_development": "В разработке",
-  "drawer_settings": "Настройки"
+  "drawer_settings": "Настройки",
+  "bottom_navigation_bar_list": "Все песни",
+  "bottom_navigation_bar_favorites": "Избранное",
+  "bottom_navigation_bar_playlists": "Плейлисты"
 }

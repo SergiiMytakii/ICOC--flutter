@@ -1,6 +1,6 @@
 import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/services/database.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:Projects/settings/general_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +14,22 @@ class MyDrawer extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
           ),
-          child: Text(
-            S.of(context)!.drawer_menu,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-            ),
+          child: Column(
+            children: [
+              Text(
+                S.of(context)!.drawer_menu,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 28,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CircleAvatar(
+                  radius: 30,
+                ),
+              ),
+            ],
           ),
         ),
         ListTile(
@@ -78,13 +88,13 @@ class MyDrawer extends StatelessWidget {
             S.of(context)!.drawer_settings,
             style: TextStyle(fontSize: 20),
           ),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return GeneralSettings();
+            }));
+          },
         ),
-        FlatButton(
-          //move this button to the settings page later
-          color: Theme.of(context).accentColor,
-          child: Text('Поменять тему приложения (тест)'),
-          onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
-        )
       ],
     );
   }
