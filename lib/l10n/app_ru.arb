@@ -11,5 +11,7 @@
   "drawer_settings": "Настройки",
   "bottom_navigation_bar_list": "Все песни",
   "bottom_navigation_bar_favorites": "Избранное",
-  "bottom_navigation_bar_playlists": "Плейлисты"
+  "bottom_navigation_bar_playlists": "Плейлисты",
+  "app_bar_settings": "Настройки",
+    "settings_dark_theme": "Изменить тему приложения"
 }

@@ -19,11 +19,6 @@ class SongScreen extends StatelessWidget {
       child: Scaffold(
         bottomNavigationBar: MyBottomNavigationBar(0),
         appBar: AppBar(
-          title: Text(
-            //Then we should find out with language
-            song.title!['ru'],
-            style: TextStyle(fontSize: 26),
-          ),
           bottom: TabBar(
             isScrollable: true,
             tabs: [
@@ -62,6 +57,7 @@ class SongScreen extends StatelessWidget {
           children: [
             for (final item in tabItemsSongs)
               SongTextOnSongScreen(
+                  title: song.title![item],
                   textVersion: song.text![item],
                   description: song.description![item]),
             for (final item in tabItemsChords)

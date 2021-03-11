@@ -1,5 +1,5 @@
-import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class Favorites extends StatelessWidget {
@@ -10,7 +10,7 @@ class Favorites extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: MyBottomNavigationBar(numberOfPage),
       appBar: AppBar(
-        title: Text(S.of(context)!.bottom_navigation_bar_favorites),
+        title: Text('bottom_navigation_bar_favorites').tr(),
         centerTitle: true,
       ),
       body: Container(

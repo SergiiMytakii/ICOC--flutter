@@ -1,6 +1,6 @@
-import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/services/database.dart';
 import 'package:Projects/settings/general_settings.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class MyDrawer extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                S.of(context)!.drawer_menu,
+                'drawer_menu'.tr().toString(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 28,
@@ -38,10 +38,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            S.of(context)!.drawer_news,
+            'drawer_news'.tr().toString(),
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text(S.of(context)!.drawer_in_development),
+          subtitle: Text('drawer_in_development'.tr().toString()),
           onTap: () async {
             await DatabaseService().updateSongTest();
           },
@@ -52,10 +52,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            S.of(context)!.drawer_bible,
+            'drawer_bible'.tr().toString(),
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text(S.of(context)!.drawer_in_development),
+          subtitle: Text('drawer_in_development'.tr().toString()),
         ),
         ListTile(
           leading: Icon(
@@ -63,10 +63,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            S.of(context)!.drawer_first_principles,
+            'drawer_first_principles'.tr().toString(),
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text(S.of(context)!.drawer_in_development),
+          subtitle: Text('drawer_in_development'.tr().toString()),
         ),
         ListTile(
           leading: Icon(
@@ -74,10 +74,10 @@ class MyDrawer extends StatelessWidget {
             size: 36,
           ),
           title: Text(
-            S.of(context)!.drawer_q_and_a,
+            'drawer_q_and_a'.tr().toString(),
             style: TextStyle(fontSize: 20),
           ),
-          subtitle: Text(S.of(context)!.drawer_in_development),
+          subtitle: Text('drawer_in_development'.tr().toString()),
         ),
         SizedBox(
           height: 100,
@@ -85,7 +85,7 @@ class MyDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.settings),
           title: Text(
-            S.of(context)!.drawer_settings,
+            'drawer_settings'.tr().toString(),
             style: TextStyle(fontSize: 20),
           ),
           onTap: () {

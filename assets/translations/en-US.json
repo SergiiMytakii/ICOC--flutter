@@ -1,0 +1,23 @@
+{
+  "app_bar_title": "Song book",
+  "icon_button_actions_app_bar_filter": "Filter by language",
+  "hint_search_field_in_app_bar": "Search song",
+  "drawer_menu": "Menu",
+  "drawer_news": "News",
+  "drawer_first_principles": "First principles",
+  "drawer_q_and_a": "Q&A",
+  "drawer_bible": "Bible",
+  "drawer_in_development": "In the pipeline",
+  "drawer_settings": "Settings",
+  "bottom_navigation_bar_list": "All songs",
+  "bottom_navigation_bar_favorites": "Favorites",
+  "bottom_navigation_bar_playlists": "Playlists",
+  "app_bar_settings": "Settings",
+  "settings_dark_theme": "Change theme",
+  "dropdown_menu_lang_app_russian": "App language - Russian",
+  "dropdown_menu_lang_app_english": "App language - English",
+  "dropdown_menu_lang_app_ukrainian": "Язык приложения - Ukrainian",
+  "russian": "Russian",
+  "english": "English",
+  "ukrainian": "Ukrainian"
+}

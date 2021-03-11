@@ -1,10 +1,10 @@
-import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/menu/my_drawer.dart';
 import 'package:Projects/services/database.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
 import 'package:Projects/song_book/widgets/song_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +28,7 @@ class SongBook extends StatelessWidget {
               SliverAppBar(
                 primary: true,
                 title: Text(
-                  S.of(context)!.app_bar_title,
+                  'app_bar_title'.tr(),
                   style: TextStyle(fontSize: 28),
                 ),
                 titleTextStyle: TextStyle(fontSize: 18),
@@ -40,7 +40,7 @@ class SongBook extends StatelessWidget {
                       Icons.filter_alt_outlined,
                       size: 30,
                     ),
-                    tooltip: S.of(context)!.Icon_button_actions_app_bar_filter,
+                    tooltip: 'icon_button_actions_app_bar_filter'.tr(),
                     onPressed: () {
                       showModalBottomSheet(
                           context: context,
@@ -91,7 +91,8 @@ class SongBook extends StatelessWidget {
 
                           prefixIcon: Icon(Icons.search),
                           //border: InputBorder.none,
-                          hintText: S.of(context)!.hint_search_field_in_app_bar,
+                          hintText:
+                              'hint_search_field_in_app_bar'.tr().toString(),
                         ),
                       ),
                     ),

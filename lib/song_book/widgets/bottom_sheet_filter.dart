@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +18,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
   bool? _ru;
   bool? _ukr;
 
-  _loadPreferences() async {
+  void _loadPreferences() async {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
     setState(() {
       _en = (prefLanguages.getBool('en') ?? true);
@@ -34,12 +35,12 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
       child: Column(
         children: [
           Text(
-            'Языки песен: ',
+            'icon_button_actions_app_bar_filter'.tr(),
             style: TextStyle(fontSize: 25),
           ),
           CheckboxListTile(
-              title: const Text(
-                'Русский',
+              title: Text(
+                'russian'.tr(),
                 style: TextStyle(fontSize: 22),
               ),
               value: _ru,
@@ -54,8 +55,8 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 });
               }),
           CheckboxListTile(
-              title: const Text(
-                'Украинский',
+              title: Text(
+                'ukrainian'.tr(),
                 style: TextStyle(fontSize: 22),
               ),
               value: _ukr,
@@ -71,8 +72,8 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 });
               }),
           CheckboxListTile(
-              title: const Text(
-                'Английский',
+              title: Text(
+                'english'.tr(),
                 style: TextStyle(fontSize: 22),
               ),
               value: _en,

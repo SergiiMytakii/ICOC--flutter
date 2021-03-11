@@ -14,7 +14,7 @@ class SongTextOnSongScreen extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            title ?? 'here should be a title',
+            title ?? '',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 28),
           ),
@@ -22,7 +22,7 @@ class SongTextOnSongScreen extends StatelessWidget {
             alignment: Alignment.topRight,
             margin: EdgeInsets.symmetric(vertical: 7),
             child: Text(
-              description ?? 'here should be description',
+              description ?? '',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -30,7 +30,7 @@ class SongTextOnSongScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            textVersion ?? 'here should be a text of song',
+            textVersion ?? '',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18),
           ),

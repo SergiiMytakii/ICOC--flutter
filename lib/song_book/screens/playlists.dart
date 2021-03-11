@@ -1,5 +1,5 @@
-import 'package:Projects/generated/l10n.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class Playlists extends StatelessWidget {
@@ -11,7 +11,7 @@ class Playlists extends StatelessWidget {
       bottomNavigationBar: MyBottomNavigationBar(numberOfPage),
       appBar: AppBar(
         centerTitle: true,
-        title: Text(S.of(context)!.bottom_navigation_bar_playlists),
+        title: Text('bottom_navigation_bar_playlists').tr(),
       ),
       body: Container(
         child: Center(child: Text('в разработке')),

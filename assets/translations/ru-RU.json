@@ -1,0 +1,23 @@
+{
+  "app_bar_title": "Песенник",
+  "icon_button_actions_app_bar_filter": "Фильтр по языкам",
+  "hint_search_field_in_app_bar": "Поиск песни",
+  "drawer_menu": "Меню",
+  "drawer_news": "Новости",
+  "drawer_first_principles": "Первые принципы",
+  "drawer_q_and_a": "Вопросы и ответы",
+  "drawer_bible": "Библия",
+  "drawer_in_development": "В разработке",
+  "drawer_settings": "Настройки",
+  "bottom_navigation_bar_list": "Все песни",
+  "bottom_navigation_bar_favorites": "Избранное",
+  "bottom_navigation_bar_playlists": "Плейлисты",
+  "app_bar_settings": "Настройки",
+  "settings_dark_theme": "Изменить тему приложения",
+  "dropdown_menu_lang_app_russian": "Язык приложения - русский",
+  "dropdown_menu_lang_app_english": "Язык приложения - английский",
+  "dropdown_menu_lang_app_ukrainian": "Язык приложения - украинский",
+  "russian": "русский",
+  "english": "английский",
+  "ukrainian": "украинский"
+}

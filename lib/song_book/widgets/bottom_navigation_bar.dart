@@ -1,8 +1,9 @@
-import 'package:Projects/generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:Projects/song_book/screens/favorites.dart';
 import 'package:Projects/song_book/screens/playlists.dart';
 import 'package:Projects/song_book/screens/song_book.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   int numberOfPage;
@@ -30,15 +31,15 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       },
       items: [
         BottomNavigationBarItem(
-          label: S.of(context)!.bottom_navigation_bar_list,
+          label: 'bottom_navigation_bar_list'.tr().toString(),
           icon: Icon(Icons.queue_music),
         ),
         BottomNavigationBarItem(
-          label: S.of(context)!.bottom_navigation_bar_favorites,
+          label: 'bottom_navigation_bar_favorites'.tr().toString(),
           icon: Icon(Icons.favorite),
         ),
         BottomNavigationBarItem(
-          label: S.of(context)!.bottom_navigation_bar_playlists,
+          label: 'bottom_navigation_bar_playlists'.tr().toString(),
           icon: Icon(Icons.playlist_play),
         ),
       ],
