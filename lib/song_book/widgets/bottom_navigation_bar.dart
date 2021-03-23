@@ -1,9 +1,8 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:Projects/song_book/screens/favorites.dart';
 import 'package:Projects/song_book/screens/playlists.dart';
 import 'package:Projects/song_book/screens/song_book.dart';
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   int numberOfPage;
@@ -24,10 +23,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       backgroundColor: Colors.transparent,
       onTap: (value) {
         // Respond to item press.
-        setState(() => widget.numberOfPage = value);
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return routeToScreen(value);
-        }));
+        if (widget.numberOfPage != value) {
+          setState(() => widget.numberOfPage = value);
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return routeToScreen(value);
+          }));
+        }
       },
       items: [
         BottomNavigationBarItem(

@@ -14,9 +14,9 @@ class SongBook extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Song?>?>.value(
+    return StreamProvider<List<Song>>.value(
+      catchError: (_, error) => error as List<Song>,
       value: DatabaseService().songs,
-      catchError: (_, error) => error as List<Song?>?,
       initialData: [],
       child: Scaffold(
           bottomNavigationBar: MyBottomNavigationBar(numberOfPage),

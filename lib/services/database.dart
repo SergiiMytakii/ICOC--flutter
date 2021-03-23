@@ -20,7 +20,7 @@ class DatabaseService {
   }
 
   //song list from snapshot
-  List<Song?>? _songListFromSnapshot(QuerySnapshot snapshot) {
+  List<Song> _songListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       //print(doc.data()['title']);
       return Song(
@@ -35,7 +35,7 @@ class DatabaseService {
   }
 
   //get songs stream
-  Stream<List<Song?>?> get songs {
+  Stream<List<Song>> get songs {
     //print(_songListFromSnapshot);
     return songCollection.snapshots().map(_songListFromSnapshot);
   }

@@ -4,7 +4,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../globals.dart';
 
@@ -51,29 +51,16 @@ class _MyAppState extends State<MyApp> {
       initial: AdaptiveThemeMode.system,
       light: myLightTheme,
       dark: myDarkTheme,
-      builder: (light, dark) => MaterialApp(
-        //locale: Locale.fromSubtags(languageCode: currentLanguage),
-        theme: light,
-        darkTheme: dark,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-
-        // [
-        //
-        //   GlobalMaterialLocalizations.delegate,
-        //   GlobalWidgetsLocalizations.delegate,
-        //   GlobalCupertinoLocalizations.delegate,
-        //   AppLocalizations.delegate
-        // ],
-
-        // supportedLocales: [
-        //   Locale('en', 'EN'),
-        //   Locale('ru', 'RU'),
-        //   Locale('uk', 'UK')
-        // ],
-        title: 'ICOC',
-        home: SongBook(),
+      builder: (light, dark) => OKToast(
+        child: MaterialApp(
+          theme: light,
+          darkTheme: dark,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          title: 'ICOC',
+          home: SongBook(),
+        ),
       ),
     );
   }
