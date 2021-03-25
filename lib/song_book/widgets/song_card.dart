@@ -46,13 +46,13 @@ class _SongCardState extends State<SongCard> {
           trailing: IconButton(
             icon: _favoriteStatus
                 ? Icon(
-              Icons.favorite_rounded,
-              size: 32,
-            )
+                    Icons.favorite_rounded,
+                    size: 32,
+                  )
                 : Icon(
-              Icons.favorite_border,
-              size: 32,
-            ),
+                    Icons.favorite_border,
+                    size: 32,
+                  ),
             onPressed: () => setState(() {
               _favoriteStatus = !_favoriteStatus;
               // print(_favoriteStatus);

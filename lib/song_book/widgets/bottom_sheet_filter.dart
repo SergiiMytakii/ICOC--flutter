@@ -14,9 +14,9 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
     _loadPreferences();
   }
 
-  bool? _en;
-  bool? _ru;
-  bool? _ukr;
+  bool _en = true;
+  bool _ru = true;
+  bool _ukr = true;
 
   void _loadPreferences() async {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
@@ -50,8 +50,8 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 SharedPreferences prefLanguages =
                     await SharedPreferences.getInstance();
                 setState(() {
-                  _ru = !_ru!;
-                  prefLanguages.setBool('ru', _ru!);
+                  _ru = !_ru;
+                  prefLanguages.setBool('ru', _ru);
                 });
               }),
           CheckboxListTile(
@@ -67,8 +67,9 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                     await SharedPreferences.getInstance();
 
                 setState(() {
-                  _ukr = !_ukr!;
-                  prefLanguages.setBool('ukr', _ukr!);
+                  _ukr = !_ukr;
+
+                  prefLanguages.setBool('ukr', _ukr);
                 });
               }),
           CheckboxListTile(
@@ -83,8 +84,8 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 SharedPreferences prefLanguages =
                     await SharedPreferences.getInstance();
                 setState(() {
-                  _en = !_en!;
-                  prefLanguages.setBool('en', _en!);
+                  _en = !_en;
+                  prefLanguages.setBool('en', _en);
                 });
               }),
         ],
