@@ -20,6 +20,7 @@ class _SongCardState extends State<SongCard> {
     String myLocale = Localizations.localeOf(context).toString();
 
     final song = widget.song;
+
     return Column(
       children: [
         ListTile(
@@ -28,20 +29,19 @@ class _SongCardState extends State<SongCard> {
                 MaterialPageRoute(builder: (context) => SongScreen(song)));
           }),
           horizontalTitleGap: 0,
-          leading: Text(
-            song.id.toString(),
-            style: TextStyle(fontSize: 18),
-          ),
+          leading: Text(song.id.toString(),
+              style: Theme.of(context).textTheme.headline6),
           title: Text(
             //show title and text language accordingly to app lang
             chooseTitleLang(song, myLocale) ?? '',
 
-            style: TextStyle(fontSize: 20),
+            style: Theme.of(context).textTheme.headline5,
           ),
           subtitle: Text(
             chooseTextLang(song, myLocale) ?? '',
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           trailing: IconButton(
             icon: _favoriteStatus
@@ -69,7 +69,7 @@ class _SongCardState extends State<SongCard> {
 //return to the title of card title of song in the preferred language if it exist,
 // or on the second language, as usual - russian
   chooseTitleLang(Song song, String myLocale) {
-    //print(song.title);
+    // print(song.title);
     // print(myLocale);
 
     switch (myLocale) {

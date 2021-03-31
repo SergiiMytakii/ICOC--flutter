@@ -17,9 +17,14 @@ class _SongListState extends State<SongList> {
     //get list of songs from streamProvider
     List<Song?> songs = Provider.of<List<Song?>>(context);
 
-    //print(songs);
+    //filtering songs by lang
+    List<Song?> songsFiltered = songs.where((song) {
+      return song != null ? song.title!.containsKey('ru') : throw 'error';
+    }).toList();
 
-    if (songs.isEmpty) {
+    //print(songsFiltered);
+
+    if (songsFiltered.isEmpty) {
       setState(() {
         loaded = false;
       });
@@ -31,12 +36,13 @@ class _SongListState extends State<SongList> {
     // print(songs);
     return loaded
         ? SliverFixedExtentList(
-      itemExtent: 88,
+            itemExtent: 88,
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return SongCard(songs[index]!);
+                //print(songs[index]!.description);
+                return SongCard(songsFiltered[index]!);
               },
-              childCount: songs.length,
+              childCount: songsFiltered.length,
             ),
           )
         : SliverToBoxAdapter(child: Loading());

@@ -61,9 +61,19 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               onChanged: (val) {
                 setState(() => currentLanguage = val.toString());
                 context.setLocale(languagesLocales[currentLanguage]!);
-                print('set $currentLanguage language');
               },
             ),
+          ),
+          // font scale adjusting
+          SizedBox(
+            height: 40,
+          ),
+          Slider(
+            value: 10,
+            min: 10,
+            max: 32,
+            divisions: 2,
+            onChanged: (val) => setState(() {}),
           ),
         ],
       ),
@@ -74,26 +84,15 @@ class _GeneralSettingsState extends State<GeneralSettings> {
     switch (language) {
       case 'ru':
         return 'dropdown_menu_lang_app_russian'.tr();
-        break;
+
       case 'en':
         return 'dropdown_menu_lang_app_english'.tr();
-        break;
+
       case 'uk':
         return 'dropdown_menu_lang_app_ukrainian'.tr();
-        break;
+
       default:
         return 'dropdown_menu_lang_app_english'.tr();
     }
   }
-
-// void readLangPreferences() async {
-//   SharedPreferences prefSettingsLang = await SharedPreferences.getInstance();
-//   if (prefSettingsLang.getString('settingsLang') == null)
-//     setState(() {
-//       currentLanguage =
-//           Intl.getCurrentLocale(); //AppLocalizations.of(context)!.localeName;
-//
-//       print(currentLanguage);
-//     });
-// }
 }

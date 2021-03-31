@@ -14,6 +14,9 @@ class SongScreen extends StatelessWidget {
     final tabItemsSongs = song.text!.keys.toList();
     final tabItemsChords = song.chords!.keys.toList();
 
+    print(song.title);
+    print(tabItemsSongs);
+
     return DefaultTabController(
       length: countTabs(),
       child: Scaffold(
@@ -57,9 +60,10 @@ class SongScreen extends StatelessWidget {
           children: [
             for (final item in tabItemsSongs)
               SongTextOnSongScreen(
-                  title: song.title![item],
+                  title: song.title![item.toString().substring(0, 2)],
                   textVersion: song.text![item],
-                  description: song.description![item]),
+                  description:
+                      song.description![item.toString().substring(0, 2)]),
             for (final item in tabItemsChords)
               SongTextOnSongScreen(textVersion: song.chords![item]),
           ],
