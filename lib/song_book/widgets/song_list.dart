@@ -18,9 +18,14 @@ class _SongListState extends State<SongList> {
     List<Song?> songs = Provider.of<List<Song?>>(context);
 
     //filtering songs by lang
+    // List<Song?> songsFiltered = songs.where((song) {
+    //   return song != null ? song.title!.containsKey('ru') : throw 'error';
+    // }).toList();
+
     List<Song?> songsFiltered = songs.where((song) {
-      return song != null ? song.title!.containsKey('ru') : throw 'error';
+        return song != null ? song.title!.containsKey('ru') : throw 'error';
     }).toList();
+
 
     //print(songsFiltered);
 

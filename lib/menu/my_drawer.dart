@@ -1,5 +1,6 @@
-import 'package:Projects/services/database.dart';
+
 import 'package:Projects/settings/general_settings.dart';
+import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,24 @@ class MyDrawer extends StatelessWidget {
         ),
         ListTile(
           leading: Icon(
+            Icons.music_note,/**/
+            size: 36,
+          ),
+          title: Text(
+            'drawer_song_book'.tr().toString(),
+            style: TextStyle(fontSize: 20),
+          ),
+          onTap: () {
+
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return MyBottomNavigationBar();
+            }));
+          },
+
+        ),
+        ListTile(
+          leading: Icon(
             Icons.language,
             size: 36,
           ),
@@ -42,21 +61,9 @@ class MyDrawer extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
           subtitle: Text('drawer_in_development'.tr().toString()),
-          onTap: () async {
-            await DatabaseService().updateSongTest();
-          },
+
         ),
-        ListTile(
-          leading: Icon(
-            Icons.book,
-            size: 36,
-          ),
-          title: Text(
-            'drawer_bible'.tr().toString(),
-            style: TextStyle(fontSize: 20),
-          ),
-          subtitle: Text('drawer_in_development'.tr().toString()),
-        ),
+
         ListTile(
           leading: Icon(
             Icons.import_contacts,

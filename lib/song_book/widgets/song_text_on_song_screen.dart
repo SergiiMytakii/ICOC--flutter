@@ -14,9 +14,10 @@ class SongTextOnSongScreen extends StatelessWidget {
     // print(textVersion);
     // print(description);
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Column(
         children: [
+
           Text(
             title ?? '',
             textAlign: TextAlign.center,

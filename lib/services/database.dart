@@ -14,12 +14,9 @@ class DatabaseService {
   Future updateSongTest() async {
     return await songCollection.doc('8').set({
       'text': {
-        'ru': 'Господу хвалу поем, создал мир и все, что в нем.'
-            'Дал Он Слово, дал мечту приводить людей к Христу.'
-            'Аллилуйя! Аллилу- аллилу- аллилуйя!'
-            ' Аллилуйя! Аллилу- аллилу- аллилуйя!'
+        'ru1': 'Иисус Господь \r\nВедет нас за Собой.\r\nГрехи простил, \r\nОсвободил \r\nИ дал нам Дух\r\nСвятой.\r\nДень пришел,\r\nДень последний\r\nТрубный глас\r\nПрозвучал!\r\nДень пришел,\r\nДень последний\r\nТрубный глас\r\nПрозвучал!\r\nТы нас избрал. \r\nИисус Господь \r\nВедет нас за Собой.\r\nГрехи простил, \r\nОсвободил \r\nИ дал нам Дух\r\nСвятой.\r\nТы нас избрал. \r\nИисус Господь \r\nВедет нас за Собой.\r\nГрехи простил, \r\nОсвободил \r\nИ дал нам Дух\r\nСвятой.'
       },
-      'title': {'ru': 'Иисус - Господь'}
+      'title': {'ru': 'Ты нас избрал'}
     });
   }
 
@@ -28,12 +25,12 @@ class DatabaseService {
     List<Song?> songs = snapshot.docs.map((doc) {
       return Song(
           id: doc.id,
-          description: doc.data()!['description'] ?? {},
-          text: doc.data()!['text'] ?? {},
-          title: doc.data()!['title'] ?? {},
-          createdAt: doc.data()!['created_at'] ?? '',
-          chords: doc.data()!['chords'] ?? {},
-          resources: doc.data()!['resources'] ?? []);
+          description: doc.data()['description'] ?? {},
+          text: doc.data()['text'] ?? {},
+          title: doc.data()['title'] ?? {},
+          createdAt: doc.data()['created_at'] ?? '',
+          chords: doc.data()['chords'] ?? {},
+          resources: doc.data()['resources'] ?? []);
     }).toList();
     //get rid from nullable songs
     songs.removeWhere((song) => song == null);
@@ -42,7 +39,7 @@ class DatabaseService {
 
   //get songs stream
   Stream<List<Song?>> get songs {
-    //print(_songListFromSnapshot);
+    updateSongTest();
     return songCollection.snapshots().map(_songListFromSnapshot);
   }
 }

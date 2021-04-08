@@ -20,7 +20,7 @@ class SongScreen extends StatelessWidget {
     return DefaultTabController(
       length: countTabs(),
       child: Scaffold(
-        bottomNavigationBar: MyBottomNavigationBar(0),
+
         appBar: AppBar(
           bottom: TabBar(
             isScrollable: true,

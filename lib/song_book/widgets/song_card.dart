@@ -35,13 +35,13 @@ class _SongCardState extends State<SongCard> {
             //show title and text language accordingly to app lang
             chooseTitleLang(song, myLocale) ?? '',
 
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline6,
           ),
           subtitle: Text(
             chooseTextLang(song, myLocale) ?? '',
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyText2,
           ),
           trailing: IconButton(
             icon: _favoriteStatus
@@ -69,35 +69,36 @@ class _SongCardState extends State<SongCard> {
 //return to the title of card title of song in the preferred language if it exist,
 // or on the second language, as usual - russian
   chooseTitleLang(Song song, String myLocale) {
-    // print(song.title);
-    // print(myLocale);
+    //print(song.title);
+    //print(myLocale);
 
     switch (myLocale) {
       case 'ru_RU':
         {
-          if (song.title!['ru'] != null)
+          if (song.title!['ru'] != null && song.title!['ru'] != '')
             return song.title!['ru'];
-          else if (song.title!['uk'] != null)
+          else if (song.title!['uk'] != null && song.title!['uk'] != '')
             return song.title!['uk'];
-          else if (song.title!['en'] != null) return song.title!['en'];
+          else if (song.title!['en'] != null && song.title!['en'] != '' ) return song.title!['en'];
         }
         break;
       case 'uk_UK':
         {
-          if (song.title!['uk'] != null)
+          if (song.title!['uk'] != null && song.title!['uk'] != '')
             return song.title!['uk'];
-          else if (song.title!['ru'] != null)
+          else if (song.title!['ru'] != null && song.title!['ru'] != '')
             return song.title!['ru'];
-          else if (song.title!['en'] != null) return song.title!['en'];
+          else if (song.title!['en'] != null && song.title!['en'] != '')
+            return song.title!['en'];
         }
         break;
       case 'en_US':
         {
-          if (song.title!['en'] != null)
+          if (song.title!['en'] != null && song.title!['en'] != '')
             return song.title!['en'];
-          else if (song.title!['ru'] != null)
+          else if (song.title!['ru'] != null && song.title!['ru'] != '')
             return song.title!['ru'];
-          else if (song.title!['uk'] != null) return song.title!['uk'];
+          else if (song.title!['uk'] != null && song.title!['uk'] != '') return song.title!['uk'];
         }
         break;
 
@@ -110,31 +111,33 @@ class _SongCardState extends State<SongCard> {
     switch (myLocale) {
       case 'ru_RU':
         {
-          if (song.text!['ru1'] != null)
+          if (song.text!['ru1'] != null && song.text!['ru1'] != '')
             return song.text!['ru1'];
-          else if (song.text!['uk1'] != null)
+          else if (song.text!['uk1'] != null && song.text!['uk1'] != '')
             return song.text!['uk1'];
-          else if (song.text!['en1'] != null) {
+          else if (song.text!['en1'] != null && song.text!['en1'] != '') {
             return song.text!['en1'];
           }
         }
         break;
       case 'uk_UK':
         {
-          if (song.text!['uk1'] != null)
+          if (song.text!['uk1'] != null && song.text!['uk1'] != '')
             return song.text!['uk1'];
-          else if (song.text!['ru1'] != null)
+          else if (song.text!['ru1'] != null && song.text!['ru1'] != '')
             return song.text!['ru1'];
-          else if (song.text!['en1'] != null) return song.text!['en1'];
+          else if (song.text!['en1'] != null && song.text!['en1'] != '')
+            return song.text!['en1'];
         }
         break;
       case 'en_US':
         {
-          if (song.text!['en1'] != null)
+          if (song.text!['en1'] != null && song.text!['en1'] != '')
             return song.text!['en1'];
-          else if (song.text!['ru1'] != null)
+          else if (song.text!['ru1'] != null && song.text!['ru1'] != '')
             return song.text!['ru1'];
-          else if (song.text!['uk1'] != null) return song.text!['uk1'];
+          else if (song.text!['uk1'] != null && song.text!['uk1'] != '')
+            return song.text!['uk1'];
         }
     }
   }

@@ -1,12 +1,11 @@
-import 'package:Projects/song_book/screens/song_book.dart';
-import 'package:Projects/theme.dart';
+import 'package:Projects/app/main_screen.dart';
+import 'package:Projects/app/theme.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 
-import '../globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,31 +36,23 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    currentLanguage = Intl.systemLocale.substring(0, 2);
+    //currentLanguage = Intl.systemLocale.substring(0, 2);
 
-    //print(currentLanguage);
-
-    // void changeLang(String newLanguage) {
-    //   setState(() {
-    //     currentLanguage = newLaguage;
-    //   });
-    // }
 
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.system,
       light: myLightTheme,
       dark: myDarkTheme,
-      builder: (light, dark) => OKToast(
-        child: MaterialApp(
+      builder: (light, dark) =>  MaterialApp(
           theme: light,
           darkTheme: dark,
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           title: 'ICOC',
-          home: SongBook(),
+          home: MainScreen(),
         ),
-      ),
-    );
+      );
+
   }
 }

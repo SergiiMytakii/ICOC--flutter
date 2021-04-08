@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
 
 class GeneralSettings extends StatefulWidget {
   @override
@@ -16,8 +15,8 @@ class _GeneralSettingsState extends State<GeneralSettings> {
     'uk': Locale('uk', 'UK')
   };
 
-  bool _darkTheme = true;
-
+  bool _darkTheme = false;
+  String currentLanguage = '';
   @override
   Widget build(BuildContext context) {
     final List<String> languages = languagesLocales.keys.toList();
@@ -32,12 +31,14 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             height: 40,
           ),
           SwitchListTile(
-            title: Text('settings_dark_theme').tr(),
+            title: Text('settings_dark_theme', style: Theme.of(context).textTheme.bodyText1,).tr(),
             value: _darkTheme,
+
             onChanged: (bool value) {
               setState(() {
                 _darkTheme = value;
-                AdaptiveTheme.of(context).toggleThemeMode();
+                _darkTheme ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight();
+                print(_darkTheme);
               });
             },
             secondary: const Icon(Icons.design_services),
@@ -55,7 +56,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               items: languages
                   .map((language) => DropdownMenuItem(
                         value: language,
-                        child: Text(textForItems(language)),
+                        child: Text(textForItems(language), style: Theme.of(context).textTheme.bodyText1,),
                       ))
                   .toList(),
               onChanged: (val) {
@@ -68,6 +69,8 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           SizedBox(
             height: 40,
           ),
+          //todo
+          // implement sizing fonts
           Slider(
             value: 10,
             min: 10,
@@ -92,7 +95,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
         return 'dropdown_menu_lang_app_ukrainian'.tr();
 
       default:
-        return 'dropdown_menu_lang_app_english'.tr();
+        return 'dropdown_menu_lang_app_russian'.tr();
     }
   }
 }

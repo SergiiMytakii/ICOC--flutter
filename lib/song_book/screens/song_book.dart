@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SongBook extends StatelessWidget {
-  final int numberOfPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +18,18 @@ class SongBook extends StatelessWidget {
       value: DatabaseService().songs,
       initialData: [],
       child: Scaffold(
-          bottomNavigationBar: MyBottomNavigationBar(numberOfPage),
-          drawer: Drawer(
-            child: MyDrawer(),
-          ),
+
+
+
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
                 primary: true,
                 title: Text(
                   'app_bar_title'.tr(),
-                  style: TextStyle(fontSize: 28),
+
                 ),
-                titleTextStyle: TextStyle(fontSize: 18),
+
                 centerTitle: true,
                 elevation: 6,
                 actions: [
@@ -51,19 +49,19 @@ class SongBook extends StatelessWidget {
                   ),
                 ],
                 pinned: true,
-                expandedHeight: 100.0,
+                expandedHeight: 85.0,
                 floating: true,
                 stretch: true,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: 38,
+                      height: 35,
                       padding: EdgeInsets.only(
                         //top: 120,
                         left: 50,
                         right: 50,
-                        bottom: 5,
+                        bottom: 8,
                       ),
                       child: TextFormField(
                         onChanged: (val) {
