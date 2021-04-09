@@ -1,4 +1,6 @@
+import 'package:Projects/services/import_songs.dart';
 import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/models/song_from_json.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -12,12 +14,17 @@ class DatabaseService {
 
   //just to check how we can write to DB
   Future updateSongTest() async {
-    return await songCollection.doc('8').set({
-      'text': {
-        'ru1': 'Иисус Господь \r\nВедет нас за Собой.\r\nГрехи простил, \r\nОсвободил \r\nИ дал нам Дух\r\nСвятой.\r\nДень пришел,\r\nДень последний\r\nТрубный глас\r\nПрозвучал!\r\nДень пришел,\r\nДень последний\r\nТрубный глас\r\nПрозвучал!\r\nТы нас избрал. \r\nИисус Господь \r\nВедет нас за Собой.\r\nГрехи простил, \r\nОсвободил \r\nИ дал нам Дух\r\nСвятой.\r\nТы нас избрал. \r\nИисус Господь \r\nВедет нас за Собой.\r\nГрехи простил, \r\nОсвободил \r\nИ дал нам Дух\r\nСвятой.'
-      },
-      'title': {'ru': 'Ты нас избрал'}
-    });
+    List<SongFromJson> songJ =  await ImportSongs().loadSongsFromJson();
+
+for(SongFromJson song in songJ) {
+      Song songNew = convertToSong(song);
+      //print(" new song ${songNew.title}");
+      await songCollection.doc(songNew.id).set({
+        'text': songNew.text ?? null,
+        'title': songNew.title ?? null,
+        'description': songNew.description ?? null,
+      });
+    }
   }
 
   //converting  snapshot to song list
@@ -39,7 +46,19 @@ class DatabaseService {
 
   //get songs stream
   Stream<List<Song?>> get songs {
-    updateSongTest();
-    return songCollection.snapshots().map(_songListFromSnapshot);
+    //updateSongTest();
+    return songCollection.orderBy('title').snapshots().map(_songListFromSnapshot);
+  }
+
+  Song convertToSong(SongFromJson songFromJson) {
+    return  Song(
+      id: songFromJson.id,
+      title: {'ru': songFromJson.title},
+      text: {'ru1': songFromJson.text},
+      description: {'ru': songFromJson.description}
+
+    );
   }
 }
+
+

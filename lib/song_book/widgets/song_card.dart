@@ -34,7 +34,8 @@ class _SongCardState extends State<SongCard> {
           title: Text(
             //show title and text language accordingly to app lang
             chooseTitleLang(song, myLocale) ?? '',
-
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
             style: Theme.of(context).textTheme.headline6,
           ),
           subtitle: Text(

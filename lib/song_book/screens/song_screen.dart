@@ -1,5 +1,4 @@
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:Projects/song_book/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +10,8 @@ class SongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabItemsSongs = song.text!.keys.toList();
-    final tabItemsChords = song.chords!.keys.toList();
+    final  tabItemsSongs = song.text!.keys.toList().reversed ;
+    final tabItemsChords = song.chords!.keys.toList().reversed;
 
     print(song.title);
     print(tabItemsSongs);
@@ -29,8 +28,6 @@ class SongScreen extends StatelessWidget {
               for (final item in tabItemsChords) Tab(text: item),
             ],
           ),
-          titleTextStyle: TextStyle(fontSize: 18),
-          centerTitle: true,
           elevation: 8,
           actions: [
             IconButton(
@@ -60,10 +57,10 @@ class SongScreen extends StatelessWidget {
           children: [
             for (final item in tabItemsSongs)
               SongTextOnSongScreen(
-                  title: song.title![item.toString().substring(0, 2)],
+                  title: song.title![item.substring(0, 2)],
                   textVersion: song.text![item],
                   description:
-                      song.description![item.toString().substring(0, 2)]),
+                      song.description![item.substring(0, 2)]),
             for (final item in tabItemsChords)
               SongTextOnSongScreen(textVersion: song.chords![item]),
           ],

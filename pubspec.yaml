@@ -73,6 +73,7 @@ flutter:
     - assets/translations/en-US.json
     - assets/translations/ru-RU.json
     - assets/translations/uk-UK.json
+    - assets/songs.json
 
 
   #   - images/a_dot_burr.jpeg

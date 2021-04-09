@@ -27,7 +27,7 @@ class SongTextOnSongScreen extends StatelessWidget {
             alignment: Alignment.topRight,
             margin: EdgeInsets.symmetric(vertical: 7),
             child: Text(description ?? '',
-                style: Theme.of(context).textTheme.headline5),
+                style: Theme.of(context).textTheme.headline6),
           ),
           SizedBox(height: 10),
           Text(
