@@ -4,7 +4,8 @@ import 'package:flutter/widgets.dart';
 class NewsItemWidget extends StatelessWidget {
   String title = "Зачем Бог создал ад и почему отправляет людей в ад?";
   String category = "Библейская археология";
-  String imageUrl = "https://icocnews.ru/wp-content/uploads/2021/03/zachem-bog-sozdal-ad.jpg";
+  String imageUrl =
+      "https://icocnews.ru/wp-content/uploads/2021/03/zachem-bog-sozdal-ad.jpg";
   String snippet =
       "Если Бог является любящим, то зачем Бог создал ад? Если Бог такой любящий согласно Библии, то почему он отправляет людей в ад просто из-за того, что люди не верят в Него? Многие люди ведь совершают большое количество добрых поступков, несмотря на то, что не верят в Бога.";
 
@@ -34,7 +35,13 @@ class NewsItemWidget extends StatelessWidget {
           ),
         ),
       ]),
-      Image.network(imageUrl, height: 160),
+      SizedBox(
+        width: double.infinity,
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+        ),
+      ),
       Align(
         alignment: Alignment.centerLeft,
         child: Padding(
