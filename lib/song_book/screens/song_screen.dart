@@ -10,8 +10,9 @@ class SongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final  tabItemsSongs = song.text!.keys.toList().reversed ;
-    final tabItemsChords = song.chords!.keys.toList().reversed;
+
+    final  tabItemsSongs = song.text.keys.toList().reversed ;
+    final tabItemsChords = song.chords.keys.toList();
 
     print(song.title);
     print(tabItemsSongs);
@@ -57,12 +58,12 @@ class SongScreen extends StatelessWidget {
           children: [
             for (final item in tabItemsSongs)
               SongTextOnSongScreen(
-                  title: song.title![item.substring(0, 2)],
-                  textVersion: song.text![item],
+                  title: song.title[item.substring(0, 2)],
+                  textVersion: song.text[item],
                   description:
-                      song.description![item.substring(0, 2)]),
+                      song.description[item.substring(0, 2)]),
             for (final item in tabItemsChords)
-              SongTextOnSongScreen(textVersion: song.chords![item]),
+              SongTextOnSongScreen(textVersion: song.chords[item]),
           ],
         ),
       ),
@@ -70,7 +71,7 @@ class SongScreen extends StatelessWidget {
   }
 
   countTabs() {
-    int amountOfTabs = song.text!.length + song.chords!.length;
+    int amountOfTabs = song.text.length + song.chords.length;
     return amountOfTabs;
   }
 }

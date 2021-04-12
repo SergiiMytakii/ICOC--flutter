@@ -33,7 +33,7 @@ class SongTextOnSongScreen extends StatelessWidget {
           Text(
             textVersion ?? '',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 18),
           ),
         ],
       ),

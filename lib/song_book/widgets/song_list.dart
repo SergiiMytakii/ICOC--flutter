@@ -15,19 +15,20 @@ class _SongListState extends State<SongList> {
   @override
   Widget build(BuildContext context) {
     //get list of songs from streamProvider
-    List<Song?> songs = Provider.of<List<Song?>>(context);
+    List<Song> songsFiltered = Provider.of<List<Song>>(context);
 
     //filtering songs by lang
-    // List<Song?> songsFiltered = songs.where((song) {
-    //   return song != null ? song.title!.containsKey('ru') : throw 'error';
-    // }).toList();
-
-    List<Song?> songsFiltered = songs.where((song) {
-        return song != null ? song.title!.containsKey('ru') : throw 'error';
-    }).toList();
+    //todo
+    //implement rebuilding UI after updating lang preferences
+   songsFiltered.retainWhere((song) {
+     return song.title.keys.contains('en') || song.title.keys.contains('uk') || song.title.keys.contains('ru');
+   });
 
 
-    //print(songsFiltered);
+
+
+
+
 
     if (songsFiltered.isEmpty) {
       setState(() {
@@ -45,7 +46,7 @@ class _SongListState extends State<SongList> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 //print(songs[index]!.description);
-                return SongCard(songsFiltered[index]!);
+                return SongCard(songsFiltered[index]);
               },
               childCount: songsFiltered.length,
             ),

@@ -1,20 +1,36 @@
+
 class Song {
-  final String? id;
-  final Map? description;
-  final Map? title;
-  final Map? text;
+  final int id;
+  final Map description;
+  final Map title;
+  final Map text;
   final List? resources;
-  final String? createdAt;
-  final Map? chords;
+  final Map chords;
 
   Song(
-      {this.id,
-      this.title,
-      this.description,
-      this.text,
-      this.chords,
+      {required this.id,
+        required this.title,
+        required this.description,
+        required this.text,
+        required this.chords,
       this.resources,
-      this.createdAt});
+      });
+
+  factory Song.fromJson(Map<String, dynamic> parsedJson){
+    //print(parsedJson);
+    return Song(
+      id: parsedJson['Id'],
+      title: parsedJson['title'],
+      text : parsedJson ['text'],
+      description: parsedJson ['description'],
+      resources: null,
+      chords: parsedJson ['chords'],
+
+    );
+  }
+  }
 
 
-}
+
+
+
