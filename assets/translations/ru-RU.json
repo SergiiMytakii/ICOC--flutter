@@ -1,6 +1,6 @@
 {
   "app_bar_title": "Песенник",
-  "icon_button_actions_app_bar_filter": "Фильтр по языкам",
+  "icon_button_actions_app_bar_filter": "Языки песен и приоритет их показа",
   "hint_search_field_in_app_bar": "Поиск песни",
   "drawer_menu": "Меню",
   "drawer_news": "Новости",
@@ -17,7 +17,9 @@
   "dropdown_menu_lang_app_russian": "Язык приложения - русский",
   "dropdown_menu_lang_app_english": "Язык приложения - английский",
   "dropdown_menu_lang_app_ukrainian": "Язык приложения - украинский",
-  "russian": "русский",
-  "english": "английский",
-  "ukrainian": "украинский"
+  "ru": "русский",
+  "en": "английский",
+  "uk": "украинский",
+  "to favorite": "В избранные",
+  "to playlist": "В плейлист"
 }

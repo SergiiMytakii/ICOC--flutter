@@ -1,6 +1,4 @@
 
-
-import 'package:Projects/services/import_songs.dart';
 import 'package:flutter/material.dart';
 
 import '../menu/my_drawer.dart';
@@ -19,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ImportSongs().loadSongsFromJson();
+    //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
     return Scaffold(
       appBar: AppBar(
         title: Text('ICOC'),

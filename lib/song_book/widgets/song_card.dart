@@ -2,62 +2,89 @@ import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class SongCard extends StatefulWidget {
   final Song song;
+  final List<String> orderLang;
 
-  SongCard(this.song);
+  SongCard(this.song, this.orderLang);
 
   @override
   _SongCardState createState() => _SongCardState();
 }
 
 class _SongCardState extends State<SongCard> {
-  bool _favoriteStatus = false;
 
   @override
   Widget build(BuildContext context) {
-    String myLocale = Localizations.localeOf(context).toString();
-
     final song = widget.song;
 
     return Column(
       children: [
-        ListTile(
-          onTap: (() {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SongScreen(song)));
-          }),
-          horizontalTitleGap: 0,
-          leading: Text(song.id.toString(),
-              style: Theme.of(context).textTheme.headline6),
-          title: Text(
-            //show title and text language accordingly to app lang
-            chooseTitleLang(song, myLocale) ?? '',
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-          subtitle: Text(
-            chooseTextLang(song, myLocale) ?? '',
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          trailing: IconButton(
-            icon: _favoriteStatus
-                ? Icon(
-                    Icons.favorite_rounded,
-                    size: 32,
-                  )
-                : Icon(
-                    Icons.favorite_border,
-                    size: 32,
-                  ),
-            onPressed: () => setState(() {
-              _favoriteStatus = !_favoriteStatus;
-              // print(_favoriteStatus);
+        Slidable(
+          actionPane: SlidableScrollActionPane(),
+          secondaryActions: [
+            IconSlideAction(
+              caption: 'to favorite'.tr(),
+              color: Theme
+                  .of(context)
+                  .primaryColorLight,
+              icon: Icons.favorite_border,
+              onTap: () {
+                final snackBar = SnackBar(
+                  content: Text('Added to favorite list'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }, //todo implement action
+            ),
+            IconSlideAction(
+              caption: 'to playlist'.tr(),
+              color: Theme
+                  .of(context)
+                  .primaryColorDark,
+              icon: Icons.playlist_play_outlined,
+              onTap: () {
+                final snackBar = SnackBar(
+                  content: Text('Added to playlist'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }, //todo implement action: showModalBottomSheet
+              //todo     where you can create ore choose existing playlist
+            ),
+          ],
+          child: ListTile(
+            onTap: (() {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SongScreen(song, widget.orderLang)));
             }),
+            horizontalTitleGap: 0,
+            leading: Text(song.id.toString(),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6),
+            title: Text(
+              //show title and text language accordingly to app lang
+              chooseCardLang(song, widget.orderLang) ? [0] ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline6,
+            ),
+            subtitle: Text(
+              chooseCardLang(song, widget.orderLang) ? [1] ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText2,
+            ),
           ),
         ),
         Divider(
@@ -66,80 +93,41 @@ class _SongCardState extends State<SongCard> {
       ],
     );
   }
-
-//return to the title of card title of song in the preferred language if it exist,
-// or on the second language, as usual - russian
-  chooseTitleLang(Song song, String myLocale) {
-    //print(song.title);
-    //print(myLocale);
-
-    switch (myLocale) {
-      case 'ru_RU':
-        {
-          if (song.title['ru'] != null && song.title['ru'] != '')
-            return song.title['ru'];
-          else if (song.title['uk'] != null && song.title['uk'] != '')
-            return song.title['uk'];
-          else if (song.title['en'] != null && song.title['en'] != '' ) return song.title['en'];
-        }
-        break;
-      case 'uk_UK':
-        {
-          if (song.title['uk'] != null && song.title['uk'] != '')
-            return song.title['uk'];
-          else if (song.title['ru'] != null && song.title['ru'] != '')
-            return song.title['ru'];
-          else if (song.title['en'] != null && song.title['en'] != '')
-            return song.title['en'];
-        }
-        break;
-      case 'en_US':
-        {
-          if (song.title['en'] != null && song.title['en'] != '')
-            return song.title['en'];
-          else if (song.title['ru'] != null && song.title['ru'] != '')
-            return song.title['ru'];
-          else if (song.title['uk'] != null && song.title['uk'] != '') return song.title['uk'];
-        }
-        break;
-
-      default:
-        return song.title['ru'];
-    }
-  }
-
-  chooseTextLang(Song song, String myLocale) {
-    switch (myLocale) {
-      case 'ru_RU':
-        {
-          if (song.text['ru1'] != null && song.text['ru1'] != '')
-            return song.text['ru1'];
-          else if (song.text['uk1'] != null && song.text['uk1'] != '')
-            return song.text['uk1'];
-          else if (song.text['en1'] != null && song.text['en1'] != '') {
-            return song.text['en1'];
-          }
-        }
-        break;
-      case 'uk_UK':
-        {
-          if (song.text['uk1'] != null && song.text['uk1'] != '')
-            return song.text['uk1'];
-          else if (song.text['ru1'] != null && song.text['ru1'] != '')
-            return song.text['ru1'];
-          else if (song.text['en1'] != null && song.text['en1'] != '')
-            return song.text['en1'];
-        }
-        break;
-      case 'en_US':
-        {
-          if (song.text['en1'] != null && song.text['en1'] != '')
-            return song.text['en1'];
-          else if (song.text['ru1'] != null && song.text['ru1'] != '')
-            return song.text['ru1'];
-          else if (song.text['uk1'] != null && song.text['uk1'] != '')
-            return song.text['uk1'];
-        }
-    }
-  }
 }
+// return to the title of card title of song on the preferred language if it exist,
+// or on the second language, or on third
+  List<String?>? chooseCardLang(Song song, List<String> orderLang) {
+    String? title;
+    String? text;
+
+    //check every key and if it fit to first preferred lang and not equal null
+    //we return value  of this key
+    song.title.keys.forEach((key) {
+      if (key == orderLang[0] && key != null) {
+        title = song.title[orderLang[0]];
+        text = song.text[orderLang[0] + '1'] ?? song.text[orderLang[0] + '2'];
+
+      }
+    });
+    if (title != null) return [title, text];
+
+    //check every key and if it fit to first preferred lang and not equal null
+    //we return value  of this key
+    song.title.keys.forEach((key) {
+      if (key == orderLang[1] && key != null) {
+        title = song.title[orderLang[1]];
+        text = song.text[orderLang[1] + '1'];
+      }
+    });
+    if (title != null) return [title, text];
+
+    //check every key and if it fit to first preferred lang and not equal null
+    //we return value  of this key
+    song.title.keys.forEach((key) {
+      if (key == orderLang[2] && key != null) {
+        title = song.title[orderLang[2]];
+        text = song.text[orderLang[2] + '1'];
+      }
+    });
+    if (title != null) return [title, text];
+  }

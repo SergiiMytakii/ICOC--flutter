@@ -5,5 +5,4 @@ class LanguageSettings {
 
   LanguageSettings(this.context);
 
-//Future deviceLang = AppLocalizations.of(context)!.localeName as Future;
 }

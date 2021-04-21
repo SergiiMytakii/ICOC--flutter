@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-
 class GeneralSettings extends StatefulWidget {
   @override
   _GeneralSettingsState createState() => _GeneralSettingsState();
@@ -17,6 +16,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
 
   bool _darkTheme = false;
   String currentLanguage = '';
+
   @override
   Widget build(BuildContext context) {
     final List<String> languages = languagesLocales.keys.toList();
@@ -31,13 +31,17 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             height: 40,
           ),
           SwitchListTile(
-            title: Text('settings_dark_theme', style: Theme.of(context).textTheme.bodyText1,).tr(),
+            title: Text(
+              'settings_dark_theme',
+              style: Theme.of(context).textTheme.bodyText1,
+            ).tr(),
             value: _darkTheme,
-
             onChanged: (bool value) {
               setState(() {
                 _darkTheme = value;
-                _darkTheme ? AdaptiveTheme.of(context).setDark() : AdaptiveTheme.of(context).setLight();
+                _darkTheme
+                    ? AdaptiveTheme.of(context).setDark()
+                    : AdaptiveTheme.of(context).setLight();
                 print(_darkTheme);
               });
             },
@@ -56,7 +60,10 @@ class _GeneralSettingsState extends State<GeneralSettings> {
               items: languages
                   .map((language) => DropdownMenuItem(
                         value: language,
-                        child: Text(textForItems(language), style: Theme.of(context).textTheme.bodyText1,),
+                        child: Text(
+                          textForItems(language),
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ))
                   .toList(),
               onChanged: (val) {
@@ -66,17 +73,28 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             ),
           ),
           // font scale adjusting
-          SizedBox(
-            height: 40,
-          ),
+
           //todo
           // implement sizing fonts
-          Slider(
-            value: 10,
-            min: 10,
-            max: 32,
-            divisions: 2,
-            onChanged: (val) => setState(() {}),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+
+              children: [
+                Icon(
+                  Icons.text_fields,
+                  color: Colors.black38,
+                ),
+                Slider(
+                  label: 'Font size',
+                  value: 10,
+                  min: 10,
+                  max: 32,
+                  divisions: 2,
+                  onChanged: (val) => setState(() {}),
+                ),
+              ],
+            ),
           ),
         ],
       ),

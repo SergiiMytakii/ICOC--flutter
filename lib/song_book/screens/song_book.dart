@@ -1,7 +1,6 @@
-import 'package:Projects/menu/my_drawer.dart';
-import 'package:Projects/services/database.dart';
+
+import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
 import 'package:Projects/song_book/widgets/song_list.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,18 +8,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SongBook extends StatelessWidget {
+class SongBook extends StatefulWidget {
+
+
+
+  @override
+  _SongBookState createState() => _SongBookState();
+}
+
+class _SongBookState extends State<SongBook> {
+
+  //rebuild widget after changing lang settings
+  void updateList(){
+    setState(() {
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<Song>>.value(
+    //DatabaseHelper().deleteSong(187);
+      return StreamProvider<List<Song>>.value(
       catchError: (_, error) => error as List<Song>,
-      value: DatabaseService().songs,
+      value: DatabaseHelper().getAllSongs(),
       initialData: [],
       child: Scaffold(
-
-
-
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
@@ -43,7 +54,7 @@ class SongBook extends StatelessWidget {
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
-                            return BottomSheetFilter();
+                            return BottomSheetFilter(updateList: updateList);
                           });
                     },
                   ),

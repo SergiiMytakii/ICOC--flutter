@@ -1,6 +1,6 @@
 {
   "app_bar_title": "Song book",
-  "icon_button_actions_app_bar_filter": "Filter by language",
+  "icon_button_actions_app_bar_filter": "Song languages and priority of their display",
   "hint_search_field_in_app_bar": "Search song",
   "drawer_menu": "Menu",
   "drawer_news": "News",
@@ -17,7 +17,9 @@
   "dropdown_menu_lang_app_russian": "App language - Russian",
   "dropdown_menu_lang_app_english": "App language - English",
   "dropdown_menu_lang_app_ukrainian": "App language - Ukrainian",
-  "russian": "Russian",
-  "english": "English",
-  "ukrainian": "Ukrainian"
+  "ru": "Russian",
+  "en": "English",
+  "uk": "Ukrainian",
+  "to favorite": "To favorite",
+  "to playlist": "To playlist"
 }

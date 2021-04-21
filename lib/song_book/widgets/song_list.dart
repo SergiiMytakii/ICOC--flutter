@@ -3,6 +3,7 @@ import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SongList extends StatefulWidget {
   @override
@@ -12,25 +13,35 @@ class SongList extends StatefulWidget {
 class _SongListState extends State<SongList> {
   bool loaded = false;
 
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+
+  @override
+  void didUpdateWidget(_) {
+    _loadPreferences();
+  }
+
+  List<String> _orderLang = ['ru', 'uk' , 'en'];
+
+  void _loadPreferences() async {
+    SharedPreferences prefLanguages = await SharedPreferences.getInstance();
+    setState(() {
+      _orderLang = (prefLanguages.getStringList('orderLang') ?? _orderLang);
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     //get list of songs from streamProvider
-    List<Song> songsFiltered = Provider.of<List<Song>>(context);
-
-    //filtering songs by lang
-    //todo
-    //implement rebuilding UI after updating lang preferences
-   songsFiltered.retainWhere((song) {
-     return song.title.keys.contains('en') || song.title.keys.contains('uk') || song.title.keys.contains('ru');
-   });
-
-
-
-
-
-
-
-    if (songsFiltered.isEmpty) {
+    List<Song> songs = Provider.of<List<Song>>(context);
+//print(songs.first.chords);
+    if (songs.isEmpty) {
       setState(() {
         loaded = false;
       });
@@ -46,9 +57,9 @@ class _SongListState extends State<SongList> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 //print(songs[index]!.description);
-                return SongCard(songsFiltered[index]);
+                return SongCard(songs[index], _orderLang);
               },
-              childCount: songsFiltered.length,
+              childCount: songs.length,
             ),
           )
         : SliverToBoxAdapter(child: Loading());

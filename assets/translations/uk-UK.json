@@ -1,6 +1,6 @@
 {
   "app_bar_title": "Пісенник",
-  "icon_button_actions_app_bar_filter": "Фільтр по мовам",
+  "icon_button_actions_app_bar_filter": "Мови пісень і пріоритет їх показу",
   "hint_search_field_in_app_bar": "Пошук пісні",
   "drawer_menu": "Меню",
   "drawer_news": "Новини",
@@ -10,14 +10,16 @@
   "drawer_in_development": "У розробці",
   "drawer_settings": "Налаштування",
   "bottom_navigation_bar_list": "Всі пісні",
-  "bottom_navigation_bar_favorites": "Вибране",
-  "bottom_navigation_bar_playlists": "Списки",
+  "bottom_navigation_bar_favorites": "Улюблене",
+  "bottom_navigation_bar_playlists": "Плейлісти",
   "app_bar_settings": "Налаштування",
   "settings_dark_theme": "Змінити тему програми",
   "dropdown_menu_lang_app_russian": "Мова програми - російська",
   "dropdown_menu_lang_app_english": "Мова програми - англійська",
   "dropdown_menu_lang_app_ukrainian": "Мова програми - українська",
-  "russian": "російська",
-  "english": "англійська",
-  "ukrainian": "українська"
+  "ru": "російська",
+  "en": "англійська",
+  "uk": "українська",
+  "to favorite": "До улюблених",
+  "to playlist": "До плейлиста"
 }

@@ -1,5 +1,8 @@
 import 'package:Projects/app/main_screen.dart';
 import 'package:Projects/app/theme.dart';
+import 'package:Projects/services/database_firebase.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
+import 'package:Projects/song_book/models/song.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +18,10 @@ void main() async {
   await Firebase.initializeApp().whenComplete(() {
     print("completed");
   });
+  //update local SQL database from firebase
+  await DatabaseServiceFirebase().songs.then(
+          (songs) {DatabaseHelper().insertAllSongs(songs);});
+
 
   runApp(EasyLocalization(
       supportedLocales: [
@@ -36,7 +43,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    //currentLanguage = Intl.systemLocale.substring(0, 2);
+
 
 
     return AdaptiveTheme(
