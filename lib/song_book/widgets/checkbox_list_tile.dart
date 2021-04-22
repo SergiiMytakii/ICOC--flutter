@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:oktoast/oktoast.dart';
 
 class MyCheckboxListTile extends StatefulWidget {
   final Function? updateList;
@@ -21,6 +22,7 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
     super.initState();
   }
 
+
   bool _en = true;
   bool _ru = true;
   bool _uk = true;
@@ -31,6 +33,7 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
       _en = (prefLanguages.getBool('en') ?? _en);
       _ru = (prefLanguages.getBool('ru') ?? _ru);
       _uk = (prefLanguages.getBool('uk') ?? _uk);
+
     });
   }
 //
@@ -84,9 +87,13 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
                 _en = !_en;
                 prefLanguages.setBool('en', _en);
               }
-              // to refresh UI after choosing new lang preferences
-              widget.updateList!();
+              if(_ru == false && _uk == false && _en == false){
+                showToast('Choose at list one language!');
+              }
             });
+
+            // to refresh UI after choosing new lang preferences
+            widget.updateList!();
           }),
     );
   }

@@ -2,11 +2,11 @@ import 'package:Projects/app/main_screen.dart';
 import 'package:Projects/app/theme.dart';
 import 'package:Projects/services/database_firebase.dart';
 import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
-import 'package:Projects/song_book/models/song.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 
 
 
@@ -50,15 +50,17 @@ class _MyAppState extends State<MyApp> {
       initial: AdaptiveThemeMode.system,
       light: myLightTheme,
       dark: myDarkTheme,
-      builder: (light, dark) =>  MaterialApp(
-          theme: light,
-          darkTheme: dark,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          title: 'ICOC',
-          home: MainScreen(),
-        ),
+      builder: (light, dark) =>  OKToast(
+        child: MaterialApp(
+            theme: light,
+            darkTheme: dark,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            title: 'ICOC',
+            home: MainScreen(),
+          ),
+      ),
       );
 
   }

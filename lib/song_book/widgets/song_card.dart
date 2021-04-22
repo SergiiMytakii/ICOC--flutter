@@ -100,34 +100,34 @@ class _SongCardState extends State<SongCard> {
     String? title;
     String? text;
 
-    //check every key and if it fit to first preferred lang and not equal null
+    //check every key and if it fit to FIRST preferred lang and not equal null
     //we return value  of this key
     song.title.keys.forEach((key) {
       if (key == orderLang[0] && key != null) {
         title = song.title[orderLang[0]];
         text = song.text[orderLang[0] + '1'] ?? song.text[orderLang[0] + '2'];
-
       }
     });
     if (title != null) return [title, text];
 
-    //check every key and if it fit to first preferred lang and not equal null
+    //check every key and if it fit to SECOND preferred lang and not equal null
     //we return value  of this key
     song.title.keys.forEach((key) {
       if (key == orderLang[1] && key != null) {
         title = song.title[orderLang[1]];
-        text = song.text[orderLang[1] + '1'];
+        text = song.text[orderLang[1] + '1'] ?? song.text[orderLang[1] + '2'];
       }
     });
     if (title != null) return [title, text];
 
-    //check every key and if it fit to first preferred lang and not equal null
+    //check every key and if it fit to THIRD  preferred lang and not equal null
     //we return value  of this key
     song.title.keys.forEach((key) {
       if (key == orderLang[2] && key != null) {
         title = song.title[orderLang[2]];
-        text = song.text[orderLang[2] + '1'];
+        text = song.text[orderLang[2] + '1'] ?? song.text[orderLang[2] + '2'];
       }
     });
     if (title != null) return [title, text];
+
   }

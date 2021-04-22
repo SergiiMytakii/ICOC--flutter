@@ -48,12 +48,10 @@ void removeNulableValues() {
     //search for second preferred lang
     index = tabItemsSongs.indexWhere((key) => key.startsWith(orderLang[1]));
     if (index <= 0) return;
+    //remove item and insert it in the second place
     String secondTab = tabItemsSongs.removeAt(index);
     tabItemsSongs.insert(1, secondTab);
-    //print(tabItemsChords);
-    print(tabItemsSongs);
-    print(orderLang);
-    print(index);
+
   }
 
   @override

@@ -21,6 +21,7 @@ class _SongBookState extends State<SongBook> {
   //rebuild widget after changing lang settings
   void updateList(){
     setState(() {
+
     });
   }
 
