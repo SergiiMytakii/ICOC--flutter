@@ -12,6 +12,7 @@ class SongList extends StatefulWidget {
 
 class _SongListState extends State<SongList> {
   bool loaded = false;
+  bool slideAction = false;
 
 
   @override
@@ -35,7 +36,6 @@ class _SongListState extends State<SongList> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     //get list of songs from streamProvider
@@ -57,7 +57,7 @@ class _SongListState extends State<SongList> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 //print(songs[index]!.description);
-                return SongCard(songs[index], _orderLang);
+                return SongCard(song: songs[index], orderLang: _orderLang, slideAction: slideAction);
               },
               childCount: songs.length,
             ),

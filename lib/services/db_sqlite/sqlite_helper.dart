@@ -7,6 +7,7 @@ class DatabaseHelper {
   bool _en = true;
   bool _ru = true;
   bool _uk = true;
+  List<Song> songs = [];
 
   void _loadPreferences() async {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
@@ -44,9 +45,12 @@ class DatabaseHelper {
   static const String CHORDS_V3 = 'v3';
   static const String CHORDS_V4 = 'v4';
 
-List<String> columnsTitle = [ID];
-List<String> columnsText = [ID];
-List<String> columnsDescription = [ID];
+  static const String TABLE_FAVORITES = 'favorites';
+  static const String FAVORITE_STATUS = 'favoriteStatus';
+
+  List<String> columnsTitle = [ID];
+  List<String> columnsText = [ID];
+  List<String> columnsDescription = [ID];
 
   void _filterLangDisplaying() {
     if (_ru) {
@@ -67,7 +71,6 @@ List<String> columnsDescription = [ID];
       columnsText.add(TEXT_EN2);
       columnsDescription.add(DESCRIPTION_EN);
     }
-
   }
 
   Future<Database?> get db async {
@@ -98,9 +101,103 @@ List<String> columnsDescription = [ID];
           'CREATE TABLE $TABLE_DESCRIPTION ($ID INTEGER PRIMARY KEY, $DESCRIPTION_RU TEXT, $DESCRIPTION_EN TEXT, $DESCRIPTION_UK TEXT)');
       await db.execute(
           'CREATE TABLE $TABLE_CHORDS ($ID INTEGER PRIMARY KEY, $CHORDS_V1 TEXT, $CHORDS_V2 TEXT, $CHORDS_V3 TEXT, $CHORDS_V4 TEXT)');
-
+      await db.execute(
+          'CREATE TABLE $TABLE_FAVORITES ($ID INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
       print(' !!!!databases was created!!!!!');
     });
+  }
+
+  //add to favorite list
+  Future<void> addToFavorites(int id) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.insert(
+      TABLE_FAVORITES,
+      {ID: id, FAVORITE_STATUS: 1},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print('inserted to favorites');
+  }
+
+  Future<void> deleteFromFavorites(int id) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.delete(TABLE_FAVORITES, where: '$ID = ?', whereArgs: [id]);
+    print('deleted from favorites');
+  }
+
+  Future<List<Song>> getFavorites() async {
+    final Database? database = await db;
+    // get list ides
+    final List<Map<String, dynamic>> mapsIdes =
+        await database!.query(TABLE_FAVORITES);
+    //get list titles
+    final List<Map<String, dynamic>> mapsTitles = await database.rawQuery('''
+    SELECT $TABLE_TITLE.$TITLE_RU,  $TABLE_TITLE.$TITLE_UK,
+           $TABLE_TITLE.$TITLE_EN
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_TITLE ON $TABLE_FAVORITES.$ID = $TABLE_TITLE.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+
+    //get list texts
+    final List<Map<String, dynamic>> mapsTexts = await database.rawQuery('''
+         SELECT $TABLE_TEXT.$TEXT_RU1, $TABLE_TEXT.$TEXT_RU2,  
+                $TABLE_TEXT.$TEXT_UK1, $TABLE_TEXT.$TEXT_UK2,
+                $TABLE_TEXT.$TEXT_EN1, $TABLE_TEXT.$TEXT_EN2
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_TEXT ON $TABLE_FAVORITES.$ID = $TABLE_TEXT.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+    //get list descriptions
+    final List<Map<String, dynamic>> mapsDescriptions =
+        await database.rawQuery('''
+    SELECT $TABLE_DESCRIPTION.$DESCRIPTION_RU,  $TABLE_DESCRIPTION.$DESCRIPTION_UK,
+           $TABLE_DESCRIPTION.$DESCRIPTION_EN
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_DESCRIPTION ON $TABLE_FAVORITES.$ID = $TABLE_DESCRIPTION.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+    //get list chords
+    final List<Map<String, dynamic>> mapsChords = await database.rawQuery('''
+    SELECT $TABLE_CHORDS.$CHORDS_V1,  $TABLE_CHORDS.$CHORDS_V2,
+           $TABLE_CHORDS.$CHORDS_V3, $TABLE_CHORDS.$CHORDS_V4
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_CHORDS ON $TABLE_FAVORITES.$ID = $TABLE_CHORDS.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+    // Convert the List<Map<String, dynamic> into a List<Song>.
+    List<Song> songs = List.generate(mapsTitles.length, (i) {
+      //make maps writable and delete nullable values
+      Map<String, dynamic> mapTitlesWritable =
+          Map<String, dynamic>.from(mapsTitles[i]);
+      mapTitlesWritable.removeWhere((key, value) => value == null);
+
+      Map<String, dynamic> mapTextsWritable =
+          Map<String, dynamic>.from(mapsTexts[i]);
+      mapTextsWritable.removeWhere((key, value) => value == null);
+
+      //do the same for description map
+      Map<String, dynamic> mapDescriptionsWritable =
+          Map<String, dynamic>.from(mapsDescriptions[i]);
+      mapDescriptionsWritable.removeWhere((key, value) => value == null);
+
+      //do the same for description map
+      Map<String, dynamic> mapChordsWritable =
+          Map<String, dynamic>.from(mapsChords[i]);
+      mapChordsWritable.removeWhere((key, value) => value == null);
+
+      return Song(
+          id: mapsIdes[i]['id'],
+          title: mapTitlesWritable,
+          text: mapTextsWritable,
+          description: mapDescriptionsWritable,
+          chords: mapChordsWritable);
+    });
+
+    return songs;
   }
 
   // insert 1 song
@@ -166,59 +263,59 @@ List<String> columnsDescription = [ID];
     _filterLangDisplaying();
 
     //get all tables
-    // we use comas inside the strings TITLE_RU ets, because
-    //if this string would be '' (don't need it), we also don't need coma behind it
-    final List<Map<String, dynamic>> mapsTitles = await database!.query(
-        TABLE_TITLE, columns: columnsTitle);
+    final List<Map<String, dynamic>> mapsTitles =
+        await database!.query(TABLE_TITLE, columns: columnsTitle);
 
+    final List<Map<String, dynamic>> mapsTexts =
+        await database.query(TABLE_TEXT, columns: columnsText);
 
-    final List<Map<String, dynamic>> mapsTexts = await database.query(
-        TABLE_TEXT, columns: columnsText);
-
-    final List<Map<String, dynamic>> mapsDescriptions = await database
-        .query(
-        TABLE_DESCRIPTION, columns: columnsDescription);
+    final List<Map<String, dynamic>> mapsDescriptions =
+        await database.query(TABLE_DESCRIPTION, columns: columnsDescription);
     final List<Map<String, dynamic>> mapsChords =
         await database.query(TABLE_CHORDS);
 
     // Convert the List<Map<String, dynamic> into a List<Song>.
-     List<Song> songs = List.generate(mapsTitles.length, (i) {
-      //maps is read only, so we should make a copy of it, to remove first element with id
-      Map<String, dynamic> mapTitlesWritable =
-          Map<String, dynamic>.from(mapsTitles[i]);
-      //remove id field because we don't need it in our maps
-      mapTitlesWritable.remove('id');
-      //remove empty values
-      mapTitlesWritable.removeWhere((key, value) => value == null);
+    if (mapsTitles.isNotEmpty &&
+        mapsTexts.isNotEmpty &&
+        mapsDescriptions.isNotEmpty) {
+      songs = List.generate(mapsTitles.length, (i) {
+        //maps is read only, so we should make a copy of it, to remove first element with id
+        Map<String, dynamic> mapTitlesWritable =
+            Map<String, dynamic>.from(mapsTitles[i]);
+        //remove id field because we don't need it in our maps
+        mapTitlesWritable.remove('id');
+        //remove empty values
+        mapTitlesWritable.removeWhere((key, value) => value == null);
 
-      //do the same for text map
-      Map<String, dynamic> mapTextsWritable =
-          Map<String, dynamic>.from(mapsTexts[i]);
-      mapTextsWritable.remove('id');
-      mapTextsWritable.removeWhere((key, value) => value == null);
+        //do the same for text map
+        Map<String, dynamic> mapTextsWritable =
+            Map<String, dynamic>.from(mapsTexts[i]);
+        mapTextsWritable.remove('id');
+        mapTextsWritable.removeWhere((key, value) => value == null);
 
-      //do the same for description map
-      Map<String, dynamic> mapDescriptionsWritable =
-          Map<String, dynamic>.from(mapsDescriptions[i]);
-      mapDescriptionsWritable.remove('id');
-      mapDescriptionsWritable.removeWhere((key, value) => value == null);
+        //do the same for description map
+        Map<String, dynamic> mapDescriptionsWritable =
+            Map<String, dynamic>.from(mapsDescriptions[i]);
+        mapDescriptionsWritable.remove('id');
+        mapDescriptionsWritable.removeWhere((key, value) => value == null);
 
-      //do the same for description map
-      Map<String, dynamic> mapChordsWritable =
-          Map<String, dynamic>.from(mapsChords[i]);
-      mapChordsWritable.remove('id');
-      mapChordsWritable.removeWhere((key, value) => value == null);
+        //do the same for description map
+        Map<String, dynamic> mapChordsWritable =
+            Map<String, dynamic>.from(mapsChords[i]);
+        mapChordsWritable.remove('id');
+        mapChordsWritable.removeWhere((key, value) => value == null);
 
+        return Song(
+            id: mapsTitles[i]['id'],
+            title: mapTitlesWritable,
+            text: mapTextsWritable,
+            description: mapDescriptionsWritable,
+            chords: mapChordsWritable);
+      });
+    }
+    //to finish filtering by lang we remove from list songs with empty entities
 
-      return Song(
-          id: mapsTitles[i]['id'],
-          title: mapTitlesWritable,
-          text: mapTextsWritable,
-          description: mapDescriptionsWritable,
-          chords: mapChordsWritable);
-    });
-      //to finish filtering by lang we remove from list songs with empty entities
-     songs.removeWhere((song) => song.title.isEmpty);
+    songs.removeWhere((song) => song.title.values.isEmpty);
     yield songs;
   }
 
@@ -248,5 +345,15 @@ List<String> columnsDescription = [ID];
     String path = join((await getDatabasesPath()), DB_NAME);
     await deleteDatabase(path);
     print('database has been deleted');
+  }
+
+  Future<bool> getFavoriteStatus(int id) async {
+    final database = await db;
+    var status = await database!.query(TABLE_FAVORITES,
+        columns: ['$FAVORITE_STATUS'], where: '$ID = ?', whereArgs: [id]);
+    if (status.isNotEmpty) {
+      return true;
+    } else
+      return false;
   }
 }

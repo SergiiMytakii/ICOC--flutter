@@ -17,8 +17,8 @@ class BottomSheetFilter extends StatefulWidget {
 class _BottomSheetFilterState extends State<BottomSheetFilter> {
   @override
   void initState() {
-    _loadPreferences();
     super.initState();
+    _loadPreferences();
   }
   List<String> _orderLang = ['ru', 'uk' , 'en'];
 
