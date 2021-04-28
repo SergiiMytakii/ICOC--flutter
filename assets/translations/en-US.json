@@ -21,5 +21,8 @@
   "en": "English",
   "uk": "Ukrainian",
   "to favorite": "To favorite",
-  "to playlist": "To playlist"
+  "to playlist": "To playlist",
+  "delete from favorites": "Delete",
+  "Added to favorite list": "Added to favorite list",
+  "Deleted from favorites": "Deleted from favorites"
 }

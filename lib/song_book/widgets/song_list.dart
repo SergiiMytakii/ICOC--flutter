@@ -52,16 +52,15 @@ class _SongListState extends State<SongList> {
     }
     // print(songs);
     return loaded
-        ? SliverFixedExtentList(
-            itemExtent: 88,
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                //print(songs[index]!.description);
-                return SongCard(song: songs[index], orderLang: _orderLang, slideAction: slideAction);
-              },
-              childCount: songs.length,
-            ),
-          )
+        ? SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  //print(songs[index]!.description);
+                  return SongCard(song: songs[index], orderLang: _orderLang, slideAction: slideAction);
+                },
+                childCount: songs.length,
+              ),
+            )
         : SliverToBoxAdapter(child: Loading());
   }
 }

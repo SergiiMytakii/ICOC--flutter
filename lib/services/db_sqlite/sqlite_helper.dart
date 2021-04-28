@@ -48,6 +48,15 @@ class DatabaseHelper {
   static const String TABLE_FAVORITES = 'favorites';
   static const String FAVORITE_STATUS = 'favoriteStatus';
 
+  static const String TABLE_PLAYLISTS = 'playlists';
+  static const String PLAYLIST_NAME = 'playlistName';
+
+
+  static const String TABLE_PLAYLISTS_SONGS = 'playlistsSongs';
+  static const String PLAYLIST_ID = 'playlistId';
+  static const String SONG_ID = 'songId';
+
+
   List<String> columnsTitle = [ID];
   List<String> columnsText = [ID];
   List<String> columnsDescription = [ID];
@@ -103,6 +112,11 @@ class DatabaseHelper {
           'CREATE TABLE $TABLE_CHORDS ($ID INTEGER PRIMARY KEY, $CHORDS_V1 TEXT, $CHORDS_V2 TEXT, $CHORDS_V3 TEXT, $CHORDS_V4 TEXT)');
       await db.execute(
           'CREATE TABLE $TABLE_FAVORITES ($ID INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
+      await db.execute(
+          'CREATE TABLE $TABLE_PLAYLISTS ($ID INTEGER PRIMARY KEY AUTOINCREMENT,  $PLAYLIST_NAME TEXT)');
+      await db.execute(
+          'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID INTEGER PRIMARY KEY,  $SONG_ID)');
+
       print(' !!!!databases was created!!!!!');
     });
   }
@@ -199,6 +213,81 @@ class DatabaseHelper {
 
     return songs;
   }
+
+  //create new playlist
+  Future<void> createPlaylist (String name) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.insert(TABLE_PLAYLISTS,
+    {
+      '$PLAYLIST_NAME' : name
+    });
+  }
+
+  //insert song into playlist
+  Future<void> insertIntoPlaylist (String playlist, int songId) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.rawInsert('''
+     INSERT INTO $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID , $SONG_ID) 
+     VALUES ((SELECT $ID FROM $TABLE_PLAYLISTS WHERE $PLAYLIST_NAME = $playlist) , $songId)
+        ''');
+  }
+
+
+  // get playlist names
+  Future getPlaylistsNames () async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.query(TABLE_PLAYLISTS, columns: ['$PLAYLIST_NAME'],
+       );
+  }
+
+
+  // get songs from playlist
+  Future getSongsFromPlaylist (String playlist) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    List<Map<String, dynamic>> songsFromPlaylist = await database.rawQuery('''
+    SELECT $TABLE_TITLE.$TITLE_RU,  $TABLE_TITLE.$TITLE_UK,
+           $TABLE_TITLE.$TITLE_EN
+    FROM ($TABLE_PLAYLISTS_SONGS
+    INNER JOIN $TABLE_TITLE ON $TABLE_PLAYLISTS_SONGS.$ID = $TABLE_TITLE.$ID ) 
+    WHERE (SELECT $ID FROM $TABLE_PLAYLISTS WHERE $PLAYLIST_NAME = $playlist)
+    ''');
+
+    //get list texts
+    final List<Map<String, dynamic>> mapsTexts = await database.rawQuery('''
+         SELECT $TABLE_TEXT.$TEXT_RU1, $TABLE_TEXT.$TEXT_RU2,  
+                $TABLE_TEXT.$TEXT_UK1, $TABLE_TEXT.$TEXT_UK2,
+                $TABLE_TEXT.$TEXT_EN1, $TABLE_TEXT.$TEXT_EN2
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_TEXT ON $TABLE_FAVORITES.$ID = $TABLE_TEXT.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+    //get list descriptions
+    final List<Map<String, dynamic>> mapsDescriptions =
+    await database.rawQuery('''
+    SELECT $TABLE_DESCRIPTION.$DESCRIPTION_RU,  $TABLE_DESCRIPTION.$DESCRIPTION_UK,
+           $TABLE_DESCRIPTION.$DESCRIPTION_EN
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_DESCRIPTION ON $TABLE_FAVORITES.$ID = $TABLE_DESCRIPTION.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+    //get list chords
+    final List<Map<String, dynamic>> mapsChords = await database.rawQuery('''
+    SELECT $TABLE_CHORDS.$CHORDS_V1,  $TABLE_CHORDS.$CHORDS_V2,
+           $TABLE_CHORDS.$CHORDS_V3, $TABLE_CHORDS.$CHORDS_V4
+    FROM ($TABLE_FAVORITES
+    INNER JOIN $TABLE_CHORDS ON $TABLE_FAVORITES.$ID = $TABLE_CHORDS.$ID) 
+    WHERE $FAVORITE_STATUS = 1
+    ''');
+  }
+
 
   // insert 1 song
   Future<void> insertSong(Song song) async {

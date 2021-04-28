@@ -10,7 +10,7 @@
   "drawer_in_development": "В разработке",
   "drawer_settings": "Настройки",
   "bottom_navigation_bar_list": "Все песни",
-  "bottom_navigation_bar_favorites": "Избранное",
+  "bottom_navigation_bar_favorites": "Избранные",
   "bottom_navigation_bar_playlists": "Плейлисты",
   "app_bar_settings": "Настройки",
   "settings_dark_theme": "Изменить тему приложения",
@@ -21,5 +21,9 @@
   "en": "английский",
   "uk": "украинский",
   "to favorite": "В избранные",
-  "to playlist": "В плейлист"
+  "to playlist": "В плейлисты",
+  "delete from favorites": "Удалить",
+  "Added to favorite list": "Добавлено в избранные",
+  "Deleted from favorites": "Удалено из избранных"
+
 }

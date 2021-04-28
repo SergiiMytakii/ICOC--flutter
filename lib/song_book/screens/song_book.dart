@@ -5,12 +5,11 @@ import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
 import 'package:Projects/song_book/widgets/song_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SongBook extends StatefulWidget {
-
-
 
   @override
   _SongBookState createState() => _SongBookState();
@@ -19,11 +18,7 @@ class SongBook extends StatefulWidget {
 class _SongBookState extends State<SongBook> {
 
   //rebuild widget after changing lang settings
-  void updateList(){
-    setState(() {
-
-    });
-  }
+  void updateList() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +29,13 @@ class _SongBookState extends State<SongBook> {
       initialData: [],
       child: Scaffold(
           body: CustomScrollView(
+            physics: BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverAppBar(
                 primary: true,
                 title: Text(
                   'app_bar_title'.tr(),
-
                 ),
-
                 centerTitle: true,
                 elevation: 6,
                 actions: [
@@ -61,14 +55,14 @@ class _SongBookState extends State<SongBook> {
                   ),
                 ],
                 pinned: true,
-                expandedHeight: 85.0,
+                expandedHeight: 90.0,
                 floating: true,
                 stretch: true,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: 35,
+                      height: 40,
                       padding: EdgeInsets.only(
                         //top: 120,
                         left: 50,
@@ -98,7 +92,6 @@ class _SongBookState extends State<SongBook> {
                                 color: Theme.of(context).backgroundColor,
                                 width: 1.0),
                           ),
-
                           prefixIcon: Icon(Icons.search),
                           //border: InputBorder.none,
                           hintText:

@@ -17,6 +17,7 @@ class _FavoritesState extends State<Favorites> {
   @override
   void initState() {
     super.initState();
+    //get list of favorites
     DatabaseHelper().getFavorites().then((value) => setState(() {
           songs = value;
         }));
@@ -40,6 +41,7 @@ class _FavoritesState extends State<Favorites> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +50,7 @@ class _FavoritesState extends State<Favorites> {
           centerTitle: true,
         ),
         body: ListView.builder(
+          physics: BouncingScrollPhysics(),
           itemCount: songs.length,
           itemBuilder: (BuildContext context, int index) {
             return SongCard(

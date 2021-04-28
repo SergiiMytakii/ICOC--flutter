@@ -1,6 +1,7 @@
 import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
+import 'package:Projects/song_book/widgets/playlists_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -33,22 +34,24 @@ class _SongCardState extends State<SongCard> {
           actionPane: SlidableScrollActionPane(),
           secondaryActions: [
             IconSlideAction(
-              caption: 'to favorite'.tr(),
+              caption: widget.slideAction
+                  ? 'delete from favorites'.tr()
+                  : 'to favorite'.tr(),
               color: Theme.of(context).primaryColorLight,
               icon: Icons.favorite_border,
               onTap: () {
-                //if this is favorites list - we delete item on tap
+                ///if this is favorites list - we delete item on tap
                 if (widget.slideAction) {
                   final snackBar = SnackBar(
-                    content: Text('Deleted from favorites'),
+                    content: Text('Deleted from favorites'.tr()),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   DatabaseHelper().deleteFromFavorites(song.id);
                   widget.deleteFromFavorites!(song.id);
                 } else {
-                  //if this is  songs list - we we add item to favorites  on tap
+                  ///if this is  songs list - we we add item to favorites  on tap
                   final snackBar = SnackBar(
-                    content: Text('Added to favorite list'),
+                    content: Text('Added to favorite list'.tr()),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   DatabaseHelper().addToFavorites(song.id);
@@ -60,8 +63,14 @@ class _SongCardState extends State<SongCard> {
               color: Theme.of(context).primaryColorDark,
               icon: Icons.playlist_play_outlined,
               onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PlaylistsModalBottomSheet();
+                    });
+
                 final snackBar = SnackBar(
-                  content: Text('Added to playlist'),
+                  content: Text('Added to playlist'.tr()),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }, //todo implement action: showModalBottomSheet
@@ -73,8 +82,11 @@ class _SongCardState extends State<SongCard> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          SongScreen(song, widget.orderLang)));
+                      builder: (context) => SongScreen(
+                            song: song,
+                            orderLang: widget.orderLang,
+                            deleteFromFavorites: widget.deleteFromFavorites,
+                          )));
             }),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
