@@ -1,4 +1,3 @@
-
 import 'package:Projects/settings/general_settings.dart';
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -34,66 +33,10 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         ListTile(
-          leading: Icon(
-            Icons.music_note,/**/
-            size: 36,
-          ),
-          title: Text(
-            'drawer_song_book'.tr().toString(),
-            style: TextStyle(fontSize: 20),
-          ),
-          onTap: () {
-
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return MyBottomNavigationBar();
-            }));
-          },
-
-        ),
-        ListTile(
-          leading: Icon(
-            Icons.language,
-            size: 36,
-          ),
-          title: Text(
-            'drawer_news'.tr().toString(),
-            style: TextStyle(fontSize: 20),
-          ),
-          subtitle: Text('drawer_in_development'.tr().toString()),
-
-        ),
-
-        ListTile(
-          leading: Icon(
-            Icons.import_contacts,
-            size: 36,
-          ),
-          title: Text(
-            'drawer_first_principles'.tr().toString(),
-            style: TextStyle(fontSize: 20),
-          ),
-          subtitle: Text('drawer_in_development'.tr().toString()),
-        ),
-        ListTile(
-          leading: Icon(
-            Icons.question_answer,
-            size: 36,
-          ),
-          title: Text(
-            'drawer_q_and_a'.tr().toString(),
-            style: TextStyle(fontSize: 20),
-          ),
-          subtitle: Text('drawer_in_development'.tr().toString()),
-        ),
-        SizedBox(
-          height: 100,
-        ),
-        ListTile(
           leading: Icon(Icons.settings),
           title: Text(
             'drawer_settings'.tr().toString(),
-            style: TextStyle(fontSize: 20),
+            style: Theme.of(context).textTheme.headline6,
           ),
           onTap: () {
             Navigator.pop(context);
@@ -101,6 +44,26 @@ class MyDrawer extends StatelessWidget {
               return GeneralSettings();
             }));
           },
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.info,
+          ),
+          title: Text(
+            'drawer_about_app'.tr(),
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.share,
+          ),
+          title: Text(
+            'drawer_share_app'.tr(),
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          subtitle: Text('drawer_in_development'.tr()),
         ),
       ],
     );

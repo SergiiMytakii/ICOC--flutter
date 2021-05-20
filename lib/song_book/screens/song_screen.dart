@@ -89,26 +89,23 @@ class _SongScreenState extends State<SongScreen> {
               for (final item in tabItemsChords) Tab(text: item),
             ],
           ),
-          elevation: 8,
+          elevation: 6,
           actions: [
             IconButton(
               icon: Icon(
                 Icons.share,
-                size: 25,
               ),
               onPressed: () {},
             ),
             IconButton(
               icon: Icon(
                 Icons.play_circle_outline,
-                size: 25,
               ),
               onPressed: () {},
             ),
             IconButton(
               icon: Icon(
                 favStatus ? Icons.favorite : Icons.favorite_border,
-                size: 25,
               ),
               onPressed: () {
                 // we check current status and add or delete to favorites

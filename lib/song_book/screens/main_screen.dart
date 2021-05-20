@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import '../menu/my_drawer.dart';
+import '../../menu/my_drawer.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -74,6 +76,13 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('ICOC'),
+        actions: [
+          Icon(Icons.notifications_none_outlined),
+          SizedBox(
+            width: 15,
+          )
+        ],
+        elevation: 6,
       ),
       drawer: Drawer(
         child: MyDrawer(),
@@ -86,37 +95,39 @@ class _MainScreenState extends State<MainScreen> {
                   borderRadius: BorderRadius.circular(15)),
               elevation: 0,
               margin: EdgeInsets.all(15),
-              child: Column(
+              child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
                     ),
                     child: Image.asset('assets/images/verse_of_day.jpeg'),
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                    child: Container(
-                      color: Colors.black12,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(Icons.share_outlined,
-                              color: Theme.of(context).accentIconTheme.color),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          Text(
-                            'Отрывок дня',
-                            style: TextStyle(
+                  PositionedDirectional(
+                    bottom: 0,
+                    width: MediaQuery.of(context).size.width - 30,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                      ),
+                      child: Container(
+                        color: Colors.black12.withOpacity(0.3),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Отрывок дня',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).accentIconTheme.color),
+                            ),
+                            Icon(Icons.share_outlined,
                                 color: Theme.of(context).accentIconTheme.color),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -132,13 +143,13 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       tableItem(
                         'drawer_song_book'.tr(),
-                        Colors.green,
+                        Color(0xffff595e),
                         Icons.music_note,
                         sizeOfCell(context),
                       ),
                       tableItem(
                         'drawer_news'.tr(),
-                        Colors.blue,
+                        Color(0xffffca3a),
                         Icons.language,
                         sizeOfCell(context),
                       ),
@@ -148,13 +159,13 @@ class _MainScreenState extends State<MainScreen> {
                     children: [
                       tableItem(
                         'drawer_first_principles'.tr(),
-                        Colors.deepOrange,
+                        Color(0xff8ac926),
                         Icons.import_contacts,
                         sizeOfCell(context),
                       ),
                       tableItem(
                         'drawer_q_and_a'.tr(),
-                        Colors.deepPurple,
+                        Color(0xff1982c4),
                         Icons.question_answer,
                         sizeOfCell(context),
                       ),

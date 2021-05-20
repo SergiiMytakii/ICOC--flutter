@@ -30,7 +30,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           SizedBox(
             height: 40,
           ),
-          SwitchListTile(
+          SwitchListTile.adaptive(
             title: Text(
               'settings_dark_theme',
               style: Theme.of(context).textTheme.bodyText1,
@@ -79,7 +79,6 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
-
               children: [
                 Icon(
                   Icons.text_fields,

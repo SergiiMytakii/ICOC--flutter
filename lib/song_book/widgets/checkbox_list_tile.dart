@@ -22,7 +22,6 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
     super.initState();
   }
 
-
   bool _en = true;
   bool _ru = true;
   bool _uk = true;
@@ -33,9 +32,9 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
       _en = (prefLanguages.getBool('en') ?? _en);
       _ru = (prefLanguages.getBool('ru') ?? _ru);
       _uk = (prefLanguages.getBool('uk') ?? _uk);
-
     });
   }
+
 //
   bool? value(lang) {
     //print(" in value $lang");
@@ -56,11 +55,11 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarColor,
-
           boxShadow: [
             BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 1)
           ]),
       child: CheckboxListTile(
+          activeColor: Theme.of(context).primaryColor,
           key: widget.key,
           controlAffinity: ListTileControlAffinity.leading,
           title: Text(
@@ -87,7 +86,7 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
                 _en = !_en;
                 prefLanguages.setBool('en', _en);
               }
-              if(_ru == false && _uk == false && _en == false){
+              if (_ru == false && _uk == false && _en == false) {
                 showToast('Choose at list one language!');
               }
             });

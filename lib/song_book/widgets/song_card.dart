@@ -12,12 +12,14 @@ class SongCard extends StatefulWidget {
   final List<String> orderLang;
   final Function? deleteFromFavorites;
   final bool slideAction;
+  final Color dividerColor;
 
   SongCard(
       {required this.song,
       required this.orderLang,
       required this.slideAction,
-      this.deleteFromFavorites});
+      this.deleteFromFavorites,
+      required this.dividerColor});
 
   @override
   _SongCardState createState() => _SongCardState();
@@ -107,7 +109,8 @@ class _SongCardState extends State<SongCard> {
           ),
         ),
         Divider(
-          thickness: 2,
+          indent: 50,
+          color: widget.dividerColor,
         ),
       ],
     );

@@ -28,7 +28,9 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(child: MyDrawer(),),
+      drawer: Drawer(
+        child: MyDrawer(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         //type: BottomNavigationBarType.fixed,
         currentIndex: _selectedPageIndex,
@@ -37,15 +39,15 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         onTap: _selectPage,
         items: [
           BottomNavigationBarItem(
-            label: 'bottom_navigation_bar_list'.tr().toString(),
+            label: 'bottom_navigation_bar_list'.tr(),
             icon: Icon(Icons.queue_music),
           ),
           BottomNavigationBarItem(
-            label: 'bottom_navigation_bar_favorites'.tr().toString(),
+            label: 'bottom_navigation_bar_favorites'.tr(),
             icon: Icon(Icons.favorite),
           ),
           BottomNavigationBarItem(
-            label: 'bottom_navigation_bar_playlists'.tr().toString(),
+            label: 'bottom_navigation_bar_playlists'.tr(),
             icon: Icon(Icons.playlist_play),
           ),
         ],

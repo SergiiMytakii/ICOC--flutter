@@ -24,7 +24,6 @@ class _FavoritesState extends State<Favorites> {
     _loadPreferences();
   }
 
-
   List<String> _orderLang = ['ru', 'uk', 'en'];
 
   void _loadPreferences() async {
@@ -40,7 +39,6 @@ class _FavoritesState extends State<Favorites> {
       songs.removeWhere((song) => song.id == id);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +56,7 @@ class _FavoritesState extends State<Favorites> {
               orderLang: _orderLang,
               slideAction: slideAction,
               deleteFromFavorites: deleteFromFavoriteList,
+              dividerColor: Color(3014),
             );
           },
         ));
