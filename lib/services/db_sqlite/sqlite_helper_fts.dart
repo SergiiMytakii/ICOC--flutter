@@ -53,32 +53,24 @@ class DatabaseHelperFTS {
   static const String SONG_ID = 'songId';
 
   List<String> columnsTitle = [];
-  List<String> columnsText = [ID];
-  List<String> columnsDescription = [ID];
+  List<String> columnsDescription = [];
 
   void _filterLangDisplaying() {
     if (_ru) {
       columnsTitle.add(TITLE_RU);
-      // columnsText.add(TEXT_RU1);
-      // columnsText.add(TEXT_RU2);
       columnsDescription.add(DESCRIPTION_RU);
     }
     if (_uk) {
       columnsTitle.add(TITLE_UK);
-      // columnsText.add(TEXT_UK1);
-      // columnsText.add(TEXT_UK2);
       columnsDescription.add(DESCRIPTION_UK);
     }
     if (_en) {
       columnsTitle.add(TITLE_EN);
-      // columnsText.add(TEXT_EN1);
-      // columnsText.add(TEXT_EN2);
       columnsDescription.add(DESCRIPTION_EN);
     }
-    columnsTitle.toString();
-    print(columnsTitle);
   }
 
+//get refetence to the DB
   Future<Database?> get db async {
     _loadPreferences();
 
@@ -100,7 +92,7 @@ class DatabaseHelperFTS {
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ($ID_SONG, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
+          'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ($ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
       await db.execute(
           'CREATE VIRTUAL TABLE $TABLE_TEXT_RU USING fts4 ($ID_SONG, $TEXT_RU)');
       await db.execute(
@@ -193,66 +185,119 @@ class DatabaseHelperFTS {
     //filter which lang-s will be displaying
     _filterLangDisplaying();
 
-    //get titles
-    final List<Map<String, dynamic>> mapsTitles =
-        await database!.query(TABLE_TITLE, columns: columnsTitle);
+    Map<String, dynamic> texts = {};
+    List<Map<String, dynamic>> mapTextsRuIndexed = [];
+    List<Map<String, dynamic>> mapTextsUkIndexed = [];
+    List<Map<String, dynamic>> mapTextsEnIndexed = [];
 
-    //get texts
+    //get table with id's of  all songs
+    List<Map<String, dynamic>> length = await database!
+        .rawQuery('SELECT $ID_SONG FROM $TABLE_TITLE ORDER BY $ID_SONG');
 
-    //get quanity of songs
-    List<Map> length =
-        await database.rawQuery('SELECT $ID_SONG FROM $TABLE_TITLE');
-
-    Map mapsTexts = {};
-    List<Map> texts = [];
-
-    //loop in every song_id
+    //loop in every song_id to take all versions of every song
     for (Map id in length) {
-      final List<Map<String, dynamic>> mapTextsRu = await database.rawQuery('''
-        SELECT $TEXT_RU 
-        FROM $TABLE_TEXT_RU WHERE $ID_SONG = ${id.values}
-          ''');
-      // the keys in our map are 'ru' - the same for all entities
-      //so we need to add indexes for every version of song
-      int i = 0;
-      List<Map> mapTextsRuIndexed = mapTextsRu.map((e) {
-        i += 1;
-        return {'ru$i': e['ru']};
-      }).toList();
+      final List<Map<String, dynamic>> titles = await database.query(
+          TABLE_TITLE,
+          columns: columnsTitle,
+          where: '$ID_SONG = ${id.values}',
+          orderBy: TITLE_RU);
+//remove nullable values
+      Map<String, dynamic> titlesWritable =
+          Map<String, dynamic>.from(titles[0]);
+      titlesWritable.removeWhere((key, value) => value == null);
 
+//get descriptions
+      final List<Map<String, dynamic>> descriptions = await database.query(
+          TABLE_DESCRIPTION,
+          columns: columnsDescription,
+          where: '$ID_SONG = ${id.values}');
+//remove nullable values
+      Map<String, dynamic> descriptionsWritable =
+          Map<String, dynamic>.from(descriptions[0]);
+      descriptionsWritable.removeWhere((key, value) => value == null);
+
+      //get texts
+      if (_ru) {
+        final List<Map<String, dynamic>> mapTextsRu =
+            await database.rawQuery('''
+        SELECT $TEXT_RU 
+        FROM $TABLE_TEXT_RU WHERE $ID_SONG = ${id.values} 
+          ''');
+        // the keys in our map are 'ru' - the same for all entities
+        //so we need to add indexes for every version of song
+        int i = 0;
+        mapTextsRuIndexed = mapTextsRu.map((e) {
+          i += 1;
+          return {'ru$i': e['ru']};
+        }).toList();
+      }
       //do the same for uk texts
-      final List<Map<String, dynamic>> mapTextsUk = await database.rawQuery('''
+
+      if (_uk) {
+        final List<Map<String, dynamic>> mapTextsUk =
+            await database.rawQuery('''
         SELECT $TEXT_UK 
         FROM $TABLE_TEXT_UK WHERE $ID_SONG = ${id.values}
           ''');
 
-      i = 0;
-      List<Map> mapTextsUkIndexed = mapTextsUk.map((e) {
-        i += 1;
-        return {'uk$i': e['uk']};
-      }).toList();
+        int i = 0;
+        mapTextsUkIndexed = mapTextsUk.map((e) {
+          i += 1;
+          return {'uk$i': e['uk']};
+        }).toList();
+      }
 
       //do the same for uk texts
-      final List<Map<String, dynamic>> mapTextsEn = await database.rawQuery('''
+      if (_en) {
+        final List<Map<String, dynamic>> mapTextsEn =
+            await database.rawQuery('''
         SELECT $TEXT_EN 
         FROM $TABLE_TEXT_EN WHERE $ID_SONG = ${id.values}
           ''');
 
-      i = 0;
-      List<Map> mapTextsEnIndexed = mapTextsEn.map((e) {
-        i += 1;
-        return {'en$i': e['en']};
-      }).toList();
+        int i = 0;
+        mapTextsEnIndexed = mapTextsEn.map((e) {
+          i += 1;
+          return {'en$i': e['en']};
+        }).toList();
+      }
 
       //join maps into list of maps
-      List<Map> allMapsTexts =
+      final List<Map<String, dynamic>> allMapsTexts =
           mapTextsRuIndexed + mapTextsUkIndexed + mapTextsEnIndexed;
       //make one map with all texts
-      mapsTexts = Map.fromEntries(allMapsTexts.expand((map) => map.entries));
-      texts.add(mapsTexts);
+      texts = Map.fromEntries(allMapsTexts.expand((map) => map.entries));
+//remove nullable values
+      texts.removeWhere((key, value) => value == null);
+
+// get chords
+      final List<Map<String, dynamic>> mapsChords = await database.rawQuery('''
+        SELECT $CHORDS 
+        FROM $TABLE_CHORDS WHERE $ID_SONG = ${id.values}
+          ''');
+      // the keys in our map are 'chords_v' - the same for all entities
+      //so we need to add indexes for every version of song
+      int i = 0;
+      final List<Map<String, dynamic>> mapChordsIndexed = mapsChords.map((e) {
+        i += 1;
+        return {'Chords_v$i': e['chords_v']};
+      }).toList();
+
+      //make one map with all chords
+      Map<String, dynamic> chords =
+          Map.fromEntries(mapChordsIndexed.expand((map) => map.entries));
+//remove nullable values
+      chords.removeWhere((key, value) => value == null);
+
+      Song song = Song(
+          id: id['id_song'],
+          title: titlesWritable,
+          description: descriptionsWritable,
+          text: texts,
+          chords: chords);
+      songs.add(song);
     }
 
-    print('Texts is ${texts[0]}');
     songs.removeWhere((song) => song.title.values.isEmpty);
 
     yield songs;

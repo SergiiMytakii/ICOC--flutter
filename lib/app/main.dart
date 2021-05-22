@@ -1,3 +1,4 @@
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/screens/main_screen.dart';
 import 'package:Projects/app/theme.dart';
 import 'package:Projects/services/database_firebase.dart';
@@ -18,7 +19,7 @@ void main() async {
   });
   //update local SQL database from firebase
   await DatabaseServiceFirebase().songs.then((songs) {
-    DatabaseHelper().insertAllSongs(songs);
+    DatabaseHelperFTS().insertAllSongs(songs);
   });
 
   runApp(EasyLocalization(

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
-import 'package:Projects/song_book/widgets/song_card.dart';
 import 'package:Projects/song_book/widgets/song_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +23,7 @@ class _SongBookState extends State<SongBook> {
     //DatabaseHelper().deleteSong(187);
     return StreamProvider<List<Song>>.value(
       catchError: (_, error) => error as List<Song>,
-      value: DatabaseHelper().getAllSongs(),
+      value: DatabaseHelperFTS().getAllSongs(),
       initialData: [],
       child: Scaffold(
           body: CustomScrollView(

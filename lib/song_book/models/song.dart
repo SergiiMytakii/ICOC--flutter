@@ -1,4 +1,3 @@
-
 class Song {
   final int id;
   final Map description;
@@ -7,32 +6,30 @@ class Song {
   final List? resources;
   final Map chords;
 
-  Song(
-      {required this.id,
-        required this.title,
-        required this.description,
-        required this.text,
-        required this.chords,
-      this.resources,
-      });
+  Song({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.text,
+    required this.chords,
+    this.resources,
+  });
 
-  factory Song.fromJson(Map<String, dynamic> parsedJson){
+  factory Song.fromJson(Map<String, dynamic> parsedJson) {
     //print(parsedJson);
     return Song(
       id: parsedJson['Id'],
       title: parsedJson['title'],
-      text : parsedJson ['text'],
-      description: parsedJson ['description'],
+      text: parsedJson['text'],
+      description: parsedJson['description'],
       resources: null,
-      chords: parsedJson ['chords'],
-
+      chords: parsedJson['chords'],
     );
   }
 
-
   Map<String, Object?> toMapTitle() {
     return {
-      'id': id,
+      'id_song': id,
       'ru': title['ru'] ?? null, // null - it's test
       'uk': title['uk'] ?? null,
       'en': title['en'] ?? null,
@@ -53,7 +50,7 @@ class Song {
 
   Map<String, Object?> toMapDescription() {
     return {
-      'id': id,
+      'id_song': id,
       'ru': description['ru'] ?? null,
       'uk': description['uk'] ?? null,
       'en': description['en'] ?? null,
@@ -62,16 +59,11 @@ class Song {
 
   Map<String, Object?> toMapChords() {
     return {
-      'id': id,
+      'id_song': id,
       'v1': chords['v1'] ?? null,
       'v2': chords['v2'] ?? null,
       'v3': chords['v3'] ?? null,
       'v4': chords['v4'] ?? null,
-
     };
   }
 }
-
-
-
-

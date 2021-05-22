@@ -28,12 +28,12 @@ class DatabaseServiceFirebase {
   List<Song> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<Song> songs = snapshot.docs.map((doc) {
       return Song(
-          id: doc.data()['id'] ?? 0,
-          description: doc.data()['description'] ?? {},
-          text: doc.data()['text'] ?? {},
-          title: doc.data()['title'] ?? {},
-          chords: doc.data()['chords'] ?? {},
-          resources: doc.data()['resources'] ?? []);
+          id: doc.get('id') ?? 0,
+          description: doc.get('description') ?? {},
+          text: doc.get('text') ?? {},
+          title: doc.get('title') ?? {},
+          chords: doc.get('chords') ?? {},
+          resources: doc.get('resources') ?? []);
     }).toList();
 
     //get rid from nullable values
@@ -43,12 +43,14 @@ class DatabaseServiceFirebase {
       song.description.removeWhere((key, value) => value == null);
       song.chords.removeWhere((key, value) => value == null);
     });
+
     return songs;
   }
 
   //get songs
   Future get songs {
     //insertSongsToFirebase();  //use this line to insert all songs from assets/songs.json
+    print('Got snapshot');
     return songCollection
         .get()
         .then((snapshot) => _songListFromSnapshot(snapshot), onError: (error) {

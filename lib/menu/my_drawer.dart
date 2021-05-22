@@ -1,5 +1,4 @@
 import 'package:Projects/settings/general_settings.dart';
-import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
