@@ -180,7 +180,7 @@ class DatabaseHelperFTS {
 
 /* get all songs from database*/
 
-  Stream<List<Song>> getAllSongs() async* {
+  Stream<List<Song>> getListSongs(String parameter) async* {
     final Database? database = await db;
     //filter which lang-s will be displaying
     _filterLangDisplaying();
@@ -189,14 +189,25 @@ class DatabaseHelperFTS {
     List<Map<String, dynamic>> mapTextsRuIndexed = [];
     List<Map<String, dynamic>> mapTextsUkIndexed = [];
     List<Map<String, dynamic>> mapTextsEnIndexed = [];
+    List<Map<String, dynamic>> idSongsToDisplay = [];
 
     //get table with id's of  all songs
-    List<Map<String, dynamic>> length = await database!
-        .rawQuery('SELECT $ID_SONG FROM $TABLE_TITLE ORDER BY $ID_SONG');
+    if (parameter == 'All songs') {
+      idSongsToDisplay = await database!.rawQuery('''
+        SELECT $ID_SONG FROM $TABLE_TITLE 
+        ORDER BY $ID_SONG
+        ''');
+    }
+    if (parameter == 'Favorites') {
+      idSongsToDisplay = await database!.rawQuery('''
+        SELECT $ID_SONG FROM $TABLE_FAVORITES 
+        ORDER BY $ID_SONG
+        ''');
+    }
 
     //loop in every song_id to take all versions of every song
-    for (Map id in length) {
-      final List<Map<String, dynamic>> titles = await database.query(
+    for (Map id in idSongsToDisplay) {
+      final List<Map<String, dynamic>> titles = await database!.query(
           TABLE_TITLE,
           columns: columnsTitle,
           where: '$ID_SONG = ${id.values}',
@@ -301,5 +312,38 @@ class DatabaseHelperFTS {
     songs.removeWhere((song) => song.title.values.isEmpty);
 
     yield songs;
+  }
+
+  /*add to favorite list*/
+
+  Future<void> addToFavorites(int id) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.insert(
+      TABLE_FAVORITES,
+      {ID_SONG: id, FAVORITE_STATUS: 1},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print('inserted to favorites');
+  }
+
+  Future<void> deleteFromFavorites(int id) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database
+        .delete(TABLE_FAVORITES, where: '$ID_SONG = ?', whereArgs: [id]);
+    print('deleted from favorites');
+  }
+
+  Future<bool> getFavoriteStatus(int id) async {
+    final database = await db;
+    var status = await database!.query(TABLE_FAVORITES,
+        columns: ['$FAVORITE_STATUS'], where: '$ID_SONG = ?', whereArgs: [id]);
+    if (status.isNotEmpty) {
+      return true;
+    } else
+      return false;
   }
 }

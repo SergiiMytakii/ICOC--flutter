@@ -1,3 +1,4 @@
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -51,11 +52,9 @@ class DatabaseHelper {
   static const String TABLE_PLAYLISTS = 'playlists';
   static const String PLAYLIST_NAME = 'playlistName';
 
-
   static const String TABLE_PLAYLISTS_SONGS = 'playlistsSongs';
   static const String PLAYLIST_ID = 'playlistId';
   static const String SONG_ID = 'songId';
-
 
   List<String> columnsTitle = [ID];
   List<String> columnsText = [ID];
@@ -89,36 +88,10 @@ class DatabaseHelper {
       print('db already exist!');
       return _db;
     } else {
-      _db = await initDB();
+      _db = await DatabaseHelperFTS().initDB();
       print('initializing db');
       return _db;
     }
-  }
-
-  Future<Database> initDB() async {
-    String path = join((await getDatabasesPath()), DB_NAME);
-    //await deleteDatabase(path);   // - if we need to clean database
-    print('!!!!databases was opened!!!!!' + path);
-
-    return await openDatabase(path, version: 2,
-        onCreate: (Database db, int version) async {
-      await db.execute(
-          'CREATE TABLE $TABLE_TITLE ($ID INTEGER PRIMARY KEY, $TITLE_RU TEXT, $TITLE_EN TEXT, $TITLE_UK TEXT)');
-      await db.execute(
-          'CREATE TABLE $TABLE_TEXT ($ID INTEGER PRIMARY KEY, $TEXT_RU1 TEXT, $TEXT_RU2 TEXT, $TEXT_EN2 TEXT, $TEXT_UK2 TEXT, $TEXT_EN1 TEXT, $TEXT_UK1 TEXT)');
-      await db.execute(
-          'CREATE TABLE $TABLE_DESCRIPTION ($ID INTEGER PRIMARY KEY, $DESCRIPTION_RU TEXT, $DESCRIPTION_EN TEXT, $DESCRIPTION_UK TEXT)');
-      await db.execute(
-          'CREATE TABLE $TABLE_CHORDS ($ID INTEGER PRIMARY KEY, $CHORDS_V1 TEXT, $CHORDS_V2 TEXT, $CHORDS_V3 TEXT, $CHORDS_V4 TEXT)');
-      await db.execute(
-          'CREATE TABLE $TABLE_FAVORITES ($ID INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
-      await db.execute(
-          'CREATE TABLE $TABLE_PLAYLISTS ($ID INTEGER PRIMARY KEY AUTOINCREMENT,  $PLAYLIST_NAME TEXT)');
-      await db.execute(
-          'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID INTEGER PRIMARY KEY,  $SONG_ID)');
-
-      print(' !!!!databases was created!!!!!');
-    });
   }
 
   //add to favorite list
@@ -215,18 +188,15 @@ class DatabaseHelper {
   }
 
   //create new playlist
-  Future<void> createPlaylist (String name) async {
+  Future<void> createPlaylist(String name) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    await database.insert(TABLE_PLAYLISTS,
-    {
-      '$PLAYLIST_NAME' : name
-    });
+    await database.insert(TABLE_PLAYLISTS, {'$PLAYLIST_NAME': name});
   }
 
   //insert song into playlist
-  Future<void> insertIntoPlaylist (String playlist, int songId) async {
+  Future<void> insertIntoPlaylist(String playlist, int songId) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
@@ -236,19 +206,19 @@ class DatabaseHelper {
         ''');
   }
 
-
   // get playlist names
-  Future getPlaylistsNames () async {
+  Future getPlaylistsNames() async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    await database.query(TABLE_PLAYLISTS, columns: ['$PLAYLIST_NAME'],
-       );
+    await database.query(
+      TABLE_PLAYLISTS,
+      columns: ['$PLAYLIST_NAME'],
+    );
   }
 
-
   // get songs from playlist
-  Future getSongsFromPlaylist (String playlist) async {
+  Future getSongsFromPlaylist(String playlist) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
@@ -271,7 +241,7 @@ class DatabaseHelper {
     ''');
     //get list descriptions
     final List<Map<String, dynamic>> mapsDescriptions =
-    await database.rawQuery('''
+        await database.rawQuery('''
     SELECT $TABLE_DESCRIPTION.$DESCRIPTION_RU,  $TABLE_DESCRIPTION.$DESCRIPTION_UK,
            $TABLE_DESCRIPTION.$DESCRIPTION_EN
     FROM ($TABLE_FAVORITES
@@ -287,7 +257,6 @@ class DatabaseHelper {
     WHERE $FAVORITE_STATUS = 1
     ''');
   }
-
 
   // insert 1 song
   Future<void> insertSong(Song song) async {

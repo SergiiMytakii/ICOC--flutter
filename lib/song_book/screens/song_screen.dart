@@ -1,4 +1,5 @@
 import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +69,7 @@ class _SongScreenState extends State<SongScreen> {
 
   //get current favorite status
   Future favoriteStatus() async {
-    await DatabaseHelper().getFavoriteStatus(widget.song.id).then((value) {
+    await DatabaseHelperFTS().getFavoriteStatus(widget.song.id).then((value) {
       setState(() {
         favStatus = value;
       });
@@ -111,14 +112,14 @@ class _SongScreenState extends State<SongScreen> {
                 // we check current status and add or delete to favorites
                 favStatus
                     ? setState(() {
-                        DatabaseHelper().deleteFromFavorites(widget.song.id);
+                        DatabaseHelperFTS().deleteFromFavorites(widget.song.id);
                         //get new status
                         favoriteStatus();
                         // update list of favorites in Favorites screen
                         widget.deleteFromFavorites!(widget.song.id);
                       })
                     : setState(() {
-                        DatabaseHelper().addToFavorites(widget.song.id);
+                        DatabaseHelperFTS().addToFavorites(widget.song.id);
                         //get new status
                         favoriteStatus();
                       });

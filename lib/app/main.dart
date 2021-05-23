@@ -2,7 +2,6 @@ import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/screens/main_screen.dart';
 import 'package:Projects/app/theme.dart';
 import 'package:Projects/services/database_firebase.dart';
-import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
