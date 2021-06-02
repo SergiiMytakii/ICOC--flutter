@@ -1,5 +1,6 @@
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:Projects/song_book/widgets/playlists_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
@@ -122,13 +123,15 @@ class _SongCardState extends State<SongCard> {
 List<String?>? chooseCardLang(Song song, List<String> orderLang) {
   String? title;
   String? text;
+  // print(song.title);
+  // print(song.text);
 
   //check every key and if it fit to FIRST preferred lang and not equal null
   //we return value  of this key
   song.title.keys.forEach((key) {
     if (key == orderLang[0] && key != null) {
       title = song.title[orderLang[0]];
-      text = song.text[orderLang[0] + '1'] ?? song.text[orderLang[0] + '2'];
+      text = song.text[orderLang[0]];
     }
   });
   if (title != null) return [title, text];
@@ -138,7 +141,7 @@ List<String?>? chooseCardLang(Song song, List<String> orderLang) {
   song.title.keys.forEach((key) {
     if (key == orderLang[1] && key != null) {
       title = song.title[orderLang[1]];
-      text = song.text[orderLang[1] + '1'] ?? song.text[orderLang[1] + '2'];
+      text = song.text[orderLang[1]];
     }
   });
   if (title != null) return [title, text];
@@ -148,7 +151,7 @@ List<String?>? chooseCardLang(Song song, List<String> orderLang) {
   song.title.keys.forEach((key) {
     if (key == orderLang[2] && key != null) {
       title = song.title[orderLang[2]];
-      text = song.text[orderLang[2] + '1'] ?? song.text[orderLang[2] + '2'];
+      text = song.text[orderLang[2]];
     }
   });
   if (title != null) return [title, text];

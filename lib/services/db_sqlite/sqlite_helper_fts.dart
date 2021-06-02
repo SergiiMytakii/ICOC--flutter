@@ -1,4 +1,4 @@
-import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,7 +7,7 @@ class DatabaseHelperFTS {
   bool _en = true;
   bool _ru = true;
   bool _uk = true;
-  List<Song> songs = [];
+  List<SongDetail> songs = [];
 
   void _loadPreferences() async {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
@@ -92,13 +92,13 @@ class DatabaseHelperFTS {
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ($ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
+          'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
       await db.execute(
-          'CREATE VIRTUAL TABLE $TABLE_TEXT_RU USING fts4 ($ID_SONG, $TEXT_RU)');
+          'CREATE VIRTUAL TABLE $TABLE_TEXT_RU USING fts4 (tokenize = unicode61, $ID_SONG, $TEXT_RU)');
       await db.execute(
-          'CREATE VIRTUAL TABLE $TABLE_TEXT_UK USING fts4 ($ID_SONG, $TEXT_UK)');
+          'CREATE VIRTUAL TABLE $TABLE_TEXT_UK USING fts4 (tokenize = unicode61, $ID_SONG, $TEXT_UK)');
       await db.execute(
-          'CREATE VIRTUAL TABLE $TABLE_TEXT_EN USING fts4 ($ID_SONG, $TEXT_EN)');
+          'CREATE VIRTUAL TABLE $TABLE_TEXT_EN USING fts4 (tokenize = unicode61, $ID_SONG, $TEXT_EN)');
       await db.execute(
           'CREATE TABLE $TABLE_DESCRIPTION ($ID_SONG INTEGER PRIMARY KEY, $DESCRIPTION_RU TEXT, $DESCRIPTION_UK TEXT, $DESCRIPTION_EN TEXT)');
       await db.execute(
@@ -116,7 +116,7 @@ class DatabaseHelperFTS {
 
 /* inserting songs into database */
 
-  Future<void> insertAllSongs(List<Song> songs) async {
+  Future<void> insertAllSongs(List<SongDetail> songs) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
@@ -128,7 +128,7 @@ class DatabaseHelperFTS {
     await database.delete(TABLE_DESCRIPTION);
     await database.delete(TABLE_CHORDS);
 
-    for (Song song in songs) {
+    for (SongDetail song in songs) {
       await database.insert(
         TABLE_TITLE,
         song.toMapTitle(),
@@ -180,7 +180,7 @@ class DatabaseHelperFTS {
 
 /* get all songs from database*/
 
-  Stream<List<Song>> getListSongs(String parameter) async* {
+  Stream<List<SongDetail>> getListSongs(String parameter) async* {
     final Database? database = await db;
     //filter which lang-s will be displaying
     _filterLangDisplaying();
@@ -234,6 +234,7 @@ class DatabaseHelperFTS {
         SELECT $TEXT_RU 
         FROM $TABLE_TEXT_RU WHERE $ID_SONG = ${id.values} 
           ''');
+
         // the keys in our map are 'ru' - the same for all entities
         //so we need to add indexes for every version of song
         int i = 0;
@@ -300,7 +301,7 @@ class DatabaseHelperFTS {
 //remove nullable values
       chords.removeWhere((key, value) => value == null);
 
-      Song song = Song(
+      SongDetail song = SongDetail(
           id: id['id_song'],
           title: titlesWritable,
           description: descriptionsWritable,

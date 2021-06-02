@@ -1,9 +1,8 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/song_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Favorites extends StatefulWidget {
@@ -19,6 +18,9 @@ class _FavoritesState extends State<Favorites> {
   void initState() {
     super.initState();
     _loadPreferences();
+    DatabaseHelperFTS4().getListFavorites().then((songsFromDb) => setState(() {
+          songs = songsFromDb;
+        }));
   }
 
   List<String> _orderLang = ['ru', 'uk', 'en'];
@@ -47,8 +49,7 @@ class _FavoritesState extends State<Favorites> {
   @override
   Widget build(BuildContext context) {
     int i = 0;
-    songs = Provider.of<List<Song>>(context);
-    print(' songs are ${songs.length}');
+
     return Scaffold(
         appBar: AppBar(
           title: Text('bottom_navigation_bar_favorites').tr(),

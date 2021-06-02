@@ -60,6 +60,9 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
               }),
             ),
           ),
+          FittedBox(
+            child: Text('hint reorder lang'.tr()),
+          )
         ],
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
-import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +8,7 @@ class DatabaseHelper {
   bool _en = true;
   bool _ru = true;
   bool _uk = true;
-  List<Song> songs = [];
+  List<SongDetail> songs = [];
 
   void _loadPreferences() async {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
@@ -115,7 +115,7 @@ class DatabaseHelper {
     print('deleted from favorites');
   }
 
-  Future<List<Song>> getFavorites() async {
+  Future<List<SongDetail>> getFavorites() async {
     final Database? database = await db;
     // get list ides
     final List<Map<String, dynamic>> mapsIdes =
@@ -155,8 +155,8 @@ class DatabaseHelper {
     INNER JOIN $TABLE_CHORDS ON $TABLE_FAVORITES.$ID = $TABLE_CHORDS.$ID) 
     WHERE $FAVORITE_STATUS = 1
     ''');
-    // Convert the List<Map<String, dynamic> into a List<Song>.
-    List<Song> songs = List.generate(mapsTitles.length, (i) {
+    // Convert the List<Map<String, dynamic> into a List<SongDetail>.
+    List<SongDetail> songs = List.generate(mapsTitles.length, (i) {
       //make maps writable and delete nullable values
       Map<String, dynamic> mapTitlesWritable =
           Map<String, dynamic>.from(mapsTitles[i]);
@@ -176,7 +176,7 @@ class DatabaseHelper {
           Map<String, dynamic>.from(mapsChords[i]);
       mapChordsWritable.removeWhere((key, value) => value == null);
 
-      return Song(
+      return SongDetail(
           id: mapsIdes[i]['id'],
           title: mapTitlesWritable,
           text: mapTextsWritable,
@@ -259,7 +259,7 @@ class DatabaseHelper {
   }
 
   // insert 1 song
-  Future<void> insertSong(Song song) async {
+  Future<void> insertSong(SongDetail song) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
@@ -285,10 +285,10 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> insertAllSongs(List<Song> songs) async {
+  Future<void> insertAllSongs(List<SongDetail> songs) async {
     // Get a reference to the database.
     final Database database = (await db)!;
-    for (Song song in songs) {
+    for (SongDetail song in songs) {
       await database.insert(
         TABLE_TITLE,
         song.toMapTitle(),
@@ -315,7 +315,7 @@ class DatabaseHelper {
     print('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
 
-  Stream<List<Song>> getAllSongs() async* {
+  Stream<List<SongDetail>> getAllSongs() async* {
     final Database? database = await db;
     //filter which lang-s will be displaying
     _filterLangDisplaying();
@@ -332,7 +332,7 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> mapsChords =
         await database.query(TABLE_CHORDS);
 
-    // Convert the List<Map<String, dynamic> into a List<Song>.
+    // Convert the List<Map<String, dynamic> into a List<SongDetail>.
     if (mapsTitles.isNotEmpty &&
         mapsTexts.isNotEmpty &&
         mapsDescriptions.isNotEmpty) {
@@ -363,7 +363,7 @@ class DatabaseHelper {
         mapChordsWritable.remove('id');
         mapChordsWritable.removeWhere((key, value) => value == null);
 
-        return Song(
+        return SongDetail(
             id: mapsTitles[i]['id'],
             title: mapTitlesWritable,
             text: mapTextsWritable,

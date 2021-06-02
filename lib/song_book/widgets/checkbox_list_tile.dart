@@ -53,11 +53,6 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
     String lang = widget.orderLang![widget.index];
 
     return Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
-          boxShadow: [
-            BoxShadow(color: Colors.grey, spreadRadius: 1, blurRadius: 1)
-          ]),
       child: CheckboxListTile(
           activeColor: Theme.of(context).primaryColor,
           key: widget.key,

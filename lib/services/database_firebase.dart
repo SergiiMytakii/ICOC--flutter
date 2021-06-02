@@ -1,5 +1,5 @@
 import 'package:Projects/services/import_songs.dart';
-import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseServiceFirebase {
@@ -9,10 +9,9 @@ class DatabaseServiceFirebase {
 
   //function to add songs to firebase from json file
   Future insertSongsToFirebase() async {
-    List<Song> songsFromJson = await ImportSongs().loadSongsFromJson();
+    List songsFromJson = await ImportSongs().loadSongsFromJson();
 
-    for (Song song in songsFromJson) {
-      print(" new song ${song.title}");
+    for (SongDetail song in songsFromJson) {
       await songCollection.doc(song.id.toString()).set({
         'id': song.id,
         'text': song.text,
@@ -25,9 +24,9 @@ class DatabaseServiceFirebase {
   }
 
   //converting  snapshot to song list
-  List<Song> _songListFromSnapshot(QuerySnapshot snapshot) {
-    List<Song> songs = snapshot.docs.map((doc) {
-      return Song(
+  List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
+    List<SongDetail> songs = snapshot.docs.map((doc) {
+      return SongDetail(
           id: doc.get('id') ?? 0,
           description: doc.get('description') ?? {},
           text: doc.get('text') ?? {},

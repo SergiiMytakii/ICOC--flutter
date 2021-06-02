@@ -1,6 +1,7 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper.dart';
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:Projects/song_book/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,17 +22,23 @@ class _SongScreenState extends State<SongScreen> {
   late List<dynamic> tabItemsSongs;
   late List<dynamic> tabItemsChords;
   bool favStatus = false;
+  late SongDetail songDetail;
 
   @override
   void initState() {
     super.initState();
     favoriteStatus();
+    DatabaseHelperFTS4()
+        .getSongDetail(widget.song.id)
+        .then((value) => setState(() {
+              songDetail = value;
+            }));
   }
 
   void getTitlesForTabs() {
     //get the tabs titles
-    tabItemsSongs = widget.song.text.keys.toList();
-    tabItemsChords = widget.song.chords.keys.toList();
+    tabItemsSongs = songDetail.text.keys.toList();
+    tabItemsChords = songDetail.chords.keys.toList();
 
     //reorder tabs accordingly preferred  lang-s
     //if it's just 1 tab - return
@@ -112,14 +119,15 @@ class _SongScreenState extends State<SongScreen> {
                 // we check current status and add or delete to favorites
                 favStatus
                     ? setState(() {
-                        DatabaseHelperFTS().deleteFromFavorites(widget.song.id);
+                        DatabaseHelperFTS4()
+                            .deleteFromFavorites(widget.song.id);
                         //get new status
                         favoriteStatus();
                         // update list of favorites in Favorites screen
                         widget.deleteFromFavorites!(widget.song.id);
                       })
                     : setState(() {
-                        DatabaseHelperFTS().addToFavorites(widget.song.id);
+                        DatabaseHelperFTS4().addToFavorites(widget.song.id);
                         //get new status
                         favoriteStatus();
                       });
@@ -131,11 +139,11 @@ class _SongScreenState extends State<SongScreen> {
           children: [
             for (final item in tabItemsSongs)
               SongTextOnSongScreen(
-                  title: widget.song.title[item.substring(0, 2)],
-                  textVersion: widget.song.text[item],
-                  description: widget.song.description[item.substring(0, 2)]),
+                  title: songDetail.title[item.substring(0, 2)],
+                  textVersion: songDetail.text[item],
+                  description: songDetail.description[item.substring(0, 2)]),
             for (final item in tabItemsChords)
-              SongTextOnSongScreen(textVersion: widget.song.chords[item]),
+              SongTextOnSongScreen(textVersion: songDetail.chords[item]),
           ],
         ),
       ),
@@ -143,7 +151,7 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   countTabs() {
-    int amountOfTabs = widget.song.text.length + widget.song.chords.length;
+    int amountOfTabs = songDetail.text.length + songDetail.chords.length;
     return amountOfTabs;
   }
 }
