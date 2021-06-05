@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
+import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
 import 'package:Projects/song_book/widgets/song_list.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -137,6 +138,7 @@ class _SongBookState extends State<SongBook> {
 }
 
 class DataSearch extends SearchDelegate {
+  List<Song> songs = [];
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -167,8 +169,45 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    DatabaseHelperFTS4().getSearchResult(query);
-
-    return ListView();
+    if (query == '') {
+      DatabaseHelperFTS4().getListSongs().listen((value) {
+        songs = List.from(value);
+      });
+    } else {
+      DatabaseHelperFTS4().getSearchResult(query).listen((value) async {
+        songs = List.from(value);
+      });
+    }
+    print('songs $songs');
+    return ListView.builder(
+        itemCount: songs.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: (() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SongScreen(
+                            song: songs[index],
+                            orderLang: ['ru', 'uk', 'en'],
+                          )));
+            }),
+            horizontalTitleGap: 0,
+            leading: Text(songs[index].id.toString(),
+                style: Theme.of(context).textTheme.headline6),
+            title: Text(
+              songs[index].title['ru'] ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            subtitle: Text(
+              songs[index].text['ru'] ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+          );
+        });
   }
 }

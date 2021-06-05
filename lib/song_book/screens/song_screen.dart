@@ -22,17 +22,18 @@ class _SongScreenState extends State<SongScreen> {
   late List<dynamic> tabItemsSongs;
   late List<dynamic> tabItemsChords;
   bool favStatus = false;
-  late SongDetail songDetail;
+  SongDetail songDetail =
+      SongDetail(id: 0, title: {}, description: {}, text: {}, chords: {});
 
   @override
   void initState() {
-    super.initState();
-    favoriteStatus();
     DatabaseHelperFTS4()
         .getSongDetail(widget.song.id)
         .then((value) => setState(() {
               songDetail = value;
             }));
+    favoriteStatus();
+    super.initState();
   }
 
   void getTitlesForTabs() {

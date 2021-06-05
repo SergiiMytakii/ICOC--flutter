@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:path/path.dart';
@@ -207,6 +205,7 @@ class DatabaseHelperFTS4 {
 
       titlesWithoutNullable.add(mapWritable);
     }
+
     //get texts
     final List<Map<String, dynamic>> texts = await database.rawQuery('''
         SELECT  $colTexts
@@ -221,11 +220,16 @@ class DatabaseHelperFTS4 {
     List<Map<String, dynamic>> textsWithoutNullable = [];
     for (Map map in texts) {
       var mapWritable = Map<String, dynamic>.from(map);
-
+      if (mapWritable['ru'] == null &&
+          mapWritable['uk'] == null &&
+          mapWritable['ru'] == null) {
+        mapWritable = {' no text': 'no text'};
+      }
       mapWritable.removeWhere((key, value) => value == null);
-
+      //print('mapWritable ${mapWritable.toString().substring(0, 30)}');
       textsWithoutNullable.add(mapWritable);
     }
+
     List<Song> songs = List.generate(titlesWithoutNullable.length, (i) {
       return Song(
           id: titlesWithoutNullable[i]['id_song'],
@@ -434,7 +438,7 @@ class DatabaseHelperFTS4 {
     return songs;
   }
 
-  Future<List<Song>?> getSearchResult(String query) async {
+  Stream<List<Song>> getSearchResult(String query) async* {
     final Database? database = await db;
     _filterLangDisplaying();
     String collumns = columnsTitle
@@ -444,42 +448,26 @@ class DatabaseHelperFTS4 {
 
     if (query != '') {
       final List<Map<String, dynamic>> titles = await database!.rawQuery('''
-                  SELECT $ID_SONG,
-                  snippet($TABLE_TITLE, '[', ']', '...') AS $collumns
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  snippet($TABLE_TITLE, '[', ']', '...') AS $collumns,
+                  $TABLE_TEXT_RU.$TEXT_RU AS text_ru
                   FROM $TABLE_TITLE
-                  WHERE $TITLE_RU  MATCH '$query*'
+                  LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
+                  WHERE $TABLE_TITLE.$TITLE_RU  MATCH '$query*'
+                  ORDER BY $TABLE_TITLE.$ID_SONG
                   ''');
-      List<Map<String, dynamic>> titlesWithoutNullable = [];
+
       for (Map map in titles) {
-        var mapWritable = Map<String, dynamic>.from(map);
-        mapWritable.removeWhere((key, value) => value == null);
-        titlesWithoutNullable.add(mapWritable);
-        print(titlesWithoutNullable);
-
-        List<Map<String, dynamic>> texts = await database.rawQuery('''
-        SELECT  $TITLE_RU
-        FROM $TABLE_TEXT_RU
-        INNER JOIN $TABLE_TITLE ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
-        WHERE  $TABLE_TITLE.$ID_SONG = 
-                  (SELECT $ID_SONG FROM $TABLE_TITLE
-                  WHERE $TITLE_RU  MATCH '$query*')
-        GROUP BY $TABLE_TITLE.$ID_SONG
-        ''');
-
-        print('text: $texts');
-        List<Map<String, dynamic>> textsWithoutNullable = [
-          {'ru': 'hi'}
-        ];
-        songs = List.generate(titlesWithoutNullable.length, (i) {
-          return Song(
-              id: titlesWithoutNullable[i]['id_song'],
-              title: titlesWithoutNullable[i],
-              text: textsWithoutNullable[i]);
-        });
-        songs.removeWhere((song) => song.text.values.isEmpty);
-        print(songs.first.title);
+        Song song = Song(
+            id: map['id_song'],
+            title: {'ru': map['ru']},
+            text: {'ru': map['text_ru'] ?? ''});
+        print(song.title);
+        //print(song.text.toString());
+        songs.add(song);
       }
-      return songs;
+      print(songs.length);
     }
+    yield songs;
   }
 }
