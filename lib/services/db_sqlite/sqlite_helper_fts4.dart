@@ -466,7 +466,6 @@ class DatabaseHelperFTS4 {
         //print(song.text.toString());
         songs.add(song);
       }
-      print(songs.length);
     }
     yield songs;
   }

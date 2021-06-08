@@ -138,7 +138,8 @@ class _SongBookState extends State<SongBook> {
 }
 
 class DataSearch extends SearchDelegate {
-  List<Song> songs = [];
+  int indStartGlobal = 0;
+  int indEndGlobal = 0;
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -164,50 +165,81 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Text('nothing');
+    return searchResults();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    return searchResults();
+  }
+
+  searchStream() {
     if (query == '') {
-      DatabaseHelperFTS4().getListSongs().listen((value) {
-        songs = List.from(value);
-      });
+      return DatabaseHelperFTS4().getListSongs();
     } else {
-      DatabaseHelperFTS4().getSearchResult(query).listen((value) async {
-        songs = List.from(value);
-      });
+      return DatabaseHelperFTS4().getSearchResult(query);
     }
-    print('songs $songs');
-    return ListView.builder(
-        itemCount: songs.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: (() {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SongScreen(
-                            song: songs[index],
-                            orderLang: ['ru', 'uk', 'en'],
-                          )));
-            }),
-            horizontalTitleGap: 0,
-            leading: Text(songs[index].id.toString(),
-                style: Theme.of(context).textTheme.headline6),
-            title: Text(
-              songs[index].title['ru'] ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            subtitle: Text(
-              songs[index].text['ru'] ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-          );
+  }
+
+  searchResults() {
+    return StreamBuilder<List<Song>>(
+        stream: searchStream(),
+        builder: (context, AsyncSnapshot<List<Song>> songs) {
+          if (!songs.hasData) {
+            return Center(
+              child: Text('no data'),
+            );
+          }
+          return ListView.builder(
+              itemCount: songs.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: (() {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SongScreen(
+                                  song: songs.data![index],
+                                  orderLang: ['ru', 'uk', 'en'],
+                                )));
+                  }),
+                  horizontalTitleGap: 0,
+                  leading: Text(songs.data![index].id.toString(),
+                      style: Theme.of(context).textTheme.headline6),
+                  title: RichText(
+                    text: TextSpan(
+                        style: Theme.of(context).textTheme.headline6,
+                        children: text(songs, index, context)),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  subtitle: Text(
+                    songs.data![index].text['ru'] ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                );
+              });
         });
+  }
+
+  List<TextSpan> text(
+      AsyncSnapshot<List<Song>> songs, int index, BuildContext context) {
+    String textFromSnapshot = songs.data![index].title['ru'] ?? '';
+
+    List text = textFromSnapshot.split(RegExp("[ ]"));
+    return text.map((word) {
+      return word.contains('[')
+          ? TextSpan(
+              text: '${word.substring(1, word.length - 1)} ',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(backgroundColor: Colors.yellow))
+          : TextSpan(
+              text: '$word ',
+            );
+    }).toList();
   }
 }
