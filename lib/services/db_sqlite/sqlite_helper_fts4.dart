@@ -455,6 +455,11 @@ class DatabaseHelperFTS4 {
                   LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
                   WHERE $TABLE_TITLE.$TITLE_RU  MATCH '$query*'
                   ORDER BY $TABLE_TITLE.$ID_SONG
+                  UNION ALL
+                  SELECT $TABLE_TEXT_RU.$ID_SONG,
+                  snippet($TABLE_TEXT_RU, '[', ']', '...') AS text_song,
+                  FROM $TABLE_TEXT_RU
+                  WHERE $TABLE_TEXT_RU.$TEXT_RU  MATCH '$query*'
                   ''');
 
       for (Map map in titles) {
