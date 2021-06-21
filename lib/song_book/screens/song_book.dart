@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Projects/services/data_search.dart';
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
@@ -134,112 +135,5 @@ class _SongBookState extends State<SongBook> {
         ],
       )),
     );
-  }
-}
-
-class DataSearch extends SearchDelegate {
-  int indStartGlobal = 0;
-  int indEndGlobal = 0;
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            query = '';
-          })
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow,
-          progress: transitionAnimation,
-        ),
-        onPressed: () {
-          close(context, null);
-        });
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return searchResults();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return searchResults();
-  }
-
-  searchStream() {
-    if (query == '') {
-      return DatabaseHelperFTS4().getListSongs();
-    } else {
-      return DatabaseHelperFTS4().getSearchResult(query);
-    }
-  }
-
-  searchResults() {
-    return StreamBuilder<List<Song>>(
-        stream: searchStream(),
-        builder: (context, AsyncSnapshot<List<Song>> songs) {
-          if (!songs.hasData) {
-            return Center(
-              child: Text('no data'),
-            );
-          }
-          return ListView.builder(
-              itemCount: songs.data!.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: (() {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SongScreen(
-                                  song: songs.data![index],
-                                  orderLang: ['ru', 'uk', 'en'],
-                                )));
-                  }),
-                  horizontalTitleGap: 0,
-                  leading: Text(songs.data![index].id.toString(),
-                      style: Theme.of(context).textTheme.headline6),
-                  title: RichText(
-                    text: TextSpan(
-                        style: Theme.of(context).textTheme.headline6,
-                        children: text(songs, index, context)),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  subtitle: Text(
-                    songs.data![index].text['ru'] ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                );
-              });
-        });
-  }
-
-  List<TextSpan> text(
-      AsyncSnapshot<List<Song>> songs, int index, BuildContext context) {
-    String textFromSnapshot = songs.data![index].title['ru'] ?? '';
-
-    List text = textFromSnapshot.split(RegExp("[ ]"));
-    return text.map((word) {
-      return word.contains('[')
-          ? TextSpan(
-              text: '${word.substring(1, word.length - 1)} ',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline6!
-                  .copyWith(backgroundColor: Colors.yellow))
-          : TextSpan(
-              text: '$word ',
-            );
-    }).toList();
   }
 }

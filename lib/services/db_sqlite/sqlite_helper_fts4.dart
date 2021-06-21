@@ -129,6 +129,7 @@ class DatabaseHelperFTS4 {
     final Database database = (await db)!;
 
     //clean tables before inserting new data
+
     await database.delete(TABLE_TITLE);
     await database.delete(TABLE_TEXT_RU);
     await database.delete(TABLE_TEXT_UK);
@@ -192,13 +193,13 @@ class DatabaseHelperFTS4 {
     //filter which lang-s will be displaying
     _filterLangDisplaying();
 
-    //get titles
-    final List<Map<String, dynamic>> titles = await database!
+    //get searchInTitles
+    final List<Map<String, dynamic>> searchInTitles = await database!
         .query(TABLE_TITLE, columns: columnsTitle, orderBy: ID_SONG);
 
     //remove nullable values
     List<Map<String, dynamic>> titlesWithoutNullable = [];
-    for (Map map in titles) {
+    for (Map map in searchInTitles) {
       var mapWritable = Map<String, dynamic>.from(map);
 
       mapWritable.removeWhere((key, value) => value == null);
@@ -253,13 +254,14 @@ class DatabaseHelperFTS4 {
     List<Map<String, dynamic>> mapTextsUkIndexed = [];
     List<Map<String, dynamic>> mapTextsEnIndexed = [];
 
-    final List<Map<String, dynamic>> titles = await database!.query(
+    final List<Map<String, dynamic>> searchInTitles = await database!.query(
       TABLE_TITLE,
       columns: columnsTitle,
       where: '$ID_SONG = $id',
     );
 //remove nullable values
-    Map<String, dynamic> titlesWritable = Map<String, dynamic>.from(titles[0]);
+    Map<String, dynamic> titlesWritable =
+        Map<String, dynamic>.from(searchInTitles[0]);
     titlesWritable.removeWhere((key, value) => value == null);
 
 //get descriptions
@@ -392,8 +394,9 @@ class DatabaseHelperFTS4 {
     //filter which lang-s will be displaying
     _filterLangDisplaying();
 
-    //get titles
-    final List<Map<String, dynamic>> titles = await database!.rawQuery('''
+    //get searchInTitles
+    final List<Map<String, dynamic>> searchInTitles =
+        await database!.rawQuery('''
     SELECT  $TABLE_TITLE.$ID_SONG, ${columnsTitle.toString().substring(9, columnsTitle.toString().length - 1)}
         FROM $TABLE_TITLE
          INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
@@ -401,7 +404,7 @@ class DatabaseHelperFTS4 {
     ''');
 
     List<Map<String, dynamic>> titlesWithoutNullable = [];
-    for (Map map in titles) {
+    for (Map map in searchInTitles) {
       var mapWritable = Map<String, dynamic>.from(map);
 
       mapWritable.removeWhere((key, value) => value == null);
@@ -447,27 +450,44 @@ class DatabaseHelperFTS4 {
     List<Song> songs = [];
 
     if (query != '') {
-      final List<Map<String, dynamic>> titles = await database!.rawQuery('''
+      final List<Map<String, dynamic>> searchInTitles =
+          await database!.rawQuery('''
                   SELECT $TABLE_TITLE.$ID_SONG,
-                  snippet($TABLE_TITLE, '[', ']', '...') AS $collumns,
+                  snippet($TABLE_TITLE, '[', ']', '...') as $collumns,
                   $TABLE_TEXT_RU.$TEXT_RU AS text_ru
                   FROM $TABLE_TITLE
-                  LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
+                  JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
                   WHERE $TABLE_TITLE.$TITLE_RU  MATCH '$query*'
-                  ORDER BY $TABLE_TITLE.$ID_SONG
-                  UNION ALL
-                  SELECT $TABLE_TEXT_RU.$ID_SONG,
-                  snippet($TABLE_TEXT_RU, '[', ']', '...') AS text_song,
-                  FROM $TABLE_TEXT_RU
-                  WHERE $TABLE_TEXT_RU.$TEXT_RU  MATCH '$query*'
-                  ''');
+                                  ''');
 
-      for (Map map in titles) {
+      for (Map map in searchInTitles) {
         Song song = Song(
             id: map['id_song'],
             title: {'ru': map['ru']},
             text: {'ru': map['text_ru'] ?? ''});
-        print(song.title);
+        //print(song.title);
+        //print(song.text.toString());
+        songs.add(song);
+      }
+
+      final List<Map<String, dynamic>> searhInTexts =
+          await database.rawQuery('''
+                
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  snippet($TABLE_TEXT_RU, '[', ']', '...') AS text_ru,
+                  $TABLE_TITLE.$TITLE_RU
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
+                  WHERE $TABLE_TEXT_RU.$TEXT_RU  MATCH '$query*'
+                  ORDER BY $TABLE_TITLE.$ID_SONG 
+                  ''');
+
+      for (Map map in searhInTexts) {
+        Song song = Song(
+            id: map['id_song'],
+            title: {'ru': map['ru']},
+            text: {'ru': map['text_ru'] ?? ''});
+        //print(song.title);
         //print(song.text.toString());
         songs.add(song);
       }
