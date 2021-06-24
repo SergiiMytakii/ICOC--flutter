@@ -447,25 +447,26 @@ class DatabaseHelperFTS4 {
     String collumns = columnsTitle
         .toString()
         .substring(9, columnsTitle.toString().length - 1);
+
     List<Song> songs = [];
 
     if (query != '') {
       final List<Map<String, dynamic>> searchInTitles =
           await database!.rawQuery('''
                   SELECT $TABLE_TITLE.$ID_SONG,
-                  snippet($TABLE_TITLE, '[', ']', '...') as $collumns,
+                  snippet($TABLE_TITLE, '[', ' ', '...') as $collumns,
                   $TABLE_TEXT_RU.$TEXT_RU AS text_ru
                   FROM $TABLE_TITLE
                   JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
                   WHERE $TABLE_TITLE.$TITLE_RU  MATCH '$query*'
-                                  ''');
+                  ''');
 
       for (Map map in searchInTitles) {
         Song song = Song(
             id: map['id_song'],
-            title: {'ru': map['ru']},
+            title: {'ru': map['ru'], 'uk': map['uk'], 'en': map['en']},
             text: {'ru': map['text_ru'] ?? ''});
-        //print(song.title);
+        print(song.title);
         //print(song.text.toString());
         songs.add(song);
       }
@@ -474,7 +475,7 @@ class DatabaseHelperFTS4 {
           await database.rawQuery('''
                 
                   SELECT $TABLE_TITLE.$ID_SONG,
-                  snippet($TABLE_TEXT_RU, '[', ']', '...') AS text_ru,
+                  snippet($TABLE_TEXT_RU, '[', ' ', '...') AS text_ru,
                   $TABLE_TITLE.$TITLE_RU
                   FROM $TABLE_TITLE
                   JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
