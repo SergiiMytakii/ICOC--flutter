@@ -59,6 +59,7 @@ class _FavoritesState extends State<Favorites> {
           physics: BouncingScrollPhysics(),
           itemCount: songs.length,
           itemBuilder: (BuildContext context, int index) {
+            //change i for making different colors of divider
             if (i < 4) {
               i++;
             } else {

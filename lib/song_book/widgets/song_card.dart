@@ -1,6 +1,5 @@
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:Projects/song_book/widgets/playlists_modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
