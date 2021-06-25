@@ -60,17 +60,17 @@ class DatabaseHelperFTS4 {
 
   void _filterLangDisplaying() {
     if (_ru) {
-      columnsTitle.add(TITLE_RU);
+      columnsTitle.add('title.ru');
       columnsText.add('text_ru.ru');
       columnsDescription.add(DESCRIPTION_RU);
     }
     if (_uk) {
-      columnsTitle.add(TITLE_UK);
+      columnsTitle.add('title.uk');
       columnsText.add('text_uk.uk');
       columnsDescription.add(DESCRIPTION_UK);
     }
     if (_en) {
-      columnsTitle.add(TITLE_EN);
+      columnsTitle.add('title.en');
       columnsText.add('text_en.en');
       columnsDescription.add(DESCRIPTION_EN);
     }
@@ -136,7 +136,7 @@ class DatabaseHelperFTS4 {
     await database.delete(TABLE_TEXT_EN);
     await database.delete(TABLE_DESCRIPTION);
     await database.delete(TABLE_CHORDS);
-
+//todo try to avoid for loop
     for (SongDetail song in songs) {
       await database.insert(
         TABLE_TITLE,
@@ -211,10 +211,10 @@ class DatabaseHelperFTS4 {
     final List<Map<String, dynamic>> texts = await database.rawQuery('''
         SELECT  $colTexts
         FROM $TABLE_TITLE
-         LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
-         LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-         GROUP BY $TABLE_TITLE.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
+        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+        GROUP BY $TABLE_TITLE.$ID_SONG
           ''');
 
     //remove nullable values
@@ -224,7 +224,7 @@ class DatabaseHelperFTS4 {
       if (mapWritable['ru'] == null &&
           mapWritable['uk'] == null &&
           mapWritable['ru'] == null) {
-        mapWritable = {' no text': 'no text'};
+        //mapWritable = {' no text': 'no text'};
       }
       mapWritable.removeWhere((key, value) => value == null);
       //print('mapWritable ${mapWritable.toString().substring(0, 30)}');
@@ -399,8 +399,8 @@ class DatabaseHelperFTS4 {
         await database!.rawQuery('''
     SELECT  $TABLE_TITLE.$ID_SONG, ${columnsTitle.toString().substring(9, columnsTitle.toString().length - 1)}
         FROM $TABLE_TITLE
-         INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
-          ORDER BY $TABLE_FAVORITES.$ID_SONG
+        INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
+        ORDER BY $TABLE_FAVORITES.$ID_SONG
     ''');
 
     List<Map<String, dynamic>> titlesWithoutNullable = [];
@@ -408,7 +408,7 @@ class DatabaseHelperFTS4 {
       var mapWritable = Map<String, dynamic>.from(map);
 
       mapWritable.removeWhere((key, value) => value == null);
-      print(mapWritable);
+      //print(mapWritable);
       titlesWithoutNullable.add(mapWritable);
     }
 //get texts
@@ -443,36 +443,35 @@ class DatabaseHelperFTS4 {
 
   Stream<List<Song>> getSearchResult(String query) async* {
     final Database? database = await db;
-    _filterLangDisplaying();
-    String collumns = columnsTitle
-        .toString()
-        .substring(9, columnsTitle.toString().length - 1);
 
     List<Song> songs = [];
 
     if (query != '') {
-      final List<Map<String, dynamic>> searchInTitles =
-          await database!.rawQuery('''
+      // search in titiles
+
+      if (_ru) {
+        final List<Map<String, dynamic>> searchInTitles =
+            await database!.rawQuery('''
                   SELECT $TABLE_TITLE.$ID_SONG,
-                  snippet($TABLE_TITLE, '[', ' ', '...') as $collumns,
+                  snippet($TABLE_TITLE, '[', ' ', '...') as title_ru,
                   $TABLE_TEXT_RU.$TEXT_RU AS text_ru
                   FROM $TABLE_TITLE
                   JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
                   WHERE $TABLE_TITLE.$TITLE_RU  MATCH '$query*'
                   ''');
 
-      for (Map map in searchInTitles) {
-        Song song = Song(
-            id: map['id_song'],
-            title: {'ru': map['ru'], 'uk': map['uk'], 'en': map['en']},
-            text: {'ru': map['text_ru'] ?? ''});
-        print(song.title);
-        //print(song.text.toString());
-        songs.add(song);
-      }
+        for (Map map in searchInTitles) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'ru': map['title_ru']},
+              text: {'ru': map['text_ru'] ?? ''});
+          //print(song.title);
+          //print(song.text.toString());
+          songs.add(song);
+        }
 
-      final List<Map<String, dynamic>> searhInTexts =
-          await database.rawQuery('''
+        final List<Map<String, dynamic>> searhInTexts =
+            await database.rawQuery('''
                 
                   SELECT $TABLE_TITLE.$ID_SONG,
                   snippet($TABLE_TEXT_RU, '[', ' ', '...') AS text_ru,
@@ -483,14 +482,173 @@ class DatabaseHelperFTS4 {
                   ORDER BY $TABLE_TITLE.$ID_SONG 
                   ''');
 
-      for (Map map in searhInTexts) {
-        Song song = Song(
-            id: map['id_song'],
-            title: {'ru': map['ru']},
-            text: {'ru': map['text_ru'] ?? ''});
-        //print(song.title);
-        //print(song.text.toString());
-        songs.add(song);
+        for (Map map in searhInTexts) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'ru': map['ru']},
+              text: {'ru': map['text_ru'] ?? ''});
+          //print(song.title);
+          //print(song.text.toString());
+          songs.add(song);
+        }
+      }
+      if (_uk) {
+        final List<Map<String, dynamic>> searchInTitles =
+            await database!.rawQuery('''
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  snippet($TABLE_TITLE, '[', ' ', '...') as title_uk,
+                  $TABLE_TEXT_UK.$TEXT_UK AS text_uk
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+                  WHERE $TABLE_TITLE.$TITLE_UK  MATCH '$query*'
+                  ''');
+
+        for (Map map in searchInTitles) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'uk': map['title_uk']},
+              text: {'uk': map['text_uk'] ?? ''});
+          //print(song.title);
+          // print(song.text.toString());
+          songs.add(song);
+        }
+        final List<Map<String, dynamic>> searhInTexts =
+            await database.rawQuery('''
+                
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  snippet($TABLE_TEXT_UK, '[', ' ', '...') AS text_uk,
+                  $TABLE_TITLE.$TITLE_UK
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+                  WHERE $TABLE_TEXT_UK.$TEXT_UK  MATCH '$query*'
+                  ORDER BY $TABLE_TITLE.$ID_SONG 
+                  ''');
+
+        for (Map map in searhInTexts) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'ru': map['uk']},
+              text: {'ru': map['text_uk'] ?? ''});
+          //print(song.title);
+          //print(song.text.toString());
+          songs.add(song);
+        }
+      }
+      if (_en) {
+        final List<Map<String, dynamic>> searchInTitles =
+            await database!.rawQuery('''
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  snippet($TABLE_TITLE, '[', ' ', '...') as title_en,
+                  $TABLE_TEXT_EN.$TEXT_EN AS text_en
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+                  WHERE $TABLE_TITLE.$TITLE_EN  MATCH '$query*'
+                  ''');
+
+        for (Map map in searchInTitles) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'en': map['title_en']},
+              text: {'en': map['text_en'] ?? ''});
+          //print(song.title);
+          // print(song.text.toString());
+          songs.add(song);
+        }
+
+        final List<Map<String, dynamic>> searhInTexts =
+            await database.rawQuery('''
+                
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  snippet($TABLE_TEXT_EN, '[', ' ', '...') AS text_en,
+                  $TABLE_TITLE.$TITLE_EN
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+                  WHERE $TABLE_TEXT_EN.$TEXT_EN  MATCH '$query*'
+                  ORDER BY $TABLE_TITLE.$ID_SONG 
+                  ''');
+
+        for (Map map in searhInTexts) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'en': map['en']},
+              text: {'en': map['text_en'] ?? ''});
+          //print(song.title);
+          //print(song.text.toString());
+          songs.add(song);
+        }
+      }
+      yield songs;
+    }
+  }
+
+  Stream<List<Song>> getSearchResultByNumber(String query) async* {
+    final Database? database = await db;
+    List<Song> songs = [];
+
+    if (query != '') {
+      if (_ru) {
+        final List<Map<String, dynamic>> searchInIds =
+            await database!.rawQuery('''
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  $TABLE_TITLE.$TITLE_RU,
+                  $TABLE_TEXT_RU.$TEXT_RU AS text_ru
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
+                  WHERE $TABLE_TITLE.$ID_SONG = $query
+                  ''');
+
+        for (Map map in searchInIds) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'ru': map['ru']},
+              text: {'ru': map['text_ru'] ?? ''});
+          //print(song.title);
+          //print(song.text.toString());
+          songs.add(song);
+        }
+      }
+      if (_uk) {
+        final List<Map<String, dynamic>> searchInIds =
+            await database!.rawQuery('''
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  $TABLE_TITLE.$TITLE_UK,
+                  $TABLE_TEXT_UK.$TEXT_UK AS text_uk
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+                  WHERE $TABLE_TITLE.$ID_SONG = $query
+                  ''');
+
+        for (Map map in searchInIds) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'uk': map['uk']},
+              text: {'uk': map['text_uk'] ?? ''});
+          //print(song.title);
+          // print(song.text.toString());
+          songs.add(song);
+        }
+      }
+
+      if (_en) {
+        final List<Map<String, dynamic>> searchInIds =
+            await database!.rawQuery('''
+                  SELECT $TABLE_TITLE.$ID_SONG,
+                  $TABLE_TITLE.$TITLE_EN,
+                  $TABLE_TEXT_EN.$TEXT_EN AS text_en
+                  FROM $TABLE_TITLE
+                  JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+                  WHERE $TABLE_TITLE.$ID_SONG = $query
+                  ''');
+
+        for (Map map in searchInIds) {
+          Song song = Song(
+              id: map['id_song'],
+              title: {'en': map['en']},
+              text: {'en': map['text_en'] ?? ''});
+          //print(song.title);
+          // print(song.text.toString());
+          songs.add(song);
+        }
       }
     }
     yield songs;

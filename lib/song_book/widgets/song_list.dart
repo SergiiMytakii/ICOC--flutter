@@ -1,6 +1,5 @@
 import 'package:Projects/shared/loading.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:Projects/song_book/widgets/song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

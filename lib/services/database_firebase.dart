@@ -48,8 +48,8 @@ class DatabaseServiceFirebase {
 
   //get songs
   Future get songs {
-    //insertSongsToFirebase();  //use this line to insert all songs from assets/songs.json
-    print('Got snapshot');
+    //insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
+
     return songCollection
         .get()
         .then((snapshot) => _songListFromSnapshot(snapshot), onError: (error) {

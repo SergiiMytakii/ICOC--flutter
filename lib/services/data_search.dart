@@ -48,16 +48,19 @@ class DataSearch extends SearchDelegate {
   searchStream() {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Я]+"), ' ');
+        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), '');
 
     if (trimmedQuery == '') {
       return DatabaseHelperFTS4().getListSongs();
     } else {
-      return DatabaseHelperFTS4().getSearchResult(trimmedQuery);
+      if (trimmedQuery.contains(RegExp(r'[0-9]'))) {
+        return DatabaseHelperFTS4().getSearchResultByNumber(trimmedQuery);
+      } else
+        return DatabaseHelperFTS4().getSearchResult(trimmedQuery);
     }
   }
 
-  searchResults() {
+  Widget searchResults() {
     int i = 0;
     return StreamBuilder<List<Song>>(
         stream: searchStream(),
@@ -76,49 +79,18 @@ class DataSearch extends SearchDelegate {
                 } else {
                   i = 0;
                 }
-                return Column(
-                  children: [
-                    ListTile(
-                      onTap: (() {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SongScreen(
-                                      song: songs.data![index],
-                                      orderLang: ['ru', 'uk', 'en'],
-                                    )));
-                      }),
-                      horizontalTitleGap: 0,
-                      leading: Text(songs.data![index].id.toString(),
-                          style: Theme.of(context).textTheme.headline6),
-                      title: RichText(
-                        text: TextSpan(
-                            style: Theme.of(context).textTheme.headline6,
-                            children: title(songs, index, context)),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      subtitle: RichText(
-                        text: TextSpan(
-                            style: Theme.of(context).textTheme.bodyText2,
-                            children: text(songs, index, context)),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                    ),
-                    Divider(
-                      indent: 50,
-                      color: dividerColors[i],
-                    )
-                  ],
-                );
+                return buildSongCardWithHighliting(songs, index, context, i);
               });
         });
   }
 
+  // returns TextSpan with hihglited words for title
   List<TextSpan> title(
       AsyncSnapshot<List<Song>> songs, int index, BuildContext context) {
-    String titleFromSnapshot = songs.data![index].title['ru'] ?? '';
+    String titleFromSnapshot = songs.data![index].title['ru'] ??
+        songs.data![index].title['uk'] ??
+        songs.data![index].title['en'] ??
+        '';
 
     final List<String> title = titleFromSnapshot.split(' ');
     //print(title);
@@ -134,9 +106,13 @@ class DataSearch extends SearchDelegate {
     }).toList();
   }
 
+  // returns TextSpan with hihglited words for text
   List<TextSpan> text(
       AsyncSnapshot<List<Song>> songs, int index, BuildContext context) {
-    String textFromSnapshot = songs.data![index].text['ru'] ?? '';
+    String textFromSnapshot = songs.data![index].text['ru'] ??
+        songs.data![index].text['uk'] ??
+        songs.data![index].text['en'] ??
+        '';
     //print(textFromSnapshot);
 
     final List<String> text = textFromSnapshot.split(' ');
@@ -156,6 +132,47 @@ class DataSearch extends SearchDelegate {
   trimText(String word) {
     //print(word);
     String word1 = word.replaceAll('[', '');
-    return word1.replaceAll(']', ' ');
+    return word1;
+  }
+
+  Widget buildSongCardWithHighliting(
+      AsyncSnapshot<List<Song>> songs, int index, BuildContext context, int i) {
+    return Column(
+      children: [
+        ListTile(
+          onTap: (() {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SongScreen(
+                          song: songs.data![index],
+                          //todo: pass here actial orderLang
+                          orderLang: ['ru', 'uk', 'en'],
+                        )));
+          }),
+          horizontalTitleGap: 0,
+          leading: Text(songs.data![index].id.toString(),
+              style: Theme.of(context).textTheme.headline6),
+          title: RichText(
+            text: TextSpan(
+                style: Theme.of(context).textTheme.headline6,
+                children: title(songs, index, context)),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          subtitle: RichText(
+            text: TextSpan(
+                style: Theme.of(context).textTheme.bodyText2,
+                children: text(songs, index, context)),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 4,
+          ),
+        ),
+        Divider(
+          indent: 50,
+          color: dividerColors[i],
+        )
+      ],
+    );
   }
 }
