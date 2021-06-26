@@ -1,9 +1,10 @@
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:Projects/services/order_lang.dart';
+import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/widgets/song_card.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Favorites extends StatefulWidget {
   @override
@@ -13,30 +14,19 @@ class Favorites extends StatefulWidget {
 class _FavoritesState extends State<Favorites> {
   List<Song> songs = [];
   bool slideAction = true;
+  List<String> _orderLang = [];
 
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
+    OrderLang().orderLang().listen((event) {
+      setState(() {
+        _orderLang = event;
+      });
+    });
     DatabaseHelperFTS4().getListFavorites().then((songsFromDb) => setState(() {
           songs = songsFromDb;
         }));
-  }
-
-  List<String> _orderLang = ['ru', 'uk', 'en'];
-  List<Color> dividerColors = [
-    Color(0xFFFF595E),
-    Color(0xffffca3a),
-    Color(0xff8ac926),
-    Color(0xff1982c4),
-    Color(0xff6a4c93)
-  ];
-
-  void _loadPreferences() async {
-    SharedPreferences prefLanguages = await SharedPreferences.getInstance();
-    setState(() {
-      _orderLang = (prefLanguages.getStringList('orderLang') ?? _orderLang);
-    });
   }
 
   //rebuild UI when song deleted from favorites
@@ -70,7 +60,7 @@ class _FavoritesState extends State<Favorites> {
               orderLang: _orderLang,
               slideAction: slideAction,
               deleteFromFavorites: deleteFromFavoriteList,
-              dividerColor: dividerColors[i],
+              dividerColor: Constants.dividerColors[i],
             );
           },
         ));
