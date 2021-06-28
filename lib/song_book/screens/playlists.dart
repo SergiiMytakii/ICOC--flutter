@@ -72,12 +72,20 @@ class _PlaylistsState extends State<Playlists> {
         return AlertDialog(
           title: Text(title.tr()),
           content: TextField(
+            decoration: InputDecoration(
+              labelText:
+                  playlist != null ? playlist['playlistName'].toString() : '',
+            ),
             controller: _textController,
-            onSubmitted: (_) => onPressedHandler(playlist),
+            onSubmitted: (_) => playlist != null
+                ? onPressedHandler(playlist)
+                : onPressedHandler(),
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => onPressedHandler(playlist),
+              onPressed: () => playlist != null
+                  ? onPressedHandler(playlist)
+                  : onPressedHandler(),
               child: const Text('OK'),
             ),
           ],
@@ -103,8 +111,11 @@ class _PlaylistsState extends State<Playlists> {
                   color: Theme.of(context).primaryColorLight,
                   icon: Icons.drive_file_rename_outline,
                   onTap: () {
-                    _buildAlertDialog('Rename playlist'.tr(),
-                        _submitNewNamePlaylist, playlist);
+                    _buildAlertDialog(
+                      'Rename playlist'.tr(),
+                      _submitNewNamePlaylist,
+                      playlist,
+                    );
                   }),
               IconSlideAction(
                 caption: 'delete from playlists'.tr(),
