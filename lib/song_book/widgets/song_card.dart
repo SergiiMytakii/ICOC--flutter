@@ -79,16 +79,14 @@ class _SongCardState extends State<SongCard> {
             ),
           ],
           child: ListTile(
-            onTap: (() {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SongScreen(
-                            song: song,
-                            orderLang: widget.orderLang,
-                            deleteFromFavorites: widget.deleteFromFavorites,
-                          )));
-            }),
+            onTap: (() => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SongScreen(
+                          song: song,
+                          orderLang: widget.orderLang,
+                          deleteFromFavorites: widget.deleteFromFavorites,
+                        )))),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
