@@ -17,7 +17,6 @@ class SongTextOnSongScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Column(
         children: [
-
           Text(
             title ?? '',
             textAlign: TextAlign.center,
@@ -33,7 +32,8 @@ class SongTextOnSongScreen extends StatelessWidget {
           Text(
             textVersion ?? '',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 18),
+            style:
+                Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 18),
           ),
         ],
       ),

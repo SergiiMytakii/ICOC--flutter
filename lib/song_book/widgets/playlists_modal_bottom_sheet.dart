@@ -1,27 +1,31 @@
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:Projects/song_book/screens/playlists.dart';
 import 'package:flutter/material.dart';
 
 class PlaylistsModalBottomSheet extends StatefulWidget {
+  final int id;
+
+  PlaylistsModalBottomSheet(this.id);
   @override
   _PlaylistsModalBottomSheetState createState() =>
       _PlaylistsModalBottomSheetState();
 }
 
 class _PlaylistsModalBottomSheetState extends State<PlaylistsModalBottomSheet> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final _formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
 
-  void _submitData() {
+  void _submitData() async {
     final enteredNameOfNewPlaylist = _textController.text;
     if (enteredNameOfNewPlaylist.isEmpty) return;
-    //todo : create new instance of playlist and insert it in DB
-    print(enteredNameOfNewPlaylist);
+    await DatabaseHelperFTS4().createPlaylist(enteredNameOfNewPlaylist);
+    await DatabaseHelperFTS4()
+        .insertIntoPlaylist(enteredNameOfNewPlaylist, widget.id);
+
     Navigator.of(context).pop();
   }
+
+  void _loadPlaylists() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +61,9 @@ class _PlaylistsModalBottomSheetState extends State<PlaylistsModalBottomSheet> {
                         borderRadius: BorderRadius.circular(20.0),
                         borderSide: BorderSide(
                           width: 2,
-                          color:Theme.of(context).accentColor,),),
-
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
                     ),
                     controller: _textController,
                     onSubmitted: (_) => _submitData(),
@@ -88,6 +93,7 @@ class _PlaylistsModalBottomSheetState extends State<PlaylistsModalBottomSheet> {
               right: 65,
             ),
             child: DropdownButtonFormField(
+              onTap: () => _loadPlaylists,
               value: 1,
               items: [
                 DropdownMenuItem(
@@ -99,7 +105,7 @@ class _PlaylistsModalBottomSheetState extends State<PlaylistsModalBottomSheet> {
                   value: 2,
                 ),
               ],
-              onChanged: (value) => setState((){}),
+              onChanged: (value) => setState(() {}),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),

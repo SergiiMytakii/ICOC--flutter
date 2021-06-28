@@ -1,4 +1,3 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts_to_delete.dart';
 import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
@@ -77,7 +76,7 @@ class _SongScreenState extends State<SongScreen> {
 
   //get current favorite status
   Future favoriteStatus() async {
-    await DatabaseHelperFTS().getFavoriteStatus(widget.song.id).then((value) {
+    await DatabaseHelperFTS4().getFavoriteStatus(widget.song.id).then((value) {
       setState(() {
         favStatus = value;
       });

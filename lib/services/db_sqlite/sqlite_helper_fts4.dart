@@ -51,7 +51,6 @@ class DatabaseHelperFTS4 {
 
   static const String TABLE_PLAYLISTS_SONGS = 'playlistsSongs';
   static const String PLAYLIST_ID = 'playlistId';
-  static const String SONG_ID = 'songId';
 
   List<String> columnsTitle = [ID_SONG];
   var columnsText = [];
@@ -78,7 +77,7 @@ class DatabaseHelperFTS4 {
     colTexts = colTexts.substring(1, colTexts.length - 1);
   }
 
-//get refetence to the DB
+/* get refetence to the DB and initialasing DB */
   Future<Database?> get db async {
     _loadPreferences();
 
@@ -116,7 +115,7 @@ class DatabaseHelperFTS4 {
       await db.execute(
           'CREATE TABLE $TABLE_PLAYLISTS ($ID INTEGER PRIMARY KEY AUTOINCREMENT,  $PLAYLIST_NAME TEXT)');
       await db.execute(
-          'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID INTEGER PRIMARY KEY,  $SONG_ID)');
+          'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID INTEGER PRIMARY KEY,  $ID_SONG)');
 
       print(' !!!!databases was created!!!!!');
     });
@@ -355,7 +354,7 @@ class DatabaseHelperFTS4 {
     return song;
   }
 
-  /*add to favorite list*/
+  /* functions for favorites*/
 
   Future<void> addToFavorites(int id) async {
     // Get a reference to the database.
@@ -415,10 +414,10 @@ class DatabaseHelperFTS4 {
     final List<Map<String, dynamic>> texts = await database.rawQuery('''
         SELECT  $colTexts
         FROM $TABLE_FAVORITES
-         LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
-         LEFT JOIN $TABLE_TEXT_UK ON $TABLE_FAVORITES.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_FAVORITES.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-         GROUP BY $TABLE_FAVORITES.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
+        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_FAVORITES.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_FAVORITES.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+        GROUP BY $TABLE_FAVORITES.$ID_SONG
           ''');
 
     //remove nullable values
@@ -440,6 +439,8 @@ class DatabaseHelperFTS4 {
 
     return songs;
   }
+
+/* functions for full text search */
 
   Stream<List<Song>> getSearchResult(String query) async* {
     final Database? database = await db;
@@ -465,8 +466,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'ru': map['title_ru']},
               text: {'ru': map['text_ru'] ?? ''});
-          //print(song.title);
-          //print(song.text.toString());
           songs.add(song);
         }
 
@@ -487,8 +486,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'ru': map['ru']},
               text: {'ru': map['text_ru'] ?? ''});
-          //print(song.title);
-          //print(song.text.toString());
           songs.add(song);
         }
       }
@@ -508,8 +505,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'uk': map['title_uk']},
               text: {'uk': map['text_uk'] ?? ''});
-          //print(song.title);
-          // print(song.text.toString());
           songs.add(song);
         }
         final List<Map<String, dynamic>> searhInTexts =
@@ -529,8 +524,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'ru': map['uk']},
               text: {'ru': map['text_uk'] ?? ''});
-          //print(song.title);
-          //print(song.text.toString());
           songs.add(song);
         }
       }
@@ -572,8 +565,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'en': map['en']},
               text: {'en': map['text_en'] ?? ''});
-          //print(song.title);
-          //print(song.text.toString());
           songs.add(song);
         }
       }
@@ -602,8 +593,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'ru': map['ru']},
               text: {'ru': map['text_ru'] ?? ''});
-          //print(song.title);
-          //print(song.text.toString());
           songs.add(song);
         }
       }
@@ -623,8 +612,6 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'uk': map['uk']},
               text: {'uk': map['text_uk'] ?? ''});
-          //print(song.title);
-          // print(song.text.toString());
           songs.add(song);
         }
       }
@@ -645,12 +632,73 @@ class DatabaseHelperFTS4 {
               id: map['id_song'],
               title: {'en': map['en']},
               text: {'en': map['text_en'] ?? ''});
-          //print(song.title);
-          // print(song.text.toString());
           songs.add(song);
         }
       }
     }
     yield songs;
+  }
+
+/* functions for playlists*/
+
+//create new playlist
+  Future<void> createPlaylist(String name) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.insert(
+      TABLE_PLAYLISTS,
+      {'$PLAYLIST_NAME': name},
+    );
+  }
+
+//insert song into playlist
+  Future<void> insertIntoPlaylist(String playlist, int songId) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    final List<Map<String, dynamic>> select = await database.query(
+        TABLE_PLAYLISTS,
+        where: '$PLAYLIST_NAME = ?',
+        whereArgs: [playlist]);
+
+    await database.insert(TABLE_PLAYLISTS_SONGS,
+        {PLAYLIST_ID: select.last['id'], ID_SONG: songId});
+    //I can't understand why it not works
+    //
+    // await database.rawInsert('''
+    // INSERT INTO $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID , $ID_SONG)
+    // VALUES ((SELECT $ID FROM $TABLE_PLAYLISTS
+    // WHERE $PLAYLIST_NAME = $playlist),  $songId)
+    //     ''');
+  }
+
+  Stream<List<Map<String, Object?>>> getPlaylists() async* {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    List<Map<String, Object?>> playlists = await database.rawQuery('''
+      SELECT * FROM $TABLE_PLAYLISTS
+      ORDER BY $ID DESC
+    ''');
+
+    yield List.from(playlists);
+  }
+
+  Future<void> deleteFromPlaylists(int playlistId) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+    await database
+        .delete(TABLE_PLAYLISTS, where: '$ID = ?', whereArgs: [playlistId]);
+  }
+
+  renamePlaylists(int playlistId, String newName) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+    await database.rawUpdate('''
+    UPDATE $TABLE_PLAYLISTS
+    SET $PLAYLIST_NAME = ?
+    WHERE $ID = ?;
+        ''', [newName, playlistId]);
   }
 }

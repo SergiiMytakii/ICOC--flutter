@@ -1,4 +1,4 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts_to_delete.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -88,103 +88,10 @@ class DatabaseHelper {
       print('db already exist!');
       return _db;
     } else {
-      _db = await DatabaseHelperFTS().initDB();
+      _db = await DatabaseHelperFTS4().initDB();
       print('initializing db');
       return _db;
     }
-  }
-
-  //add to favorite list
-  Future<void> addToFavorites(int id) async {
-    // Get a reference to the database.
-    final Database database = (await db)!;
-
-    await database.insert(
-      TABLE_FAVORITES,
-      {ID: id, FAVORITE_STATUS: 1},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    print('inserted to favorites');
-  }
-
-  Future<void> deleteFromFavorites(int id) async {
-    // Get a reference to the database.
-    final Database database = (await db)!;
-
-    await database.delete(TABLE_FAVORITES, where: '$ID = ?', whereArgs: [id]);
-    print('deleted from favorites');
-  }
-
-  Future<List<SongDetail>> getFavorites() async {
-    final Database? database = await db;
-    // get list ides
-    final List<Map<String, dynamic>> mapsIdes =
-        await database!.query(TABLE_FAVORITES);
-    //get list titles
-    final List<Map<String, dynamic>> mapsTitles = await database.rawQuery('''
-    SELECT $TABLE_TITLE.$TITLE_RU,  $TABLE_TITLE.$TITLE_UK,
-           $TABLE_TITLE.$TITLE_EN
-    FROM ($TABLE_FAVORITES
-    INNER JOIN $TABLE_TITLE ON $TABLE_FAVORITES.$ID = $TABLE_TITLE.$ID) 
-    WHERE $FAVORITE_STATUS = 1
-    ''');
-
-    //get list texts
-    final List<Map<String, dynamic>> mapsTexts = await database.rawQuery('''
-         SELECT $TABLE_TEXT.$TEXT_RU1, $TABLE_TEXT.$TEXT_RU2,  
-                $TABLE_TEXT.$TEXT_UK1, $TABLE_TEXT.$TEXT_UK2,
-                $TABLE_TEXT.$TEXT_EN1, $TABLE_TEXT.$TEXT_EN2
-    FROM ($TABLE_FAVORITES
-    INNER JOIN $TABLE_TEXT ON $TABLE_FAVORITES.$ID = $TABLE_TEXT.$ID) 
-    WHERE $FAVORITE_STATUS = 1
-    ''');
-    //get list descriptions
-    final List<Map<String, dynamic>> mapsDescriptions =
-        await database.rawQuery('''
-    SELECT $TABLE_DESCRIPTION.$DESCRIPTION_RU,  $TABLE_DESCRIPTION.$DESCRIPTION_UK,
-           $TABLE_DESCRIPTION.$DESCRIPTION_EN
-    FROM ($TABLE_FAVORITES
-    INNER JOIN $TABLE_DESCRIPTION ON $TABLE_FAVORITES.$ID = $TABLE_DESCRIPTION.$ID) 
-    WHERE $FAVORITE_STATUS = 1
-    ''');
-    //get list chords
-    final List<Map<String, dynamic>> mapsChords = await database.rawQuery('''
-    SELECT $TABLE_CHORDS.$CHORDS_V1,  $TABLE_CHORDS.$CHORDS_V2,
-           $TABLE_CHORDS.$CHORDS_V3, $TABLE_CHORDS.$CHORDS_V4
-    FROM ($TABLE_FAVORITES
-    INNER JOIN $TABLE_CHORDS ON $TABLE_FAVORITES.$ID = $TABLE_CHORDS.$ID) 
-    WHERE $FAVORITE_STATUS = 1
-    ''');
-    // Convert the List<Map<String, dynamic> into a List<SongDetail>.
-    List<SongDetail> songs = List.generate(mapsTitles.length, (i) {
-      //make maps writable and delete nullable values
-      Map<String, dynamic> mapTitlesWritable =
-          Map<String, dynamic>.from(mapsTitles[i]);
-      mapTitlesWritable.removeWhere((key, value) => value == null);
-
-      Map<String, dynamic> mapTextsWritable =
-          Map<String, dynamic>.from(mapsTexts[i]);
-      mapTextsWritable.removeWhere((key, value) => value == null);
-
-      //do the same for description map
-      Map<String, dynamic> mapDescriptionsWritable =
-          Map<String, dynamic>.from(mapsDescriptions[i]);
-      mapDescriptionsWritable.removeWhere((key, value) => value == null);
-
-      //do the same for description map
-      Map<String, dynamic> mapChordsWritable =
-          Map<String, dynamic>.from(mapsChords[i]);
-      mapChordsWritable.removeWhere((key, value) => value == null);
-
-      return SongDetail(
-          id: mapsIdes[i]['id'],
-          title: mapTitlesWritable,
-          text: mapTextsWritable,
-          description: mapDescriptionsWritable,
-          chords: mapChordsWritable);
-    });
-
-    return songs;
   }
 
   //create new playlist

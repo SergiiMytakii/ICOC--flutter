@@ -1,4 +1,4 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts_to_delete.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:Projects/song_book/widgets/playlists_modal_bottom_sheet.dart';
@@ -48,7 +48,7 @@ class _SongCardState extends State<SongCard> {
                     content: Text('Deleted from favorites'.tr()),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  DatabaseHelperFTS().deleteFromFavorites(song.id);
+                  DatabaseHelperFTS4().deleteFromFavorites(song.id);
                   widget.deleteFromFavorites!(song.id);
                 } else {
                   ///if this is  songs list - we we add item to favorites  on tap
@@ -56,7 +56,7 @@ class _SongCardState extends State<SongCard> {
                     content: Text('Added to favorite list'.tr()),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  DatabaseHelperFTS().addToFavorites(song.id);
+                  DatabaseHelperFTS4().addToFavorites(song.id);
                 }
               },
             ),
@@ -68,15 +68,14 @@ class _SongCardState extends State<SongCard> {
                 showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return PlaylistsModalBottomSheet();
+                      return PlaylistsModalBottomSheet(song.id);
                     });
 
                 final snackBar = SnackBar(
                   content: Text('Added to playlist'.tr()),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }, //todo implement action: showModalBottomSheet
-              //todo     where you can create ore choose existing playlist
+              },
             ),
           ],
           child: ListTile(

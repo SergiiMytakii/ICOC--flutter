@@ -1,3 +1,4 @@
+import 'package:Projects/services/order_lang.dart';
 import 'package:Projects/song_book/widgets/checkbox_list_tile.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +17,22 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
-  }
 
-  List<String> _orderLang = ['ru', 'uk', 'en'];
-
-  void _loadPreferences() async {
-    SharedPreferences prefLanguages = await SharedPreferences.getInstance();
-    setState(() {
-      _orderLang = (prefLanguages.getStringList('orderLang') ?? _orderLang);
+    OrderLang().orderLang().listen((event) {
+      setState(() {
+        _orderLang = event;
+      });
     });
   }
+
+  List<String> _orderLang = [];
+
+  // void _loadPreferences() async {
+  //   SharedPreferences prefLanguages = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _orderLang = (prefLanguages.getStringList('orderLang') ?? _orderLang);
+  //   });
+  // }
 
   void setOrderLang(List<String> orderLang) async {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
@@ -78,6 +84,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
       _orderLang.insert(newIndex, item);
       //writing new order of lang-s to preferences
       setOrderLang(_orderLang);
+
       widget.updateList!();
     });
   }

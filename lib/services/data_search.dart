@@ -1,3 +1,5 @@
+import 'package:Projects/services/order_lang.dart';
+import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/screens/song_screen.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +7,6 @@ import 'package:flutter/material.dart';
 import 'db_sqlite/sqlite_helper_fts4.dart';
 
 class DataSearch extends SearchDelegate {
-  List<Color> dividerColors = [
-    Color(0xFFFF595E),
-    Color(0xffffca3a),
-    Color(0xff8ac926),
-    Color(0xff1982c4),
-    Color(0xff6a4c93)
-  ];
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -45,7 +40,7 @@ class DataSearch extends SearchDelegate {
     return searchResults();
   }
 
-  searchStream() {
+  Stream<List<Song>> searchStream() {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
         query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), '');
@@ -62,6 +57,10 @@ class DataSearch extends SearchDelegate {
 
   Widget searchResults() {
     int i = 0;
+    List<String> _orderLang = [];
+    OrderLang().orderLang().listen((event) {
+      _orderLang = event;
+    });
     return StreamBuilder<List<Song>>(
         stream: searchStream(),
         builder: (context, AsyncSnapshot<List<Song>> songs) {
@@ -79,7 +78,8 @@ class DataSearch extends SearchDelegate {
                 } else {
                   i = 0;
                 }
-                return buildSongCardWithHighliting(songs, index, context, i);
+                return buildSongCardWithHighliting(
+                    songs, index, context, i, _orderLang);
               });
         });
   }
@@ -135,8 +135,8 @@ class DataSearch extends SearchDelegate {
     return word1;
   }
 
-  Widget buildSongCardWithHighliting(
-      AsyncSnapshot<List<Song>> songs, int index, BuildContext context, int i) {
+  Widget buildSongCardWithHighliting(AsyncSnapshot<List<Song>> songs, int index,
+      BuildContext context, int i, List<String> _orderLang) {
     return Column(
       children: [
         ListTile(
@@ -147,7 +147,7 @@ class DataSearch extends SearchDelegate {
                     builder: (context) => SongScreen(
                           song: songs.data![index],
                           //todo: pass here actial orderLang
-                          orderLang: ['ru', 'uk', 'en'],
+                          orderLang: _orderLang,
                         )));
           }),
           horizontalTitleGap: 0,
@@ -170,7 +170,7 @@ class DataSearch extends SearchDelegate {
         ),
         Divider(
           indent: 50,
-          color: dividerColors[i],
+          color: Constants.dividerColors[i],
         )
       ],
     );

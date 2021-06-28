@@ -1,9 +1,11 @@
 import 'package:Projects/menu/my_drawer.dart';
+import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/screens/favorites.dart';
 import 'package:Projects/song_book/screens/playlists.dart';
 import 'package:Projects/song_book/screens/song_book.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -27,6 +29,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    print('build botton navig bar');
     return Scaffold(
       drawer: Drawer(
         child: MyDrawer(),
