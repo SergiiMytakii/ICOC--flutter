@@ -1,11 +1,9 @@
-import 'package:Projects/menu/my_drawer.dart';
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:Projects/song_book/screens/favorites.dart';
-import 'package:Projects/song_book/screens/playlists.dart';
-import 'package:Projects/song_book/screens/song_book.dart';
+import 'package:Projects/app/menu/my_drawer.dart';
+import '../screens/favorites.dart';
+import '../screens/playlists.dart';
+import '../screens/song_book.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override

@@ -1,4 +1,4 @@
-import 'package:Projects/settings/general_settings.dart';
+import 'package:Projects/settings/presentation/general_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,9 +39,7 @@ class MyDrawer extends StatelessWidget {
           ),
           onTap: () {
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return GeneralSettings();
-            }));
+            Navigator.pushNamed(context, '/settings');
           },
         ),
         ListTile(

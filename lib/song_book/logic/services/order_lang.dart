@@ -1,11 +1,12 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderLang {
-  Stream orderLang() async* {
+  Stream<List<String>> orderLang() async* {
     SharedPreferences prefLanguages = await SharedPreferences.getInstance();
 
-    List<String> _orderLang =
+    List<String> orderLang =
         (prefLanguages.getStringList('orderLang') ?? ['ru', 'uk', 'en']);
-    yield _orderLang;
+
+    yield orderLang;
   }
 }

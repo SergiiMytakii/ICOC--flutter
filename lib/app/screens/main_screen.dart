@@ -1,8 +1,8 @@
-import 'package:Projects/song_book/widgets/bottom_navigation_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:Projects/song_book/presentation/widgets/bottom_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
-import '../../menu/my_drawer.dart';
+import '../menu/my_drawer.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -10,19 +10,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  tableItem(String title, Color color, IconData icon, double sizeOfCell) {
+
+  tableItem(String title, Color color, IconData icon, double sizeOfCell, String routeName) {
     return Container(
       height: sizeOfCell,
       width: sizeOfCell,
       padding: const EdgeInsets.all(7.5),
       child: InkWell(
         onTap: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return MyBottomNavigationBar();
-            }),
-          ),
+          Navigator.of(context).pushNamed(routeName)
         },
         splashColor: Theme.of(context).accentColor,
         borderRadius: BorderRadius.circular(15),
@@ -144,12 +140,14 @@ class _MainScreenState extends State<MainScreen> {
                         Color(0xffff595e),
                         Icons.music_note,
                         sizeOfCell(context),
+                        '/songBook'
                       ),
                       tableItem(
                         'drawer_news'.tr(),
                         Color(0xffffca3a),
                         Icons.language,
                         sizeOfCell(context),
+                          '/Q&A'
                       ),
                     ],
                   ),
@@ -160,12 +158,14 @@ class _MainScreenState extends State<MainScreen> {
                         Color(0xff8ac926),
                         Icons.import_contacts,
                         sizeOfCell(context),
+                          '/firstPrinciples'
                       ),
                       tableItem(
                         'drawer_q_and_a'.tr(),
                         Color(0xff1982c4),
                         Icons.question_answer,
                         sizeOfCell(context),
+                          '/news'
                       ),
                     ],
                   ),

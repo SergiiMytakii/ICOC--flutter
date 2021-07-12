@@ -1,8 +1,8 @@
-import 'package:Projects/services/order_lang.dart';
 import 'package:Projects/shared/constants.dart';
 import 'package:Projects/shared/loading.dart';
+import 'package:Projects/song_book/logic/services/order_lang.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/widgets/song_card.dart';
+import 'package:Projects/song_book/presentation/widgets/song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

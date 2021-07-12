@@ -1,4 +1,4 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';

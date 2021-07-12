@@ -1,11 +1,13 @@
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/screens/song_screen.dart';
-import 'package:Projects/song_book/widgets/playlists_modal_bottom_sheet.dart';
+import 'package:Projects/song_book/presentation/screens/song_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:easy_localization/easy_localization.dart';
+
+import '../../presentation/widgets/playlists_modal_bottom_sheet.dart';
+
 
 class SongCard extends StatefulWidget {
   final Song song;

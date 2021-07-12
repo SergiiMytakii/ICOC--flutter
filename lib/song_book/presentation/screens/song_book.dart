@@ -1,9 +1,10 @@
 import 'dart:io';
-import 'package:Projects/services/data_search.dart';
-import 'package:Projects/services/db_sqlite/sqlite_helper_fts4.dart';
+
+import 'package:Projects/song_book/logic/services/data_search.dart';
+import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/widgets/bottom_sheet_filter.dart';
-import 'package:Projects/song_book/widgets/song_list.dart';
+import 'package:Projects/song_book/presentation/widgets/bottom_sheet_filter.dart';
+import 'package:Projects/song_book/presentation/widgets/song_list.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
