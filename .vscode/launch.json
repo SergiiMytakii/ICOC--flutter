@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+<<<<<<< HEAD
         {
             "name": "icoc-flutter",
             "request": "launch",
@@ -14,6 +15,14 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
+=======
+        
+        {
+            "name": "icoc-flutter",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/app/main.dart"
+>>>>>>> ca3f7d571e20ba29c2a7d444a788d6120df8bdf3
         }
     ]
 }
