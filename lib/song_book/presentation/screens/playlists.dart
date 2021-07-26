@@ -159,6 +159,7 @@ class _PlaylistsState extends State<Playlists> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('bottom_navigation_bar_playlists'.tr),
+        backgroundColor: Constants.screensColors['songBook'],
         actions: [
           IconButton(
             icon: Icon(Icons.add),

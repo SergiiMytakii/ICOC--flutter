@@ -16,7 +16,7 @@ class Favorites extends StatefulWidget {
 
 class _FavoritesState extends State<Favorites> {
   List<Song> songs = [];
-  bool slideAction = true;
+  final SlideActions slideAction = SlideActions.Favorites;
 
   @override
   void initState() {
@@ -42,6 +42,7 @@ class _FavoritesState extends State<Favorites> {
         appBar: AppBar(
           title: Text('bottom_navigation_bar_favorites'.tr),
           centerTitle: true,
+          backgroundColor: Constants.screensColors['songBook'],
         ),
         body: ListView.builder(
           physics: BouncingScrollPhysics(),

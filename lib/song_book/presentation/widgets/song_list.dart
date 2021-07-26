@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 
 class SongList extends StatelessWidget {
-  final bool slideAction = false;
+  final SlideActions slideAction = SlideActions.AllSongs;
 
   @override
   Widget build(BuildContext context) {

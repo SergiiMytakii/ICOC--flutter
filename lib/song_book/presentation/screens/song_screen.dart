@@ -1,3 +1,4 @@
+import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
@@ -90,6 +91,7 @@ class _SongScreenState extends State<SongScreen> {
       length: countTabs(),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Constants.screensColors['songBook'],
           bottom: TabBar(
             isScrollable: true,
             tabs: [

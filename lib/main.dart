@@ -1,7 +1,8 @@
 import 'dart:ui';
 
+import 'package:Projects/app/screens/main_screen.dart';
 import 'package:Projects/app/theme.dart';
-import 'package:Projects/router/app_router.dart';
+import 'package:Projects/routes/pages.dart';
 import 'package:Projects/shared/constants.dart';
 import 'package:Projects/shared/messages.dart';
 import 'package:Projects/song_book/logic/services/database_firebase.dart';
@@ -9,7 +10,6 @@ import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.d
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:getxfire/getxfire.dart';
@@ -26,15 +26,10 @@ void main() async {
     DatabaseHelperFTS4().insertAllSongs(songs);
   });
 
-  runApp(MyApp(
-    appRouter: AppRouter(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AppRouter appRouter;
-
-  MyApp({Key? key, required this.appRouter}) : super(key: key);
   String? appLocale;
   @override
   Widget build(BuildContext context) {
@@ -44,15 +39,17 @@ class MyApp extends StatelessWidget {
       dark: myDarkTheme,
       builder: (light, dark) => OKToast(
         child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
           locale: getLocale()
               ? Constants().languagesLocales[appLocale]
               : window.locale,
+          fallbackLocale: Locale('ru', 'RU'),
           theme: light,
           darkTheme: dark,
           translations: Messages(),
           title: 'ICOC',
-          onGenerateRoute: appRouter.onGenerateRoute,
-          fallbackLocale: Locale('ru', 'RU'),
+          home: MainScreen(),
+          getPages: Pages.getPages(),
         ),
       ),
     );

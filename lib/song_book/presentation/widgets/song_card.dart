@@ -1,19 +1,19 @@
+import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/presentation/screens/song_screen.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-
+import 'package:getxfire/getxfire.dart';
 import '../../presentation/widgets/playlists_modal_bottom_sheet.dart';
 
-class SongCard extends StatefulWidget {
+class SongCard extends StatelessWidget {
   final Song song;
   final orderLang;
   final Function? deleteFromFavorites;
-  final bool slideAction;
+  final SlideActions slideAction;
   final Color dividerColor;
 
   SongCard(
@@ -24,34 +24,28 @@ class SongCard extends StatefulWidget {
       required this.dividerColor});
 
   @override
-  _SongCardState createState() => _SongCardState();
-}
-
-class _SongCardState extends State<SongCard> {
   @override
   Widget build(BuildContext context) {
-    final song = widget.song;
-
     return Column(
       children: [
         Slidable(
           actionPane: SlidableScrollActionPane(),
           secondaryActions: [
             IconSlideAction(
-              caption: widget.slideAction
+              caption: slideAction == SlideActions.Favorites
                   ? 'delete from favorites'.tr
                   : 'to favorite'.tr,
               color: Theme.of(context).primaryColorLight,
               icon: Icons.favorite_border,
               onTap: () {
                 ///if this is favorites list - we delete item on tap
-                if (widget.slideAction) {
+                if (slideAction == SlideActions.Favorites) {
                   final snackBar = SnackBar(
                     content: Text('Deleted from favorites'.tr),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   DatabaseHelperFTS4().deleteFromFavorites(song.id);
-                  widget.deleteFromFavorites!(song.id);
+                  deleteFromFavorites!(song.id);
                 } else {
                   ///if this is  songs list - we we add item to favorites  on tap
                   final snackBar = SnackBar(
@@ -81,35 +75,32 @@ class _SongCardState extends State<SongCard> {
             ),
           ],
           child: ListTile(
-            onTap: (() => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongScreen(
-                          song: song,
-                          orderLang: widget.orderLang,
-                          deleteFromFavorites: widget.deleteFromFavorites,
-                        )))),
+            onTap: (() => Get.to(SongScreen(
+                  song: song,
+                  orderLang: orderLang,
+                  deleteFromFavorites: deleteFromFavorites,
+                ))),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
             title: Text(
               //show title and text language accordingly to app lang
-              chooseCardLang(song, widget.orderLang)?[0] ?? '',
+              chooseCardLang(song, orderLang)?[0] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
             ),
-            subtitle: Text(
-              chooseCardLang(song, widget.orderLang)?[1] ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
+            subtitle: Obx(() => Text(
+                  chooseCardLang(song, orderLang)?[1] ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: Theme.of(context).textTheme.bodyText2,
+                )),
           ),
         ),
         Divider(
           indent: 50,
-          color: widget.dividerColor,
+          color: dividerColor,
         ),
       ],
     );

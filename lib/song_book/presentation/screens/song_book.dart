@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/services/data_search.dart';
 import 'package:Projects/song_book/presentation/widgets/bottom_sheet_filter.dart';
 import 'package:Projects/song_book/presentation/widgets/song_list.dart';
@@ -21,8 +22,8 @@ class SongBook extends StatelessWidget {
                 title: Text(
                   'app_bar_title'.tr,
                 ),
+                backgroundColor: Constants.screensColors['songBook'],
                 centerTitle: true,
-                elevation: 6,
                 actions: [
                   IconButton(
                     icon: Icon(
@@ -92,7 +93,7 @@ class SongBook extends StatelessWidget {
                   'app_bar_title'.tr,
                 ),
                 centerTitle: true,
-                elevation: 6,
+                backgroundColor: Constants.screensColors['songBook'],
                 actions: [
                   IconButton(
                     icon: Icon(

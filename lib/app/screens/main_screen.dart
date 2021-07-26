@@ -1,5 +1,8 @@
+import 'package:Projects/routes/routes.dart';
+import 'package:Projects/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:getxfire/getxfire.dart';
 import '../menu/my_drawer.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
       width: sizeOfCell,
       padding: const EdgeInsets.all(7.5),
       child: InkWell(
-        onTap: () => {Navigator.of(context).pushNamed(routeName)},
+        onTap: () => Get.toNamed(routeName),
         splashColor: Theme.of(context).accentColor,
         borderRadius: BorderRadius.circular(15),
         child: Container(
@@ -131,22 +134,34 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   TableRow(
                     children: [
-                      tableItem('drawer_song_book'.tr, Color(0xffff595e),
-                          Icons.music_note, sizeOfCell(context), '/songBook'),
-                      tableItem('drawer_news'.tr, Color(0xffffca3a),
-                          Icons.language, sizeOfCell(context), '/Q&A'),
+                      tableItem(
+                          'drawer_song_book'.tr,
+                          Constants.screensColors['songBook']!,
+                          Icons.music_note,
+                          sizeOfCell(context),
+                          Routes.SONGBOOK),
+                      tableItem(
+                          'drawer_news'.tr,
+                          Constants.screensColors['news']!,
+                          Icons.language,
+                          sizeOfCell(context),
+                          Routes.NEWS),
                     ],
                   ),
                   TableRow(
                     children: [
                       tableItem(
                           'drawer_first_principles'.tr,
-                          Color(0xff8ac926),
+                          Constants.screensColors['firstPrinciples']!,
                           Icons.import_contacts,
                           sizeOfCell(context),
-                          '/firstPrinciples'),
-                      tableItem('drawer_q_and_a'.tr, Color(0xff1982c4),
-                          Icons.question_answer, sizeOfCell(context), '/news'),
+                          Routes.FIRSTPRINCIPLES),
+                      tableItem(
+                          'drawer_q_and_a'.tr,
+                          Constants.screensColors['Q&A']!,
+                          Icons.question_answer,
+                          sizeOfCell(context),
+                          Routes.QANDANVERS),
                     ],
                   ),
                 ],
