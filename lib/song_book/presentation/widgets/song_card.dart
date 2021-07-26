@@ -75,11 +75,14 @@ class SongCard extends StatelessWidget {
             ),
           ],
           child: ListTile(
-            onTap: (() => Get.to(SongScreen(
+            onTap: (() => Get.to(
+                SongScreen(
                   song: song,
                   orderLang: orderLang,
                   deleteFromFavorites: deleteFromFavorites,
-                ))),
+                ),
+                transition: Transition.rightToLeftWithFade,
+                duration: Duration(milliseconds: 250))),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
@@ -90,12 +93,12 @@ class SongCard extends StatelessWidget {
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
             ),
-            subtitle: Obx(() => Text(
-                  chooseCardLang(song, orderLang)?[1] ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: Theme.of(context).textTheme.bodyText2,
-                )),
+            subtitle: Text(
+              chooseCardLang(song, orderLang)?[1] ?? '',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
           ),
         ),
         Divider(

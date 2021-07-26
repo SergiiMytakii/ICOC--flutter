@@ -3,17 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
-class News extends StatelessWidget {
-  const News({Key? key}) : super(key: key);
+class QuestionsAndAnwers extends StatelessWidget {
+  const QuestionsAndAnwers({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'drawer_news'.tr,
+          'drawer_q_and_a'.tr,
         ),
-        backgroundColor: Constants.screensColors['news'],
+        backgroundColor: Constants.screensColors['Q&A']!.withOpacity(0.8),
         centerTitle: true,
       ),
       body: Center(

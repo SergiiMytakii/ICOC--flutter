@@ -1,8 +1,10 @@
+import 'package:Projects/routes/routes.dart';
 import 'package:Projects/settings/presentation/general_settings.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:getxfire/getxfire.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -38,10 +40,9 @@ class MyDrawer extends StatelessWidget {
             'drawer_settings'.tr,
             style: Theme.of(context).textTheme.headline6,
           ),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.pushNamed(context, '/settings');
-          },
+          onTap: () => Get.offAndToNamed(
+            Routes.SETTINGS,
+          ),
         ),
         ListTile(
           leading: Icon(

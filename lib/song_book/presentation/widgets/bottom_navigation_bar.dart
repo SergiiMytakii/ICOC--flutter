@@ -1,4 +1,5 @@
 import 'package:Projects/app/menu/my_drawer.dart';
+import 'package:Projects/shared/constants.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../screens/favorites.dart';
 import '../screens/playlists.dart';
@@ -34,6 +35,9 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       bottomNavigationBar: BottomNavigationBar(
         //type: BottomNavigationBarType.fixed,
         currentIndex: _selectedPageIndex,
+
+        selectedItemColor:
+            Constants.screensColors['songBook']!.withOpacity(0.8),
         elevation: 0,
         backgroundColor: Colors.transparent,
         onTap: _selectPage,

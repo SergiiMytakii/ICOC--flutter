@@ -22,7 +22,8 @@ class SongBook extends StatelessWidget {
                 title: Text(
                   'app_bar_title'.tr,
                 ),
-                backgroundColor: Constants.screensColors['songBook'],
+                backgroundColor:
+                    Constants.screensColors['songBook']!.withOpacity(0.8),
                 centerTitle: true,
                 actions: [
                   IconButton(
@@ -93,7 +94,8 @@ class SongBook extends StatelessWidget {
                   'app_bar_title'.tr,
                 ),
                 centerTitle: true,
-                backgroundColor: Constants.screensColors['songBook'],
+                backgroundColor:
+                    Constants.screensColors['songBook']!.withOpacity(0.8),
                 actions: [
                   IconButton(
                     icon: Icon(

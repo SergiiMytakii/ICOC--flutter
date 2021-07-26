@@ -8,6 +8,7 @@ final myLightTheme = ThemeData.light().copyWith(
       labelStyle: TextStyle(fontSize: 20),
       unselectedLabelStyle: TextStyle(fontSize: 20),
     ),
+    appBarTheme: AppBarTheme(elevation: 0),
     primaryColor: Color(0xff6a4c93),
     primaryColorLight: Color(0xffbeaed5),
     primaryColorDark: Color(0xff614587),
