@@ -372,7 +372,7 @@ class DatabaseHelperFTS4 {
       return false;
   }
 
-  Future<List<Song>> getListFavorites() async {
+  Stream<List<Song>> getListFavorites() async* {
     final Database? database = await db;
 
     //filter which lang-s will be displaying
@@ -421,7 +421,7 @@ class DatabaseHelperFTS4 {
     });
     songs.removeWhere((song) => song.text.values.isEmpty);
 
-    return songs;
+    yield songs;
   }
 
 /* functions for full text search */

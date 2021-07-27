@@ -2,7 +2,7 @@ import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
-import 'package:Projects/song_book/presentation/widgets/song_text_on_song_screen.dart';
+import 'package:Projects/song_book/views/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

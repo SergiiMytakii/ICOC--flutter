@@ -1,6 +1,6 @@
 import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/presentation/screens/song_screen.dart';
+import 'package:Projects/song_book/views/screens/song_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 

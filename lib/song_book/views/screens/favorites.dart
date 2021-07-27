@@ -1,28 +1,15 @@
 import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/logic/controllers/favorites_controller.dart';
 import 'package:Projects/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:Projects/song_book/presentation/widgets/song_card.dart';
+import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
+import 'package:Projects/song_book/views/widgets/favorites_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class Favorites extends StatefulWidget {
-  @override
-  _FavoritesState createState() => _FavoritesState();
-}
-
-class _FavoritesState extends State<Favorites> {
-  final SlideActions slideAction = SlideActions.Favorites;
-
-  //rebuild UI when song deleted from favorites
-  void deleteFromFavoriteList(int id) {
-    // setState(() {
-    //   songs.removeWhere((song) => song.id == id);
-    // });
-  }
-  final favController = Get.put(FavoritesController());
+class Favorites extends GetView<SongsController> {
   @override
   Widget build(BuildContext context) {
+    Get.put(SongsController());
     int i = 0;
 
     return Scaffold(
@@ -33,7 +20,7 @@ class _FavoritesState extends State<Favorites> {
         ),
         body: Obx(() => ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: favController.songs.length,
+              itemCount: controller.favSongs.length,
               itemBuilder: (BuildContext context, int index) {
                 //change i for making different colors of divider
                 if (i < 4) {
@@ -43,12 +30,10 @@ class _FavoritesState extends State<Favorites> {
                 }
                 return GetBuilder<OrderLangController>(
                   init: OrderLangController(),
-                  builder: (controller) {
-                    return SongCard(
-                      song: favController.songs[index],
-                      orderLang: controller.orderLang,
-                      slideAction: slideAction,
-                      favController: favController,
+                  builder: (orLangController) {
+                    return FavoritesSongCard(
+                      song: controller.favSongs[index],
+                      orderLang: orLangController.orderLang,
                       dividerColor: Constants.dividerColors[i],
                     );
                   },
