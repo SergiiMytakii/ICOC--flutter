@@ -1,5 +1,5 @@
 import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:Projects/song_book/logic/controllers/slide_actions_controller.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/presentation/screens/song_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +12,7 @@ import '../../presentation/widgets/playlists_modal_bottom_sheet.dart';
 class SongCard extends StatelessWidget {
   final Song song;
   final orderLang;
-  final Function? deleteFromFavorites;
+  final GetxController? favController;
   final SlideActions slideAction;
   final Color dividerColor;
 
@@ -20,8 +20,9 @@ class SongCard extends StatelessWidget {
       {required this.song,
       required this.orderLang,
       required this.slideAction,
-      this.deleteFromFavorites,
+      this.favController,
       required this.dividerColor});
+  final slideActionsController = Get.put(SlideActionsController());
 
   @override
   @override
@@ -32,29 +33,11 @@ class SongCard extends StatelessWidget {
           actionPane: SlidableScrollActionPane(),
           secondaryActions: [
             IconSlideAction(
-              caption: slideAction == SlideActions.Favorites
-                  ? 'delete from favorites'.tr
-                  : 'to favorite'.tr,
+              caption: slideActionsController.labelFirstCaption(slideAction),
               color: Theme.of(context).primaryColorLight,
               icon: Icons.favorite_border,
-              onTap: () {
-                ///if this is favorites list - we delete item on tap
-                if (slideAction == SlideActions.Favorites) {
-                  final snackBar = SnackBar(
-                    content: Text('Deleted from favorites'.tr),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  DatabaseHelperFTS4().deleteFromFavorites(song.id);
-                  deleteFromFavorites!(song.id);
-                } else {
-                  ///if this is  songs list - we we add item to favorites  on tap
-                  final snackBar = SnackBar(
-                    content: Text('Added to favorite list'.tr),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  DatabaseHelperFTS4().addToFavorites(song.id);
-                }
-              },
+              onTap: () => slideActionsController.onTapHandlerFirstCaption(
+                  slideAction, song.id, favController),
             ),
             IconSlideAction(
               caption: 'to playlist'.tr,
@@ -79,7 +62,7 @@ class SongCard extends StatelessWidget {
                 SongScreen(
                   song: song,
                   orderLang: orderLang,
-                  deleteFromFavorites: deleteFromFavorites,
+                  //deleteFromFavorites: favController,
                 ),
                 transition: Transition.rightToLeftWithFade,
                 duration: Duration(milliseconds: 250))),
