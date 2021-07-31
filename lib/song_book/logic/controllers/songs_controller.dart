@@ -1,4 +1,3 @@
-import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:flutter/material.dart';
@@ -89,14 +88,12 @@ class SongsController extends GetxController {
   var playlists = <Map<String, Object?>>[].obs;
   RxBool showList = false.obs;
   final textController = TextEditingController().obs;
+  final songsInPlaylist = <Song>[].obs;
 
   Future getPlaylists() async {
     DatabaseHelperFTS4().getPlaylists().listen((event) {
       playlists.value = event;
       if (playlists.isNotEmpty) showList.value = true;
-      playlists.forEach((element) {
-        print(element);
-      });
     });
   }
 
@@ -114,20 +111,24 @@ class SongsController extends GetxController {
   }
 
   Future createNewPlaylist() async {
-    await Get.defaultDialog(
-      title: 'name of playlist'.tr,
-      content: TextField(
-        controller: textController.value,
-        autofocus: true,
-        onSubmitted: (value) async {
-          if (value.isNotEmpty) {
-            await DatabaseHelperFTS4().createPlaylist(value);
-            getPlaylists();
-            Get.back();
-          }
-          textController.value.clear();
-        },
-      ),
-    );
+    if (textController.value.text.isNotEmpty) {
+      await DatabaseHelperFTS4().createPlaylist(textController.value.text);
+      getPlaylists();
+    }
+    textController.value.clear();
+  }
+
+  void addToPlaylist(String name, int id) async {
+    await DatabaseHelperFTS4().insertIntoPlaylist(name, id);
+    Get.showSnackbar(GetBar(
+      duration: Duration(milliseconds: 800),
+      message: 'Added to playlist'.tr,
+    ));
+  }
+
+  void getSongsInPlaylist(int id) async {
+    DatabaseHelperFTS4().getSongsInPlaylist(id).listen((songsFromDb) {
+      songsInPlaylist.value = songsFromDb;
+    });
   }
 }

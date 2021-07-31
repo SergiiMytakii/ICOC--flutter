@@ -3,24 +3,27 @@ import 'package:Projects/song_book/logic/controllers/order_lang_controller.dart'
 import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
 import 'package:Projects/song_book/views/widgets/favorites_song_card.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
 class PlaylistScreen extends GetView<SongsController> {
   @override
   Widget build(BuildContext context) {
+    final playlist = Get.arguments;
     Get.put(SongsController());
+    int id = playlist['id'];
+    controller.getSongsInPlaylist(id);
     int i = 0;
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('bottom_navigation_bar_favorites'.tr),
+          title: Text(playlist['playlistName']),
           centerTitle: true,
-          backgroundColor: Constants.screensColors['songBook'],
+          backgroundColor:
+              Constants.screensColors['songBook']!.withOpacity(0.8),
         ),
         body: Obx(() => ListView.builder(
               physics: BouncingScrollPhysics(),
-              itemCount: controller.favSongs.length,
+              itemCount: controller.songsInPlaylist.length,
               itemBuilder: (BuildContext context, int index) {
                 //change i for making different colors of divider
                 if (i < 4) {
@@ -32,7 +35,7 @@ class PlaylistScreen extends GetView<SongsController> {
                   init: OrderLangController(),
                   builder: (orLangController) {
                     return FavoritesSongCard(
-                      song: controller.favSongs[index],
+                      song: controller.songsInPlaylist[index],
                       orderLang: orLangController.orderLang,
                       dividerColor: Constants.dividerColors[i],
                     );

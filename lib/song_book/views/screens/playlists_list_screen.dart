@@ -1,7 +1,6 @@
 import 'package:Projects/routes/routes.dart';
 import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
-import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -14,8 +13,6 @@ class PlaylistsListScreen extends StatefulWidget {
 
 class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   late GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
-
-  final _textController = TextEditingController();
 
   final controller = Get.put(SongsController());
 
@@ -31,21 +28,28 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
       //animation
       final item = controller.playlists.removeAt(index);
       listKey.currentState!.removeItem(index,
-          (_, animation) => playlistCards(context, index, animation, i, item),
+          (_, animation) => playlistCard(context, index, animation, i, item),
           duration: const Duration(milliseconds: 500));
     }
   }
 
-  void _insertNewPlaylist() async {
+  void _insertNewPlaylist() {
     // final enteredNameOfNewPlaylist = _textController.text;
     // if (enteredNameOfNewPlaylist.isEmpty) return;
-
-    await controller.createNewPlaylist();
-    print('done');
-    listKey.currentState?.insertItem(0);
+    Get.defaultDialog(
+      title: 'name of playlist'.tr,
+      content: TextField(
+          controller: controller.textController.value,
+          autofocus: true,
+          onSubmitted: (_) async {
+            await controller.createNewPlaylist();
+            listKey.currentState?.insertItem(0);
+            Get.back();
+          }),
+    );
   }
 
-  Widget playlistCards(BuildContext context, int index,
+  Widget playlistCard(BuildContext context, int index,
       Animation<double> animation, int i, Map<String, Object?> playlist) {
     return SlideTransition(
       position: Tween<Offset>(
@@ -72,28 +76,31 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
               ),
             ],
             child: ListTile(
-                leading: Icon(
-                  Icons.playlist_play_outlined,
-                  color: Constants.dividerColors[i],
+              leading: Icon(
+                Icons.playlist_play_outlined,
+                color: Constants.dividerColors[i],
+              ),
+              title: Obx(
+                () => TextFormField(
+                  showCursor: !controller.isReadOnly.value,
+                  autofocus: !controller.isReadOnly.value,
+                  readOnly: controller.isReadOnly.value,
+                  decoration: InputDecoration(border: InputBorder.none),
+                  controller: TextEditingController(
+                    text: playlist['playlistName'].toString(),
+                  ),
+                  style: Theme.of(context).textTheme.headline6,
+                  onFieldSubmitted: (value) => controller.renamePlaylist(
+                    playlist,
+                    value,
+                  ),
+                  onTap: () {
+                    controller.isReadOnly.value = true;
+                    Get.toNamed(Routes.PLAYLISTS, arguments: playlist);
+                  },
                 ),
-                title: Obx(() => TextFormField(
-                      showCursor: !controller.isReadOnly.value,
-                      autofocus: !controller.isReadOnly.value,
-                      readOnly: controller.isReadOnly.value,
-                      decoration: InputDecoration(border: InputBorder.none),
-                      controller: TextEditingController(
-                        text: playlist['playlistName'].toString(),
-                      ),
-                      style: Theme.of(context).textTheme.headline6,
-                      onFieldSubmitted: (value) => controller.renamePlaylist(
-                        playlist,
-                        value,
-                      ),
-                      onTap: () {
-                        controller.isReadOnly.value = true;
-                        Get.toNamed(Routes.PLAYLISTS, arguments: playlist);
-                      },
-                    ))),
+              ),
+            ),
           ),
           Divider(
             indent: 50,
@@ -112,7 +119,8 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
           appBar: AppBar(
             centerTitle: true,
             title: Text('bottom_navigation_bar_playlists'.tr),
-            backgroundColor: Constants.screensColors['songBook'],
+            backgroundColor:
+                Constants.screensColors['songBook']!.withOpacity(0.8),
             actions: [
               IconButton(
                   icon: Icon(Icons.add),
@@ -133,7 +141,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
                     } else {
                       i = 0;
                     }
-                    return playlistCards(context, index, animation, i,
+                    return playlistCard(context, index, animation, i,
                         controller.playlists[index]);
                   },
                 )

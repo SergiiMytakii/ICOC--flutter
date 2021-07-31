@@ -16,7 +16,8 @@ class FavoritesScreen extends GetView<SongsController> {
         appBar: AppBar(
           title: Text('bottom_navigation_bar_favorites'.tr),
           centerTitle: true,
-          backgroundColor: Constants.screensColors['songBook'],
+          backgroundColor:
+              Constants.screensColors['songBook']!.withOpacity(0.8),
         ),
         body: Obx(() => ListView.builder(
               physics: BouncingScrollPhysics(),

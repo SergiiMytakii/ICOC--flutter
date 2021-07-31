@@ -1,3 +1,4 @@
+import 'package:Projects/routes/routes.dart';
 import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/views/screens/song_screen.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
-import '../../views/widgets/playlists_modal_bottom_sheet.dart';
 
 class SongCard extends GetView<SongsController> {
   final Song song;
@@ -34,22 +34,11 @@ class SongCard extends GetView<SongsController> {
               onTap: () => controller.addToFavorites(song.id),
             ),
             IconSlideAction(
-              caption: 'to playlist'.tr,
-              color: Theme.of(context).primaryColorDark,
-              icon: Icons.playlist_play_outlined,
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return PlaylistsModalBottomSheet(song.id);
-                    });
-
-                final snackBar = SnackBar(
-                  content: Text('Added to playlist'.tr),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-            ),
+                caption: 'to playlist'.tr,
+                color: Theme.of(context).primaryColorDark,
+                icon: Icons.playlist_play_outlined,
+                onTap: () =>
+                    Get.toNamed(Routes.ADDTOPLAYLIST, arguments: song.id)),
           ],
           child: ListTile(
             onTap: (() => Get.to(
