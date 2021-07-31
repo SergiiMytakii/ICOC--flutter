@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
-class SongBook extends StatelessWidget {
+class SongBookScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //DatabaseHelper().deleteSong(187);

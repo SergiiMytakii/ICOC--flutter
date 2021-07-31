@@ -1,13 +1,14 @@
 import 'package:Projects/shared/constants.dart';
+import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
 import 'package:Projects/song_book/models/song.dart';
 import 'package:Projects/song_book/views/screens/song_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
-
 import 'db_sqlite/sqlite_helper_fts4.dart';
 import '../controllers/order_lang_controller.dart';
 
 class DataSearch extends SearchDelegate {
+  final songsController = Get.put(SongsController());
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -143,16 +144,13 @@ class DataSearch extends SearchDelegate {
     return Column(
       children: [
         ListTile(
-          onTap: (() {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => SongScreen(
-                          song: songs.data![index],
-                          //todo: pass here actial orderLang
-                          orderLang: _orderLang,
-                        )));
-          }),
+          onTap: (() => Get.to(
+              SongScreen(
+                songId: songs.data![index].id,
+                songsController: songsController,
+              ),
+              transition: Transition.rightToLeftWithFade,
+              duration: Duration(milliseconds: 250))),
           horizontalTitleGap: 0,
           leading: Text(songs.data![index].id.toString(),
               style: Theme.of(context).textTheme.headline6),

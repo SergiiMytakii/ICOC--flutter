@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class Favorites extends GetView<SongsController> {
+class FavoritesScreen extends GetView<SongsController> {
   @override
   Widget build(BuildContext context) {
     Get.put(SongsController());

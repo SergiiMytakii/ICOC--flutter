@@ -1,9 +1,9 @@
 import 'package:Projects/app/menu/my_drawer.dart';
 import 'package:Projects/shared/constants.dart';
+import 'package:Projects/song_book/views/screens/favorites_screen.dart';
+import 'package:Projects/song_book/views/screens/playlists_list_screen.dart';
+import 'package:Projects/song_book/views/screens/song_book_screen.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import '../screens/favorites.dart';
-import '../screens/playlists.dart';
-import '../screens/song_book.dart';
 import 'package:flutter/material.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -13,9 +13,9 @@ class MyBottomNavigationBar extends StatefulWidget {
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final List<Map<String, Object>> _pages = [
-    {'page': SongBook(), 'title': 'All songs'},
-    {'page': Favorites(), 'title': 'Favorites'},
-    {'page': Playlists(), 'title': 'Playlists'}
+    {'page': SongBookScreen(), 'title': 'All songs'},
+    {'page': FavoritesScreen(), 'title': 'Favorites'},
+    {'page': PlaylistsListScreen(), 'title': 'Playlists'}
   ];
 
   int _selectedPageIndex = 0;

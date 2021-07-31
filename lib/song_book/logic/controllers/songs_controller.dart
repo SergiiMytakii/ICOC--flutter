@@ -1,5 +1,7 @@
+import 'package:Projects/shared/constants.dart';
 import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song.dart';
+import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 
 class SongsController extends GetxController {
@@ -18,15 +20,6 @@ class SongsController extends GetxController {
       songs.value = event;
       if (songs.length != 0) loaded.value = true;
     });
-  }
-
-  void addToFavorites(int songId) async {
-    await DatabaseHelperFTS4().addToFavorites(songId);
-    fetchFavoritesList();
-    Get.showSnackbar(GetBar(
-      duration: Duration(milliseconds: 800),
-      message: 'Added to favorite list'.tr,
-    ));
   }
 
   List<String?>? chooseCardLang(Song song, List<String> orderLang) {
@@ -65,17 +58,76 @@ class SongsController extends GetxController {
   }
 
 //favorites
-
   var favSongs = <Song>[].obs;
+
+  void addToFavorites(int songId) async {
+    await DatabaseHelperFTS4().addToFavorites(songId);
+    fetchFavoritesList();
+    Get.showSnackbar(GetBar(
+      duration: Duration(milliseconds: 800),
+      message: 'Added to favorite list'.tr,
+    ));
+  }
+
   void deleteFromFavorites(int songId) async {
     await DatabaseHelperFTS4().deleteFromFavorites(songId);
     fetchFavoritesList();
-    //songs.removeWhere((song) => song.id == songId);
+    Get.showSnackbar(GetBar(
+      duration: Duration(milliseconds: 800),
+      message: 'Deleted from favorite list'.tr,
+    ));
   }
 
   void fetchFavoritesList() async {
     DatabaseHelperFTS4().getListFavorites().listen((songsFromDb) {
       favSongs.value = songsFromDb;
     });
+  }
+
+// playlists
+  RxBool isReadOnly = true.obs;
+  var playlists = <Map<String, Object?>>[].obs;
+  RxBool showList = false.obs;
+  final textController = TextEditingController().obs;
+
+  Future getPlaylists() async {
+    DatabaseHelperFTS4().getPlaylists().listen((event) {
+      playlists.value = event;
+      if (playlists.isNotEmpty) showList.value = true;
+      playlists.forEach((element) {
+        print(element);
+      });
+    });
+  }
+
+  void removePlaylist(Map<String, Object?> playlist) async {
+    DatabaseHelperFTS4()
+        .deleteFromPlaylists(int.parse(playlist['id'].toString()));
+  }
+
+  void renamePlaylist(Map<String, Object?> playlist, String newName) async {
+    if (newName.isEmpty) return;
+    await DatabaseHelperFTS4()
+        .renamePlaylists(int.parse(playlist['id'].toString()), newName);
+    await getPlaylists();
+    isReadOnly.value = true;
+  }
+
+  Future createNewPlaylist() async {
+    await Get.defaultDialog(
+      title: 'name of playlist'.tr,
+      content: TextField(
+        controller: textController.value,
+        autofocus: true,
+        onSubmitted: (value) async {
+          if (value.isNotEmpty) {
+            await DatabaseHelperFTS4().createPlaylist(value);
+            getPlaylists();
+            Get.back();
+          }
+          textController.value.clear();
+        },
+      ),
+    );
   }
 }

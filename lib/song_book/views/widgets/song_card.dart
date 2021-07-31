@@ -54,9 +54,8 @@ class SongCard extends GetView<SongsController> {
           child: ListTile(
             onTap: (() => Get.to(
                 SongScreen(
-                  song: song,
-                  orderLang: orderLang,
-                  //deleteFromFavorites: favController,
+                  songId: song.id,
+                  songsController: controller,
                 ),
                 transition: Transition.rightToLeftWithFade,
                 duration: Duration(milliseconds: 250))),

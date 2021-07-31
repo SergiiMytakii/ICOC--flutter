@@ -4,6 +4,7 @@ import 'package:Projects/news/presentation/screens/news_screen.dart';
 import 'package:Projects/q_and_a/presentation/screens/q_and_a_screen.dart';
 import 'package:Projects/routes/routes.dart';
 import 'package:Projects/settings/presentation/general_settings.dart';
+import 'package:Projects/song_book/views/screens/playlist_screen.dart';
 import 'package:Projects/song_book/views/widgets/bottom_navigation_bar.dart';
 import 'package:getxfire/getxfire.dart';
 
@@ -43,6 +44,12 @@ class Pages {
       GetPage(
         name: Routes.SETTINGS,
         page: () => GeneralSettings(),
+        transition: Transition.rightToLeftWithFade,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.PLAYLISTS,
+        page: () => PlaylistScreen(),
         transition: Transition.rightToLeftWithFade,
         transitionDuration: Duration(milliseconds: 250),
       ),

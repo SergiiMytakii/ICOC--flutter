@@ -10,9 +10,7 @@ class SongTextOnSongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(title);
-    // print(textVersion);
-    // print(description);
+  
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Column(
