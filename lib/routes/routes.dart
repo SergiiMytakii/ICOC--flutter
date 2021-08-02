@@ -5,4 +5,6 @@ abstract class Routes {
   static const NEWS = '/news';
   static const FIRSTPRINCIPLES = '/first_principles';
   static const SETTINGS = '/general_settings';
+  static const PLAYLISTS = '/playlists_list_screen';
+  static const ADDTOPLAYLIST = '/add_song_to_playlist';
 }

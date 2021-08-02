@@ -60,11 +60,10 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  double sizeOfCell(BuildContext ctx) =>
-      (MediaQuery.of(ctx).size.width - 15) / 2;
+  final size = Get.size;
+  double sizeOfCell() => (size.width - 15) / 2;
   @override
   Widget build(BuildContext context) {
-    print(sizeOfCell(context));
     //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +97,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   PositionedDirectional(
                     bottom: 0,
-                    width: MediaQuery.of(context).size.width - 30,
+                    width: size.width - 30,
                     child: ClipRRect(
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15),
@@ -130,7 +129,7 @@ class _MainScreenState extends State<MainScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7.5),
               child: Table(
-                defaultColumnWidth: FixedColumnWidth(sizeOfCell(context)),
+                defaultColumnWidth: FixedColumnWidth(sizeOfCell()),
                 children: [
                   TableRow(
                     children: [
@@ -138,13 +137,13 @@ class _MainScreenState extends State<MainScreen> {
                           'drawer_song_book'.tr,
                           Constants.screensColors['songBook']!,
                           Icons.music_note,
-                          sizeOfCell(context),
+                          sizeOfCell(),
                           Routes.SONGBOOK),
                       tableItem(
                           'drawer_news'.tr,
                           Constants.screensColors['news']!,
                           Icons.language,
-                          sizeOfCell(context),
+                          sizeOfCell(),
                           Routes.NEWS),
                     ],
                   ),
@@ -154,13 +153,13 @@ class _MainScreenState extends State<MainScreen> {
                           'drawer_first_principles'.tr,
                           Constants.screensColors['firstPrinciples']!,
                           Icons.import_contacts,
-                          sizeOfCell(context),
+                          sizeOfCell(),
                           Routes.FIRSTPRINCIPLES),
                       tableItem(
                           'drawer_q_and_a'.tr,
                           Constants.screensColors['Q&A']!,
                           Icons.question_answer,
-                          sizeOfCell(context),
+                          sizeOfCell(),
                           Routes.QANDANVERS),
                     ],
                   ),

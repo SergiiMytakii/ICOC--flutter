@@ -83,7 +83,7 @@ class DatabaseHelperFTS4 {
     //await deleteDatabase(path);   // - if we need to clean database
     print('!!!!databases was opened!!!!!' + path);
 
-    return await openDatabase(path, version: 1,
+    return await openDatabase(path, version: 2,
         onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
@@ -102,7 +102,7 @@ class DatabaseHelperFTS4 {
       await db.execute(
           'CREATE TABLE $TABLE_PLAYLISTS ($ID INTEGER PRIMARY KEY AUTOINCREMENT,  $PLAYLIST_NAME TEXT)');
       await db.execute(
-          'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID INTEGER PRIMARY KEY,  $ID_SONG)');
+          'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $PLAYLIST_ID INTEGER ,  $ID_SONG)');
 
       print(' !!!!databases was created!!!!!');
     });
@@ -372,7 +372,7 @@ class DatabaseHelperFTS4 {
       return false;
   }
 
-  Future<List<Song>> getListFavorites() async {
+  Stream<List<Song>> getListFavorites() async* {
     final Database? database = await db;
 
     //filter which lang-s will be displaying
@@ -421,7 +421,7 @@ class DatabaseHelperFTS4 {
     });
     songs.removeWhere((song) => song.text.values.isEmpty);
 
-    return songs;
+    yield songs;
   }
 
 /* functions for full text search */
@@ -645,16 +645,18 @@ class DatabaseHelperFTS4 {
         TABLE_PLAYLISTS,
         where: '$PLAYLIST_NAME = ?',
         whereArgs: [playlist]);
-
-    await database.insert(TABLE_PLAYLISTS_SONGS,
-        {PLAYLIST_ID: select.last['id'], ID_SONG: songId});
-    //I can't understand why it not works
-    //
-    // await database.rawInsert('''
-    // INSERT INTO $TABLE_PLAYLISTS_SONGS ($PLAYLIST_ID , $ID_SONG)
-    // VALUES ((SELECT $ID FROM $TABLE_PLAYLISTS
-    // WHERE $PLAYLIST_NAME = $playlist),  $songId)
-    //     ''');
+    print(select.toString() + 'select');
+    await database.insert(
+        TABLE_PLAYLISTS_SONGS,
+        {
+          PLAYLIST_ID: select.last['id'],
+          ID_SONG: songId,
+        },
+        conflictAlgorithm: ConflictAlgorithm.ignore);
+    print('inserted ' +
+        select.last['id'].toString() +
+        ' song id ' +
+        songId.toString());
   }
 
   Stream<List<Map<String, Object?>>> getPlaylists() async* {
@@ -669,14 +671,16 @@ class DatabaseHelperFTS4 {
     yield List.from(playlists);
   }
 
-  Future<void> deleteFromPlaylists(int playlistId) async {
+  Future<void> deletePlaylist(int playlistId) async {
     // Get a reference to the database.
     final Database database = (await db)!;
     await database
         .delete(TABLE_PLAYLISTS, where: '$ID = ?', whereArgs: [playlistId]);
+    await database.delete(TABLE_PLAYLISTS_SONGS,
+        where: '$PLAYLIST_ID = ?', whereArgs: [playlistId]);
   }
 
-  renamePlaylists(int playlistId, String newName) async {
+  Future renamePlaylists(int playlistId, String newName) async {
     // Get a reference to the database.
     final Database database = (await db)!;
     await database.rawUpdate('''
@@ -684,5 +688,76 @@ class DatabaseHelperFTS4 {
     SET $PLAYLIST_NAME = ?
     WHERE $ID = ?;
         ''', [newName, playlistId]);
+  }
+
+  Stream<List<Song>> getSongsInPlaylist(int playlistId) async* {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    //filter which lang-s will be displaying
+    _filterLangDisplaying();
+
+    //get searchInTitles
+    final List<Map<String, dynamic>> searchInTitles =
+        await database.rawQuery('''
+    SELECT  $TABLE_TITLE.$ID_SONG, ${columnsTitle.toString().substring(9, columnsTitle.toString().length - 1)}
+        FROM $TABLE_TITLE
+        INNER JOIN $TABLE_PLAYLISTS_SONGS ON $TABLE_TITLE.$ID_SONG = $TABLE_PLAYLISTS_SONGS.$ID_SONG 
+        WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
+        ORDER BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
+    ''');
+
+    List<Map<String, dynamic>> titlesWithoutNullable = [];
+    for (Map map in searchInTitles) {
+      var mapWritable = Map<String, dynamic>.from(map);
+
+      mapWritable.removeWhere((key, value) => value == null);
+      titlesWithoutNullable.add(mapWritable);
+    }
+    print('titles');
+    print(searchInTitles);
+//get texts
+    final List<Map<String, dynamic>> texts = await database.rawQuery('''
+        SELECT  $colTexts
+        FROM $TABLE_PLAYLISTS_SONGS
+        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_PLAYLISTS_SONGS.$ID_SONG 
+        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_PLAYLISTS_SONGS.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_PLAYLISTS_SONGS.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+        WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
+        GROUP BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
+          ''');
+    print('text');
+    print(texts);
+    //remove nullable values
+    List<Map<String, dynamic>> textsWithoutNullable = [];
+    for (Map map in texts) {
+      var mapWritable = Map<String, dynamic>.from(map);
+
+      mapWritable.removeWhere((key, value) => value == null);
+
+      textsWithoutNullable.add(mapWritable);
+    }
+    List<Song> songsInPlaylist =
+        List.generate(titlesWithoutNullable.length, (i) {
+      return Song(
+          id: titlesWithoutNullable[i]['id_song'],
+          title: titlesWithoutNullable[i],
+          text: textsWithoutNullable[i]);
+    });
+    songsInPlaylist.removeWhere((song) => song.text.values.isEmpty);
+
+    yield songsInPlaylist;
+  }
+
+  Future<void> removeFromPlaylist(int playlistId, int id) async {
+    // Get a reference to the database.
+    final Database database = (await db)!;
+
+    await database.rawQuery('''
+        DELETE
+        FROM $TABLE_PLAYLISTS_SONGS
+       WHERE $PLAYLIST_ID = ? 
+       AND $ID_SONG =?;
+        ''', [playlistId, id]);
   }
 }

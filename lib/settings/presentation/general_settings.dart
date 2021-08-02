@@ -1,24 +1,17 @@
 import 'dart:ui';
-
+import 'package:Projects/app/core/controllers/General_settings_controller.dart';
 import 'package:Projects/shared/constants.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getxfire/getxfire.dart';
 
-class GeneralSettings extends StatefulWidget {
-  @override
-  _GeneralSettingsState createState() => _GeneralSettingsState();
-}
-
-class _GeneralSettingsState extends State<GeneralSettings> {
-  bool _darkTheme = false;
-  String currentLanguage = '';
-  GetStorage box = GetStorage();
+class GeneralSettings extends GetView<GeneralSettingsController> {
+  final GetStorage box = GetStorage();
   @override
   Widget build(BuildContext context) {
+    Get.put(GeneralSettingsController());
     final List<String> languages = Constants().languagesLocales.keys.toList();
     return Scaffold(
       appBar: AppBar(
@@ -30,29 +23,26 @@ class _GeneralSettingsState extends State<GeneralSettings> {
           SizedBox(
             height: 40,
           ),
-          SwitchListTile.adaptive(
-            title: Text(
-              'settings_dark_theme'.tr,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            value: _darkTheme,
-            onChanged: (bool value) {
-              setState(() {
-                _darkTheme = value;
-                _darkTheme
-                    ? AdaptiveTheme.of(context).setDark()
-                    : AdaptiveTheme.of(context).setLight();
-                print(_darkTheme);
-              });
-            },
-            secondary: const Icon(Icons.design_services),
-          ),
+          Obx(() => SwitchListTile.adaptive(
+                title: Text(
+                  'settings_dark_theme'.tr,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                value: controller.darkTheme.value,
+                onChanged: (bool value) {
+                  controller.darkTheme.toggle();
+                  controller.darkTheme.value
+                      ? AdaptiveTheme.of(context).setDark()
+                      : AdaptiveTheme.of(context).setLight();
+                },
+                secondary: const Icon(Icons.design_services),
+              )),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: DropdownButtonFormField(
               decoration: InputDecoration(
+                border: InputBorder.none,
                 icon: Icon(Icons.language_outlined),
-                border: OutlineInputBorder(),
               ),
               value: window.locale
                   .toString()
@@ -67,7 +57,6 @@ class _GeneralSettingsState extends State<GeneralSettings> {
                       ))
                   .toList(),
               onChanged: (val) {
-                setState(() => currentLanguage = val.toString());
                 Get.updateLocale(Constants().languagesLocales[val]!);
                 box.write('locale', val);
               },
@@ -77,25 +66,6 @@ class _GeneralSettingsState extends State<GeneralSettings> {
 
           //todo
           // implement sizing fonts
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.text_fields,
-                  color: Colors.black38,
-                ),
-                Slider(
-                  label: 'Font size',
-                  value: 10,
-                  min: 10,
-                  max: 32,
-                  divisions: 2,
-                  onChanged: (val) => setState(() {}),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

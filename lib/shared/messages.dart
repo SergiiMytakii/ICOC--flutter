@@ -37,7 +37,13 @@ class Messages extends Translations {
           "rename playlists": "Rename",
           "delete from playlists": "Delete",
           "There is nothing here yet!": "There is nothing here yet!",
-          "New playlist": "New playlist"
+          "New playlist": "New playlist",
+          "Deleted from favorite list": "Deleted from favorite list",
+          "name of playlist": "Name of playlist",
+          "remove from playlist": "Remove",
+          "Please enter name of playlist": "Please enter name of playlist",
+          "The playlist with given name alredy exist":
+              "The playlist with given name alredy exist"
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -73,7 +79,13 @@ class Messages extends Translations {
           "rename playlists": "Переименовать",
           "delete from playlists": "Удалить",
           "There is nothing here yet!": "Здесь еще ничего нет!",
-          "New playlist": "Новый плейлист"
+          "New playlist": "Новый плейлист",
+          "Deleted from favorite list": "Удалено из избранных",
+          "name of playlist": "Название плейлиста",
+          "remove from playlist": "Удалить",
+          "Please enter name of playlist": "Введите название плейлиста",
+          "The playlist with given name alredy exist":
+              "Плейлист с таким названием уже существует"
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -109,7 +121,13 @@ class Messages extends Translations {
           "rename playlists": "Перейменувати",
           "delete from playlists": "Видалити",
           "There is nothing here yet!": "Тут ще ничого немає!",
-          "New playlist": "Новий плейлист"
+          "New playlist": "Новий плейлист",
+          "Deleted from favorite list": "Видалено з улюблених",
+          "name of playlist": "Назва плейлиста",
+          "remove from playlist": "Видалити",
+          "Please enter name of playlist": "Внесіть назву плейлиста",
+          "The playlist with given name alredy exist":
+              "Плейлист с такою назвою вже існує"
         }
       };
 }
