@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 final myDarkTheme = ThemeData.dark().copyWith(
   accentColor: Colors.amber,
+  bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
 );
 final myLightTheme = ThemeData.light().copyWith(
     tabBarTheme: TabBarTheme(
@@ -13,4 +14,5 @@ final myLightTheme = ThemeData.light().copyWith(
     primaryColorLight: Color(0xffbeaed5),
     primaryColorDark: Color(0xff614587),
     accentColor: Color(0xff7E5DAC),
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.white),
     iconTheme: IconThemeData(color: Colors.white10));

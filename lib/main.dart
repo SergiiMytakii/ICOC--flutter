@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getxfire/getxfire.dart';
 import 'package:oktoast/oktoast.dart';
-
 import 'package:Projects/app/screens/main_screen.dart';
 import 'package:Projects/app/theme.dart';
 import 'package:Projects/routes/pages.dart';
@@ -20,9 +19,9 @@ void main() async {
   await GetStorage.init();
   await Firebase.initializeApp().whenComplete(() {});
   //update local SQL database from firebase
-  await DatabaseServiceFirebase().songs.then((songs) {
-    DatabaseHelperFTS4().insertAllSongs(songs);
-  });
+  // await DatabaseServiceFirebase().songs.then((songs) {
+  //   DatabaseHelperFTS4().insertAllSongs(songs);
+  // });
   GetStorage box = GetStorage();
   String? appLocale;
   if (box.read('locale') != null) appLocale = box.read('locale');

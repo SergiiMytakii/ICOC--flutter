@@ -97,9 +97,8 @@ class SongsController extends GetxController {
     });
   }
 
-  void removePlaylist(Map<String, Object?> playlist) async {
-    DatabaseHelperFTS4()
-        .deleteFromPlaylists(int.parse(playlist['id'].toString()));
+  void deletePlaylist(Map<String, Object?> playlist) async {
+    DatabaseHelperFTS4().deletePlaylist(int.parse(playlist['id'].toString()));
   }
 
   void renamePlaylist(Map<String, Object?> playlist, String newName) async {
@@ -111,6 +110,7 @@ class SongsController extends GetxController {
   }
 
   Future createNewPlaylist() async {
+    if (textController.value.text.isEmpty) return;
     if (textController.value.text.isNotEmpty) {
       await DatabaseHelperFTS4().createPlaylist(textController.value.text);
       getPlaylists();
@@ -126,9 +126,14 @@ class SongsController extends GetxController {
     ));
   }
 
-  void getSongsInPlaylist(int id) async {
-    DatabaseHelperFTS4().getSongsInPlaylist(id).listen((songsFromDb) {
+  void getSongsInPlaylist(int playlistId) async {
+    DatabaseHelperFTS4().getSongsInPlaylist(playlistId).listen((songsFromDb) {
       songsInPlaylist.value = songsFromDb;
     });
+  }
+
+  void removeFromPlaylist(int playlistId, int id) {
+    DatabaseHelperFTS4().removeFromPlaylist(playlistId, id);
+    getSongsInPlaylist(playlistId);
   }
 }

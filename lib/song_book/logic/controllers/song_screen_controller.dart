@@ -1,11 +1,16 @@
 import 'package:Projects/song_book/logic/controllers/order_lang_controller.dart';
 import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:getxfire/getxfire.dart';
-
+import 'package:logger/logger.dart';
 import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 import 'package:Projects/song_book/models/song_detail.dart';
 
 class SongScreenController extends GetxController {
+  GetStorage box = GetStorage();
+  RxDouble fontSize = 18.0.obs;
+  var log = Logger();
+
   final songDetail =
       SongDetail(id: 0, title: {}, description: {}, text: {}, chords: {}).obs;
   int songId;
@@ -23,12 +28,11 @@ class SongScreenController extends GetxController {
   @override
   void onInit() async {
     orderLang = orderLangController.orderLang;
-    print('orderlang ' + orderLang.toString());
     await fetchSongdetail(songId);
-    print(songDetail);
     favoriteStatus(songId);
     getTitlesForTabs();
     countTabs();
+    loadFontSize();
     super.onInit();
   }
 
@@ -36,7 +40,6 @@ class SongScreenController extends GetxController {
     await DatabaseHelperFTS4()
         .getSongDetail(songId)
         .then((value) => songDetail.value = value);
-    print('got ' + songDetail.value.title.toString());
   }
 
   void favoriteStatus(songId) async {
@@ -91,7 +94,16 @@ class SongScreenController extends GetxController {
   countTabs() {
     amountOfTabs.value =
         songDetail.value.text.length + songDetail.value.chords.length;
-    print(' amount of tabs ' + amountOfTabs.toString());
     return amountOfTabs;
+  }
+
+  void loadFontSize() {
+    if (box.read('fontSize') != null) fontSize.value = box.read('fontSize');
+    log.i(fontSize);
+  }
+
+  altFontSize(double val) {
+    fontSize.value = val;
+    box.write('fontSize', val);
   }
 }

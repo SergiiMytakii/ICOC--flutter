@@ -12,7 +12,8 @@ class PlaylistsListScreen extends StatefulWidget {
 }
 
 class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
-  late GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final controller = Get.put(SongsController());
 
@@ -24,7 +25,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
 
   void _removePlaylist(Map<String, Object?> playlist, int index, int i) {
     {
-      controller.removePlaylist(playlist);
+      controller.deletePlaylist(playlist);
       //animation
       final item = controller.playlists.removeAt(index);
       listKey.currentState!.removeItem(index,
@@ -34,18 +35,33 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   }
 
   void _insertNewPlaylist() {
-    // final enteredNameOfNewPlaylist = _textController.text;
-    // if (enteredNameOfNewPlaylist.isEmpty) return;
     Get.defaultDialog(
       title: 'name of playlist'.tr,
-      content: TextField(
-          controller: controller.textController.value,
-          autofocus: true,
-          onSubmitted: (_) async {
-            await controller.createNewPlaylist();
-            listKey.currentState?.insertItem(0);
-            Get.back();
-          }),
+      content: Form(
+        key: formKey,
+        child: TextFormField(
+            controller: controller.textController.value,
+            autofocus: true,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter name of playlist'.tr;
+              }
+              bool coincidence = false;
+              controller.playlists.forEach((element) {
+                if (element.values.contains(value)) coincidence = true;
+              });
+              if (coincidence == true)
+                return 'The playlist with given name alredy exist'.tr;
+              return null;
+            },
+            onEditingComplete: () async {
+              if (formKey.currentState!.validate()) {
+                await controller.createNewPlaylist();
+                listKey.currentState?.insertItem(0);
+                Get.back();
+              }
+            }),
+      ),
     );
   }
 

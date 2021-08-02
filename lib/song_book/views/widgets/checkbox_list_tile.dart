@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class MyCheckboxListTile extends GetView {
+class MyCheckboxListTile extends GetView<SongsController> {
   final ValueKey key;
   final String orderLang;
 
@@ -29,12 +29,12 @@ class MyCheckboxListTile extends GetView {
                 lang.tr,
                 style: Theme.of(context).textTheme.headline6,
               ),
-              value: controller.songLang[lang],
+              value: songLangController.songLang[lang],
               contentPadding: EdgeInsets.symmetric(horizontal: 10),
               secondary: Icon(Icons.reorder),
               onChanged: (val) {
                 songLangController.setSongLang(lang, val!);
-                controller.fetchSongs();
+                controller.fetchSongsList();
               }),
         );
       },
