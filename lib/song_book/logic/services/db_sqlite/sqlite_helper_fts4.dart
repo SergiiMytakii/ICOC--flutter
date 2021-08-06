@@ -179,17 +179,6 @@ class DatabaseHelperFTS4 {
     print('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
 
-  void fetchDataFromFirebase() async {
-    //update local SQL database from firebase
-    log.i('start to insert from helper');
-    await DatabaseServiceFirebase().songs.then((songs) {
-      log.i('in process to insert from helper, songs are ' +
-          songs.length.toString());
-      DatabaseHelperFTS4().insertAllSongs(songs);
-      log.i('finish to insert');
-    });
-  }
-
 /* get list of all songs */
   Stream<List<Song>> getListSongs() async* {
     final Database? database = await db;

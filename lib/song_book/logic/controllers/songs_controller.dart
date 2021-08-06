@@ -21,7 +21,7 @@ class SongsController extends GetxController {
   Future fetchDataFromFirebase() async {
     //update local SQL database from firebase
     log.i('start to insert from FireBase');
-    await DatabaseServiceFirebase().songs.then((songs) async {
+    DatabaseServiceFirebase().songs.listen((songs) async {
       log.i('in process to insert, songs are ' + songs.length.toString());
       await DatabaseHelperFTS4().insertAllSongs(songs);
       log.i('finish to insert');

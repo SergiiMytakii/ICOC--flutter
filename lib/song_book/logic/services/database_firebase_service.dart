@@ -49,12 +49,8 @@ class DatabaseServiceFirebase {
   }
 
   //get songs
-  Future get songs {
+  Stream<List<SongDetail>> get songs {
     //insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
-    return songCollection
-        .get()
-        .then((snapshot) => _songListFromSnapshot(snapshot), onError: (error) {
-      print('Error is $error');
-    });
+    return songCollection.snapshots().map(_songListFromSnapshot);
   }
 }
