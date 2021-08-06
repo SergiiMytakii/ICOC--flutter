@@ -1,10 +1,10 @@
-import 'package:Projects/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
+import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getxfire/getxfire.dart';
 import 'package:logger/logger.dart';
-import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:Projects/song_book/models/song_detail.dart';
+import 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:icoc/song_book/models/song_detail.dart';
 
 class SongScreenController extends GetxController {
   GetStorage box = GetStorage();
@@ -99,7 +99,6 @@ class SongScreenController extends GetxController {
 
   void loadFontSize() {
     if (box.read('fontSize') != null) fontSize.value = box.read('fontSize');
-    log.i(fontSize);
   }
 
   altFontSize(double val) {

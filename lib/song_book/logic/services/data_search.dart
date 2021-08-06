@@ -1,7 +1,7 @@
-import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
-import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/views/screens/song_screen.dart';
+import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/models/song.dart';
+import 'package:icoc/song_book/views/screens/song_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 import 'db_sqlite/sqlite_helper_fts4.dart';

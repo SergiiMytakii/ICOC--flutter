@@ -1,8 +1,8 @@
-import 'package:Projects/app/menu/my_drawer.dart';
-import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/views/screens/favorites_screen.dart';
-import 'package:Projects/song_book/views/screens/playlists_list_screen.dart';
-import 'package:Projects/song_book/views/screens/song_book_screen.dart';
+import 'package:icoc/app/menu/my_drawer.dart';
+import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/views/screens/favorites_screen.dart';
+import 'package:icoc/song_book/views/screens/playlists_list_screen.dart';
+import 'package:icoc/song_book/views/screens/song_book_screen.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:flutter/material.dart';
 

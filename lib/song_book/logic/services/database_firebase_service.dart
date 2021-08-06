@@ -1,9 +1,10 @@
-import 'package:Projects/song_book/models/song_detail.dart';
+import 'package:icoc/song_book/models/song_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:logger/logger.dart';
 import 'import_songs.dart';
 
 class DatabaseServiceFirebase {
+  var log = Logger();
   //get access to database
   final CollectionReference songCollection =
       FirebaseFirestore.instance.collection('Songs');
@@ -50,7 +51,6 @@ class DatabaseServiceFirebase {
   //get songs
   Future get songs {
     //insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
-
     return songCollection
         .get()
         .then((snapshot) => _songListFromSnapshot(snapshot), onError: (error) {

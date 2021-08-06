@@ -1,18 +1,14 @@
-import 'package:Projects/routes/routes.dart';
-import 'package:Projects/shared/constants.dart';
+import 'package:icoc/app/core/controllers/main_screen_controller.dart';
+import 'package:icoc/routes/routes.dart';
+import 'package:icoc/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 import '../menu/my_drawer.dart';
 
-class MainScreen extends StatefulWidget {
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  tableItem(String title, Color color, IconData icon, double sizeOfCell,
-      String routeName) {
+class MainScreen extends GetView<MainScreenController> {
+  tableItem(BuildContext context, String title, Color color, IconData icon,
+      double sizeOfCell, String routeName) {
     return Container(
       height: sizeOfCell,
       width: sizeOfCell,
@@ -64,6 +60,7 @@ class _MainScreenState extends State<MainScreen> {
   double sizeOfCell() => (size.width - 15) / 2;
   @override
   Widget build(BuildContext context) {
+    Get.put(MainScreenController());
     //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
     return Scaffold(
       appBar: AppBar(
@@ -134,12 +131,14 @@ class _MainScreenState extends State<MainScreen> {
                   TableRow(
                     children: [
                       tableItem(
+                          context,
                           'drawer_song_book'.tr,
                           Constants.screensColors['songBook']!,
                           Icons.music_note,
                           sizeOfCell(),
                           Routes.SONGBOOK),
                       tableItem(
+                          context,
                           'drawer_news'.tr,
                           Constants.screensColors['news']!,
                           Icons.language,
@@ -150,12 +149,14 @@ class _MainScreenState extends State<MainScreen> {
                   TableRow(
                     children: [
                       tableItem(
+                          context,
                           'drawer_first_principles'.tr,
                           Constants.screensColors['firstPrinciples']!,
                           Icons.import_contacts,
                           sizeOfCell(),
                           Routes.FIRSTPRINCIPLES),
                       tableItem(
+                          context,
                           'drawer_q_and_a'.tr,
                           Constants.screensColors['Q&A']!,
                           Icons.question_answer,

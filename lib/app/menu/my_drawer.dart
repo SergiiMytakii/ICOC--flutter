@@ -1,4 +1,4 @@
-import 'package:Projects/routes/routes.dart';
+import 'package:icoc/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';

@@ -1,12 +1,12 @@
-import 'package:Projects/app/screens/main_screen.dart';
-import 'package:Projects/first_principles/presentation/screens/first_principles_screen.dart';
-import 'package:Projects/news/presentation/screens/news_screen.dart';
-import 'package:Projects/q_and_a/presentation/screens/q_and_a_screen.dart';
-import 'package:Projects/routes/routes.dart';
-import 'package:Projects/settings/presentation/general_settings.dart';
-import 'package:Projects/song_book/views/screens/playlist_screen.dart';
-import 'package:Projects/song_book/views/widgets/add_song_to_playlist.dart';
-import 'package:Projects/song_book/views/widgets/bottom_navigation_bar.dart';
+import 'package:icoc/app/screens/main_screen.dart';
+import 'package:icoc/first_principles/presentation/screens/first_principles_screen.dart';
+import 'package:icoc/news/presentation/screens/news_screen.dart';
+import 'package:icoc/q_and_a/presentation/screens/q_and_a_screen.dart';
+import 'package:icoc/routes/routes.dart';
+import 'package:icoc/settings/presentation/general_settings.dart';
+import 'package:icoc/song_book/views/screens/playlist_screen.dart';
+import 'package:icoc/song_book/views/widgets/add_song_to_playlist.dart';
+import 'package:icoc/song_book/views/widgets/bottom_navigation_bar.dart';
 import 'package:getxfire/getxfire.dart';
 
 class Pages {
