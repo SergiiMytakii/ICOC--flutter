@@ -1,23 +1,53 @@
-import 'package:Projects/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:Projects/song_book/models/song.dart';
+import 'package:icoc/app/screens/widgets/snackbar.dart';
+import 'package:icoc/song_book/logic/services/database_firebase_service.dart';
+import 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
+import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
+import 'package:logger/logger.dart';
 
 class SongsController extends GetxController {
   final songs = <Song>[].obs;
   var loaded = false.obs;
+  var log = Logger();
 
   @override
-  void onInit() {
+  void onInit() async {
+    await fetchSongsList();
     fetchFavoritesList();
-    fetchSongsList();
     super.onInit();
   }
 
-  void fetchSongsList() {
+  Future fetchDataFromFirebase() async {
+    //update local SQL database from firebase
+    log.i('start to insert from FireBase');
+    await DatabaseServiceFirebase().songs.then((songs) async {
+      log.i('in process to insert, songs are ' + songs.length.toString());
+      await DatabaseHelperFTS4().insertAllSongs(songs);
+      log.i('finish to insert');
+      fetchSongsList();
+    });
+  }
+
+  Future<void> fetchSongsList() async {
+    log.i('start to fetch songs from SQL database');
     DatabaseHelperFTS4().getListSongs().listen((event) {
+      log.i('got songs from db ' + event.length.toString());
       songs.value = event;
-      if (songs.length != 0) loaded.value = true;
+      if (songs.length != 0)
+        loaded.value = true;
+      else {
+        //if we can't load data for 5 ces - show warning
+        Future.delayed(Duration(seconds: 8)).then((value) {
+          if (songs.length == 0) {
+            loaded.value = true;
+            CustomSnackbar().showSnackbar(
+                'Ooooops'.tr,
+                'Can\'t  load data... Please, check your internet connection and pull down to refresh!'
+                    .tr);
+          }
+        });
+      }
     });
   }
 

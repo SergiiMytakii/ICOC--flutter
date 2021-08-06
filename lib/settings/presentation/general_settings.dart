@@ -1,6 +1,6 @@
 import 'dart:ui';
-import 'package:Projects/app/core/controllers/General_settings_controller.dart';
-import 'package:Projects/shared/constants.dart';
+import 'package:icoc/app/core/controllers/General_settings_controller.dart';
+import 'package:icoc/shared/constants.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';

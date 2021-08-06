@@ -1,6 +1,6 @@
-import 'package:Projects/routes/routes.dart';
-import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/routes/routes.dart';
+import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';

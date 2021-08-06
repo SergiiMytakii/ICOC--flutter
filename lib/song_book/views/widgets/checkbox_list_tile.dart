@@ -1,6 +1,6 @@
-import 'package:Projects/song_book/logic/controllers/song_lang_controller.dart';
+import 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
 
-import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get_utils/src/extensions/internacionalization.dart';

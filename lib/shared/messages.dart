@@ -43,7 +43,10 @@ class Messages extends Translations {
           "remove from playlist": "Remove",
           "Please enter name of playlist": "Please enter name of playlist",
           "The playlist with given name alredy exist":
-              "The playlist with given name alredy exist"
+              "The playlist with given name alredy exist",
+          'Ooooops': 'Ooooops',
+          'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
+              'Can\'t  load data... Please, check your internet connection and pull down to refresh!'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -85,7 +88,10 @@ class Messages extends Translations {
           "remove from playlist": "Удалить",
           "Please enter name of playlist": "Введите название плейлиста",
           "The playlist with given name alredy exist":
-              "Плейлист с таким названием уже существует"
+              "Плейлист с таким названием уже существует",
+          'Ooooops': 'Ууууупс',
+          'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
+              'Невозможно загрузить данные... Проверьте интернет соединение и потяните вниз, чтобы обновить'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -127,7 +133,10 @@ class Messages extends Translations {
           "remove from playlist": "Видалити",
           "Please enter name of playlist": "Внесіть назву плейлиста",
           "The playlist with given name alredy exist":
-              "Плейлист с такою назвою вже існує"
+              "Плейлист с такою назвою вже існує",
+          'Ooooops': 'Йогоу...',
+          'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
+              'Неможливо завантажити данні... Перевірте интернет з\'єднання та понягніть униз, чтобы оновити'
         }
       };
 }

@@ -1,5 +1,5 @@
 import 'dart:async' show Future;
-import 'package:Projects/song_book/models/song_detail.dart';
+import 'package:icoc/song_book/models/song_detail.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 

@@ -1,4 +1,4 @@
-import 'package:Projects/shared/constants.dart';
+import 'package:icoc/shared/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';

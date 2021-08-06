@@ -1,9 +1,12 @@
-import 'package:Projects/song_book/logic/controllers/song_lang_controller.dart';
-import 'package:Projects/song_book/models/song.dart';
-import 'package:Projects/song_book/models/song_detail.dart';
+import 'dart:async';
+import 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
+import 'package:icoc/song_book/models/song.dart';
+import 'package:icoc/song_book/models/song_detail.dart';
 import 'package:getxfire/getxfire.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import '../database_firebase_service.dart';
 
 class DatabaseHelperFTS4 {
   static Database? _db;
@@ -40,11 +43,13 @@ class DatabaseHelperFTS4 {
   static const String TABLE_PLAYLISTS_SONGS = 'playlistsSongs';
   static const String PLAYLIST_ID = 'playlistId';
 
+  //SongsController songsController = Get.put(SongsController());
   List<String> columnsTitle = [ID_SONG];
   var columnsText = [];
   List<String> columnsDescription = [];
   String colTexts = '';
   final controller = Get.put(SongLangController());
+  var log = Logger();
 
   void _filterLangDisplaying() {
     if (controller.songLang['ru']!) {
@@ -69,11 +74,11 @@ class DatabaseHelperFTS4 {
 /* get refetence to the DB and initialasing DB */
   Future<Database?> get db async {
     if (_db != null) {
-      print('db already exist!');
+      log.i('db already exist!');
       return _db;
     } else {
       _db = await initDB();
-      print('initializing db');
+      log.i('initializing db');
       return _db;
     }
   }
@@ -81,7 +86,6 @@ class DatabaseHelperFTS4 {
   Future<Database> initDB() async {
     String path = join((await getDatabasesPath()), DB_NAME);
     //await deleteDatabase(path);   // - if we need to clean database
-    print('!!!!databases was opened!!!!!' + path);
 
     return await openDatabase(path, version: 2,
         onCreate: (Database db, int version) async {
@@ -104,7 +108,7 @@ class DatabaseHelperFTS4 {
       await db.execute(
           'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $PLAYLIST_ID INTEGER ,  $ID_SONG)');
 
-      print(' !!!!databases was created!!!!!');
+      log.i(' !!!!databases was created!!!!!');
     });
   }
 
@@ -115,13 +119,15 @@ class DatabaseHelperFTS4 {
     final Database database = (await db)!;
 
     //clean tables before inserting new data
+//not sure we need to clean tables every time
 
-    await database.delete(TABLE_TITLE);
-    await database.delete(TABLE_TEXT_RU);
-    await database.delete(TABLE_TEXT_UK);
-    await database.delete(TABLE_TEXT_EN);
-    await database.delete(TABLE_DESCRIPTION);
-    await database.delete(TABLE_CHORDS);
+    database.delete(TABLE_TITLE);
+    database.delete(TABLE_TEXT_RU);
+    database.delete(TABLE_TEXT_UK);
+    database.delete(TABLE_TEXT_EN);
+    database.delete(TABLE_DESCRIPTION);
+
+    database.delete(TABLE_CHORDS);
 //todo try to avoid for loop
     for (SongDetail song in songs) {
       await database.insert(
@@ -173,9 +179,32 @@ class DatabaseHelperFTS4 {
     print('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
 
+  void fetchDataFromFirebase() async {
+    //update local SQL database from firebase
+    log.i('start to insert from helper');
+    await DatabaseServiceFirebase().songs.then((songs) {
+      log.i('in process to insert from helper, songs are ' +
+          songs.length.toString());
+      DatabaseHelperFTS4().insertAllSongs(songs);
+      log.i('finish to insert');
+    });
+  }
+
 /* get list of all songs */
   Stream<List<Song>> getListSongs() async* {
     final Database? database = await db;
+//check if tables are empty
+// this is mess
+
+    // final List<Map<String, dynamic>> tablesAreEmpty =
+    //     await database!.query(TABLE_TITLE, columns: [ID_SONG]);
+    // print(tablesAreEmpty.length);
+    // if (tablesAreEmpty.isEmpty) {
+    //   log.i('tables are empty');
+    //   //fetchDataFromFirebase();
+    //   return;
+    // }
+
     //filter which lang-s will be displaying
     _filterLangDisplaying();
 

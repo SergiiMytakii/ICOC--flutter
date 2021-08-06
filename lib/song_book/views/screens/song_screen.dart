@@ -1,7 +1,7 @@
-import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/logic/controllers/song_screen_controller.dart';
-import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
-import 'package:Projects/song_book/views/widgets/song_text_on_song_screen.dart';
+import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
+import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/views/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
@@ -116,7 +116,9 @@ class SongScreen extends GetView<SongScreenController> {
                 ),
               for (final item in controller.tabItemsChords)
                 SongTextOnSongScreen(
-                    textVersion: controller.songDetail.value.chords[item]),
+                  textVersion: controller.songDetail.value.chords[item],
+                  controller: controller,
+                ),
             ],
           ),
         ),

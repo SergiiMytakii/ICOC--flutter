@@ -1,7 +1,7 @@
-import 'package:Projects/shared/constants.dart';
-import 'package:Projects/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:Projects/song_book/logic/controllers/songs_controller.dart';
-import 'package:Projects/song_book/views/widgets/favorites_song_card.dart';
+import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
+import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/views/widgets/favorites_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
