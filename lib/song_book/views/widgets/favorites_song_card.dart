@@ -38,7 +38,7 @@ class FavoritesSongCard extends GetView<SongsController> {
               color: Theme.of(context).primaryColorDark,
               icon: Icons.playlist_play_outlined,
               onTap: () =>
-                  Get.toNamed(Routes.ADDTOPLAYLIST, arguments: song.id),
+                  Get.toNamed(Routes.ADD_TO_PLAYLIST, arguments: song.id),
             )
           ],
           child: ListTile(
