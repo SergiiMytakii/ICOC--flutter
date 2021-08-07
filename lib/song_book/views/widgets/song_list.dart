@@ -11,11 +11,8 @@ class SongList extends GetView<SongsController> {
   final log = Logger();
   @override
   Widget build(BuildContext context) {
-    log.i('build');
     Get.put(SongsController());
-
     int i = 0;
-
     return Obx(() {
       return controller.loaded.value
           ? SliverList(
