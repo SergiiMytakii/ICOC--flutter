@@ -68,10 +68,12 @@ class SongScreen extends GetView<SongScreenController> {
               for (final item in controller.tabItemsSongs)
                 SongTextOnSongScreen(
                   title:
-                      controller.songDetail.value.title[item.substring(0, 2)],
-                  textVersion: controller.songDetail.value.text[item],
+                      controller.songDetail.value.title[item.substring(0, 2)] ??
+                          '',
+                  textVersion: controller.songDetail.value.text[item] ?? '',
                   description: controller
-                      .songDetail.value.description[item.substring(0, 2)],
+                          .songDetail.value.description[item.substring(0, 2)] ??
+                      '',
                   controller: controller,
                 ),
               for (final item in controller.tabItemsChords)

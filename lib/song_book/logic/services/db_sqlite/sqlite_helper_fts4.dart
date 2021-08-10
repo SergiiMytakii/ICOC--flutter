@@ -87,7 +87,7 @@ class DatabaseHelperFTS4 {
     String path = join((await getDatabasesPath()), DB_NAME);
     //await deleteDatabase(path);   // - if we need to clean database
 
-    return await openDatabase(path, version: 2,
+    return await openDatabase(path, version: 3,
         onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
@@ -448,7 +448,7 @@ class DatabaseHelperFTS4 {
     final Database? database = await db;
 
     List<Song> songs = [];
-
+    log.i('query' + query);
     if (query != '') {
       // search in titiles
 

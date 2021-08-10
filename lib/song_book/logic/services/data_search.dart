@@ -45,7 +45,7 @@ class DataSearch extends SearchDelegate {
   Stream<List<Song>> searchStream() {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), '');
+        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), ' ');
 
     if (trimmedQuery == '') {
       return DatabaseHelperFTS4().getListSongs();

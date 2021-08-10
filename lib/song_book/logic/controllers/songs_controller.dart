@@ -10,6 +10,7 @@ class SongsController extends GetxController {
   final songs = <Song>[].obs;
   var loaded = false.obs;
   var log = Logger();
+  RxString updateLoadingProgress = 'Загружаем песни'.obs;
 
   @override
   void onInit() async {
@@ -29,17 +30,26 @@ class SongsController extends GetxController {
   Future<void> fetchSongsList() async {
     DatabaseHelperFTS4().getListSongs().listen((event) {
       songs.value = event;
-      if (songs.length != 0)
+      if (songs.length != 0) {
         loaded.value = true;
-      else {
+      } else {
         //if we can't load data for 5 ces - show warning
-        Future.delayed(Duration(seconds: 8)).then((value) {
+        Future.delayed(Duration(seconds: 5)).then((value) {
           if (songs.length == 0) {
-            loaded.value = true;
-            CustomSnackbar().showSnackbar(
-                'Ooooops'.tr,
-                'Can\'t  load data... Please, check your internet connection and pull down to refresh!'
-                    .tr);
+            updateLoadingProgress.value =
+                'При первой загрузке приложения \nнужно немножко больше времени';
+          }
+        });
+        Future.delayed(Duration(seconds: 10)).then((value) {
+          if (songs.length == 0) {
+            updateLoadingProgress.value = 'Почти готово...';
+          }
+        });
+
+        Future.delayed(Duration(seconds: 15)).then((value) {
+          if (songs.length == 0) {
+            updateLoadingProgress.value =
+                'Загрузка медленне, чем обычно... \nВернитесь на главный экран \nи затем опять зайдите в песни';
           }
         });
       }

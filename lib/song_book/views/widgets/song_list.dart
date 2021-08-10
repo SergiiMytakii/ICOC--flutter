@@ -39,7 +39,13 @@ class SongList extends GetView<SongsController> {
                 childCount: controller.songs.length,
               ),
             )
-          : SliverToBoxAdapter(child: Loading());
+          : SliverToBoxAdapter(
+              child: Column(
+              children: [
+                Loading(),
+                Text(controller.updateLoadingProgress.value)
+              ],
+            ));
     });
   }
 }
