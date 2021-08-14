@@ -1,5 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/slides_controller.dart';
 import 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/views/widgets/song_text_on_song_screen.dart';
@@ -14,6 +15,7 @@ class SongScreen extends GetView<SongScreenController> {
   @override
   Widget build(BuildContext context) {
     Get.put(SongScreenController(songId: Get.arguments[0]));
+    final SlidesController slidesController = Get.put(SlidesController());
 
     return Obx(
       () => DefaultTabController(
@@ -36,7 +38,10 @@ class SongScreen extends GetView<SongScreenController> {
                   Icons.share,
                 ),
                 onPressed: () {
-                  Share.share(controller.songDetail.value.text['ru']);
+                  String song = slidesController.slideTitle.value +
+                      '\n\n' +
+                      slidesController.slideText.value;
+                  Share.share(song);
                 },
               ),
               IconButton(

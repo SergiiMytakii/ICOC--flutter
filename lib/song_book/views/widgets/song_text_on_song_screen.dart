@@ -18,9 +18,9 @@ class SongTextOnSongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SlidesController slidesConrtoller = Get.put(SlidesController());
-    slidesConrtoller.slideTitle.value = title;
-    slidesConrtoller.slideText.value = textVersion;
+    SlidesController slidesController = Get.put(SlidesController());
+    slidesController.slideTitle.value = title;
+    slidesController.slideText.value = textVersion;
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Obx(() {
