@@ -6,6 +6,7 @@ import 'package:icoc/routes/routes.dart';
 import 'package:icoc/settings/presentation/general_settings.dart';
 import 'package:icoc/song_book/views/screens/playlist_screen.dart';
 import 'package:icoc/song_book/views/screens/slides_screen.dart';
+import 'package:icoc/song_book/views/screens/song_screen.dart';
 import 'package:icoc/song_book/views/widgets/add_song_to_playlist.dart';
 import 'package:icoc/song_book/views/widgets/bottom_navigation_bar.dart';
 import 'package:getxfire/getxfire.dart';
@@ -62,8 +63,14 @@ class Pages {
         transitionDuration: Duration(milliseconds: 250),
       ),
       GetPage(
-        name: Routes.SLIDES,
+        name: Routes.SLIDES_SCREEN,
         page: () => SlidesScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.SONG_SCREEN,
+        page: () => SongScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

@@ -6,18 +6,14 @@ import 'package:icoc/song_book/views/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SongScreen extends GetView<SongScreenController> {
-  final int songId;
-  final SongsController songsController;
-
-  SongScreen({required this.songId, required this.songsController});
-
-  //get current favorite status
+  final SongsController songsController = Get.arguments[1];
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SongScreenController(songId: songId));
+    Get.put(SongScreenController(songId: Get.arguments[0]));
 
     return Obx(
       () => DefaultTabController(
@@ -39,7 +35,9 @@ class SongScreen extends GetView<SongScreenController> {
                 icon: Icon(
                   Icons.share,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Share.share(controller.songDetail.value.text['ru']);
+                },
               ),
               IconButton(
                 icon: Icon(
@@ -58,7 +56,7 @@ class SongScreen extends GetView<SongScreenController> {
               IconButton(
                 icon: Icon(Icons.slideshow_outlined),
                 onPressed: () => Get.toNamed(
-                  Routes.SLIDES,
+                  Routes.SLIDES_SCREEN,
                 ),
               ),
             ],

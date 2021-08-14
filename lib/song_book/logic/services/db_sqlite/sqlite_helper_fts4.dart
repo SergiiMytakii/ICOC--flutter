@@ -6,7 +6,6 @@ import 'package:getxfire/getxfire.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../database_firebase_service.dart';
 
 class DatabaseHelperFTS4 {
   static Database? _db;

@@ -7,5 +7,6 @@ abstract class Routes {
   static const SETTINGS = '/general_settings';
   static const PLAYLISTS = '/playlists_list_screen';
   static const ADD_TO_PLAYLIST = '/add_song_to_playlist';
-  static const SLIDES = '/slides_screen';
+  static const SLIDES_SCREEN = '/slides_screen';
+  static const SONG_SCREEN = '/song_screen';
 }

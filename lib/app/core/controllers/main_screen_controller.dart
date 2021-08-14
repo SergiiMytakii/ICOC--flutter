@@ -9,7 +9,6 @@ class MainScreenController extends GetxController {
   @override
   void onInit() async {
     await songsController.fetchDataFromFirebase();
-    log.i('fetch from main screen');
     super.onInit();
   }
 }

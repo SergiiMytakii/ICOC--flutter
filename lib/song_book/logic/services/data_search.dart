@@ -1,7 +1,7 @@
+import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
-import 'package:icoc/song_book/views/screens/song_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 import 'db_sqlite/sqlite_helper_fts4.dart';
@@ -144,13 +144,8 @@ class DataSearch extends SearchDelegate {
     return Column(
       children: [
         ListTile(
-          onTap: (() => Get.to(
-              SongScreen(
-                songId: songs.data![index].id,
-                songsController: songsController,
-              ),
-              transition: Transition.rightToLeftWithFade,
-              duration: Duration(milliseconds: 250))),
+          onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
+              arguments: [songs.data![index].id, songsController])),
           horizontalTitleGap: 0,
           leading: Text(songs.data![index].id.toString(),
               style: Theme.of(context).textTheme.headline6),
