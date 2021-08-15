@@ -24,7 +24,8 @@ dependencies:
   adaptive_theme: ^2.1.0-nullsafety.1
   cloud_firestore: ^2.2.0
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.0.0
+  firebase_analytics: ^8.2.0
+  firebase_core: ^1.4.0
   flutter:
     sdk: flutter
   flutter_html: ^2.1.0

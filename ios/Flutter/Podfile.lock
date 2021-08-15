@@ -212,94 +212,34 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Implementation (0.0.7):
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
-  - cloud_firestore (2.4.0):
-    - Firebase/Firestore (= 8.3.0)
+  - cloud_firestore (1.0.7):
+    - Firebase/Firestore (= 7.11.0)
     - firebase_core
     - Flutter
-  - Firebase/Analytics (8.3.0):
-    - Firebase/Core
-  - Firebase/Auth (8.3.0):
+  - Firebase/CoreOnly (7.11.0):
+    - FirebaseCore (= 7.11.0)
+  - Firebase/Firestore (7.11.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 8.3.0)
-  - Firebase/Core (8.3.0):
-    - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 8.3.0)
-  - Firebase/CoreOnly (8.3.0):
-    - FirebaseCore (= 8.3.0)
-  - Firebase/DynamicLinks (8.3.0):
-    - Firebase/CoreOnly
-    - FirebaseDynamicLinks (~> 8.3.0)
-  - Firebase/Firestore (8.3.0):
-    - Firebase/CoreOnly
-    - FirebaseFirestore (~> 8.3.0)
-  - Firebase/Storage (8.3.0):
-    - Firebase/CoreOnly
-    - FirebaseStorage (~> 8.3.0)
-  - firebase_analytics (8.2.0):
-    - Firebase/Analytics (= 8.3.0)
-    - firebase_core
+    - FirebaseFirestore (~> 7.11.0)
+  - firebase_core (1.1.0):
+    - Firebase/CoreOnly (= 7.11.0)
     - Flutter
-  - firebase_auth (1.4.1):
-    - Firebase/Auth (= 8.3.0)
-    - firebase_core
-    - Flutter
-  - firebase_core (1.4.0):
-    - Firebase/CoreOnly (= 8.3.0)
-    - Flutter
-  - firebase_dynamic_links (2.0.7):
-    - Firebase/DynamicLinks (= 8.3.0)
-    - firebase_core
-    - Flutter
-  - firebase_storage (8.1.3):
-    - Firebase/Storage (= 8.3.0)
-    - firebase_core
-    - Flutter
-  - FirebaseAnalytics (8.3.0):
-    - FirebaseAnalytics/AdIdSupport (= 8.3.0)
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
-    - GoogleUtilities/MethodSwizzler (~> 7.4)
-    - GoogleUtilities/Network (~> 7.4)
-    - "GoogleUtilities/NSData+zlib (~> 7.4)"
+  - FirebaseCore (7.11.0):
+    - FirebaseCoreDiagnostics (~> 7.4)
+    - GoogleUtilities/Environment (~> 7.0)
+    - GoogleUtilities/Logger (~> 7.0)
+  - FirebaseCoreDiagnostics (7.11.0):
+    - GoogleDataTransport (~> 8.4)
+    - GoogleUtilities/Environment (~> 7.0)
+    - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (8.3.0):
-    - FirebaseCore (~> 8.0)
-    - FirebaseInstallations (~> 8.0)
-    - GoogleAppMeasurement (= 8.3.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
-    - GoogleUtilities/MethodSwizzler (~> 7.4)
-    - GoogleUtilities/Network (~> 7.4)
-    - "GoogleUtilities/NSData+zlib (~> 7.4)"
-    - nanopb (~> 2.30908.0)
-  - FirebaseAuth (8.3.0):
-    - FirebaseCore (~> 8.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
-    - GoogleUtilities/Environment (~> 7.4)
-    - GTMSessionFetcher/Core (~> 1.5)
-  - FirebaseCore (8.3.0):
-    - FirebaseCoreDiagnostics (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.4)
-    - GoogleUtilities/Logger (~> 7.4)
-  - FirebaseCoreDiagnostics (8.5.0):
-    - GoogleDataTransport (~> 9.0)
-    - GoogleUtilities/Environment (~> 7.4)
-    - GoogleUtilities/Logger (~> 7.4)
-    - nanopb (~> 2.30908.0)
-  - FirebaseDynamicLinks (8.3.0):
-    - FirebaseCore (~> 8.0)
-  - FirebaseFirestore (8.3.0):
+  - FirebaseFirestore (7.11.0):
     - abseil/algorithm (= 0.20200225.0)
     - abseil/base (= 0.20200225.0)
     - abseil/memory (= 0.20200225.0)
@@ -307,69 +247,22 @@ PODS:
     - abseil/strings/strings (= 0.20200225.0)
     - abseil/time (= 0.20200225.0)
     - abseil/types (= 0.20200225.0)
-    - FirebaseCore (~> 8.0)
+    - FirebaseCore (~> 7.0)
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30908.0)
-  - FirebaseInstallations (8.5.0):
-    - FirebaseCore (~> 8.0)
-    - GoogleUtilities/Environment (~> 7.4)
-    - GoogleUtilities/UserDefaults (~> 7.4)
-    - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseStorage (8.3.0):
-    - FirebaseCore (~> 8.0)
-    - GTMSessionFetcher/Core (~> 1.5)
   - Flutter (1.0.0)
-  - flutter_web_browser (0.14.0):
-    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - getxfire (0.0.1):
-    - Flutter
-  - google_sign_in (0.0.1):
-    - Flutter
-    - GoogleSignIn (~> 5.0)
-  - GoogleAppMeasurement (8.3.0):
-    - GoogleAppMeasurement/AdIdSupport (= 8.3.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
-    - GoogleUtilities/MethodSwizzler (~> 7.4)
-    - GoogleUtilities/Network (~> 7.4)
-    - "GoogleUtilities/NSData+zlib (~> 7.4)"
-    - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (8.3.0):
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
-    - GoogleUtilities/MethodSwizzler (~> 7.4)
-    - GoogleUtilities/Network (~> 7.4)
-    - "GoogleUtilities/NSData+zlib (~> 7.4)"
-    - nanopb (~> 2.30908.0)
-  - GoogleDataTransport (9.1.0):
+  - GoogleDataTransport (8.4.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
-    - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/AppDelegateSwizzler (7.5.0):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Environment (7.4.0):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Logger (7.4.0):
     - GoogleUtilities/Environment
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.5.0):
-    - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.5.0):
-    - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.5.0):
-    - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.5.0):
-    - GoogleUtilities/Logger
-    - "GoogleUtilities/NSData+zlib"
-    - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.5.0)"
-  - GoogleUtilities/Reachability (7.5.0):
-    - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.5.0):
-    - GoogleUtilities/Logger
   - "gRPC-C++ (1.28.2)":
     - "gRPC-C++/Implementation (= 1.28.2)"
     - "gRPC-C++/Interface (= 1.28.2)"
@@ -394,180 +287,76 @@ PODS:
     - BoringSSL-GRPC (= 0.0.7)
     - gRPC-Core/Interface (= 1.28.2)
   - gRPC-Core/Interface (1.28.2)
-  - GTMAppAuth (1.2.2):
-    - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.6.1)
-  - image_cropper (0.0.4):
-    - Flutter
-    - TOCropViewController (~> 2.6.0)
-  - image_picker (0.0.1):
-    - Flutter
   - leveldb-library (1.22.1)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - path_provider (0.0.1):
-    - Flutter
-  - PromisesObjC (2.0.0)
-  - share_plus (0.0.1):
-    - Flutter
+  - PromisesObjC (1.2.12)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - TOCropViewController (2.6.0)
-  - url_launcher (0.0.1):
-    - Flutter
-  - video_player (0.0.1):
-    - Flutter
-  - wakelock (0.0.1):
-    - Flutter
-  - webview_flutter (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
-  - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
-  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
-  - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
-  - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
-  - flutter_web_browser (from `.symlinks/plugins/flutter_web_browser/ios`)
-  - getxfire (from `.symlinks/plugins/getxfire/ios`)
-  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
-  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
-  - image_picker (from `.symlinks/plugins/image_picker/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
-  - wakelock (from `.symlinks/plugins/wakelock/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - abseil
-    - AppAuth
     - BoringSSL-GRPC
     - Firebase
-    - FirebaseAnalytics
-    - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
-    - FirebaseDynamicLinks
     - FirebaseFirestore
-    - FirebaseInstallations
-    - FirebaseStorage
     - FMDB
-    - GoogleAppMeasurement
     - GoogleDataTransport
-    - GoogleSignIn
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
-    - GTMAppAuth
-    - GTMSessionFetcher
     - leveldb-library
     - nanopb
     - PromisesObjC
-    - TOCropViewController
 
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
-  firebase_analytics:
-    :path: ".symlinks/plugins/firebase_analytics/ios"
-  firebase_auth:
-    :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
-  firebase_dynamic_links:
-    :path: ".symlinks/plugins/firebase_dynamic_links/ios"
-  firebase_storage:
-    :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
-  flutter_web_browser:
-    :path: ".symlinks/plugins/flutter_web_browser/ios"
-  getxfire:
-    :path: ".symlinks/plugins/getxfire/ios"
-  google_sign_in:
-    :path: ".symlinks/plugins/google_sign_in/ios"
-  image_cropper:
-    :path: ".symlinks/plugins/image_cropper/ios"
-  image_picker:
-    :path: ".symlinks/plugins/image_picker/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
-  share_plus:
-    :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
-  wakelock:
-    :path: ".symlinks/plugins/wakelock/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
-  cloud_firestore: d6c77e2b33f00576fed2b070fec1be58d7e5f276
-  Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
-  firebase_analytics: 25a03006c041a3be10bbd8e7313f87f59b9857bf
-  firebase_auth: 5d48a6c2c9de6d8f7946269ef904136298c6aa12
-  firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
-  firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
-  firebase_storage: 93642c2a5d403bd218134a2bfe61e311a6f446bc
-  FirebaseAnalytics: 456f2c51599870a15ded4548d1f1f7b2cabf65a7
-  FirebaseAuth: fd12c82de44e7ad3b821610c387b8251f03aa0f9
-  FirebaseCore: a6dba751680d7033b9d3831e1cfc95ead0605118
-  FirebaseCoreDiagnostics: 7bf55d386f9fc690d971b70a582142321a390eb8
-  FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
-  FirebaseFirestore: f4f42828c6d82f6945575611c23dd343e0e7d0aa
-  FirebaseInstallations: f2bc590b291d25fb40a9a05b8281c02a881b5117
-  FirebaseStorage: ff380720c204593d98c3e5482e62ccfbb522f0c5
+  cloud_firestore: 5dbb01f115c77f4380e2248852518f52830d631f
+  Firebase: c121feb35e4126c0b355e3313fa9b487d47319fd
+  firebase_core: 84dcd80ac6d29c3d1039071b7306ee99688eb9c7
+  FirebaseCore: 907447d8917a4d3eb0cce2829c5a0ad21d90b432
+  FirebaseCoreDiagnostics: 68ad972f99206cef818230f3f3179d52ccfb7f8c
+  FirebaseFirestore: f495bb336b23eca23ea5d3605dce2a4cc214fde9
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  flutter_web_browser: 9ab7e8c56ca85c38e4b392de96b3793ee38ee4cc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  getxfire: e376b129cbc8c14c440f3cce35f1a5807eb00e5d
-  google_sign_in: c5cecea71f3be43282263550556e311c4cc03582
-  GoogleAppMeasurement: de70802583dedceb0bca18172b345307e8f410b8
-  GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
+  GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
+  GoogleUtilities: 284cddc7fffc14ae1907efb6f78ab95c1fccaedc
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
-  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
-  GTMSessionFetcher: 36689134877faeb055b27dfa4ccc9ceaa42e029e
-  image_cropper: 335c096946de797faeb64999884d7948bfcb72fe
-  image_picker: 9aa50e1d8cdacdbed739e925b7eea16d014367e6
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  path_provider: d1a68c4065ce2e0f6fd03f8a46d698525dc79f06
-  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
-  share_plus: e13bccc22410f1dd4bc5b911c380afc9457450f2
-  shared_preferences: 5d0fc5691f4e7293ddfc1b599ca398f8af42f5e7
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  shared_preferences: 9e0c9e3d3c131c89ba473e168357ead96cc6917a
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
-  url_launcher: 6f6d372e3f35bd604744421b3cb4a818b23eae7b
-  video_player: 6f04b43c8c1654fb38ff51712c2e6ce94e246126
-  wakelock: 21cfb3e17edfb1a3925668f7783013265b38ec7d
-  webview_flutter: 5fb4def2bbd4339889ee14d045b605cefc5bc232
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 15b330b9380d236e7adcc0ba6c177d16ee73f03e
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.10.1
