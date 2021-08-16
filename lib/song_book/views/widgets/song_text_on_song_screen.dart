@@ -1,19 +1,26 @@
+import 'package:icoc/song_book/logic/controllers/slides_controller.dart';
 import 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 
 class SongTextOnSongScreen extends StatelessWidget {
-  const SongTextOnSongScreen(
-      {this.title, this.textVersion, this.description, this.controller});
+  SongTextOnSongScreen(
+      {required this.title,
+      required this.textVersion,
+      required this.description,
+      this.controller});
 
-  final String? textVersion;
-  final String? description;
-  final String? title;
+  final String textVersion;
+  final String description;
+  final String title;
   final SongScreenController? controller;
 
   @override
   Widget build(BuildContext context) {
+    SlidesController slidesController = Get.put(SlidesController());
+    slidesController.slideTitle.value = title;
+    slidesController.slideText.value = textVersion;
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Obx(() {
@@ -21,7 +28,7 @@ class SongTextOnSongScreen extends StatelessWidget {
         return Column(
           children: [
             Text(
-              title ?? '',
+              title,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
@@ -32,13 +39,13 @@ class SongTextOnSongScreen extends StatelessWidget {
               alignment: Alignment.topRight,
               margin: EdgeInsets.symmetric(vertical: 7),
               child: Text(
-                description ?? '',
+                description,
                 style: Theme.of(context).textTheme.headline6!,
               ),
             ),
             SizedBox(height: 10),
             Text(
-              textVersion ?? '',
+              textVersion,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme

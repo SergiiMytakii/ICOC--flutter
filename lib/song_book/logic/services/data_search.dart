@@ -1,7 +1,7 @@
+import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
-import 'package:icoc/song_book/views/screens/song_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 import 'db_sqlite/sqlite_helper_fts4.dart';
@@ -45,7 +45,7 @@ class DataSearch extends SearchDelegate {
   Stream<List<Song>> searchStream() {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), '');
+        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), ' ');
 
     if (trimmedQuery == '') {
       return DatabaseHelperFTS4().getListSongs();
@@ -103,7 +103,8 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Color(0xff6a4c93), fontWeight: FontWeight.w900))
+                  color: Constants.screensColors['songBook'],
+                  fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
             );
@@ -126,7 +127,8 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Color(0xff6a4c93), fontWeight: FontWeight.w900))
+                  color: Constants.screensColors['songBook'],
+                  fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
             );
@@ -144,13 +146,8 @@ class DataSearch extends SearchDelegate {
     return Column(
       children: [
         ListTile(
-          onTap: (() => Get.to(
-              SongScreen(
-                songId: songs.data![index].id,
-                songsController: songsController,
-              ),
-              transition: Transition.rightToLeftWithFade,
-              duration: Duration(milliseconds: 250))),
+          onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
+              arguments: [songs.data![index].id, songsController])),
           horizontalTitleGap: 0,
           leading: Text(songs.data![index].id.toString(),
               style: Theme.of(context).textTheme.headline6),

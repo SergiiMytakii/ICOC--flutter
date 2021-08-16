@@ -6,7 +6,6 @@ import 'package:getxfire/getxfire.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../database_firebase_service.dart';
 
 class DatabaseHelperFTS4 {
   static Database? _db;
@@ -87,7 +86,7 @@ class DatabaseHelperFTS4 {
     String path = join((await getDatabasesPath()), DB_NAME);
     //await deleteDatabase(path);   // - if we need to clean database
 
-    return await openDatabase(path, version: 2,
+    return await openDatabase(path, version: 3,
         onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
@@ -177,17 +176,6 @@ class DatabaseHelperFTS4 {
       });
     }
     print('HAS BEEN INSERTED SONGS:  ${songs.length}');
-  }
-
-  void fetchDataFromFirebase() async {
-    //update local SQL database from firebase
-    log.i('start to insert from helper');
-    await DatabaseServiceFirebase().songs.then((songs) {
-      log.i('in process to insert from helper, songs are ' +
-          songs.length.toString());
-      DatabaseHelperFTS4().insertAllSongs(songs);
-      log.i('finish to insert');
-    });
   }
 
 /* get list of all songs */
@@ -459,7 +447,7 @@ class DatabaseHelperFTS4 {
     final Database? database = await db;
 
     List<Song> songs = [];
-
+    log.i('query' + query);
     if (query != '') {
       // search in titiles
 

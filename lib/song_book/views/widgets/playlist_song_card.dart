@@ -1,7 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
-import 'package:icoc/song_book/views/screens/song_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -40,7 +39,7 @@ class PlaylistSongCard extends GetView<SongsController> {
               color: Theme.of(context).primaryColorDark,
               icon: Icons.playlist_play_outlined,
               onTap: () =>
-                  Get.toNamed(Routes.ADDTOPLAYLIST, arguments: song.id),
+                  Get.toNamed(Routes.ADD_TO_PLAYLIST, arguments: song.id),
             ),
             IconSlideAction(
                 caption: 'remove from playlist'.tr,
@@ -49,15 +48,8 @@ class PlaylistSongCard extends GetView<SongsController> {
                 onTap: () => controller.removeFromPlaylist(playlistId, song.id))
           ],
           child: ListTile(
-            onTap: (() => Get.to(
-                SongScreen(
-                  songId: song.id,
-                  songsController: controller,
-
-                  //deleteFromFavorites: favController,
-                ),
-                transition: Transition.rightToLeftWithFade,
-                duration: Duration(milliseconds: 250))),
+            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
+                arguments: [song.id, controller])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
