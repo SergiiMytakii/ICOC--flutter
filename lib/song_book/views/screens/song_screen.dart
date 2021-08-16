@@ -22,8 +22,7 @@ class SongScreen extends GetView<SongScreenController> {
         length: controller.amountOfTabs.value,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor:
-                Constants.screensColors['songBook']!.withOpacity(0.8),
+            backgroundColor: Constants.screensColors['songBook'],
             bottom: TabBar(
               isScrollable: true,
               tabs: [

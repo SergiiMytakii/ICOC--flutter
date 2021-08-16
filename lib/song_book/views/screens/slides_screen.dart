@@ -12,7 +12,7 @@ class SlidesScreen extends GetView<SlidesController> {
     return Scaffold(
       //todo landscape mode
       appBar: AppBar(
-        backgroundColor: Constants.screensColors['songBook']!.withOpacity(0.8),
+        backgroundColor: Constants.screensColors['songBook'],
       ),
       body: Container(
           width: size.width,

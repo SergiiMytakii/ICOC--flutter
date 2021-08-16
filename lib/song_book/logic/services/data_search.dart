@@ -103,7 +103,8 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Color(0xff6a4c93), fontWeight: FontWeight.w900))
+                  color: Constants.screensColors['songBook'],
+                  fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
             );
@@ -126,7 +127,8 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Color(0xff6a4c93), fontWeight: FontWeight.w900))
+                  color: Constants.screensColors['songBook'],
+                  fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
             );

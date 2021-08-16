@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getxfire/getxfire.dart';
@@ -37,19 +39,21 @@ class MyApp extends StatelessWidget {
       light: myLightTheme,
       dark: myDarkTheme,
       builder: (light, dark) => OKToast(
-        child: GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          locale: appLocale != null
-              ? Constants().languagesLocales[appLocale]
-              : window.locale,
-          fallbackLocale: Locale('ru', 'RU'),
-          theme: light,
-          darkTheme: dark,
-          translations: Messages(),
-          title: 'ICOC',
-          home: MainScreen(),
-          getPages: Pages.getPages(),
-        ),
+        child: Platform.isIOS
+            ? GetCupertinoApp()
+            : GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                locale: appLocale != null
+                    ? Constants().languagesLocales[appLocale]
+                    : window.locale,
+                fallbackLocale: Locale('ru', 'RU'),
+                theme: light,
+                darkTheme: dark,
+                translations: Messages(),
+                title: 'ICOC',
+                home: MainScreen(),
+                getPages: Pages.getPages(),
+              ),
       ),
     );
   }

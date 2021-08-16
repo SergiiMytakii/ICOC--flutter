@@ -135,8 +135,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
           appBar: AppBar(
             centerTitle: true,
             title: Text('bottom_navigation_bar_playlists'.tr),
-            backgroundColor:
-                Constants.screensColors['songBook']!.withOpacity(0.8),
+            backgroundColor: Constants.screensColors['songBook'],
             actions: [
               IconButton(
                   icon: Icon(Icons.add),
