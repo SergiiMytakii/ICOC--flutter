@@ -42,16 +42,15 @@ class MyApp extends StatelessWidget {
       builder: (light, dark) => OKToast(
         child: Platform.isIOS
             ? GetCupertinoApp(
-                debugShowCheckedModeBanner: false,
                 locale: appLocale != null
                     ? Constants().languagesLocales[appLocale]
                     : window.locale,
                 fallbackLocale: Locale('ru', 'RU'),
-                theme: CupertinoThemeData(primaryColor: Color(0xff6a4c93)),
                 translations: Messages(),
                 title: 'ICOC',
                 home: MainScreen(),
                 getPages: Pages.getPages(),
+                theme: CupertinoThemeData(),
               )
             : GetMaterialApp(
                 debugShowCheckedModeBanner: false,

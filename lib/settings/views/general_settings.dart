@@ -28,6 +28,7 @@ class GeneralSettings extends GetView<GeneralSettingsController> {
                   'settings_dark_theme'.tr,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
+                activeColor: Theme.of(context).primaryColor,
                 value: controller.darkTheme.value,
                 onChanged: (bool value) {
                   controller.darkTheme.toggle();

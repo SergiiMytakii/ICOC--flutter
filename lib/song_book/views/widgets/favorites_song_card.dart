@@ -40,24 +40,26 @@ class FavoritesSongCard extends GetView<SongsController> {
                   Get.toNamed(Routes.ADD_TO_PLAYLIST, arguments: song.id),
             )
           ],
-          child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
-                arguments: [song.id, controller])),
-            horizontalTitleGap: 0,
-            leading: Text(song.id.toString(),
-                style: Theme.of(context).textTheme.headline6),
-            title: Text(
-              //show title and text language accordingly to app lang
-              controller.chooseCardLang(song, orderLang)?[0] ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            subtitle: Text(
-              controller.chooseCardLang(song, orderLang)?[1] ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.bodyText2,
+          child: Material(
+            child: ListTile(
+              onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
+                  arguments: [song.id, controller])),
+              horizontalTitleGap: 0,
+              leading: Text(song.id.toString(),
+                  style: Theme.of(context).textTheme.headline6),
+              title: Text(
+                //show title and text language accordingly to app lang
+                controller.chooseCardLang(song, orderLang)?[0] ?? '',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              subtitle: Text(
+                controller.chooseCardLang(song, orderLang)?[1] ?? '',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
             ),
           ),
         ),

@@ -115,7 +115,7 @@ class SongScreen extends GetView<SongScreenController> {
                       Icons.text_fields,
                       color: Colors.black38,
                     ),
-                    Slider(
+                    Slider.adaptive(
                       activeColor: Theme.of(context).primaryColorDark,
                       inactiveColor: Theme.of(context).primaryColorDark,
                       label: 'Font size',

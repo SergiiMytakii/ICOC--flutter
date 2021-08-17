@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:icoc/app/core/controllers/main_screen_controller.dart';
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
@@ -7,76 +10,73 @@ import 'package:getxfire/getxfire.dart';
 import '../menu/my_drawer.dart';
 
 class MainScreen extends GetView<MainScreenController> {
-  tableItem(BuildContext context, String title, Color color, IconData icon,
-      double sizeOfCell, String routeName) {
+  final size = Get.size;
+  double get sizeOfCell => (size.width - 15) / 2;
+
+  _buildTableItem(BuildContext context, String title, Color color,
+      IconData icon, String routeName) {
+    final item = Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 36,
+            color: Colors.white,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            title,
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: Colors.white),
+          ),
+        ],
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            color.withOpacity(0.6),
+            color,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(15),
+      ),
+    );
+
     return Container(
       height: sizeOfCell,
       width: sizeOfCell,
       padding: const EdgeInsets.all(7.5),
-      child: InkWell(
-        onTap: () => Get.toNamed(routeName),
-        splashColor: Theme.of(context).accentColor,
-        borderRadius: BorderRadius.circular(15),
-        child: Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                icon,
-                size: 36,
-                color: Colors.white,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.white),
-              ),
-            ],
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                color.withOpacity(0.6),
-                color,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+      child: Platform.isIOS
+          ? GestureDetector(
+              onTap: () => Get.toNamed(routeName),
+              // splashColor: Theme.of(context).accentColor,
+              // borderRadius: BorderRadius.circular(15),
+              child: item,
+            )
+          : InkWell(
+              onTap: () => Get.toNamed(routeName),
+              splashColor: Theme.of(context).accentColor,
+              borderRadius: BorderRadius.circular(15),
+              child: item,
             ),
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-      ),
     );
   }
 
-  final size = Get.size;
-  double sizeOfCell() => (size.width - 15) / 2;
   @override
   Widget build(BuildContext context) {
     Get.put(MainScreenController());
     //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ICOC'),
-        actions: [
-          Icon(Icons.notifications_none_outlined),
-          SizedBox(
-            width: 15,
-          )
-        ],
-        elevation: 6,
-      ),
-      drawer: Drawer(
-        child: MyDrawer(),
-      ),
-      body: SingleChildScrollView(
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           children: [
             Card(
@@ -126,41 +126,37 @@ class MainScreen extends GetView<MainScreenController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7.5),
               child: Table(
-                defaultColumnWidth: FixedColumnWidth(sizeOfCell()),
+                defaultColumnWidth: FixedColumnWidth(sizeOfCell),
                 children: [
                   TableRow(
                     children: [
-                      tableItem(
+                      _buildTableItem(
                           context,
                           'drawer_song_book'.tr,
                           Constants.screensColors['songBook']!,
                           Icons.music_note,
-                          sizeOfCell(),
                           Routes.SONGBOOK),
-                      tableItem(
+                      _buildTableItem(
                           context,
                           'drawer_news'.tr,
                           Constants.screensColors['news']!,
                           Icons.language,
-                          sizeOfCell(),
                           Routes.NEWS),
                     ],
                   ),
                   TableRow(
                     children: [
-                      tableItem(
+                      _buildTableItem(
                           context,
                           'drawer_first_principles'.tr,
                           Constants.screensColors['firstPrinciples']!,
                           Icons.import_contacts,
-                          sizeOfCell(),
                           Routes.FIRST_PRINCIPLES),
-                      tableItem(
+                      _buildTableItem(
                           context,
                           'drawer_q_and_a'.tr,
                           Constants.screensColors['Q&A']!,
                           Icons.question_answer,
-                          sizeOfCell(),
                           Routes.Q_AND_ANSVERS),
                     ],
                   ),
@@ -171,5 +167,28 @@ class MainScreen extends GetView<MainScreenController> {
         ),
       ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: pageBody, //todo appBar
+            navigationBar: CupertinoNavigationBar(
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('ICOC'),
+              actions: [
+                Icon(Icons.notifications_none_outlined),
+                SizedBox(
+                  width: 15,
+                )
+              ],
+              elevation: 6,
+            ),
+            drawer: Drawer(
+              child: MyDrawer(),
+            ),
+            body: pageBody);
   }
 }

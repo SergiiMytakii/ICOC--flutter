@@ -71,68 +71,70 @@ class IosAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
-      primary: true,
-      title: Text(
+    return CupertinoSliverNavigationBar(
+      middle: Text(
         'app_bar_title'.tr,
+        style: TextStyle(color: Colors.white),
       ),
+      // title: Text(
+      //   'app_bar_title'.tr,
+      // ),
       backgroundColor: Constants.screensColors['songBook'],
-      centerTitle: true,
-      actions: [
-        IconButton(
-          icon: Icon(
-            Icons.filter_alt_outlined,
-          ),
-          tooltip: 'icon_button_actions_app_bar_filter'.tr,
-          onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return BottomSheetFilter();
-                });
-          },
+      // centerTitle: true,
+      trailing: IconButton(
+        icon: Icon(
+          Icons.filter_alt_outlined,
         ),
-      ],
-      pinned: true,
-      expandedHeight: 90.0,
-      floating: true,
-      stretch: true,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 40,
-            padding: EdgeInsets.only(
-              //top: 120,
-              left: 10,
-              right: 10,
-              bottom: 8,
-            ),
-            child: TextFormField(
-              onChanged: (val) {
-                showSearch(context: context, delegate: DataSearch());
-              },
-              textAlignVertical: TextAlignVertical.bottom,
-              style: TextStyle(fontSize: 20),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.5),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: Icon(Icons.search),
-                //border: InputBorder.none,
-                hintText: 'hint_search_field_in_app_bar'.tr,
-              ),
-            ),
-          ),
+        tooltip: 'icon_button_actions_app_bar_filter'.tr,
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return BottomSheetFilter();
+              });
+        },
+      ),
+
+      // pinned: true,
+      // expandedHeight: 90.0,
+      // floating: true,
+      // stretch: true,
+      // flexibleSpace: FlexibleSpaceBar(
+      //   background: Align(
+      //     alignment: Alignment.bottomCenter,
+      //     child: Container(
+      //       height: 40,
+      //       padding: EdgeInsets.only(
+      //         //top: 120,
+      //         left: 10,
+      //         right: 10,
+      //         bottom: 8,
+      //       ),
+      largeTitle: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4),
+        child: CupertinoSearchTextField(
+          onChanged: (val) {
+            showSearch(context: context, delegate: DataSearch());
+          },
+          backgroundColor: Colors.white.withOpacity(0.2),
+          // textAlignVertical: TextAlignVertical.bottom,
+          // style: TextStyle(fontSize: 20),
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(10),
         ),
       ),
+      //   focusedBorder: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(10),
+      //     borderSide: BorderSide.none,
+      //   ),
+      //   prefixIcon: Icon(Icons.search),
+      //   //border: InputBorder.none,
+      //   hintText: 'hint_search_field_in_app_bar'.tr,
+      // ),
+      // ),
     );
+    //     ),
+    //   ),
+    // );
   }
 }
