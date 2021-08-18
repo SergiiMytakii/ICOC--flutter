@@ -10,6 +10,7 @@ class SongsController extends GetxController {
   var loaded = false.obs;
   var log = Logger();
   RxString updateLoadingProgress = 'Загружаем песни'.obs;
+  RxString query = ''.obs;
 
   @override
   void onInit() async {
@@ -170,4 +171,6 @@ class SongsController extends GetxController {
     DatabaseHelperFTS4().removeFromPlaylist(playlistId, id);
     getSongsInPlaylist(playlistId);
   }
+
+  // void showSearch(String val) {}
 }

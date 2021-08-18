@@ -1,5 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
+import 'package:icoc/shared/loading.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/material.dart';
@@ -34,15 +35,15 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return searchResults();
+    return searchResults(query);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return searchResults();
+    return searchResults(query);
   }
 
-  Stream<List<Song>> searchStream() {
+  Stream<List<Song>> searchStream(String query) {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
         query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), ' ');
@@ -57,23 +58,26 @@ class DataSearch extends SearchDelegate {
     }
   }
 
-  Widget searchResults() {
+  Widget searchResults(String query) {
     int i = 0;
 
     return StreamBuilder<List<Song>>(
-        stream: searchStream(),
+        stream: searchStream(query),
         builder: (context, AsyncSnapshot<List<Song>> songs) {
           if (!songs.hasData) {
-            return Center(
-              child: Text('no data'),
-            );
+            return SliverToBoxAdapter(
+                child: Column(
+              children: [
+                Loading(),
+              ],
+            ));
           }
           return GetBuilder<OrderLangController>(
             init: OrderLangController(),
             builder: (controller) {
-              return ListView.builder(
-                  itemCount: songs.data!.length,
-                  itemBuilder: (context, index) {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
                     //change i for making different colors of divider
                     if (i < 4) {
                       i++;
@@ -82,7 +86,10 @@ class DataSearch extends SearchDelegate {
                     }
                     return buildSongCardWithHighliting(
                         songs, index, context, i, controller.orderLang);
-                  });
+                  },
+                  childCount: songs.data!.length,
+                ),
+              );
             },
           );
         });
