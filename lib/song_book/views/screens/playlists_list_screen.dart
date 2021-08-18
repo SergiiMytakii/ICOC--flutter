@@ -88,14 +88,14 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
             secondaryActions: [
               IconSlideAction(
                   caption: 'rename playlists'.tr,
-                  color: Theme.of(context).primaryColorLight,
+                  color: Constants.screensColors['songBook']!.withOpacity(0.5),
                   icon: Icons.drive_file_rename_outline,
                   onTap: () {
                     controller.isReadOnly.value = false;
                   }),
               IconSlideAction(
                 caption: 'delete from playlists'.tr,
-                color: Theme.of(context).primaryColorDark,
+                color: Constants.screensColors['songBook'],
                 icon: Icons.delete_outline,
                 onTap: () => _removePlaylist(playlist, index, i),
               ),

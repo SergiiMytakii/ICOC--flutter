@@ -1,4 +1,5 @@
 import 'package:icoc/routes/routes.dart';
+import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,20 +29,20 @@ class SongCard extends GetView<SongsController> {
           secondaryActions: [
             IconSlideAction(
               caption: 'to favorite'.tr,
-              color: Theme.of(context).primaryColorLight,
+              color: Constants.screensColors['songBook']!.withOpacity(0.7),
               icon: Icons.favorite_border,
               onTap: () => controller.addToFavorites(song.id),
             ),
             IconSlideAction(
                 caption: 'to playlist'.tr,
-                color: Theme.of(context).primaryColorDark,
+                color: Constants.screensColors['songBook'],
                 icon: Icons.playlist_play_outlined,
                 onTap: () =>
                     Get.toNamed(Routes.ADD_TO_PLAYLIST, arguments: song.id)),
           ],
           child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN, arguments: [song.id, controller])
-                ),
+            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
+                arguments: [song.id, controller])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

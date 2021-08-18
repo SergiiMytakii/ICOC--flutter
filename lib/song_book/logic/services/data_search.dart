@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/shared/loading.dart';
@@ -46,7 +48,7 @@ class DataSearch extends SearchDelegate {
   Stream<List<Song>> searchStream(String query) {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), ' ');
+        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яёієї0-9]+"), ' ');
 
     if (trimmedQuery == '') {
       return DatabaseHelperFTS4().getListSongs();
@@ -65,31 +67,41 @@ class DataSearch extends SearchDelegate {
         stream: searchStream(query),
         builder: (context, AsyncSnapshot<List<Song>> songs) {
           if (!songs.hasData) {
-            return SliverToBoxAdapter(
-                child: Column(
-              children: [
-                Loading(),
-              ],
-            ));
+            return Platform.isIOS
+                ? SliverToBoxAdapter(child: Center(child: Text(' No data'.tr)))
+                : Center(child: Text(' No data'.tr));
           }
           return GetBuilder<OrderLangController>(
             init: OrderLangController(),
             builder: (controller) {
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    //change i for making different colors of divider
-                    if (i < 4) {
-                      i++;
-                    } else {
-                      i = 0;
-                    }
-                    return buildSongCardWithHighliting(
-                        songs, index, context, i, controller.orderLang);
-                  },
-                  childCount: songs.data!.length,
-                ),
-              );
+              return Platform.isIOS
+                  ? SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          //change i for making different colors of divider
+                          if (i < 4) {
+                            i++;
+                          } else {
+                            i = 0;
+                          }
+                          return buildSongCardWithHighliting(
+                              songs, index, context, i, controller.orderLang);
+                        },
+                        childCount: songs.data!.length,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: songs.data!.length,
+                      itemBuilder: (context, index) {
+                        //change i for making different colors of divider
+                        if (i < 4) {
+                          i++;
+                        } else {
+                          i = 0;
+                        }
+                        return buildSongCardWithHighliting(
+                            songs, index, context, i, controller.orderLang);
+                      });
             },
           );
         });
