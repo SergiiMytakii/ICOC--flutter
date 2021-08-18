@@ -111,27 +111,30 @@ class SongScreen extends GetView<SongScreenController> {
             padding: const EdgeInsets.all(16.0),
             child: Obx(() => Row(
                   children: [
-                    Icon(
-                      Icons.text_fields,
-                      color: Colors.black38,
-                    ),
-                    Slider(
-                      activeColor: Theme.of(context).primaryColorDark,
-                      inactiveColor: Theme.of(context).primaryColorDark,
-                      label: 'Font size',
-                      value: controller.fontSize.value,
-                      min: 14,
-                      max: 48,
-                      divisions: 34,
-                      onChanged: (val) => controller.altFontSize(val),
+                    Container(
+                      width: 100,
+                      child: Text(
+                        'aA',
+                        style: TextStyle(fontSize: controller.fontSize.value),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     SizedBox(
                       width: 15,
                     ),
-                    Text(
-                      'aA',
-                      style: TextStyle(fontSize: controller.fontSize.value),
-                    )
+                    Container(
+                      width: 200,
+                      child: Slider.adaptive(
+                        activeColor: Constants.screensColors['songBook'],
+                        inactiveColor: Constants.screensColors['songBook'],
+                        label: 'Font size',
+                        value: controller.fontSize.value,
+                        min: 14,
+                        max: 48,
+                        divisions: 34,
+                        onChanged: (val) => controller.altFontSize(val),
+                      ),
+                    ),
                   ],
                 )),
           ),
