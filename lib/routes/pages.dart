@@ -1,9 +1,9 @@
 import 'package:icoc/app/screens/main_screen.dart';
-import 'package:icoc/first_principles/presentation/screens/first_principles_screen.dart';
-import 'package:icoc/news/presentation/screens/news_screen.dart';
-import 'package:icoc/q_and_a/presentation/screens/q_and_a_screen.dart';
+import 'package:icoc/first_principles/views/screens/first_principles_screen.dart';
+import 'package:icoc/news/views/screens/news_screen.dart';
+import 'package:icoc/q_and_a/views/screens/q_and_a_screen.dart';
 import 'package:icoc/routes/routes.dart';
-import 'package:icoc/settings/presentation/general_settings.dart';
+import 'package:icoc/settings/views/general_settings.dart';
 import 'package:icoc/song_book/views/screens/playlist_screen.dart';
 import 'package:icoc/song_book/views/screens/slides_screen.dart';
 import 'package:icoc/song_book/views/screens/song_screen.dart';
