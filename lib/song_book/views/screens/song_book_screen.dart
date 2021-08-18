@@ -108,27 +108,11 @@ class IosAppbar extends StatelessWidget {
               right: 10,
               bottom: 8,
             ),
-            child: TextFormField(
+            child: CupertinoSearchTextField(
               onChanged: (val) {
                 showSearch(context: context, delegate: DataSearch());
               },
-              textAlignVertical: TextAlignVertical.bottom,
-              style: TextStyle(fontSize: 20),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.5),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                prefixIcon: Icon(Icons.search),
-                //border: InputBorder.none,
-                hintText: 'hint_search_field_in_app_bar'.tr,
-              ),
+              backgroundColor: Colors.white.withOpacity(0.2),
             ),
           ),
         ),

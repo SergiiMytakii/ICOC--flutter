@@ -30,7 +30,7 @@ class SongScreen extends GetView<SongScreenController> {
                 for (final item in controller.tabItemsChords) Tab(text: item),
               ],
             ),
-            elevation: 6,
+            elevation: 0,
             actions: [
               IconButton(
                 icon: Icon(
