@@ -67,7 +67,9 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   Future _submitForm() async {
     if (formKey.currentState!.validate()) {
       await controller.createNewPlaylist();
+      await Future.delayed(Duration(milliseconds: 100));
       listKey.currentState?.insertItem(0);
+      print('insert card');
       Get.back();
     }
   }
@@ -163,6 +165,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
                     } else {
                       i = 0;
                     }
+                    print('rebuild list' + index.toString());
                     return playlistCard(context, index, animation, i,
                         controller.playlists[index]);
                   },

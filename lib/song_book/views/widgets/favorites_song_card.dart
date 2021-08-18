@@ -69,6 +69,3 @@ class FavoritesSongCard extends GetView<SongsController> {
     );
   }
 }
-
-// return to the title of card title of song on the preferred language if it exist,
-// or on the second language, or on third
