@@ -58,8 +58,6 @@ class MainScreen extends GetView<MainScreenController> {
       child: Platform.isIOS
           ? GestureDetector(
               onTap: () => Get.toNamed(routeName),
-              // splashColor: Theme.of(context).accentColor,
-              // borderRadius: BorderRadius.circular(15),
               child: item,
             )
           : InkWell(

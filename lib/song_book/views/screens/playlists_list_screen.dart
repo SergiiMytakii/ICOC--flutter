@@ -37,34 +37,38 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
     }
   }
 
-  void _insertNewPlaylist() {
-    Get.defaultDialog(
-      title: 'name of playlist'.tr,
-      textConfirm: 'Ok',
-      confirmTextColor: Colors.blueAccent,
-      onConfirm: () => _submitForm(),
-      buttonColor: Colors.transparent,
-      content: Form(
-        key: formKey,
-        child: TextFormField(
-          controller: controller.textController.value,
-          autofocus: true,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter name of playlist'.tr;
-            }
-            bool coincidence = false;
-            controller.playlists.forEach((element) {
-              if (element.values.contains(value)) coincidence = true;
-            });
-            if (coincidence == true)
-              return 'The playlist with given name alredy exist'.tr;
-            return null;
-          },
-          onEditingComplete: () => _submitForm(),
-        ),
-      ),
-    );
+  _insertNewPlaylist() {
+    return Platform.isIOS
+        ? CupertinoAlertDialog(
+            title: Text('name of playlist'.tr),
+          )
+        : Get.defaultDialog(
+            title: 'name of playlist'.tr,
+            textConfirm: 'Ok',
+            confirmTextColor: Colors.blueAccent,
+            onConfirm: () => _submitForm(),
+            buttonColor: Colors.transparent,
+            content: Form(
+              key: formKey,
+              child: TextFormField(
+                controller: controller.textController.value,
+                autofocus: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter name of playlist'.tr;
+                  }
+                  bool coincidence = false;
+                  controller.playlists.forEach((element) {
+                    if (element.values.contains(value)) coincidence = true;
+                  });
+                  if (coincidence == true)
+                    return 'The playlist with given name alredy exist'.tr;
+                  return null;
+                },
+                onEditingComplete: () => _submitForm(),
+              ),
+            ),
+          );
   }
 
   Future _submitForm() async {
@@ -109,7 +113,8 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
                 ),
                 title: Obx(
                   () => Platform.isIOS
-                      ? CupertinoTextField.borderless(
+                      ? CupertinoTextField(
+                          decoration: BoxDecoration(color: Colors.transparent),
                           showCursor: !controller.isReadOnly.value,
                           autofocus: !controller.isReadOnly.value,
                           readOnly: controller.isReadOnly.value,

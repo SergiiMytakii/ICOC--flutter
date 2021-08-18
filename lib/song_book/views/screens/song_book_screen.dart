@@ -81,11 +81,10 @@ class IosAppbar extends StatelessWidget {
       // ),
       backgroundColor: Constants.screensColors['songBook'],
       // centerTitle: true,
-      trailing: IconButton(
-        icon: Icon(
-          Icons.filter_alt_outlined,
+      trailing: CupertinoButton(
+        child: Icon(
+          CupertinoIcons.color_filter,
         ),
-        tooltip: 'icon_button_actions_app_bar_filter'.tr,
         onPressed: () {
           showModalBottomSheet(
               context: context,
