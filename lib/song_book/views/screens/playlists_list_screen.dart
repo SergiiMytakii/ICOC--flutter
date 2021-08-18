@@ -37,32 +37,39 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   void _insertNewPlaylist() {
     Get.defaultDialog(
       title: 'name of playlist'.tr,
+      textConfirm: 'Ok',
+      confirmTextColor: Colors.blueAccent,
+      onConfirm: () => _submitForm(),
+      buttonColor: Colors.transparent,
       content: Form(
         key: formKey,
         child: TextFormField(
-            controller: controller.textController.value,
-            autofocus: true,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter name of playlist'.tr;
-              }
-              bool coincidence = false;
-              controller.playlists.forEach((element) {
-                if (element.values.contains(value)) coincidence = true;
-              });
-              if (coincidence == true)
-                return 'The playlist with given name alredy exist'.tr;
-              return null;
-            },
-            onEditingComplete: () async {
-              if (formKey.currentState!.validate()) {
-                await controller.createNewPlaylist();
-                listKey.currentState?.insertItem(0);
-                Get.back();
-              }
-            }),
+          controller: controller.textController.value,
+          autofocus: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter name of playlist'.tr;
+            }
+            bool coincidence = false;
+            controller.playlists.forEach((element) {
+              if (element.values.contains(value)) coincidence = true;
+            });
+            if (coincidence == true)
+              return 'The playlist with given name alredy exist'.tr;
+            return null;
+          },
+          onEditingComplete: () => _submitForm(),
+        ),
       ),
     );
+  }
+
+  Future _submitForm() async {
+    if (formKey.currentState!.validate()) {
+      await controller.createNewPlaylist();
+      listKey.currentState?.insertItem(0);
+      Get.back();
+    }
   }
 
   Widget playlistCard(BuildContext context, int index,
