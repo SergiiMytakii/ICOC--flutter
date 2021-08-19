@@ -73,11 +73,11 @@ class DatabaseHelperFTS4 {
 /* get refetence to the DB and initialasing DB */
   Future<Database?> get db async {
     if (_db != null) {
-      log.i('db already exist!');
+      //log.i('db already exist!');
       return _db;
     } else {
       _db = await initDB();
-      log.i('initializing db');
+      //log.i('initializing db');
       return _db;
     }
   }
@@ -107,7 +107,7 @@ class DatabaseHelperFTS4 {
       await db.execute(
           'CREATE TABLE $TABLE_PLAYLISTS_SONGS ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $PLAYLIST_ID INTEGER ,  $ID_SONG)');
 
-      log.i(' !!!!databases was created!!!!!');
+      // log.i(' !!!!databases was created!!!!!');
     });
   }
 
@@ -175,7 +175,7 @@ class DatabaseHelperFTS4 {
       ''', [song.id, value]);
       });
     }
-    print('HAS BEEN INSERTED SONGS:  ${songs.length}');
+    // print('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
 
 /* get list of all songs */
