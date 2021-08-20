@@ -30,55 +30,72 @@ class SlidesController extends GetxController {
         .replaceAll('\r\n\r\n', '\r\n \r\n%');
     splitted = addSeparates.split('%');
     amountLines = splitted.length;
+    print('before amountLines $amountLines');
+    if (amountLines < 2) {
+      splitted = divideByStrings(slideText);
 
+      amountLines = splitted.length;
+    }
+
+    print(' first  line $line');
     slide.value = slideTitle.value + '\n\n' + splitted[line];
-    line++;
-    print('line $line');
   }
 
-  // String addSplit(String line) {
-  //   String result = '';
-  //   int i = 0;
-  //   List<String> j = line.split('');
-  //   j.forEach((element) {
-  //     if (element == ' ') {
-  //       i++;
-  //     }
-  //   });
-  //   if (i > 3) {
-  //     result = line.replaceAll(',', ',\n');
-  //   } else {
-  //     result = line;
-  //   }
-  //   log.i(result);
-  //   return result;
-  // }
-
   getNextSlide() {
-    if (line < amountLines) {
+    if (line < amountLines - 1) {
+      print(' after amountLines $amountLines');
+      line++;
+      //check if slide has just 1 line, stlit it with next slide
       if (splitted[line].length < 18 && line + 1 < amountLines) {
         slide.value = splitted[line] + splitted[line + 1];
         line++;
       } else {
+        print(' move forward,  line $line');
         slide.value = splitted[line];
       }
-
-      line++;
-      print('line $line');
     }
   }
 
   getPreviosSlide() {
     if (line >= 1) {
       line--;
+      print('move back, line $line');
       slide.value = line == 0
           ? slideTitle.value + ' \n \n ' + splitted[line]
           : splitted[line];
     }
-    print('line $line');
   }
 
   altFontSize(double val) {
     fontSize.value = val;
+  }
+
+  List<String> divideByStrings(RxString slideText) {
+    String addSeparates = slideText.replaceAll('\n', '\n%');
+    List<String> splittedByString = addSeparates.split('%');
+    List<String> result = [];
+    int stringsInSlide = 5;
+    String rawSlide = '';
+    int counter = 0;
+    for (int i = 0; i < splittedByString.length; i++) {
+      if (counter < stringsInSlide) {
+        rawSlide += splittedByString[i];
+        counter++;
+        if (splittedByString.length - 1 == i) {
+          result.add(rawSlide);
+          amountLines = result.length;
+          return result;
+        }
+      } else {
+        rawSlide += splittedByString[i];
+        result.add(rawSlide);
+        result.forEach((element) {});
+
+        counter = 0;
+        rawSlide = '';
+      }
+    }
+
+    return result;
   }
 }
