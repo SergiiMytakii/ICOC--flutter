@@ -165,7 +165,6 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
                     } else {
                       i = 0;
                     }
-                    print('rebuild list' + index.toString());
                     return playlistCard(context, index, animation, i,
                         controller.playlists[index]);
                   },

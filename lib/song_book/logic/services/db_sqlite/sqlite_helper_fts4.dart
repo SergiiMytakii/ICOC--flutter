@@ -731,8 +731,7 @@ class DatabaseHelperFTS4 {
       mapWritable.removeWhere((key, value) => value == null);
       titlesWithoutNullable.add(mapWritable);
     }
-    print('titles');
-    print(searchInTitles);
+
 //get texts
     final List<Map<String, dynamic>> texts = await database.rawQuery('''
         SELECT  $colTexts
@@ -743,8 +742,7 @@ class DatabaseHelperFTS4 {
         WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
         GROUP BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
           ''');
-    print('text');
-    print(texts);
+
     //remove nullable values
     List<Map<String, dynamic>> textsWithoutNullable = [];
     for (Map map in texts) {

@@ -6,12 +6,10 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import 'bottom_sheet_filter.dart';
 
-Widget iosAppbar(BuildContext context, SongsController controller) {
+Widget iosAppbar(BuildContext context, dynamic controller, String title) {
   return SliverAppBar(
     primary: true,
-    title: Text(
-      'app_bar_title'.tr,
-    ),
+    title: Text(title),
     backgroundColor: Constants.screensColors['songBook'],
     centerTitle: true,
     actions: [
