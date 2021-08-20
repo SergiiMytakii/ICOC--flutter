@@ -1,6 +1,7 @@
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/services/db_sqlite/add_songs_from_playlist.dart';
 import 'package:icoc/song_book/views/widgets/playlist_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
@@ -21,6 +22,14 @@ class PlaylistScreen extends GetView<SongsController> {
             title: Text(playlist['playlistName']),
             centerTitle: true,
             backgroundColor: Constants.screensColors['songBook'],
+            actions: [
+              IconButton(
+                  onPressed: () => showSearch(
+                      context: context,
+                      delegate:
+                          AddSongsFromPlaylists(playlist['playlistName'])),
+                  icon: Icon(Icons.add_outlined))
+            ],
           ),
           body: Obx(() => ListView.builder(
                 physics: BouncingScrollPhysics(),
