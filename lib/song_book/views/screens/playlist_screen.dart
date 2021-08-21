@@ -2,8 +2,6 @@ import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
-import 'package:icoc/song_book/logic/services/db_sqlite/add_songs_from_playlist.dart';
-import 'package:icoc/song_book/views/screens/add_song_from_playlist_screen.dart';
 import 'package:icoc/song_book/views/widgets/playlist_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';

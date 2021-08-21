@@ -18,7 +18,7 @@ class AddSongFromPlaylistScreen extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         slivers: <Widget>[
           Platform.isIOS
-              ? iosAppbar(context, controller, 'add sons to $playlistName')
+              ? iosAppbar(context, controller, 'add to playlist'.tr)
               : showSearch(
                   context: context,
                   delegate: DataSearchFromPlaylists(playlistName)) as Widget,

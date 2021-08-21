@@ -78,8 +78,8 @@ class Pages {
       GetPage(
         name: Routes.ADD_SONG_FROM_PLAYLIST_SCREEN,
         page: () => AddSongFromPlaylistScreen(),
-        transition: Transition.downToUp,
-        transitionDuration: Duration(milliseconds: 250),
+        transition: Transition.topLevel,
+        transitionDuration: Duration(milliseconds: 500),
       ),
     ];
   }
