@@ -1,5 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,11 +9,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class FavoritesSongCard extends GetView<SongsController> {
+class FavoritesSongCard extends GetView<FavoritesController> {
   final Song song;
   final orderLang;
   final Color dividerColor;
-
+  final SongsController songsController = Get.put(SongsController());
   FavoritesSongCard(
       {required this.song,
       required this.orderLang,
@@ -21,7 +22,7 @@ class FavoritesSongCard extends GetView<SongsController> {
   @override
   @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
+    Get.put(FavoritesController());
     return Column(
       children: [
         Slidable(
@@ -49,13 +50,13 @@ class FavoritesSongCard extends GetView<SongsController> {
                 style: Theme.of(context).textTheme.headline6),
             title: Text(
               //show title and text language accordingly to app lang
-              controller.chooseCardLang(song, orderLang)?[0] ?? '',
+              songsController.chooseCardLang(song, orderLang)?[0] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
             ),
             subtitle: Text(
-              controller.chooseCardLang(song, orderLang)?[1] ?? '',
+              songsController.chooseCardLang(song, orderLang)?[1] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: Theme.of(context).textTheme.bodyText2,

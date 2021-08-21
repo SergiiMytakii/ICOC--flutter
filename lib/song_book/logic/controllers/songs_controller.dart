@@ -15,7 +15,6 @@ class SongsController extends GetxController {
   @override
   void onInit() async {
     await fetchSongsList();
-    fetchFavoritesList();
     super.onInit();
   }
 
@@ -92,31 +91,6 @@ class SongsController extends GetxController {
   }
 
 //favorites
-  var favSongs = <Song>[].obs;
-
-  void addToFavorites(int songId) async {
-    await DatabaseHelperFTS4().addToFavorites(songId);
-    fetchFavoritesList();
-    Get.showSnackbar(GetBar(
-      duration: Duration(milliseconds: 800),
-      message: 'Added to favorite list'.tr,
-    ));
-  }
-
-  void deleteFromFavorites(int songId) async {
-    await DatabaseHelperFTS4().deleteFromFavorites(songId);
-    fetchFavoritesList();
-    Get.showSnackbar(GetBar(
-      duration: Duration(milliseconds: 800),
-      message: 'Deleted from favorite list'.tr,
-    ));
-  }
-
-  void fetchFavoritesList() async {
-    DatabaseHelperFTS4().getListFavorites().listen((songsFromDb) {
-      favSongs.value = songsFromDb;
-    });
-  }
 
 // playlists
   RxBool isReadOnly = true.obs;

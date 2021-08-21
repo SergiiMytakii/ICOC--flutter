@@ -1,5 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
 import 'package:icoc/song_book/logic/controllers/slides_controller.dart';
 import 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
@@ -12,10 +13,13 @@ import 'package:share_plus/share_plus.dart';
 
 class SongScreen extends GetView<SongScreenController> {
   final SongsController songsController = Get.arguments[1];
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
 
   @override
   Widget build(BuildContext context) {
     final songId = Get.arguments != null ? Get.arguments[0] : 1;
+    favoritesController.getFavoriteStatus(songId);
     Get.put(SongScreenController(songId: songId));
     final SlidesController slidesController = Get.put(SlidesController());
     var fontSozeAdjust =
@@ -48,11 +52,11 @@ class SongScreen extends GetView<SongScreenController> {
               ),
               IconButton(
                 icon: Icon(
-                  controller.favStatus.value
+                  favoritesController.favStatus.value
                       ? Icons.favorite
                       : Icons.favorite_border,
                 ),
-                onPressed: () => controller.toggleFavStatus(songsController),
+                onPressed: () => favoritesController.toggleFavStatus(songId),
               ),
               IconButton(
                   icon: Icon(

@@ -1,5 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,8 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
 class PlaylistSongCard extends GetView<SongsController> {
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
   final Song song;
   final orderLang;
   final Color dividerColor;
@@ -33,7 +36,7 @@ class PlaylistSongCard extends GetView<SongsController> {
               caption: 'to favorite'.tr,
               color: Constants.screensColors['songBook']!.withOpacity(0.5),
               icon: Icons.favorite_border,
-              onTap: () => controller.addToFavorites(song.id),
+              onTap: () => favoritesController.addToFavorites(song.id),
             ),
             IconSlideAction(
               caption: 'to playlist'.tr,

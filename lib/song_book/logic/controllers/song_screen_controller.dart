@@ -17,7 +17,7 @@ class SongScreenController extends GetxController {
   SongScreenController({
     required this.songId,
   });
-  final favStatus = false.obs;
+
   final tabItemsSongs = [].obs;
   final tabItemsChords = [].obs;
   OrderLangController orderLangController = Get.put(
@@ -29,7 +29,6 @@ class SongScreenController extends GetxController {
   void onInit() async {
     orderLang = orderLangController.orderLang;
     await fetchSongdetail(songId);
-    favoriteStatus(songId);
     getTitlesForTabs();
     countTabs();
     loadFontSize();
@@ -40,19 +39,6 @@ class SongScreenController extends GetxController {
     await DatabaseHelperFTS4()
         .getSongDetail(songId)
         .then((value) => songDetail.value = value);
-  }
-
-  void favoriteStatus(songId) async {
-    await DatabaseHelperFTS4().getFavoriteStatus(songId).then((value) {
-      favStatus.value = value;
-    });
-  }
-
-  void toggleFavStatus(SongsController? songsController) async {
-    favStatus.value
-        ? songsController!.deleteFromFavorites(songId)
-        : songsController!.addToFavorites(songId);
-    favStatus.toggle();
   }
 
   void getTitlesForTabs() {
