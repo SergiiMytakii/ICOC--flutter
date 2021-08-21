@@ -1,7 +1,7 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +9,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class FavoritesSongCard extends GetView<FavoritesController> {
+class FavoritesSongCard extends GetView<OrderLangController> {
   final Song song;
   final orderLang;
   final Color dividerColor;
-  final SongsController songsController = Get.put(SongsController());
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
   FavoritesSongCard(
       {required this.song,
       required this.orderLang,
@@ -22,7 +23,7 @@ class FavoritesSongCard extends GetView<FavoritesController> {
   @override
   @override
   Widget build(BuildContext context) {
-    Get.put(FavoritesController());
+    Get.put(OrderLangController());
     return Column(
       children: [
         Slidable(
@@ -32,7 +33,7 @@ class FavoritesSongCard extends GetView<FavoritesController> {
               caption: 'delete from favorites'.tr,
               color: Constants.screensColors['songBook']!.withOpacity(0.7),
               icon: Icons.favorite_border,
-              onTap: () => controller.deleteFromFavorites(song.id),
+              onTap: () => favoritesController.deleteFromFavorites(song.id),
             ),
             IconSlideAction(
               caption: 'to playlist'.tr,
@@ -50,13 +51,13 @@ class FavoritesSongCard extends GetView<FavoritesController> {
                 style: Theme.of(context).textTheme.headline6),
             title: Text(
               //show title and text language accordingly to app lang
-              songsController.chooseCardLang(song, orderLang)?[0] ?? '',
+              controller.chooseCardLang(song, orderLang)?[0] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
             ),
             subtitle: Text(
-              songsController.chooseCardLang(song, orderLang)?[1] ?? '',
+              controller.chooseCardLang(song, orderLang)?[1] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               style: Theme.of(context).textTheme.bodyText2,

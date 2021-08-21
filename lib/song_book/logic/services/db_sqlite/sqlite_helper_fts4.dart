@@ -670,10 +670,6 @@ class DatabaseHelperFTS4 {
           ID_SONG: songId,
         },
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    print('inserted ' +
-        select.last['id'].toString() +
-        ' song id ' +
-        songId.toString());
   }
 
   Stream<List<Map<String, Object?>>> getPlaylists() async* {

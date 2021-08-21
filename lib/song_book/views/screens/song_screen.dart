@@ -3,7 +3,6 @@ import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
 import 'package:icoc/song_book/logic/controllers/slides_controller.dart';
 import 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/views/widgets/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/song_book/views/widgets/song_text_on_song_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +11,6 @@ import 'package:getxfire/getxfire.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SongScreen extends GetView<SongScreenController> {
-  final SongsController songsController = Get.arguments[1];
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
 
