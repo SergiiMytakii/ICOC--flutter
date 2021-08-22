@@ -1,6 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -15,7 +15,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final controller = Get.put(SongsController());
+  final controller = Get.put(PlaylistsController());
 
   @override
   void initState() {
@@ -76,6 +76,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
 
   Widget playlistCard(BuildContext context, int index,
       Animation<double> animation, int i, Map<String, Object?> playlist) {
+    Future.delayed(Duration(milliseconds: 500));
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(1, 0),
@@ -165,7 +166,6 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
                     } else {
                       i = 0;
                     }
-                    print('rebuild list' + index.toString());
                     return playlistCard(context, index, animation, i,
                         controller.playlists[index]);
                   },

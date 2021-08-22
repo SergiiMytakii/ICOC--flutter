@@ -1,14 +1,15 @@
+import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 import 'package:icoc/song_book/views/widgets/playlist_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 
-class PlaylistScreen extends GetView<SongsController> {
+class PlaylistScreen extends GetView<PlaylistsController> {
   @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
+    Get.put(PlaylistsController());
     final playlist = Get.arguments;
     if (playlist != null) {
       int playlistId = playlist['id'];
@@ -21,6 +22,13 @@ class PlaylistScreen extends GetView<SongsController> {
             title: Text(playlist['playlistName']),
             centerTitle: true,
             backgroundColor: Constants.screensColors['songBook'],
+            actions: [
+              IconButton(
+                  onPressed: () => Get.toNamed(
+                      Routes.ADD_SONG_FROM_PLAYLIST_SCREEN,
+                      arguments: playlist),
+                  icon: Icon(Icons.add_outlined))
+            ],
           ),
           body: Obx(() => ListView.builder(
                 physics: BouncingScrollPhysics(),

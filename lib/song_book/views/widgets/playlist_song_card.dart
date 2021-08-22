@@ -1,6 +1,8 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
+import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
+import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class PlaylistSongCard extends GetView<SongsController> {
+class PlaylistSongCard extends GetView<OrderLangController> {
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
+  final PlaylistsController playlistsController =
+      Get.put(PlaylistsController());
   final Song song;
   final orderLang;
   final Color dividerColor;
@@ -21,9 +27,8 @@ class PlaylistSongCard extends GetView<SongsController> {
       this.playlistId});
 
   @override
-  @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
+    Get.put(OrderLangController());
     return Column(
       children: [
         Slidable(
@@ -33,7 +38,7 @@ class PlaylistSongCard extends GetView<SongsController> {
               caption: 'to favorite'.tr,
               color: Constants.screensColors['songBook']!.withOpacity(0.5),
               icon: Icons.favorite_border,
-              onTap: () => controller.addToFavorites(song.id),
+              onTap: () => favoritesController.addToFavorites(song.id),
             ),
             IconSlideAction(
               caption: 'to playlist'.tr,
@@ -46,7 +51,8 @@ class PlaylistSongCard extends GetView<SongsController> {
                 caption: 'remove from playlist'.tr,
                 color: Constants.screensColors['songBook'],
                 icon: Icons.remove_circle_outline_outlined,
-                onTap: () => controller.removeFromPlaylist(playlistId, song.id))
+                onTap: () =>
+                    playlistsController.removeFromPlaylist(playlistId, song.id))
           ],
           child: ListTile(
             onTap: (() => Get.toNamed(Routes.SONG_SCREEN,

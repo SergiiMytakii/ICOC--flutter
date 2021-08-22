@@ -160,11 +160,11 @@ class DataSearch extends SearchDelegate {
 
   Widget buildSongCardWithHighliting(AsyncSnapshot<List<Song>> songs, int index,
       BuildContext context, int i, List<String> _orderLang) {
+    int id = songs.data![index].id;
     return Column(
       children: [
         ListTile(
-          onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
-              arguments: [songs.data![index].id, songsController])),
+          onTap: (() => onTapHandler(id)),
           horizontalTitleGap: 0,
           leading: Text(songs.data![index].id.toString(),
               style: Theme.of(context).textTheme.headline6),
@@ -189,5 +189,9 @@ class DataSearch extends SearchDelegate {
         )
       ],
     );
+  }
+
+  onTapHandler(int id) {
+    Get.toNamed(Routes.SONG_SCREEN, arguments: [id, songsController]);
   }
 }

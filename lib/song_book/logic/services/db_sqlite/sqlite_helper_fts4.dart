@@ -662,7 +662,6 @@ class DatabaseHelperFTS4 {
         TABLE_PLAYLISTS,
         where: '$PLAYLIST_NAME = ?',
         whereArgs: [playlist]);
-    print(select.toString() + 'select');
     await database.insert(
         TABLE_PLAYLISTS_SONGS,
         {
@@ -670,10 +669,6 @@ class DatabaseHelperFTS4 {
           ID_SONG: songId,
         },
         conflictAlgorithm: ConflictAlgorithm.ignore);
-    print('inserted ' +
-        select.last['id'].toString() +
-        ' song id ' +
-        songId.toString());
   }
 
   Stream<List<Map<String, Object?>>> getPlaylists() async* {
@@ -731,8 +726,7 @@ class DatabaseHelperFTS4 {
       mapWritable.removeWhere((key, value) => value == null);
       titlesWithoutNullable.add(mapWritable);
     }
-    print('titles');
-    print(searchInTitles);
+
 //get texts
     final List<Map<String, dynamic>> texts = await database.rawQuery('''
         SELECT  $colTexts
@@ -743,8 +737,7 @@ class DatabaseHelperFTS4 {
         WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
         GROUP BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
           ''');
-    print('text');
-    print(texts);
+
     //remove nullable values
     List<Map<String, dynamic>> textsWithoutNullable = [];
     for (Map map in texts) {
@@ -756,6 +749,7 @@ class DatabaseHelperFTS4 {
     }
     List<Song> songsInPlaylist =
         List.generate(titlesWithoutNullable.length, (i) {
+      log.e(i);
       return Song(
           id: titlesWithoutNullable[i]['id_song'],
           title: titlesWithoutNullable[i],

@@ -46,7 +46,9 @@ class Messages extends Translations {
               "The playlist with given name alredy exist",
           'Ooooops': 'Ooooops',
           'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
-              'Can\'t  load data... Please, check your internet connection and pull down to refresh!'
+              'Can\'t  load data... Please, check your internet connection and pull down to refresh!',
+          'add to playlist': 'Add to playlist',
+          'Font size': 'Font size',
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -91,7 +93,9 @@ class Messages extends Translations {
               "Плейлист с таким названием уже существует",
           'Ooooops': 'Ууууупс',
           'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
-              'Невозможно загрузить данные... Проверьте интернет соединение и потяните вниз, чтобы обновить'
+              'Невозможно загрузить данные... Проверьте интернет соединение и потяните вниз, чтобы обновить',
+          'add to playlist': 'Добавить в плейлист',
+          'Font size': 'Размер шрифта',
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -136,7 +140,9 @@ class Messages extends Translations {
               "Плейлист с такою назвою вже існує",
           'Ooooops': 'Йогоу...',
           'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
-              'Неможливо завантажити данні... Перевірте интернет з\'єднання та понягніть униз, чтобы оновити'
+              'Неможливо завантажити данні... Перевірте интернет з\'єднання та понягніть униз, чтобы оновити',
+          'add to playlist': 'Добавити до плейлисту',
+          'Font size': 'Размір шрифту',
         }
       };
 }

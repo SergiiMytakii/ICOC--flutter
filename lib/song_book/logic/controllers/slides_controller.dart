@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 import 'package:logger/logger.dart';
 
@@ -10,6 +11,7 @@ class SlidesController extends GetxController {
   RxString slide = ''.obs;
   List<String> splitted = [];
   RxDouble fontSize = 30.0.obs;
+  var hintColor = Colors.transparent.obs;
 
   @override
   void onInit() {
@@ -97,5 +99,11 @@ class SlidesController extends GetxController {
     }
 
     return result;
+  }
+
+  revealHint() async {
+    hintColor.value = Colors.white;
+    await Future.delayed(Duration(seconds: 5));
+    hintColor.value = Colors.transparent;
   }
 }
