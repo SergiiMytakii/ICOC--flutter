@@ -10,6 +10,7 @@ class PlaylistsController extends GetxController {
   RxBool showList = false.obs;
   final textController = TextEditingController().obs;
   final songsInPlaylist = <Song>[].obs;
+  final TextEditingController textEditingController = TextEditingController();
 
   Future getPlaylists() async {
     DatabaseHelperFTS4().getPlaylists().listen((event) {
@@ -39,7 +40,7 @@ class PlaylistsController extends GetxController {
     textController.value.clear();
   }
 
-  void addToPlaylist(String name, int id) async {
+  addToPlaylist(String name, int id) async {
     await DatabaseHelperFTS4().insertIntoPlaylist(name, id);
     Get.showSnackbar(GetBar(
       duration: Duration(milliseconds: 800),

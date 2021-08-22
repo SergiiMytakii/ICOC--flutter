@@ -26,7 +26,7 @@ class PlaylistScreen extends GetView<PlaylistsController> {
               IconButton(
                   onPressed: () => Get.toNamed(
                       Routes.ADD_SONG_FROM_PLAYLIST_SCREEN,
-                      arguments: playlist['playlistName']),
+                      arguments: playlist),
                   icon: Icon(Icons.add_outlined))
             ],
           ),

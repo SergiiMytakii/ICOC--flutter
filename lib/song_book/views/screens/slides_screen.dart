@@ -43,7 +43,11 @@ class _SlidesScreenState extends State<SlidesScreen> {
           IconButton(
               onPressed: () => fontSizeAdjust.bottomSheet(),
               icon: Icon(Icons.settings_outlined)),
-          IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.question))
+          IconButton(
+              onPressed: () {
+                controller.revealHint();
+              },
+              icon: Icon(CupertinoIcons.question))
         ],
       ),
       body: Stack(
@@ -70,13 +74,21 @@ class _SlidesScreenState extends State<SlidesScreen> {
                 width: width,
                 child: Material(
                   color: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      slidesButton(width, controller.getPreviosSlide),
-                      slidesButton(width, controller.getNextSlide),
-                    ],
-                  ),
+                  child: Obx(() => Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          slidesButton(width, controller.getPreviosSlide),
+                          Icon(
+                            Icons.arrow_back,
+                            color: controller.hintColor.value,
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: controller.hintColor.value,
+                          ),
+                          slidesButton(width, controller.getNextSlide),
+                        ],
+                      )),
                 ),
               ))
         ],
@@ -91,6 +103,8 @@ class _SlidesScreenState extends State<SlidesScreen> {
       borderRadius: BorderRadius.circular(15),
       onTap: onTapHandler,
       child: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.circle, color: controller.hintColor.value),
         width: width * 0.3,
       ),
     );

@@ -662,7 +662,6 @@ class DatabaseHelperFTS4 {
         TABLE_PLAYLISTS,
         where: '$PLAYLIST_NAME = ?',
         whereArgs: [playlist]);
-    print(select.toString() + 'select');
     await database.insert(
         TABLE_PLAYLISTS_SONGS,
         {
@@ -750,6 +749,7 @@ class DatabaseHelperFTS4 {
     }
     List<Song> songsInPlaylist =
         List.generate(titlesWithoutNullable.length, (i) {
+      log.e(i);
       return Song(
           id: titlesWithoutNullable[i]['id_song'],
           title: titlesWithoutNullable[i],

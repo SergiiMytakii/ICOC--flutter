@@ -76,6 +76,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
 
   Widget playlistCard(BuildContext context, int index,
       Animation<double> animation, int i, Map<String, Object?> playlist) {
+    Future.delayed(Duration(milliseconds: 500));
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(1, 0),

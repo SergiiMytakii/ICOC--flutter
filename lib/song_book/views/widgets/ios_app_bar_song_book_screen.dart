@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import 'bottom_sheet_filter.dart';
