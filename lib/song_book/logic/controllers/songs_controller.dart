@@ -21,6 +21,7 @@ class SongsController extends GetxController {
     //update local SQL database from firebase
     DatabaseServiceFirebase().songs.listen((songs) async {
       await DatabaseHelperFTS4().insertAllSongs(songs);
+      log.i('fetching songs from firebase');
       fetchSongsList();
     });
   }
