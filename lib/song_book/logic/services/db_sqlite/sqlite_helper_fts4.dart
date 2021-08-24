@@ -125,7 +125,6 @@ class DatabaseHelperFTS4 {
     database.delete(TABLE_TEXT_UK);
     database.delete(TABLE_TEXT_EN);
     database.delete(TABLE_DESCRIPTION);
-
     database.delete(TABLE_CHORDS);
 //todo try to avoid for loop
     for (SongDetail song in songs) {
@@ -134,7 +133,6 @@ class DatabaseHelperFTS4 {
         song.toMapTitle(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-
       song.text.forEach((key, value) async {
         if (key.contains('ru')) {
           await database.rawQuery('''
@@ -142,18 +140,12 @@ class DatabaseHelperFTS4 {
         VALUES (?,?)
       ''', [song.id, value]);
         }
-      });
-
-      song.text.forEach((key, value) async {
         if (key.contains('uk')) {
           await database.rawQuery('''
         INSERT INTO $TABLE_TEXT_UK ($ID_SONG, $TEXT_UK)
         VALUES (?,?)
       ''', [song.id, value]);
         }
-      });
-
-      song.text.forEach((key, value) async {
         if (key.contains('en')) {
           await database.rawQuery('''
         INSERT INTO $TABLE_TEXT_EN ($ID_SONG, $TEXT_EN)
@@ -204,9 +196,7 @@ class DatabaseHelperFTS4 {
     List<Map<String, dynamic>> titlesWithoutNullable = [];
     for (Map map in searchInTitles) {
       var mapWritable = Map<String, dynamic>.from(map);
-
       mapWritable.removeWhere((key, value) => value == null);
-
       titlesWithoutNullable.add(mapWritable);
     }
 
@@ -224,11 +214,7 @@ class DatabaseHelperFTS4 {
     List<Map<String, dynamic>> textsWithoutNullable = [];
     for (Map map in texts) {
       var mapWritable = Map<String, dynamic>.from(map);
-      if (mapWritable['ru'] == null &&
-          mapWritable['uk'] == null &&
-          mapWritable['ru'] == null) {
-        //mapWritable = {' no text': 'no text'};
-      }
+
       mapWritable.removeWhere((key, value) => value == null);
       //print('mapWritable ${mapWritable.toString().substring(0, 30)}');
       textsWithoutNullable.add(mapWritable);
