@@ -1,5 +1,7 @@
 import 'package:icoc/routes/routes.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
+import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
 import 'package:icoc/song_book/models/song.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +9,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class SongCard extends GetView<SongsController> {
+class SongCard extends GetView<OrderLangController> {
   final Song song;
   final orderLang;
   final Color dividerColor;
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
 
   SongCard(
       {required this.song,
@@ -20,7 +24,7 @@ class SongCard extends GetView<SongsController> {
   @override
   @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
+    Get.put(OrderLangController());
     return Column(
       children: [
         Slidable(
@@ -28,20 +32,20 @@ class SongCard extends GetView<SongsController> {
           secondaryActions: [
             IconSlideAction(
               caption: 'to favorite'.tr,
-              color: Theme.of(context).primaryColorLight,
+              color: Constants.screensColors['songBook']!.withOpacity(0.7),
               icon: Icons.favorite_border,
-              onTap: () => controller.addToFavorites(song.id),
+              onTap: () => favoritesController.addToFavorites(song.id),
             ),
             IconSlideAction(
                 caption: 'to playlist'.tr,
-                color: Theme.of(context).primaryColorDark,
+                color: Constants.screensColors['songBook'],
                 icon: Icons.playlist_play_outlined,
                 onTap: () =>
                     Get.toNamed(Routes.ADD_TO_PLAYLIST, arguments: song.id)),
           ],
           child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN, arguments: [song.id, controller])
-                ),
+            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
+                arguments: [song.id, controller])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

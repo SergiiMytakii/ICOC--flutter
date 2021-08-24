@@ -1,6 +1,6 @@
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -15,7 +15,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final controller = Get.put(SongsController());
+  final controller = Get.put(PlaylistsController());
 
   @override
   void initState() {
@@ -37,36 +37,46 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
   void _insertNewPlaylist() {
     Get.defaultDialog(
       title: 'name of playlist'.tr,
+      textConfirm: 'Ok',
+      confirmTextColor: Colors.blueAccent,
+      onConfirm: () => _submitForm(),
+      buttonColor: Colors.transparent,
       content: Form(
         key: formKey,
         child: TextFormField(
-            controller: controller.textController.value,
-            autofocus: true,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter name of playlist'.tr;
-              }
-              bool coincidence = false;
-              controller.playlists.forEach((element) {
-                if (element.values.contains(value)) coincidence = true;
-              });
-              if (coincidence == true)
-                return 'The playlist with given name alredy exist'.tr;
-              return null;
-            },
-            onEditingComplete: () async {
-              if (formKey.currentState!.validate()) {
-                await controller.createNewPlaylist();
-                listKey.currentState?.insertItem(0);
-                Get.back();
-              }
-            }),
+          controller: controller.textController.value,
+          autofocus: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter name of playlist'.tr;
+            }
+            bool coincidence = false;
+            controller.playlists.forEach((element) {
+              if (element.values.contains(value)) coincidence = true;
+            });
+            if (coincidence == true)
+              return 'The playlist with given name alredy exist'.tr;
+            return null;
+          },
+          onEditingComplete: () => _submitForm(),
+        ),
       ),
     );
   }
 
+  Future _submitForm() async {
+    if (formKey.currentState!.validate()) {
+      await controller.createNewPlaylist();
+      await Future.delayed(Duration(milliseconds: 100));
+      listKey.currentState?.insertItem(0);
+      print('insert card');
+      Get.back();
+    }
+  }
+
   Widget playlistCard(BuildContext context, int index,
       Animation<double> animation, int i, Map<String, Object?> playlist) {
+    Future.delayed(Duration(milliseconds: 500));
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(1, 0),
@@ -79,14 +89,14 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
             secondaryActions: [
               IconSlideAction(
                   caption: 'rename playlists'.tr,
-                  color: Theme.of(context).primaryColorLight,
+                  color: Constants.screensColors['songBook']!.withOpacity(0.5),
                   icon: Icons.drive_file_rename_outline,
                   onTap: () {
                     controller.isReadOnly.value = false;
                   }),
               IconSlideAction(
                 caption: 'delete from playlists'.tr,
-                color: Theme.of(context).primaryColorDark,
+                color: Constants.screensColors['songBook'],
                 icon: Icons.delete_outline,
                 onTap: () => _removePlaylist(playlist, index, i),
               ),

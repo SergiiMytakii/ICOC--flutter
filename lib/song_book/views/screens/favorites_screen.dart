@@ -1,15 +1,15 @@
 import 'package:icoc/shared/constants.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
 import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 import 'package:icoc/song_book/views/widgets/favorites_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:getxfire/getxfire.dart';
 
-class FavoritesScreen extends GetView<SongsController> {
+class FavoritesScreen extends GetView<FavoritesController> {
   @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
+    Get.put(FavoritesController());
     int i = 0;
 
     return Scaffold(
@@ -22,7 +22,7 @@ class FavoritesScreen extends GetView<SongsController> {
               physics: BouncingScrollPhysics(),
               itemCount: controller.favSongs.length,
               itemBuilder: (BuildContext context, int index) {
-                //change i for making different colors of divider
+                //change i to make different colors of divider
                 if (i < 4) {
                   i++;
                 } else {

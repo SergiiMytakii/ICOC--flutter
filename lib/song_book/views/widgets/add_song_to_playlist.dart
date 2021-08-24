@@ -1,15 +1,15 @@
 import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
+import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 
-class AddSongToPlaylistsScreen extends GetView<SongsController> {
+class AddSongToPlaylistsScreen extends GetView<PlaylistsController> {
   final int id = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    Get.put(PlaylistsController());
     controller.getPlaylists();
-    Get.put(SongsController());
     int i = 0;
     final size = Get.size;
 

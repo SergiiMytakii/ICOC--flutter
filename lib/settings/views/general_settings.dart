@@ -24,6 +24,7 @@ class GeneralSettings extends GetView<GeneralSettingsController> {
             height: 40,
           ),
           Obx(() => SwitchListTile.adaptive(
+                activeColor: Theme.of(context).primaryColor,
                 title: Text(
                   'settings_dark_theme'.tr,
                   style: Theme.of(context).textTheme.bodyText1,

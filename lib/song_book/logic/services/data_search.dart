@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
@@ -34,18 +35,18 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return searchResults();
+    return searchResults(query);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return searchResults();
+    return searchResults(query);
   }
 
-  Stream<List<Song>> searchStream() {
+  Stream<List<Song>> searchStream(String query) {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яієї0-9]+"), ' ');
+        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яёієї0-9]+"), ' ');
 
     if (trimmedQuery == '') {
       return DatabaseHelperFTS4().getListSongs();
@@ -57,32 +58,48 @@ class DataSearch extends SearchDelegate {
     }
   }
 
-  Widget searchResults() {
+  Widget searchResults(String query) {
     int i = 0;
 
     return StreamBuilder<List<Song>>(
-        stream: searchStream(),
+        stream: searchStream(query),
         builder: (context, AsyncSnapshot<List<Song>> songs) {
           if (!songs.hasData) {
-            return Center(
-              child: Text('no data'),
-            );
+            return Platform.isIOS
+                ? SliverToBoxAdapter(child: Center(child: Text(' No data'.tr)))
+                : Center(child: Text(' No data'.tr));
           }
           return GetBuilder<OrderLangController>(
             init: OrderLangController(),
             builder: (controller) {
-              return ListView.builder(
-                  itemCount: songs.data!.length,
-                  itemBuilder: (context, index) {
-                    //change i for making different colors of divider
-                    if (i < 4) {
-                      i++;
-                    } else {
-                      i = 0;
-                    }
-                    return buildSongCardWithHighliting(
-                        songs, index, context, i, controller.orderLang);
-                  });
+              return Platform.isIOS
+                  ? SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          //change i for making different colors of divider
+                          if (i < 4) {
+                            i++;
+                          } else {
+                            i = 0;
+                          }
+                          return buildSongCardWithHighliting(
+                              songs, index, context, i, controller.orderLang);
+                        },
+                        childCount: songs.data!.length,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: songs.data!.length,
+                      itemBuilder: (context, index) {
+                        //change i for making different colors of divider
+                        if (i < 4) {
+                          i++;
+                        } else {
+                          i = 0;
+                        }
+                        return buildSongCardWithHighliting(
+                            songs, index, context, i, controller.orderLang);
+                      });
             },
           );
         });
@@ -143,11 +160,11 @@ class DataSearch extends SearchDelegate {
 
   Widget buildSongCardWithHighliting(AsyncSnapshot<List<Song>> songs, int index,
       BuildContext context, int i, List<String> _orderLang) {
+    int id = songs.data![index].id;
     return Column(
       children: [
         ListTile(
-          onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
-              arguments: [songs.data![index].id, songsController])),
+          onTap: (() => onTapHandler(id)),
           horizontalTitleGap: 0,
           leading: Text(songs.data![index].id.toString(),
               style: Theme.of(context).textTheme.headline6),
@@ -172,5 +189,9 @@ class DataSearch extends SearchDelegate {
         )
       ],
     );
+  }
+
+  onTapHandler(int id) {
+    Get.toNamed(Routes.SONG_SCREEN, arguments: [id, songsController]);
   }
 }

@@ -29,9 +29,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: MyDrawer(),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         //type: BottomNavigationBarType.fixed,
         currentIndex: _selectedPageIndex,
