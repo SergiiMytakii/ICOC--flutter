@@ -29,7 +29,7 @@ class DatabaseServiceFirebase {
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<SongDetail> songs = snapshot.docs.map((doc) {
       return SongDetail(
-          id: doc.get('id') ?? 0,
+          id: doc.get('id') ?? null,
           description: doc.get('description') ?? {},
           text: doc.get('text') ?? {},
           title: doc.get('title') ?? {},
