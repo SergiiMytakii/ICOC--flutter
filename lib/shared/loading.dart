@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Loading extends StatelessWidget {
+  final Color? color;
+  Loading({
+    Key? key,
+    this.color,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 400,
       child: Center(
-        child: SpinKitWanderingCubes(
-          color: Theme.of(context).accentColor,
-          size: 50.0,
+        child: CircularProgressIndicator.adaptive(
+          backgroundColor: color,
         ),
       ),
     );

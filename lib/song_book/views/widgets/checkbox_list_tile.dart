@@ -1,3 +1,4 @@
+import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
 
 import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
@@ -22,7 +23,7 @@ class MyCheckboxListTile extends GetView<SongsController> {
       builder: (songLangController) {
         return Container(
           child: CheckboxListTile(
-              activeColor: Theme.of(context).primaryColor,
+              activeColor: Constants.screensColors['songBook'],
               key: key,
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(

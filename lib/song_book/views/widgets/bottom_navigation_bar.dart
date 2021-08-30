@@ -1,4 +1,3 @@
-import 'package:icoc/app/menu/my_drawer.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/views/screens/favorites_screen.dart';
 import 'package:icoc/song_book/views/screens/playlists_list_screen.dart';
@@ -29,9 +28,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: MyDrawer(),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         //type: BottomNavigationBarType.fixed,
         currentIndex: _selectedPageIndex,

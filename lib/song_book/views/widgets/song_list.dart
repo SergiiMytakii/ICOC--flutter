@@ -14,6 +14,7 @@ class SongList extends GetView<SongsController> {
     Get.put(SongsController());
     int i = 0;
     return Obx(() {
+      log.i('build list  of ' + controller.songs.length.toString());
       return controller.loaded.value
           ? SliverList(
               delegate: SliverChildBuilderDelegate(
@@ -42,8 +43,29 @@ class SongList extends GetView<SongsController> {
           : SliverToBoxAdapter(
               child: Column(
               children: [
-                Loading(),
-                Text(controller.updateLoadingProgress.value)
+                Loading(
+                  color: Constants.screensColors['songBook'],
+                ),
+                TextButton(
+                  onPressed: () {
+                    controller.isSelected.value = false;
+                    controller.fetchDataFromFirebase();
+                  },
+                  child: AnimatedDefaultTextStyle(
+                    textAlign: TextAlign.center,
+                    style: controller.isSelected.value
+                        ? TextStyle(
+                            color: Constants.screensColors['songBook'],
+                            fontWeight: FontWeight.bold,
+                          )
+                        : TextStyle(color: Colors.transparent),
+                    duration: Duration(seconds: 2),
+                    child: Text(
+                      controller.updateLoadingProgress.value,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
               ],
             ));
     });
