@@ -1,10 +1,12 @@
-import 'package:icoc/routes/routes.dart';
+import 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
 import 'package:icoc/shared/constants.dart';
 import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
 import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 import 'package:icoc/song_book/views/widgets/playlist_song_card.dart';
 import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
+
+import 'add_song_from_playlist.dart';
 
 class PlaylistScreen extends GetView<PlaylistsController> {
   @override
@@ -24,9 +26,18 @@ class PlaylistScreen extends GetView<PlaylistsController> {
             backgroundColor: Constants.screensColors['songBook'],
             actions: [
               IconButton(
-                  onPressed: () => Get.toNamed(
-                      Routes.ADD_SONG_FROM_PLAYLIST_SCREEN,
-                      arguments: playlist),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: Get.context!,
+                      isScrollControlled: true,
+                      enableDrag: true,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: Colors.black.withOpacity(0.2),
+                      builder: (context) => ModalBottomSheet(
+                        child: AddSongFromPlaylist(playlist),
+                      ),
+                    );
+                  },
                   icon: Icon(Icons.add_outlined))
             ],
           ),

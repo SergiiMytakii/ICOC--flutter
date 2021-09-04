@@ -24,11 +24,11 @@ class FontSizeAdjustBottomSheet {
           Container(
             alignment: Alignment.center,
             height: 100,
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Obx(() => Row(
                   children: [
                     Container(
-                      width: 100,
+                      width: 80,
                       child: Text(
                         'aA',
                         style: TextStyle(fontSize: controller.fontSize.value),
@@ -36,10 +36,10 @@ class FontSizeAdjustBottomSheet {
                       ),
                     ),
                     SizedBox(
-                      width: 15,
+                      width: 10,
                     ),
                     Container(
-                      width: 200,
+                      width: Get.size.width - 200,
                       child: Slider.adaptive(
                         activeColor: Constants.screensColors['songBook'],
                         inactiveColor: Constants.screensColors['songBook'],

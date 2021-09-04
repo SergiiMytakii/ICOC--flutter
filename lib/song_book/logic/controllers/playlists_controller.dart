@@ -19,8 +19,9 @@ class PlaylistsController extends GetxController {
     });
   }
 
-  void deletePlaylist(Map<String, Object?> playlist) async {
-    DatabaseHelperFTS4().deletePlaylist(int.parse(playlist['id'].toString()));
+  Future<void> deletePlaylist(Map<String, Object?> playlist) async {
+    await DatabaseHelperFTS4()
+        .deletePlaylist(int.parse(playlist['id'].toString()));
   }
 
   void renamePlaylist(Map<String, Object?> playlist, String newName) async {

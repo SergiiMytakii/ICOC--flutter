@@ -52,7 +52,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           ),
         ],
       ),
-      body: _pages[_selectedPageIndex]['page'] as Widget,
+      body: _pages[_selectedPageIndex]['page']
+          as Widget, //todo consider to use PageView
     );
   }
 }

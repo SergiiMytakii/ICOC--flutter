@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:icoc/app/core/controllers/main_screen_controller.dart';
 import 'package:icoc/routes/routes.dart';
 import 'package:icoc/shared/constants.dart';
@@ -64,7 +67,15 @@ class MainScreen extends GetView<MainScreenController> {
     //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         title: Text('ICOC'),
+        leading: Builder(
+          builder: (context) => IconButton(
+              icon: Platform.isIOS
+                  ? Icon(CupertinoIcons.ellipsis)
+                  : Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer()),
+        ),
         actions: [
           Icon(Icons.notifications_none_outlined),
           SizedBox(

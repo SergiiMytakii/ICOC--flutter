@@ -10,6 +10,7 @@ class DataSearchFromPlaylists extends DataSearch {
 
   @override
   onTapHandler(int id) async {
+    print('playlist ' + playlist['playlistName']);
     await playlistsController.addToPlaylist(playlist['playlistName'], id);
     playlistsController.getSongsInPlaylist(playlist['id']);
   }

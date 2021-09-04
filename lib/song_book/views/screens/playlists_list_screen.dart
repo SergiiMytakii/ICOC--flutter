@@ -23,14 +23,10 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
     super.initState();
   }
 
-  void _removePlaylist(Map<String, Object?> playlist, int index, int i) {
+  void _removePlaylist(Map<String, Object?> playlist) async {
     {
-      controller.deletePlaylist(playlist);
-      //animation
-      final item = controller.playlists.removeAt(index);
-      listKey.currentState!.removeItem(index,
-          (_, animation) => playlistCard(context, index, animation, i, item),
-          duration: const Duration(milliseconds: 500));
+      await controller.deletePlaylist(playlist);
+      controller.getPlaylists();
     }
   }
 
@@ -69,71 +65,62 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
       await controller.createNewPlaylist();
       await Future.delayed(Duration(milliseconds: 100));
       listKey.currentState?.insertItem(0);
-      print('insert card');
       Get.back();
     }
   }
 
-  Widget playlistCard(BuildContext context, int index,
-      Animation<double> animation, int i, Map<String, Object?> playlist) {
-    Future.delayed(Duration(milliseconds: 500));
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(1, 0),
-        end: Offset(0, 0),
-      ).animate(animation),
-      child: Column(
-        children: [
-          Slidable(
-            actionPane: SlidableScrollActionPane(),
-            secondaryActions: [
-              IconSlideAction(
-                  caption: 'rename playlists'.tr,
-                  color: Constants.screensColors['songBook']!.withOpacity(0.5),
-                  icon: Icons.drive_file_rename_outline,
-                  onTap: () {
-                    controller.isReadOnly.value = false;
-                  }),
-              IconSlideAction(
-                caption: 'delete from playlists'.tr,
-                color: Constants.screensColors['songBook'],
-                icon: Icons.delete_outline,
-                onTap: () => _removePlaylist(playlist, index, i),
-              ),
-            ],
-            child: ListTile(
-              leading: Icon(
-                Icons.playlist_play_outlined,
-                color: Constants.dividerColors[i],
-              ),
-              title: Obx(
-                () => TextFormField(
-                  showCursor: !controller.isReadOnly.value,
-                  autofocus: !controller.isReadOnly.value,
-                  readOnly: controller.isReadOnly.value,
-                  decoration: InputDecoration(border: InputBorder.none),
-                  controller: TextEditingController(
-                    text: playlist['playlistName'].toString(),
-                  ),
-                  style: Theme.of(context).textTheme.headline6,
-                  onFieldSubmitted: (value) => controller.renamePlaylist(
-                    playlist,
-                    value,
-                  ),
-                  onTap: () {
-                    controller.isReadOnly.value = true;
-                    Get.toNamed(Routes.PLAYLISTS, arguments: playlist);
-                  },
+  Widget playlistCard(Map<String, Object?> playlist, int i) {
+    return Column(
+      children: [
+        Slidable(
+          actionPane: SlidableScrollActionPane(),
+          secondaryActions: [
+            IconSlideAction(
+                caption: 'rename playlists'.tr,
+                color: Constants.screensColors['songBook']!.withOpacity(0.5),
+                icon: Icons.drive_file_rename_outline,
+                onTap: () {
+                  controller.isReadOnly.value = false;
+                }),
+            IconSlideAction(
+              caption: 'delete from playlists'.tr,
+              color: Constants.screensColors['songBook'],
+              icon: Icons.delete_outline,
+              onTap: () => _removePlaylist(playlist),
+            ),
+          ],
+          child: ListTile(
+            leading: Icon(
+              Icons.playlist_play_outlined,
+              color: Constants.dividerColors[i],
+            ),
+            title: Obx(
+              () => TextFormField(
+                showCursor: !controller.isReadOnly.value,
+                autofocus: !controller.isReadOnly.value,
+                readOnly: controller.isReadOnly.value,
+                decoration: InputDecoration(border: InputBorder.none),
+                controller: TextEditingController(
+                  text: playlist['playlistName'].toString(),
                 ),
+                style: Theme.of(context).textTheme.headline6,
+                onFieldSubmitted: (value) => controller.renamePlaylist(
+                  playlist,
+                  value,
+                ),
+                onTap: () {
+                  controller.isReadOnly.value = true;
+                  Get.toNamed(Routes.PLAYLISTS, arguments: playlist);
+                },
               ),
             ),
           ),
-          Divider(
-            indent: 50,
-            color: Constants.dividerColors[i],
-          )
-        ],
-      ),
+        ),
+        Divider(
+          indent: 50,
+          color: Constants.dividerColors[i],
+        )
+      ],
     );
   }
 
@@ -155,19 +142,18 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
             ],
           ),
           body: controller.showList.value
-              ? AnimatedList(
+              ? ListView.builder(
                   key: listKey,
                   physics: BouncingScrollPhysics(),
-                  initialItemCount: controller.playlists.length,
-                  itemBuilder: (BuildContext context, int index, animation) {
+                  itemCount: controller.playlists.length,
+                  itemBuilder: (BuildContext context, int index) {
                     //change i for making different colors of divider
                     if (i < 4) {
                       i++;
                     } else {
                       i = 0;
                     }
-                    return playlistCard(context, index, animation, i,
-                        controller.playlists[index]);
+                    return playlistCard(controller.playlists[index], i);
                   },
                 )
               : Center(child: Text('There is nothing here yet!'.tr)),
