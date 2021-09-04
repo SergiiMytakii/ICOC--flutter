@@ -1,7 +1,4 @@
-import 'package:icoc/song_book/models/song_detail.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
-import 'import_songs.dart';
+import '/index.dart';
 
 class DatabaseServiceFirebase {
   var log = Logger();

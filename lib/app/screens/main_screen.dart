@@ -1,10 +1,6 @@
-import 'package:icoc/app/core/controllers/main_screen_controller.dart';
-import 'package:icoc/routes/routes.dart';
-import 'package:icoc/shared/constants.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:getxfire/getxfire.dart';
-import '../menu/my_drawer.dart';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import '../../index.dart';
 
 class MainScreen extends GetView<MainScreenController> {
   tableItem(BuildContext context, String title, Color color, IconData icon,
@@ -64,7 +60,15 @@ class MainScreen extends GetView<MainScreenController> {
     //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         title: Text('ICOC'),
+        leading: Builder(
+          builder: (context) => IconButton(
+              icon: Platform.isIOS
+                  ? Icon(CupertinoIcons.ellipsis)
+                  : Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer()),
+        ),
         actions: [
           Icon(Icons.notifications_none_outlined),
           SizedBox(

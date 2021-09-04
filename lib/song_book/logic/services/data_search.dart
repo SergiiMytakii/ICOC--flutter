@@ -1,12 +1,5 @@
 import 'dart:io';
-import 'package:icoc/routes/routes.dart';
-import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
-import 'package:icoc/song_book/models/song.dart';
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
-import 'db_sqlite/sqlite_helper_fts4.dart';
-import '../controllers/order_lang_controller.dart';
+import '/index.dart';
 
 class DataSearch extends SearchDelegate {
   final songsController = Get.put(SongsController());
