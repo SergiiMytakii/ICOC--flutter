@@ -1,6 +1,4 @@
-import 'package:get_storage/get_storage.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:icoc/song_book/models/song.dart';
+import '/index.dart';
 
 class OrderLangController extends GetxController {
   List<String> orderLang = ['ru', 'uk', 'en'];

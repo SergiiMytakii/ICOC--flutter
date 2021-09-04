@@ -1,15 +1,10 @@
-import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:logger/logger.dart';
-import 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:icoc/song_book/models/song_detail.dart';
+import '/index.dart';
 
 class SongScreenController extends GetxController {
   GetStorage box = GetStorage();
   RxDouble fontSize = 18.0.obs;
   var log = Logger();
-
+  DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
   final songDetail =
       SongDetail(id: 0, title: {}, description: {}, text: {}, chords: {}).obs;
   int songId;
@@ -35,9 +30,7 @@ class SongScreenController extends GetxController {
   }
 
   Future fetchSongdetail(int songId) async {
-    await DatabaseHelperFTS4()
-        .getSongDetail(songId)
-        .then((value) => songDetail.value = value);
+    songDetail.value = await databaseService.getSongDetail(songId);
   }
 
   void getTitlesForTabs() {
