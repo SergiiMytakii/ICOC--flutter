@@ -48,7 +48,7 @@ class MyDrawer extends StatelessWidget {
             'drawer_about_app'.tr,
             style: Theme.of(context).textTheme.headline6,
           ),
-          onTap: () {},
+          onTap: () => Get.offAndToNamed(Routes.ABOUT_APP_SCREEN),
         ),
         ListTile(
           leading: Icon(

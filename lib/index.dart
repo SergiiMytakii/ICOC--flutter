@@ -29,6 +29,7 @@ export 'package:icoc/song_book/logic/services/data_search.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:icoc/song_book/logic/services/import_songs.dart';
 export 'package:icoc/song_book/logic/services/data_search_from_playlist.dart';
+export 'package:url_launcher/url_launcher.dart';
 
 //debug
 export 'package:logger/logger.dart';
@@ -38,6 +39,9 @@ export 'package:icoc/app/routes/routes.dart';
 export 'package:icoc/app/routes/pages.dart';
 
 //screens and widgets
+export 'package:icoc/song_book/screens/widgets/add_song_to_playlist.dart';
+
+export 'package:icoc/song_book/screens/widgets/checkbox_list_tile.dart';
 export 'package:icoc/song_book/screens/widgets/font_size_adjust_bottom_sheet.dart';
 export 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
 export 'package:icoc/song_book/screens/widgets/favorites_song_card.dart';
@@ -57,6 +61,12 @@ export 'package:icoc/song_book/screens/widgets/android_app_bar_song_book_screen.
 export 'package:icoc/song_book/screens/widgets/ios_app_bar_song_book_screen.dart';
 export 'package:icoc/song_book/screens/widgets/song_list.dart';
 export 'package:icoc/song_book/screens/widgets/song_text_on_song_screen.dart';
+export 'package:icoc/song_book/screens/widgets/bottom_sheet_filter.dart';
+export 'package:icoc/song_book/screens/favorites_screen.dart';
+export 'package:icoc/song_book/screens/playlists_list_screen.dart';
+export 'package:icoc/song_book/screens/song_book_screen.dart';
+export 'package:icoc/app/screens/widgets/loading.dart';
+export 'package:icoc/song_book/screens/widgets/song_card.dart';
 
 //constants
 export 'package:icoc/app/constants.dart';

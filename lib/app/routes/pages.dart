@@ -1,3 +1,5 @@
+import 'package:icoc/app/screens/about_app_screen.dart';
+
 import '../../index.dart';
 
 class Pages {
@@ -54,6 +56,12 @@ class Pages {
       GetPage(
         name: Routes.SONG_SCREEN,
         page: () => SongScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.ABOUT_APP_SCREEN,
+        page: () => AboutAppScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

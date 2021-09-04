@@ -10,7 +10,7 @@ class News extends StatelessWidget {
         title: Text(
           'drawer_news'.tr,
         ),
-        backgroundColor: Constants.screensColors['news']!.withOpacity(0.8),
+        backgroundColor: screensColors['news']!.withOpacity(0.8),
         centerTitle: true,
       ),
       body: Center(

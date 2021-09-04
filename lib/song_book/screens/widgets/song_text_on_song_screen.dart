@@ -1,8 +1,4 @@
-import 'package:icoc/song_book/logic/controllers/slides_controller.dart';
-import 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
+import '/index.dart';
 
 class SongTextOnSongScreen extends StatelessWidget {
   SongTextOnSongScreen(

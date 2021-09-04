@@ -10,8 +10,7 @@ class FirstPrinciples extends StatelessWidget {
         title: Text(
           'drawer_first_principles'.tr,
         ),
-        backgroundColor:
-            Constants.screensColors['firstPrinciples']!.withOpacity(0.8),
+        backgroundColor: screensColors['firstPrinciples']!.withOpacity(0.8),
         centerTitle: true,
       ),
       body: Center(

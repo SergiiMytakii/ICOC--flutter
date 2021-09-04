@@ -137,14 +137,14 @@ class MainScreen extends GetView<MainScreenController> {
                       tableItem(
                           context,
                           'drawer_song_book'.tr,
-                          Constants.screensColors['songBook']!,
+                          screensColors['songBook']!,
                           Icons.music_note,
                           sizeOfCell(),
                           Routes.SONGBOOK),
                       tableItem(
                           context,
                           'drawer_news'.tr,
-                          Constants.screensColors['news']!,
+                          screensColors['news']!,
                           Icons.language,
                           sizeOfCell(),
                           Routes.NEWS),
@@ -155,14 +155,14 @@ class MainScreen extends GetView<MainScreenController> {
                       tableItem(
                           context,
                           'drawer_first_principles'.tr,
-                          Constants.screensColors['firstPrinciples']!,
+                          screensColors['firstPrinciples']!,
                           Icons.import_contacts,
                           sizeOfCell(),
                           Routes.FIRST_PRINCIPLES),
                       tableItem(
                           context,
                           'drawer_q_and_a'.tr,
-                          Constants.screensColors['Q&A']!,
+                          screensColors['Q&A']!,
                           Icons.question_answer,
                           sizeOfCell(),
                           Routes.Q_AND_ANSVERS),

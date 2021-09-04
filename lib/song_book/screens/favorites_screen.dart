@@ -10,7 +10,7 @@ class FavoritesScreen extends GetView<FavoritesController> {
         appBar: AppBar(
           title: Text('bottom_navigation_bar_favorites'.tr),
           centerTitle: true,
-          backgroundColor: Constants.screensColors['songBook'],
+          backgroundColor: screensColors['songBook'],
         ),
         body: Obx(() => ListView.builder(
               physics: BouncingScrollPhysics(),
@@ -28,7 +28,7 @@ class FavoritesScreen extends GetView<FavoritesController> {
                     return FavoritesSongCard(
                       song: controller.favSongs[index],
                       orderLang: orLangController.orderLang,
-                      dividerColor: Constants.dividerColors[i],
+                      dividerColor: dividerColors[i],
                     );
                   },
                 );

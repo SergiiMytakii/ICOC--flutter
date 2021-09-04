@@ -47,4 +47,11 @@
             android:allowBackup="false"
 
     </application>
+    <queries>
+        <!-- If your app emails -->
+      <intent>
+        <action android:name="android.intent.action.SEND" />
+        <data android:mimeType="*/*" />
+      </intent>
+    </queries>
 </manifest>

@@ -6,7 +6,7 @@ class GeneralSettingsScreen extends GetView<GeneralSettingsController> {
   @override
   Widget build(BuildContext context) {
     Get.put(GeneralSettingsController());
-    final List<String> languages = Constants().languagesLocales.keys.toList();
+    final List<String> languages = languagesLocales.keys.toList();
     return Scaffold(
       appBar: AppBar(
         title: Text('app_bar_settings'.tr),
@@ -49,7 +49,7 @@ class GeneralSettingsScreen extends GetView<GeneralSettingsController> {
                       ))
                   .toList(),
               onChanged: (val) {
-                Get.updateLocale(Constants().languagesLocales[val]!);
+                Get.updateLocale(languagesLocales[val]!);
                 box.write('locale', val);
               },
             ),

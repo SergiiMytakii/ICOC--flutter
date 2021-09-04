@@ -32,9 +32,8 @@ class MyApp extends StatelessWidget {
       builder: (light, dark) => OKToast(
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          locale: appLocale != null
-              ? Constants().languagesLocales[appLocale]
-              : window.locale,
+          locale:
+              appLocale != null ? languagesLocales[appLocale] : window.locale,
           fallbackLocale: Locale('ru', 'RU'),
           theme: light,
           darkTheme: dark,
