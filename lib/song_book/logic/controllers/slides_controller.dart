@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:logger/logger.dart';
+import '/index.dart';
 
 class SlidesController extends GetxController {
   var log = Logger();

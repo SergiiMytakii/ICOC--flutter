@@ -1,6 +1,4 @@
-import 'package:getxfire/getxfire.dart';
-import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
-import 'package:icoc/song_book/logic/services/data_search.dart';
+import '/index.dart';
 
 class DataSearchFromPlaylists extends DataSearch {
   final PlaylistsController playlistsController =

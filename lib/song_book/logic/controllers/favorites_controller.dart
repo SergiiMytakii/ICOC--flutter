@@ -1,6 +1,4 @@
-import 'package:getxfire/getxfire.dart';
-import 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:icoc/song_book/models/song.dart';
+import '/index.dart';
 
 class FavoritesController extends GetxController {
   var favSongs = <Song>[].obs;
@@ -38,9 +36,7 @@ class FavoritesController extends GetxController {
   }
 
   void getFavoriteStatus(songId) async {
-    await DatabaseHelperFTS4().getFavoriteStatus(songId).then((value) {
-      favStatus.value = value;
-    });
+    favStatus.value = await DatabaseHelperFTS4().getFavoriteStatus(songId);
   }
 
   void toggleFavStatus(int songId) async {

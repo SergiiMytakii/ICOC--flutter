@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:icoc/song_book/models/song.dart';
+import '/index.dart';
 
 class PlaylistsController extends GetxController {
   RxString query = ''.obs;
@@ -11,6 +8,12 @@ class PlaylistsController extends GetxController {
   final textController = TextEditingController().obs;
   final songsInPlaylist = <Song>[].obs;
   final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void onInit() {
+    getPlaylists();
+    super.onInit();
+  }
 
   Future getPlaylists() async {
     DatabaseHelperFTS4().getPlaylists().listen((event) {

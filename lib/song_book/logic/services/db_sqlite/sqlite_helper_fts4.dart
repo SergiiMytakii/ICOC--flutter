@@ -1,11 +1,5 @@
-import 'dart:async';
-import 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
-import 'package:icoc/song_book/models/song.dart';
-import 'package:icoc/song_book/models/song_detail.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:logger/logger.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import '/index.dart';
 
 class DatabaseHelperFTS4 {
   static Database? _db;

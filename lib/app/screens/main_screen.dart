@@ -1,13 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-import 'package:icoc/app/core/controllers/main_screen_controller.dart';
-import 'package:icoc/routes/routes.dart';
-import 'package:icoc/shared/constants.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:getxfire/getxfire.dart';
-import '../menu/my_drawer.dart';
+import '../../index.dart';
 
 class MainScreen extends GetView<MainScreenController> {
   tableItem(BuildContext context, String title, Color color, IconData icon,
