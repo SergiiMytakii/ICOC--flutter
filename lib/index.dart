@@ -11,6 +11,7 @@ export 'package:path/path.dart';
 export 'package:oktoast/oktoast.dart';
 export 'package:icoc/app/theme.dart';
 export 'package:flutter/services.dart';
+export 'package:wakelock/wakelock.dart';
 
 //controllers
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';

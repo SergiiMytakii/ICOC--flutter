@@ -10,13 +10,14 @@ class _SlidesScreenState extends State<SlidesScreen> {
   final controller = Get.put(SlidesController());
   @override
   void initState() {
-    super.initState();
+    Wakelock.enable();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft
     ]);
+    super.initState();
   }
 
   @override
@@ -73,16 +74,18 @@ class _SlidesScreenState extends State<SlidesScreen> {
                   child: Obx(() => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          slidesButton(width, controller.getPreviosSlide),
+                          slidesButton(width, controller.getPreviosSlide,
+                              controller.hintColorBack.value),
                           Icon(
                             Icons.arrow_back,
-                            color: controller.hintColor.value,
+                            color: controller.hintColorBack.value,
                           ),
                           Icon(
                             Icons.arrow_forward,
-                            color: controller.hintColor.value,
+                            color: controller.hintColorForward.value,
                           ),
-                          slidesButton(width, controller.getNextSlide),
+                          slidesButton(width, controller.getNextSlide,
+                              controller.hintColorForward.value),
                         ],
                       )),
                 ),
@@ -92,15 +95,14 @@ class _SlidesScreenState extends State<SlidesScreen> {
     );
   }
 
-  InkWell slidesButton(double width, onTapHandler) {
+  InkWell slidesButton(double width, onTapHandler, Color color) {
     return InkWell(
       customBorder: CircleBorder(),
       splashColor: Colors.black,
       borderRadius: BorderRadius.circular(15),
       onTap: onTapHandler,
       child: Container(
-        decoration: BoxDecoration(
-            shape: BoxShape.circle, color: controller.hintColor.value),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
         width: width * 0.3,
       ),
     );

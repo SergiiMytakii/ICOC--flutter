@@ -23,7 +23,7 @@ class GeneralSettingsScreen extends GetView<GeneralSettingsController> {
                   'settings_dark_theme'.tr,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                value: controller.darkTheme.value,
+                value: controller.isDarkMode.value,
                 onChanged: (_) {
                   controller.changeThemeMode(context);
                 },

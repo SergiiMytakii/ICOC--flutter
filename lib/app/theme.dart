@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import '../index.dart';
 
 final myDarkTheme = ThemeData.dark().copyWith(
-  accentColor: Colors.amber,
-  bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
-);
+    accentColor: Colors.amber,
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
+    brightness: Brightness.dark);
 final myLightTheme = ThemeData.light().copyWith(
+    brightness: Brightness.light,
     tabBarTheme: TabBarTheme(
       labelStyle: TextStyle(fontSize: 20),
       unselectedLabelStyle: TextStyle(fontSize: 20),

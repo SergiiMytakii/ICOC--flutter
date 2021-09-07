@@ -5,7 +5,9 @@ import '../../index.dart';
 class SongScreen extends GetView<SongScreenController> {
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
-
+  SongScreen() {
+    Wakelock.enable();
+  }
   @override
   Widget build(BuildContext context) {
     final songId = Get.arguments != null ? Get.arguments[0] : 1;

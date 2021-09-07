@@ -35,6 +35,10 @@ class AddSongFromPlaylist extends StatelessWidget {
                   child: TextFormField(
                     autofocus: true,
                     decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.search_outlined,
+                          color: Get.theme.focusColor,
+                        ),
                         border: InputBorder.none,
                         hintText: 'add to playlist'.tr),
                     controller: controller.textEditingController,
