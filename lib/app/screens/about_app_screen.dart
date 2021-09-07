@@ -1,5 +1,3 @@
-import 'package:icoc/app/screens/widgets/snackbar.dart';
-
 import '../../index.dart';
 
 class AboutAppScreen extends StatelessWidget {

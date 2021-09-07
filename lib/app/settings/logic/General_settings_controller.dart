@@ -1,5 +1,3 @@
-import 'package:flutter/scheduler.dart';
-
 import '/index.dart';
 
 class GeneralSettingsController extends GetxController {
