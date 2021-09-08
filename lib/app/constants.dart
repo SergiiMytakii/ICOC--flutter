@@ -22,5 +22,6 @@ final Map<String, Locale> languagesLocales = {
 
 const String email = 'serjmitaki@gmail.com';
 const String versionApp = '4.0.0';
+const appUrl = 'https://play.google.com/store/apps/details?id=ru.android.icoc';
 
 enum SlideActions { AllSongs, Favorites, Playlists }

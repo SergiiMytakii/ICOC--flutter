@@ -52,11 +52,13 @@ class MyDrawer extends StatelessWidget {
           leading: Icon(
             Icons.share,
           ),
-          title: Text(
-            'drawer_share_app'.tr,
-            style: Theme.of(context).textTheme.headline6,
+          title: TextButton(
+            child: Text(
+              'drawer_share_app'.tr,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            onPressed: () => Share.share(appUrl),
           ),
-          subtitle: Text('drawer_in_development'.tr),
         ),
       ],
     );

@@ -41,6 +41,7 @@ export 'package:icoc/app/routes/pages.dart';
 
 //screens and widgets
 export 'package:icoc/song_book/screens/widgets/add_song_to_playlist.dart';
+export 'package:icoc/app/screens/widgets/snackbar.dart';
 
 export 'package:icoc/song_book/screens/widgets/checkbox_list_tile.dart';
 export 'package:icoc/song_book/screens/widgets/font_size_adjust_bottom_sheet.dart';
