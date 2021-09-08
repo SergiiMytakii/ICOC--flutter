@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:icoc/app/constants.dart';
+import '/index.dart';
 
 class FontSizeAdjustBottomSheet {
   BuildContext context;
+
   var controller;
 
   FontSizeAdjustBottomSheet({required this.context, this.controller});
@@ -41,8 +40,8 @@ class FontSizeAdjustBottomSheet {
                     Container(
                       width: Get.size.width - 200,
                       child: Slider.adaptive(
-                        activeColor: Constants.screensColors['songBook'],
-                        inactiveColor: Constants.screensColors['songBook'],
+                        activeColor: screensColors['songBook'],
+                        inactiveColor: screensColors['songBook'],
                         label: 'Font size',
                         value: controller!.fontSize.value,
                         min: 14,

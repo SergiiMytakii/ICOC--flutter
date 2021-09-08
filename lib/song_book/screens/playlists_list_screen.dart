@@ -66,14 +66,14 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
           secondaryActions: [
             IconSlideAction(
                 caption: 'rename playlists'.tr,
-                color: Constants.screensColors['songBook']!.withOpacity(0.5),
+                color: screensColors['songBook']!.withOpacity(0.5),
                 icon: Icons.drive_file_rename_outline,
                 onTap: () {
                   controller.isReadOnly.value = false;
                 }),
             IconSlideAction(
               caption: 'delete from playlists'.tr,
-              color: Constants.screensColors['songBook'],
+              color: screensColors['songBook'],
               icon: Icons.delete_outline,
               onTap: () => _removePlaylist(playlist),
             ),
@@ -81,7 +81,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
           child: ListTile(
             leading: Icon(
               Icons.playlist_play_outlined,
-              color: Constants.dividerColors[i],
+              color: dividerColors[i],
             ),
             title: Obx(
               () => TextFormField(
@@ -107,7 +107,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
         ),
         Divider(
           indent: 50,
-          color: Constants.dividerColors[i],
+          color: dividerColors[i],
         )
       ],
     );
@@ -121,7 +121,7 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
           appBar: AppBar(
             centerTitle: true,
             title: Text('bottom_navigation_bar_playlists'.tr),
-            backgroundColor: Constants.screensColors['songBook'],
+            backgroundColor: screensColors['songBook'],
             actions: [
               IconButton(
                   icon: Icon(Icons.add),

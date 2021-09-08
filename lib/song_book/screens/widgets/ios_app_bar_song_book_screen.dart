@@ -1,15 +1,11 @@
+import '/index.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:icoc/app/constants.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-
-import 'bottom_sheet_filter.dart';
 
 Widget iosAppbar(BuildContext context, dynamic controller, String title) {
   return SliverAppBar(
     primary: true,
     title: Text(title),
-    backgroundColor: Constants.screensColors['songBook'],
+    backgroundColor: screensColors['songBook'],
     centerTitle: true,
     actions: [
       IconButton(

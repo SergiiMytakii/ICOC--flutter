@@ -1,15 +1,4 @@
-import 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
-import 'package:icoc/app/routes/routes.dart';
-import 'package:icoc/app/constants.dart';
-import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
-import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:icoc/song_book/models/song.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:icoc/song_book/screens/widgets/add_song_to_playlist.dart';
+import '/index.dart';
 
 class SongCard extends GetView<OrderLangController> {
   final Song song;
@@ -34,13 +23,13 @@ class SongCard extends GetView<OrderLangController> {
           secondaryActions: [
             IconSlideAction(
               caption: 'to favorite'.tr,
-              color: Constants.screensColors['songBook']!.withOpacity(0.7),
+              color: screensColors['songBook']!.withOpacity(0.7),
               icon: Icons.favorite_border,
               onTap: () => favoritesController.addToFavorites(song.id),
             ),
             IconSlideAction(
               caption: 'to playlist'.tr,
-              color: Constants.screensColors['songBook'],
+              color: screensColors['songBook'],
               icon: Icons.playlist_play_outlined,
               onTap: () {
                 showModalBottomSheet(

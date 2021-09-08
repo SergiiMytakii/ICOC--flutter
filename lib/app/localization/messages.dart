@@ -49,6 +49,10 @@ class Messages extends Translations {
               'Can\'t  load data... Please, check your internet connection and pull down to refresh!',
           'add to playlist': 'Add to playlist',
           'Font size': 'Font size',
+          'Loading songs': 'Loading songs',
+          'Сannot load data ... Check your internet connection and click to refresh the page':
+              'Сannot load data ... Check your internet connection and click to refresh the page',
+          'Push to refresh the page': 'Push to refresh the page',
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -85,6 +89,9 @@ class Messages extends Translations {
           "delete from playlists": "Удалить",
           "There is nothing here yet!": "Здесь еще ничего нет!",
           "New playlist": "Новый плейлист",
+          'Create new playlist': 'Создайте новый плейлист',
+          'Or choose from existing playlists':
+              'Или выберите из существующих плейлистов',
           "Deleted from favorite list": "Удалено из избранных",
           "name of playlist": "Название плейлиста",
           "remove from playlist": "Удалить",
@@ -96,6 +103,10 @@ class Messages extends Translations {
               'Невозможно загрузить данные... Проверьте интернет соединение и потяните вниз, чтобы обновить',
           'add to playlist': 'Добавить в плейлист',
           'Font size': 'Размер шрифта',
+          'Loading songs': 'Загружаем песни',
+          'Сannot load data ... Check your internet connection and click to refresh the page':
+              'Не можем загрузить данные... Проверьте интернет соединение и нажмите, чтобы обновить страницу',
+          'Push to refresh the page': 'Нажмите, чтобы \nобновить страницу'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -132,6 +143,9 @@ class Messages extends Translations {
           "delete from playlists": "Видалити",
           "There is nothing here yet!": "Тут ще ничого немає!",
           "New playlist": "Новий плейлист",
+          'Create new playlist': 'Створить новий плейлист',
+          'Or choose from existing playlists':
+              'Або вибріть з існуючих плейлистів',
           "Deleted from favorite list": "Видалено з улюблених",
           "name of playlist": "Назва плейлиста",
           "remove from playlist": "Видалити",
@@ -141,8 +155,12 @@ class Messages extends Translations {
           'Ooooops': 'Йогоу...',
           'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
               'Неможливо завантажити данні... Перевірте интернет з\'єднання та понягніть униз, чтобы оновити',
-          'add to playlist': 'Добавити до плейлисту',
+          'add to playlist': 'Додати до плейлисту',
           'Font size': 'Размір шрифту',
+          'Loading songs': 'Загружаємо пісні',
+          'Сannot load data ... Check your internet connection and click to refresh the page':
+              'Не можемо завантажити дані ... Перевірте інтернет з\'єднання і натисніть, щоб оновити сторінку',
+          'Push to refresh the page': ' Натисніть, щоб \nоновити сторінку'
         }
       };
 }

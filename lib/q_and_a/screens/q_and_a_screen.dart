@@ -10,7 +10,7 @@ class QuestionsAndAnwers extends StatelessWidget {
         title: Text(
           'drawer_q_and_a'.tr,
         ),
-        backgroundColor: Constants.screensColors['Q&A']!.withOpacity(0.8),
+        backgroundColor: screensColors['Q&A']!.withOpacity(0.8),
         centerTitle: true,
       ),
       body: Center(

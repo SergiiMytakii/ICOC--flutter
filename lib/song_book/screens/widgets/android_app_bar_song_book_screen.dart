@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:icoc/app/constants.dart';
-import 'package:icoc/song_book/logic/services/data_search.dart';
-
-import 'bottom_sheet_filter.dart';
+import '/index.dart';
 
 class AndroidAppBar extends StatelessWidget {
   const AndroidAppBar({
@@ -18,7 +13,7 @@ class AndroidAppBar extends StatelessWidget {
         'app_bar_title'.tr,
       ),
       centerTitle: true,
-      backgroundColor: Constants.screensColors['songBook'],
+      backgroundColor: screensColors['songBook'],
       actions: [
         IconButton(
           icon: Icon(

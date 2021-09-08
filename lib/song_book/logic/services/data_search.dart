@@ -113,7 +113,7 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Constants.screensColors['songBook'],
+                  color: screensColors['songBook'],
                   fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
@@ -137,7 +137,7 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Constants.screensColors['songBook'],
+                  color: screensColors['songBook'],
                   fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
@@ -178,7 +178,7 @@ class DataSearch extends SearchDelegate {
         ),
         Divider(
           indent: 50,
-          color: Constants.dividerColors[i],
+          color: dividerColors[i],
         )
       ],
     );

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import '../../index.dart';
+import '/index.dart';
 
 class SongBookScreen extends StatelessWidget {
   final controller = Get.put(SongsController());
