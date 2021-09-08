@@ -21,9 +21,7 @@ class MyDrawer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: CircleAvatar(
-                  radius: 30,
-                ),
+                child: Image.asset('assets/images/logo_icoc_drawer.png')
               ),
             ],
           ),
@@ -48,7 +46,7 @@ class MyDrawer extends StatelessWidget {
             'drawer_about_app'.tr,
             style: Theme.of(context).textTheme.headline6,
           ),
-          onTap: () {},
+          onTap: () => Get.offAndToNamed(Routes.ABOUT_APP_SCREEN),
         ),
         ListTile(
           leading: Icon(

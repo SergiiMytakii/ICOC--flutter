@@ -9,7 +9,8 @@ class SlidesController extends GetxController {
   RxString slide = ''.obs;
   List<String> splitted = [];
   RxDouble fontSize = 30.0.obs;
-  var hintColor = Colors.transparent.obs;
+  var hintColorForward = Colors.transparent.obs;
+  var hintColorBack = Colors.transparent.obs;
 
   @override
   void onInit() {
@@ -100,8 +101,20 @@ class SlidesController extends GetxController {
   }
 
   revealHint() async {
-    hintColor.value = Colors.white;
-    await Future.delayed(Duration(seconds: 5));
-    hintColor.value = Colors.transparent;
+    hintColorForward.value = Colors.white;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorForward.value = Colors.transparent;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorForward.value = Colors.white;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorForward.value = Colors.transparent;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorBack.value = Colors.white;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorBack.value = Colors.transparent;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorBack.value = Colors.white;
+    await Future.delayed(Duration(seconds: 1));
+    hintColorBack.value = Colors.transparent;
   }
 }

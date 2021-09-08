@@ -8,4 +8,5 @@ abstract class Routes {
   static const PLAYLISTS = '/playlists_list_screen';
   static const SLIDES_SCREEN = '/slides_screen';
   static const SONG_SCREEN = '/song_screen';
+  static const ABOUT_APP_SCREEN = '/about_app_screen';
 }

@@ -1,9 +1,4 @@
-import 'package:icoc/app/constants.dart';
-import 'package:icoc/song_book/screens/favorites_screen.dart';
-import 'package:icoc/song_book/screens/playlists_list_screen.dart';
-import 'package:icoc/song_book/screens/song_book_screen.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:flutter/material.dart';
+import '/index.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -11,10 +6,11 @@ class MyBottomNavigationBar extends StatefulWidget {
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  final List<Map<String, Object>> _pages = [
-    {'page': SongBookScreen(), 'title': 'All songs'},
-    {'page': FavoritesScreen(), 'title': 'Favorites'},
-    {'page': PlaylistsListScreen(), 'title': 'Playlists'}
+  final PageController _pageController = PageController();
+  final List _pages = [
+    SongBookScreen(),
+    FavoritesScreen(),
+    PlaylistsListScreen(),
   ];
 
   int _selectedPageIndex = 0;
@@ -32,11 +28,17 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         //type: BottomNavigationBarType.fixed,
         currentIndex: _selectedPageIndex,
 
-        selectedItemColor:
-            Constants.screensColors['songBook']!.withOpacity(0.8),
+        selectedItemColor: screensColors['songBook']!.withOpacity(0.8),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        onTap: _selectPage,
+        onTap: (index) {
+          _selectPage(index);
+          _pageController.animateToPage(
+            _selectedPageIndex,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.ease,
+          );
+        },
         items: [
           BottomNavigationBarItem(
             label: 'bottom_navigation_bar_list'.tr,
@@ -52,8 +54,14 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           ),
         ],
       ),
-      body: _pages[_selectedPageIndex]['page']
-          as Widget, //todo consider to use PageView
+      body: PageView(
+        children: [
+          ..._pages,
+        ],
+        onPageChanged: (index) => _selectPage(index),
+        physics: NeverScrollableScrollPhysics(),
+        controller: _pageController,
+      ),
     );
   }
 }

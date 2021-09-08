@@ -1,4 +1,16 @@
-import '/index.dart';
+import 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
+import 'package:icoc/app/routes/routes.dart';
+import 'package:icoc/app/constants.dart';
+import 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
+import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
+import 'package:icoc/song_book/models/song.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:getxfire/getxfire.dart';
+
+import 'add_song_to_playlist.dart';
 
 class FavoritesSongCard extends GetView<OrderLangController> {
   final Song song;

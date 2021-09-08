@@ -1,11 +1,4 @@
-import 'package:icoc/app/constants.dart';
-import 'package:icoc/app/screens/widgets/loading.dart';
-import 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
-import 'package:icoc/song_book/screens/widgets/song_card.dart';
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:logger/logger.dart';
+import '/index.dart';
 
 class SongList extends GetView<SongsController> {
   final log = Logger();
@@ -31,7 +24,7 @@ class SongList extends GetView<SongsController> {
                       return SongCard(
                         song: controller.songs[index],
                         orderLang: orLangController.orderLang,
-                        dividerColor: Constants.dividerColors[i],
+                        dividerColor: dividerColors[i],
                       );
                     },
                   );
@@ -43,7 +36,7 @@ class SongList extends GetView<SongsController> {
               child: Column(
               children: [
                 Loading(
-                  color: Constants.screensColors['songBook'],
+                  color: screensColors['songBook'],
                 ),
                 TextButton(
                   onPressed: () {
@@ -54,7 +47,7 @@ class SongList extends GetView<SongsController> {
                     textAlign: TextAlign.center,
                     style: controller.isSelected.value
                         ? TextStyle(
-                            color: Constants.screensColors['songBook'],
+                            color: screensColors['songBook'],
                             fontWeight: FontWeight.bold,
                           )
                         : TextStyle(color: Colors.transparent),

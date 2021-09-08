@@ -1,9 +1,4 @@
-import 'package:getxfire/getxfire.dart';
-
-import '../../logic/controllers/order_lang_controller.dart';
-import '../widgets/checkbox_list_tile.dart';
-
-import 'package:flutter/material.dart';
+import '/index.dart';
 
 class BottomSheetFilter extends StatelessWidget {
   @override

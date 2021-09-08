@@ -1,4 +1,7 @@
-import '/index.dart';
+import 'package:icoc/app/constants.dart';
+import 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:getxfire/getxfire.dart';
 
 class AddSongToPlaylistsScreen extends GetView<PlaylistsController> {
   final int id;

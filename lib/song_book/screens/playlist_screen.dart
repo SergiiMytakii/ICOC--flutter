@@ -24,7 +24,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
             appBar: AppBar(
               title: Text(playlist['playlistName']),
               centerTitle: true,
-              backgroundColor: Constants.screensColors['songBook'],
+              backgroundColor: screensColors['songBook'],
               actions: [
                 IconButton(
                     onPressed: () {
@@ -59,7 +59,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                       return PlaylistSongCard(
                           song: controller.songsInPlaylist[index],
                           orderLang: orLangController.orderLang,
-                          dividerColor: Constants.dividerColors[i],
+                          dividerColor: dividerColors[i],
                           playlistId: playlist['id']);
                     },
                   );
