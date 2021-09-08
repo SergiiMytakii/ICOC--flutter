@@ -21,9 +21,7 @@ class MyDrawer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: CircleAvatar(
-                  radius: 30,
-                ),
+                child: Image.asset('assets/images/logo_icoc_drawer.png')
               ),
             ],
           ),
