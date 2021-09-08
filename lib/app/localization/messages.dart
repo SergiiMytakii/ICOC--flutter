@@ -19,7 +19,7 @@ class Messages extends Translations {
           "bottom_navigation_bar_favorites": "Favorites",
           "bottom_navigation_bar_playlists": "Playlists",
           "app_bar_settings": "Settings",
-          "settings_dark_theme": "Change theme",
+          "settings_dark_theme": "Dark theme",
           "dropdown_menu_lang_app_russian": "App language - Russian",
           "dropdown_menu_lang_app_english": "App language - English",
           "dropdown_menu_lang_app_ukrainian": "App language - Ukrainian",
@@ -70,7 +70,7 @@ class Messages extends Translations {
           "bottom_navigation_bar_favorites": "Избранные",
           "bottom_navigation_bar_playlists": "Плейлисты",
           "app_bar_settings": "Настройки",
-          "settings_dark_theme": "Изменить тему приложения",
+          "settings_dark_theme": "Темная тема",
           "dropdown_menu_lang_app_russian": "Язык приложения - русский",
           "dropdown_menu_lang_app_english": "Язык приложения - английский",
           "dropdown_menu_lang_app_ukrainian": "Язык приложения - украинский",
@@ -106,7 +106,17 @@ class Messages extends Translations {
           'Loading songs': 'Загружаем песни',
           'Сannot load data ... Check your internet connection and click to refresh the page':
               'Не можем загрузить данные... Проверьте интернет соединение и нажмите, чтобы обновить страницу',
-          'Push to refresh the page': 'Нажмите, чтобы \nобновить страницу'
+          'Push to refresh the page': 'Нажмите, чтобы \nобновить страницу',
+          'Error': 'Ошибка',
+          'Can\'t open Email app': 'Не можем открыть приложение для почты',
+          'About this app': "Об этом приложении",
+          'Church of Christ': "Церковь Христа",
+          'Version': "Версия",
+          'Created by:': "Создано при участии",
+          'Sergii Gaponov': "Сергей Гапонов",
+          'Sergii Mytakii': "Сергей Митакий",
+          'Antonina Glajevskaya': "Антонина Глажевская",
+          'Wishes and suggestions: ': "Пожелания и предложения: "
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -124,7 +134,7 @@ class Messages extends Translations {
           "bottom_navigation_bar_favorites": "Улюблені",
           "bottom_navigation_bar_playlists": "Плейлісти",
           "app_bar_settings": "Налаштування",
-          "settings_dark_theme": "Змінити тему програми",
+          "settings_dark_theme": "Темна тема",
           "dropdown_menu_lang_app_russian": "Мова програми - російська",
           "dropdown_menu_lang_app_english": "Мова програми - англійська",
           "dropdown_menu_lang_app_ukrainian": "Мова програми - українська",
@@ -160,7 +170,17 @@ class Messages extends Translations {
           'Loading songs': 'Загружаємо пісні',
           'Сannot load data ... Check your internet connection and click to refresh the page':
               'Не можемо завантажити дані ... Перевірте інтернет з\'єднання і натисніть, щоб оновити сторінку',
-          'Push to refresh the page': ' Натисніть, щоб \nоновити сторінку'
+          'Push to refresh the page': ' Натисніть, щоб \nоновити сторінку',
+          'Error': 'Помилка',
+          'Can\'t open Email app': 'Не можема відкрити додаток для пошти',
+          'About this app': "Про цей додаток",
+          'Church of Christ': "Церква Христа",
+          'Version': "Версія",
+          'Created by:': "Створено за участю",
+          'Sergii Gaponov': "Сергій Гапонов",
+          'Sergii Mytakii': "Сергій Митакій",
+          'Antonina Glajevskaya': "Антоніна Глажевська",
+          'Wishes and suggestions: ': "Побажання та пропозиції: "
         }
       };
 }

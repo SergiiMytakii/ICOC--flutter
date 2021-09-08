@@ -7,7 +7,7 @@ class AboutAppScreen extends StatelessWidget {
     if (await canLaunch(url)) {
       await launch(url);
     } else
-      showSnackbar('Error', 'Can\'t open Email app');
+      showSnackbar('Error'.tr, 'Can\'t open Email app'.tr);
   }
 
   @override

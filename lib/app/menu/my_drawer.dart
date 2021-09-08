@@ -10,21 +10,9 @@ class MyDrawer extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
           ),
-          child: Column(
-            children: [
-              Text(
-                'drawer_menu'.tr,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Image.asset('assets/images/logo_icoc_drawer.png')
-              ),
-            ],
-          ),
+          child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Image.asset('assets/images/logo_icoc_drawer.png')),
         ),
         ListTile(
           leading: Icon(
@@ -52,13 +40,12 @@ class MyDrawer extends StatelessWidget {
           leading: Icon(
             Icons.share,
           ),
-          title: TextButton(
-            child: Text(
-              'drawer_share_app'.tr,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            onPressed: () => Share.share(appUrl),
+          title: Text(
+            'drawer_share_app'.tr,
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.headline6,
           ),
+          onTap: () => Share.share(appUrl),
         ),
       ],
     );
