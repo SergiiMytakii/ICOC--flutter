@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:423282730331:android:f84581bc4f502e47",
         "android_client_info": {
-          "package_name": "ru.app.icoc"
+          "package_name": "ru.icoc.app"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "423282730331-hrlbtbcbslunsga9uvrrg8g5e9d1b9o2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ru.app.icoc",
+            "package_name": "ru.icoc.app",
             "certificate_hash": "612a93e9c3d6958f3eb40fbdada196baf0411a33"
           }
         },
