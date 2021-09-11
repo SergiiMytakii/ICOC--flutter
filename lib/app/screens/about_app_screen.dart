@@ -60,11 +60,11 @@ class AboutAppScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'Sergii Gaponov'.tr,
+              'Sergii Mytakii'.tr,
               style: Theme.of(context).textTheme.bodyText2,
             ),
             Text(
-              'Sergii Mytakii'.tr,
+              'Sergii Gaponov'.tr,
               style: Theme.of(context).textTheme.bodyText2,
             ),
             Text(

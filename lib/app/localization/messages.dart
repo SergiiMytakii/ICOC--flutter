@@ -102,6 +102,7 @@ class Messages extends Translations {
           'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
               'Невозможно загрузить данные... Проверьте интернет соединение и потяните вниз, чтобы обновить',
           'add to playlist': 'Добавить в плейлист',
+          'Added to playlist': 'Добавлено в плейлист',
           'Font size': 'Размер шрифта',
           'Loading songs': 'Загружаем песни',
           'Сannot load data ... Check your internet connection and click to refresh the page':
@@ -166,6 +167,7 @@ class Messages extends Translations {
           'Can\'t  load data... Please, check your internet connection and pull down to refresh!':
               'Неможливо завантажити данні... Перевірте интернет з\'єднання та понягніть униз, чтобы оновити',
           'add to playlist': 'Додати до плейлисту',
+          'Added to playlist': 'Додано до плейлиста',
           'Font size': 'Размір шрифту',
           'Loading songs': 'Загружаємо пісні',
           'Сannot load data ... Check your internet connection and click to refresh the page':
