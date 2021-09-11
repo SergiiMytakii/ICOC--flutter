@@ -30,40 +30,40 @@ class SongDetail {
   Map<String, Object?> toMapTitle() {
     return {
       'id_song': id,
-      'ru': title['ru'] ?? null, // null - it's test
-      'uk': title['uk'] ?? null,
-      'en': title['en'] ?? null,
+      'ru': title['ru'],
+      'uk': title['uk'],
+      'en': title['en'],
     };
   }
 
   Map<String, Object?> toMapText() {
     return {
       'id': id,
-      'ru1': text['ru1'] ?? null,
-      'ru2': text['ru2'] ?? null,
-      'uk1': text['uk1'] ?? null,
-      'uk2': text['uk2'] ?? null,
-      'en1': text['en1'] ?? null,
-      'en2': text['en2'] ?? null,
+      'ru1': text['ru1'],
+      'ru2': text['ru2'],
+      'uk1': text['uk1'],
+      'uk2': text['uk2'],
+      'en1': text['en1'],
+      'en2': text['en2'],
     };
   }
 
   Map<String, Object?> toMapDescription() {
     return {
       'id_song': id,
-      'ru': description['ru'] ?? null,
-      'uk': description['uk'] ?? null,
-      'en': description['en'] ?? null,
+      'ru': description['ru'],
+      'uk': description['uk'],
+      'en': description['en'],
     };
   }
 
   Map<String, Object?> toMapChords() {
     return {
       'id_song': id,
-      'v1': chords['v1'] ?? null,
-      'v2': chords['v2'] ?? null,
-      'v3': chords['v3'] ?? null,
-      'v4': chords['v4'] ?? null,
+      'v1': chords['v1'],
+      'v2': chords['v2'],
+      'v3': chords['v3'],
+      'v4': chords['v4'],
     };
   }
 }

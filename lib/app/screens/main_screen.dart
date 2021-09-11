@@ -1,10 +1,6 @@
-import 'package:icoc/app/core/controllers/main_screen_controller.dart';
-import 'package:icoc/routes/routes.dart';
-import 'package:icoc/shared/constants.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:getxfire/getxfire.dart';
-import '../menu/my_drawer.dart';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import '../../index.dart';
 
 class MainScreen extends GetView<MainScreenController> {
   tableItem(BuildContext context, String title, Color color, IconData icon,
@@ -64,7 +60,15 @@ class MainScreen extends GetView<MainScreenController> {
     //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         title: Text('ICOC'),
+        leading: Builder(
+          builder: (context) => IconButton(
+              icon: Platform.isIOS
+                  ? Icon(CupertinoIcons.ellipsis)
+                  : Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer()),
+        ),
         actions: [
           Icon(Icons.notifications_none_outlined),
           SizedBox(
@@ -133,14 +137,14 @@ class MainScreen extends GetView<MainScreenController> {
                       tableItem(
                           context,
                           'drawer_song_book'.tr,
-                          Constants.screensColors['songBook']!,
+                          screensColors['songBook']!,
                           Icons.music_note,
                           sizeOfCell(),
                           Routes.SONGBOOK),
                       tableItem(
                           context,
                           'drawer_news'.tr,
-                          Constants.screensColors['news']!,
+                          screensColors['news']!,
                           Icons.language,
                           sizeOfCell(),
                           Routes.NEWS),
@@ -151,14 +155,14 @@ class MainScreen extends GetView<MainScreenController> {
                       tableItem(
                           context,
                           'drawer_first_principles'.tr,
-                          Constants.screensColors['firstPrinciples']!,
+                          screensColors['firstPrinciples']!,
                           Icons.import_contacts,
                           sizeOfCell(),
                           Routes.FIRST_PRINCIPLES),
                       tableItem(
                           context,
                           'drawer_q_and_a'.tr,
-                          Constants.screensColors['Q&A']!,
+                          screensColors['Q&A']!,
                           Icons.question_answer,
                           sizeOfCell(),
                           Routes.Q_AND_ANSVERS),

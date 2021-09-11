@@ -1,56 +1,62 @@
-import 'package:icoc/song_book/logic/services/database_firebase_service.dart';
-import 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
-import 'package:icoc/song_book/models/song.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:logger/logger.dart';
+import '/index.dart';
 
 class SongsController extends GetxController {
-  final songs = <Song>[].obs;
+  var songs = <Song>[].obs;
   var loaded = false.obs;
   var log = Logger();
-  RxString updateLoadingProgress = 'Загружаем песни'.obs;
+  RxString updateLoadingProgress = 'Loading songs'.tr.obs;
   RxString query = ''.obs;
-
-  @override
-  void onInit() async {
-    await fetchSongsList();
-    super.onInit();
-  }
+  RxBool isSelected = true.obs;
+  DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
+  DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
 
   Future fetchDataFromFirebase() async {
+    log.i('start to fetch data from FB');
     //update local SQL database from firebase
-    DatabaseServiceFirebase().songs.listen((songs) async {
-      await DatabaseHelperFTS4().insertAllSongs(songs);
-      fetchSongsList();
+    databaseServiceFirebase.songs.listen((songs) async {
+      if (songs.isNotEmpty) {
+        await databaseService.insertAllSongs(songs);
+        await fetchSongsList();
+      } else {
+        Future.delayed(Duration(seconds: 5)).then((value) {
+          updateLoadingProgress.value =
+              'Сannot load data ... Check your internet connection and click to refresh the page'
+                  .tr;
+          isSelected.value = true;
+        });
+      }
     });
   }
 
   Future<void> fetchSongsList() async {
-    DatabaseHelperFTS4().getListSongs().listen((event) {
+    databaseService.getListSongs().listen((event) {
+      log.i('got songs from SQL, ' + event.length.toString());
       songs.value = event;
       if (songs.length != 0) {
         loaded.value = true;
       } else {
-        //if we can't load data for 5 ces - show warning
-        Future.delayed(Duration(seconds: 5)).then((value) {
-          if (songs.length == 0) {
+        Future.delayed(Duration(seconds: 5)).then((value) =>
             updateLoadingProgress.value =
-                'При первой загрузке приложения \nнужно немножко больше времени';
-          }
-        });
-        Future.delayed(Duration(seconds: 10)).then((value) {
-          if (songs.length == 0) {
-            updateLoadingProgress.value = 'Почти готово...';
-          }
-        });
-
-        Future.delayed(Duration(seconds: 15)).then((value) {
-          if (songs.length == 0) {
-            updateLoadingProgress.value =
-                'Загрузка медленне, чем обычно... \nВернитесь на главный экран \nи затем опять зайдите в песни';
-          }
-        });
+                ' Нажмите, чтобы \nобновить страницу'.tr);
       }
+    }, onDone: () {
+      log.i('fetch songs done');
+      checkDatabaseChanged();
+    });
+  }
+
+  Future<void> checkDatabaseChanged() async {
+    databaseServiceFirebase.songs.listen((songsFromFB) async {
+      if (songs.length != songsFromFB.length) {
+        log.i('databases are different  ' +
+            songs.length.toString() +
+            ' vs ' +
+            songsFromFB.length.toString());
+
+        await databaseService.insertAllSongs(songsFromFB);
+        fetchSongsList();
+      } else
+        log.i('Databases are equal');
     });
   }
 }

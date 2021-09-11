@@ -1,11 +1,5 @@
-import 'dart:async';
-import 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
-import 'package:icoc/song_book/models/song.dart';
-import 'package:icoc/song_book/models/song_detail.dart';
-import 'package:getxfire/getxfire.dart';
-import 'package:logger/logger.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import '/index.dart';
 
 class DatabaseHelperFTS4 {
   static Database? _db;
@@ -47,14 +41,15 @@ class DatabaseHelperFTS4 {
   var columnsText = [];
   List<String> columnsDescription = [];
   String colTexts = '';
+  String colTitles = '';
   final controller = Get.put(SongLangController());
   var log = Logger();
 
   void _filterLangDisplaying() {
     if (controller.songLang['ru']!) {
-      columnsTitle.add('title.ru');
-      columnsText.add('text_ru.ru');
-      columnsDescription.add(DESCRIPTION_RU);
+      columnsTitle.add('$TABLE_TITLE.$TITLE_RU');
+      columnsText.add('$TABLE_TEXT_RU.$TEXT_RU');
+      columnsDescription.add('$DESCRIPTION_RU');
     }
     if (controller.songLang['uk']!) {
       columnsTitle.add('title.uk');
@@ -66,8 +61,54 @@ class DatabaseHelperFTS4 {
       columnsText.add('text_en.en');
       columnsDescription.add(DESCRIPTION_EN);
     }
-    colTexts = columnsText.toString();
-    colTexts = colTexts.substring(1, colTexts.length - 1);
+    //convert lists to strings
+    colTexts =
+        columnsText.toString().substring(1, columnsText.toString().length - 1);
+    colTitles = columnsTitle
+        .toString()
+        .substring(1, columnsTitle.toString().length - 1);
+  }
+
+  String get query {
+    String query = '$TABLE_TITLE.$ID_SONG, ';
+    if (controller.songLang['ru']!) {
+      query +=
+          '$TABLE_TITLE.$TITLE_RU as title_ru, $TABLE_TEXT_RU.$TEXT_RU as text_ru, ';
+    }
+    if (controller.songLang['uk']!) {
+      query +=
+          '$TABLE_TITLE.$TITLE_UK as title_uk, $TABLE_TEXT_UK.$TEXT_UK as text_uk, ';
+    }
+    if (controller.songLang['en']!) {
+      query +=
+          '$TABLE_TITLE.$TITLE_EN as title_en, $TABLE_TEXT_EN.$TEXT_EN as text_en, ';
+    }
+    query = query.substring(0, query.length - 2);
+    return query;
+  }
+
+  List<Song> convertToSongs(List<Map<String, dynamic>> items) {
+    List<Song> songs = [];
+    for (Map map in items) {
+      if (map['title_ru'] != null ||
+          map['title_uk'] != null ||
+          map['title_en'] != null) {
+        Song song = Song(id: map['id_song'], text: {
+          'ru': map['text_ru'],
+          'uk': map['text_uk'],
+          'en': map['text_en']
+        }, title: {
+          'ru': map['title_ru'],
+          'uk': map['title_uk'],
+          'en': map['title_en']
+        });
+        song.text.removeWhere((key, value) => value == null);
+        song.title.removeWhere((key, value) => value == null);
+
+        songs.add(song);
+      }
+    }
+    return songs;
   }
 
 /* get refetence to the DB and initialasing DB */
@@ -125,16 +166,14 @@ class DatabaseHelperFTS4 {
     database.delete(TABLE_TEXT_UK);
     database.delete(TABLE_TEXT_EN);
     database.delete(TABLE_DESCRIPTION);
-
     database.delete(TABLE_CHORDS);
-//todo try to avoid for loop
+
     for (SongDetail song in songs) {
       await database.insert(
         TABLE_TITLE,
         song.toMapTitle(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-
       song.text.forEach((key, value) async {
         if (key.contains('ru')) {
           await database.rawQuery('''
@@ -142,18 +181,12 @@ class DatabaseHelperFTS4 {
         VALUES (?,?)
       ''', [song.id, value]);
         }
-      });
-
-      song.text.forEach((key, value) async {
         if (key.contains('uk')) {
           await database.rawQuery('''
         INSERT INTO $TABLE_TEXT_UK ($ID_SONG, $TEXT_UK)
         VALUES (?,?)
       ''', [song.id, value]);
         }
-      });
-
-      song.text.forEach((key, value) async {
         if (key.contains('en')) {
           await database.rawQuery('''
         INSERT INTO $TABLE_TEXT_EN ($ID_SONG, $TEXT_EN)
@@ -175,73 +208,22 @@ class DatabaseHelperFTS4 {
       ''', [song.id, value]);
       });
     }
-    // print('HAS BEEN INSERTED SONGS:  ${songs.length}');
+    log.i('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
 
 /* get list of all songs */
   Stream<List<Song>> getListSongs() async* {
     final Database? database = await db;
-//check if tables are empty
-// this is mess
 
-    // final List<Map<String, dynamic>> tablesAreEmpty =
-    //     await database!.query(TABLE_TITLE, columns: [ID_SONG]);
-    // print(tablesAreEmpty.length);
-    // if (tablesAreEmpty.isEmpty) {
-    //   log.i('tables are empty');
-    //   //fetchDataFromFirebase();
-    //   return;
-    // }
-
-    //filter which lang-s will be displaying
-    _filterLangDisplaying();
-
-    //get searchInTitles
-    final List<Map<String, dynamic>> searchInTitles = await database!
-        .query(TABLE_TITLE, columns: columnsTitle, orderBy: ID_SONG);
-
-    //remove nullable values
-    List<Map<String, dynamic>> titlesWithoutNullable = [];
-    for (Map map in searchInTitles) {
-      var mapWritable = Map<String, dynamic>.from(map);
-
-      mapWritable.removeWhere((key, value) => value == null);
-
-      titlesWithoutNullable.add(mapWritable);
-    }
-
-    //get texts
-    final List<Map<String, dynamic>> texts = await database.rawQuery('''
-        SELECT  $colTexts
+    final List<Map<String, dynamic>> items = await database!.rawQuery('''
+        SELECT $query
         FROM $TABLE_TITLE
         LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
         LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
         GROUP BY $TABLE_TITLE.$ID_SONG
           ''');
-
-    //remove nullable values
-    List<Map<String, dynamic>> textsWithoutNullable = [];
-    for (Map map in texts) {
-      var mapWritable = Map<String, dynamic>.from(map);
-      if (mapWritable['ru'] == null &&
-          mapWritable['uk'] == null &&
-          mapWritable['ru'] == null) {
-        //mapWritable = {' no text': 'no text'};
-      }
-      mapWritable.removeWhere((key, value) => value == null);
-      //print('mapWritable ${mapWritable.toString().substring(0, 30)}');
-      textsWithoutNullable.add(mapWritable);
-    }
-
-    List<Song> songs = List.generate(titlesWithoutNullable.length, (i) {
-      return Song(
-          id: titlesWithoutNullable[i]['id_song'],
-          title: titlesWithoutNullable[i],
-          text: textsWithoutNullable[i]);
-    });
-    songs.removeWhere((song) => song.text.values.isEmpty);
-
+    List<Song> songs = convertToSongs(items);
     yield songs;
   }
 
@@ -392,51 +374,18 @@ class DatabaseHelperFTS4 {
   Stream<List<Song>> getListFavorites() async* {
     final Database? database = await db;
 
-    //filter which lang-s will be displaying
-    _filterLangDisplaying();
-
-    //get searchInTitles
-    final List<Map<String, dynamic>> searchInTitles =
-        await database!.rawQuery('''
-    SELECT  $TABLE_TITLE.$ID_SONG, ${columnsTitle.toString().substring(9, columnsTitle.toString().length - 1)}
+    final List<Map<String, dynamic>> items = await database!.rawQuery('''
+        SELECT $query
         FROM $TABLE_TITLE
-        INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
-        ORDER BY $TABLE_FAVORITES.$ID_SONG
-    ''');
-
-    List<Map<String, dynamic>> titlesWithoutNullable = [];
-    for (Map map in searchInTitles) {
-      var mapWritable = Map<String, dynamic>.from(map);
-
-      mapWritable.removeWhere((key, value) => value == null);
-      titlesWithoutNullable.add(mapWritable);
-    }
-//get texts
-    final List<Map<String, dynamic>> texts = await database.rawQuery('''
-        SELECT  $colTexts
-        FROM $TABLE_FAVORITES
-        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
-        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_FAVORITES.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_FAVORITES.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
+        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+         INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
         GROUP BY $TABLE_FAVORITES.$ID_SONG
+         ORDER BY $TABLE_FAVORITES.$ID_SONG
           ''');
 
-    //remove nullable values
-    List<Map<String, dynamic>> textsWithoutNullable = [];
-    for (Map map in texts) {
-      var mapWritable = Map<String, dynamic>.from(map);
-
-      mapWritable.removeWhere((key, value) => value == null);
-
-      textsWithoutNullable.add(mapWritable);
-    }
-    List<Song> songs = List.generate(titlesWithoutNullable.length, (i) {
-      return Song(
-          id: titlesWithoutNullable[i]['id_song'],
-          title: titlesWithoutNullable[i],
-          text: textsWithoutNullable[i]);
-    });
-    songs.removeWhere((song) => song.text.values.isEmpty);
+    List<Song> songs = convertToSongs(items);
 
     yield songs;
   }
@@ -706,58 +655,18 @@ class DatabaseHelperFTS4 {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    //filter which lang-s will be displaying
-    _filterLangDisplaying();
-
-    //get searchInTitles
-    final List<Map<String, dynamic>> searchInTitles =
-        await database.rawQuery('''
-    SELECT  $TABLE_TITLE.$ID_SONG, ${columnsTitle.toString().substring(9, columnsTitle.toString().length - 1)}
+    final List<Map<String, dynamic>> items = await database.rawQuery('''
+    SELECT  $query
         FROM $TABLE_TITLE
+        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
+        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
         INNER JOIN $TABLE_PLAYLISTS_SONGS ON $TABLE_TITLE.$ID_SONG = $TABLE_PLAYLISTS_SONGS.$ID_SONG 
         WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
         ORDER BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
     ''');
-
-    List<Map<String, dynamic>> titlesWithoutNullable = [];
-    for (Map map in searchInTitles) {
-      var mapWritable = Map<String, dynamic>.from(map);
-
-      mapWritable.removeWhere((key, value) => value == null);
-      titlesWithoutNullable.add(mapWritable);
-    }
-
-//get texts
-    final List<Map<String, dynamic>> texts = await database.rawQuery('''
-        SELECT  $colTexts
-        FROM $TABLE_PLAYLISTS_SONGS
-        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_PLAYLISTS_SONGS.$ID_SONG 
-        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_PLAYLISTS_SONGS.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_PLAYLISTS_SONGS.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-        WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
-        GROUP BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
-          ''');
-
-    //remove nullable values
-    List<Map<String, dynamic>> textsWithoutNullable = [];
-    for (Map map in texts) {
-      var mapWritable = Map<String, dynamic>.from(map);
-
-      mapWritable.removeWhere((key, value) => value == null);
-
-      textsWithoutNullable.add(mapWritable);
-    }
-    List<Song> songsInPlaylist =
-        List.generate(titlesWithoutNullable.length, (i) {
-      log.e(i);
-      return Song(
-          id: titlesWithoutNullable[i]['id_song'],
-          title: titlesWithoutNullable[i],
-          text: textsWithoutNullable[i]);
-    });
-    songsInPlaylist.removeWhere((song) => song.text.values.isEmpty);
-
-    yield songsInPlaylist;
+    List<Song> songs = convertToSongs(items);
+    yield songs;
   }
 
   Future<void> removeFromPlaylist(int playlistId, int id) async {
@@ -767,8 +676,8 @@ class DatabaseHelperFTS4 {
     await database.rawQuery('''
         DELETE
         FROM $TABLE_PLAYLISTS_SONGS
-       WHERE $PLAYLIST_ID = ? 
-       AND $ID_SONG =?;
+        WHERE $PLAYLIST_ID = ? 
+        AND $ID_SONG =?;
         ''', [playlistId, id]);
   }
 }

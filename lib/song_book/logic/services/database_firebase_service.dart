@@ -1,7 +1,4 @@
-import 'package:icoc/song_book/models/song_detail.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
-import 'import_songs.dart';
+import '/index.dart';
 
 class DatabaseServiceFirebase {
   var log = Logger();
@@ -29,7 +26,7 @@ class DatabaseServiceFirebase {
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<SongDetail> songs = snapshot.docs.map((doc) {
       return SongDetail(
-          id: doc.get('id') ?? 0,
+          id: doc.get('id') ?? null,
           description: doc.get('description') ?? {},
           text: doc.get('text') ?? {},
           title: doc.get('title') ?? {},

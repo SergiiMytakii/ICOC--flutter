@@ -1,8 +1,6 @@
-import 'package:icoc/routes/routes.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:getxfire/getxfire.dart';
+import 'dart:io';
+
+import '../../index.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -14,23 +12,9 @@ class MyDrawer extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
           ),
-          child: Column(
-            children: [
-              Text(
-                'drawer_menu'.tr,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CircleAvatar(
-                  radius: 30,
-                ),
-              ),
-            ],
-          ),
+          child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Image.asset('assets/images/logo_icoc_drawer.png')),
         ),
         ListTile(
           leading: Icon(
@@ -52,7 +36,7 @@ class MyDrawer extends StatelessWidget {
             'drawer_about_app'.tr,
             style: Theme.of(context).textTheme.headline6,
           ),
-          onTap: () {},
+          onTap: () => Get.offAndToNamed(Routes.ABOUT_APP_SCREEN),
         ),
         ListTile(
           leading: Icon(
@@ -60,9 +44,10 @@ class MyDrawer extends StatelessWidget {
           ),
           title: Text(
             'drawer_share_app'.tr,
+            textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.headline6,
           ),
-          subtitle: Text('drawer_in_development'.tr),
+          onTap: () => Platform.isIOS? Share.share(appUrlAppStore): Share.share(appUrlPlayMarket),
         ),
       ],
     );

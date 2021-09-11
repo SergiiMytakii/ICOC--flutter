@@ -1,12 +1,5 @@
 import 'dart:io';
-import 'package:icoc/routes/routes.dart';
-import 'package:icoc/shared/constants.dart';
-import 'package:icoc/song_book/logic/controllers/songs_controller.dart';
-import 'package:icoc/song_book/models/song.dart';
-import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
-import 'db_sqlite/sqlite_helper_fts4.dart';
-import '../controllers/order_lang_controller.dart';
+import '/index.dart';
 
 class DataSearch extends SearchDelegate {
   final songsController = Get.put(SongsController());
@@ -120,7 +113,7 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Constants.screensColors['songBook'],
+                  color: screensColors['songBook'],
                   fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
@@ -144,7 +137,7 @@ class DataSearch extends SearchDelegate {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                  color: Constants.screensColors['songBook'],
+                  color: screensColors['songBook'],
                   fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
@@ -185,7 +178,7 @@ class DataSearch extends SearchDelegate {
         ),
         Divider(
           indent: 50,
-          color: Constants.dividerColors[i],
+          color: dividerColors[i],
         )
       ],
     );

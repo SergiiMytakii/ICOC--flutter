@@ -1,5 +1,6 @@
-import 'package:get_storage/get_storage.dart';
-import 'package:getxfire/getxfire.dart';
+
+
+import '/index.dart';
 
 class SongLangController extends GetxController {
   GetStorage box = GetStorage();
