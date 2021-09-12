@@ -24,6 +24,6 @@ const String email = 'serjmitaki@gmail.com';
 const String versionApp = '4.0.0';
 const appUrlPlayMarket =
     'https://play.google.com/store/apps/details?id=ru.android.icoc';
-const appUrlAppStore = '';
+const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
 
 enum SlideActions { AllSongs, Favorites, Playlists }

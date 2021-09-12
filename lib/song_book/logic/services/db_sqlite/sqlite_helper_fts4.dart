@@ -211,6 +211,13 @@ class DatabaseHelperFTS4 {
     log.i('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
 
+  Future<int> get songsInLocalDB async {
+    final Database? database = await db;
+    final List<Map<String, dynamic>> songs =
+        await database!.query(TABLE_TITLE, columns: [ID_SONG]);
+    return songs.length;
+  }
+
 /* get list of all songs */
   Stream<List<Song>> getListSongs() async* {
     final Database? database = await db;
