@@ -2,6 +2,7 @@ import '/index.dart';
 
 class SongsController extends GetxController {
   var songs = <Song>[].obs;
+  var songsInLocalDB = 0;
   var loaded = false.obs;
   var log = Logger();
   RxString updateLoadingProgress = 'Loading songs'.tr.obs;
@@ -47,11 +48,10 @@ class SongsController extends GetxController {
 
   Future<void> checkDatabaseChanged() async {
     databaseServiceFirebase.songs.listen((songsFromFB) async {
-      if (songs.length != songsFromFB.length) {
-        log.i('databases are different  ' +
-            songs.length.toString() +
-            ' vs ' +
-            songsFromFB.length.toString());
+      songsInLocalDB = await databaseService.songsInLocalDB;
+      if (songsInLocalDB != songsFromFB.length) {
+        log.i(
+            'databases are different  $songsInLocalDB  vs  ${songsFromFB.length}');
 
         await databaseService.insertAllSongs(songsFromFB);
         fetchSongsList();
