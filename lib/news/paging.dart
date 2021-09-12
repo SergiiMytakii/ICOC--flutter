@@ -10,41 +10,40 @@ class LoadMore extends StatefulWidget {
       () => DefaultLoadMoreTextBuilder.chinese;
 
   /// Only support [ListView],[SliverList]
-  final Widget child;
+  final Widget? child;
 
   /// return true is refresh success
   ///
   /// return false or null is fail
-  final FutureCallBack onLoadMore;
+  final FutureCallBack? onLoadMore;
 
   /// if [isFinish] is true, then loadMoreWidget status is [LoadMoreStatus.nomore].
-  final bool isFinish;
+  final bool? isFinish;
 
   /// see [LoadMoreDelegate]
-  final LoadMoreDelegate delegate;
+  final LoadMoreDelegate? delegate;
 
   /// see [LoadMoreTextBuilder]
-  final LoadMoreTextBuilder textBuilder;
+  final LoadMoreTextBuilder? textBuilder;
 
   /// when [whenEmptyLoad] is true, and when listView children length is 0,or the itemCount is 0,not build loadMoreWidget
-  final bool whenEmptyLoad;
+  final bool? whenEmptyLoad;
 
-  const LoadMore({
-    Key key,
+  LoadMore({
     this.child,
     this.onLoadMore,
     this.textBuilder,
     this.isFinish = false,
     this.delegate,
     this.whenEmptyLoad = true,
-  }) : super(key: key);
+  });
 
   @override
   _LoadMoreState createState() => _LoadMoreState();
 }
 
 class _LoadMoreState extends State<LoadMore> {
-  Widget get child => widget.child;
+  Widget get child => widget.child!;
 
   LoadMoreDelegate get loadMoreDelegate =>
       widget.delegate ?? LoadMore.buildDelegate();
@@ -78,7 +77,7 @@ class _LoadMoreState extends State<LoadMore> {
     if (delegate is SliverChildBuilderDelegate) {
       SliverChildBuilderDelegate delegate =
           listView.childrenDelegate as SliverChildBuilderDelegate;
-      if (!widget.whenEmptyLoad && delegate.estimatedChildCount == 0) {
+      if (!widget.whenEmptyLoad! && delegate.estimatedChildCount == 0) {
         break outer;
       }
       var viewCount = (delegate.estimatedChildCount ?? 0) + 1;
@@ -112,7 +111,7 @@ class _LoadMoreState extends State<LoadMore> {
       SliverChildListDelegate delegate =
           listView.childrenDelegate as SliverChildListDelegate;
 
-      if (!widget.whenEmptyLoad && delegate.estimatedChildCount == 0) {
+      if (!widget.whenEmptyLoad! && delegate.estimatedChildCount == 0) {
         break outer;
       }
 
@@ -150,7 +149,7 @@ class _LoadMoreState extends State<LoadMore> {
 
     outer:
     if (delegate is SliverChildBuilderDelegate) {
-      if (!widget.whenEmptyLoad && delegate.estimatedChildCount == 0) {
+      if (!widget.whenEmptyLoad! && delegate.estimatedChildCount == 0) {
         break outer;
       }
       final viewCount = (delegate.estimatedChildCount ?? 0) + 1;
@@ -176,7 +175,7 @@ class _LoadMoreState extends State<LoadMore> {
 
     outer:
     if (delegate is SliverChildListDelegate) {
-      if (!widget.whenEmptyLoad && delegate.estimatedChildCount == 0) {
+      if (!widget.whenEmptyLoad! && delegate.estimatedChildCount == 0) {
         break outer;
       }
       delegate.children.add(_buildLoadMoreView());
@@ -245,7 +244,7 @@ class _LoadMoreState extends State<LoadMore> {
 
   void loadMore() {
     _updateStatus(LoadMoreStatus.loading);
-    widget.onLoadMore().then((v) {
+    widget.onLoadMore!().then((v) {
       if (v == true) {
         _updateStatus(LoadMoreStatus.idle);
       } else {
@@ -270,16 +269,16 @@ enum LoadMoreStatus {
 }
 
 class DefaultLoadMoreView extends StatefulWidget {
-  final LoadMoreStatus status;
-  final LoadMoreDelegate delegate;
-  final LoadMoreTextBuilder textBuilder;
+  final LoadMoreStatus? status;
+  final LoadMoreDelegate? delegate;
+  final LoadMoreTextBuilder? textBuilder;
 
   const DefaultLoadMoreView({
-    Key key,
+    
     this.status = LoadMoreStatus.idle,
     this.delegate,
     this.textBuilder,
-  }) : super(key: key);
+  }) ;
 
   @override
   DefaultLoadMoreViewState createState() => DefaultLoadMoreViewState();
@@ -290,7 +289,7 @@ const _loadmoreIndicatorSize = 33.0;
 const _loadMoreDelay = 16;
 
 class DefaultLoadMoreViewState extends State<DefaultLoadMoreView> {
-  LoadMoreDelegate get delegate => widget.delegate;
+  LoadMoreDelegate get delegate => widget.delegate!;
 
   @override
   Widget build(BuildContext context) {
@@ -304,11 +303,11 @@ class DefaultLoadMoreViewState extends State<DefaultLoadMoreView> {
         }
       },
       child: Container(
-        height: delegate.widgetHeight(widget.status),
+        height: delegate.widgetHeight(widget.status!),
         alignment: Alignment.center,
         child: delegate.buildChild(
-          widget.status,
-          builder: widget.textBuilder,
+          widget.status!,
+          builder: widget.textBuilder!,
         ),
       ),
     );

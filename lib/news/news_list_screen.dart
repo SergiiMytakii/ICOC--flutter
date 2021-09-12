@@ -1,11 +1,11 @@
-import 'package:Projects/news/news_item_widget.dart';
-import 'package:Projects/news/paging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class NewsListScreen extends StatefulWidget {
-  NewsListScreen({Key key}) : super(key: key);
+import 'package:icoc/news/paging.dart';
 
+import 'news_item_widget.dart';
+
+class NewsListScreen extends StatefulWidget {
   @override
   _NewsListScreenState createState() => new _NewsListScreenState();
 }
