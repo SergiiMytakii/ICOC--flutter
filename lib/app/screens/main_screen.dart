@@ -11,7 +11,7 @@ class MainScreen extends GetView<MainScreenController> {
       padding: const EdgeInsets.all(7.5),
       child: InkWell(
         onTap: () => Get.toNamed(routeName),
-        splashColor: Theme.of(context).accentColor,
+        splashColor: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(15),
         child: Container(
           alignment: Alignment.topLeft,
@@ -114,11 +114,10 @@ class MainScreen extends GetView<MainScreenController> {
                             Text(
                               'Отрывок дня',
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).accentIconTheme.color),
+                                  color: Theme.of(context).bottomAppBarColor),
                             ),
                             Icon(Icons.share_outlined,
-                                color: Theme.of(context).accentIconTheme.color),
+                                color: Theme.of(context).bottomAppBarColor),
                           ],
                         ),
                       ),

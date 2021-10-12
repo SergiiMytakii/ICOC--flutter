@@ -31,7 +31,7 @@ class Pages {
       ),
       GetPage(
         name: Routes.NEWS,
-        page: () => News(),
+        page: () => NewsScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),
