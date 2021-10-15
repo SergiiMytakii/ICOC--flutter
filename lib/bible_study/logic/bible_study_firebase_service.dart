@@ -10,6 +10,7 @@ class BibleStudyServiceFirebase {
 
   Future get bibleStudies async {
     var bibleStudies = await bibleStudyCollection
+        .orderBy('lessons', descending: true)
         //.where('subtopic', isEqualTo: 'основы христианства')
         .get();
 

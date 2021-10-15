@@ -14,8 +14,8 @@ class SongScreen extends GetView<SongScreenController> {
     favoritesController.getFavoriteStatus(songId);
     Get.put(SongScreenController(songId: songId));
     final SlidesController slidesController = Get.put(SlidesController());
-    var fontSozeAdjust =
-        FontSizeAdjustBottomSheet(context: context, controller: controller);
+    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+        context: context, controller: controller, color: 'songBook');
     return Obx(
       () => DefaultTabController(
         length: controller.amountOfTabs.value,

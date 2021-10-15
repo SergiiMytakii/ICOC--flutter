@@ -31,8 +31,8 @@ class _SlidesScreenState extends State<SlidesScreen> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    var fontSizeAdjust =
-        FontSizeAdjustBottomSheet(context: context, controller: controller);
+    var fontSizeAdjust = FontSizeAdjustBottomSheet(
+        context: context, controller: controller, color: 'songBook');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,

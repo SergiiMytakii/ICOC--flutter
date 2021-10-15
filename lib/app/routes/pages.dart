@@ -1,3 +1,5 @@
+import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
+
 import '../../index.dart';
 
 class Pages {
@@ -78,6 +80,12 @@ class Pages {
       GetPage(
         name: Routes.ONE_LESSON_SCREEN,
         page: () => OneLessonScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.ONE_Q_AND_A_SCREEN,
+        page: () => OneQandAScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

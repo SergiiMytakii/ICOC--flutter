@@ -1,5 +1,3 @@
-import 'package:icoc/bible_study/logic/bible_study_controller.dart';
-
 import '../../index.dart';
 
 class OneTopicScreen extends StatelessWidget {
@@ -33,21 +31,15 @@ class OneTopicScreen extends StatelessWidget {
                     return Column(
                       children: [
                         ListTile(
-                          leading: Container(
-                            width: 60,
-                          ),
+                          leading: Text(
+                              ' ${bibleStudyController.topics[indexTopic].lessons[index].id + 1}',
+                              style: Theme.of(context).textTheme.headline6),
                           title: Text(
                             bibleStudyController
                                 .topics[indexTopic].lessons[index].title,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                            maxLines: 2,
                             style: Theme.of(context).textTheme.headline6,
-                          ),
-                          subtitle: Text(
-                            '',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: Theme.of(context).textTheme.bodyText2,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () => Get.toNamed(Routes.ONE_LESSON_SCREEN,

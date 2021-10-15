@@ -23,6 +23,9 @@ export 'package:icoc/song_book/logic/controllers/favorites_controller.dart';
 export 'package:icoc/song_book/logic/controllers/slides_controller.dart';
 export 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
 export 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
+export 'package:icoc/bible_study/logic/bible_study_controller.dart';
+export 'package:icoc/news/logic/controllers/news_controller.dart';
+
 //servises
 export 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 export 'package:icoc/song_book/logic/services/database_firebase_service.dart';
@@ -31,6 +34,7 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:icoc/song_book/logic/services/import_songs.dart';
 export 'package:icoc/song_book/logic/services/data_search_from_playlist.dart';
 export 'package:url_launcher/url_launcher.dart';
+export 'package:icoc/q_and_a/logic/sqlite_database_service.dart';
 
 //debug
 export 'package:logger/logger.dart';
@@ -86,4 +90,5 @@ export 'package:icoc/app/localization/messages.dart';
 
 //models
 export 'package:icoc/song_book/models/song.dart';
+export 'package:icoc/q_and_a/models/q_and_a_model.dart';
 export 'package:icoc/song_book/models/song_detail.dart';

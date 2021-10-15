@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:flutter_html/shims/dart_ui_real.dart';
 import 'package:icoc/news/logic/controllers/news_controller.dart';
-import 'package:icoc/news/screens/one_news_screen.dart';
 
 import '../../index.dart';
 
@@ -11,6 +10,11 @@ class NewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fontSizeAdjust = FontSizeAdjustBottomSheet(
+        context: context,
+        controller: newsController,
+        color: 'news',
+        needForce: true);
     return Obx(() {
       List<PopupMenuEntry> categoriesItems = [
             PopupMenuItem(
@@ -45,6 +49,11 @@ class NewsScreen extends StatelessWidget {
           backgroundColor: screensColors['news']!.withOpacity(0.8),
           centerTitle: true,
           actions: [
+            IconButton(
+                icon: Icon(
+                  Icons.text_fields_outlined,
+                ),
+                onPressed: () => fontSizeAdjust.bottomSheet()),
             PopupMenuButton(
                 icon: Icon(
                   Icons.filter_alt_outlined,
@@ -66,7 +75,7 @@ class NewsScreen extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () =>
-                        Get.toNamed(Routes.ONE_NEWS_SCREEN, arguments: [index]),
+                        Get.toNamed(Routes.ONE_NEWS_SCREEN, arguments: index),
                     child: Card(
                       elevation: 8,
                       margin: EdgeInsets.all(16),
@@ -77,7 +86,10 @@ class NewsScreen extends StatelessWidget {
                               data: newsController.news[index].title,
                               style: {
                                 // tables will have the below background color
-                                "body": html.Style(fontWeight: FontWeight.w700),
+                                "body": html.Style(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: html.FontSize(
+                                        newsController.fontSize.value)),
                               }),
                           Image.network(
                             newsController.news[index].imageUrl!,
@@ -97,7 +109,13 @@ class NewsScreen extends StatelessWidget {
                               );
                             },
                           ),
-                          html.Html(data: newsController.news[index].excerpt),
+                          html.Html(
+                              data: newsController.news[index].excerpt,
+                              style: {
+                                "body": html.Style(
+                                    fontSize: html.FontSize(
+                                        newsController.fontSize.value)),
+                              }),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 8),
                             alignment: Alignment.topLeft,

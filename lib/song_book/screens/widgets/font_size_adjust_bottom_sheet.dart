@@ -1,11 +1,16 @@
 import '/index.dart';
 
 class FontSizeAdjustBottomSheet {
-  BuildContext context;
-
+  final BuildContext context;
+  final String color;
   var controller;
+  bool needForce;
 
-  FontSizeAdjustBottomSheet({required this.context, this.controller});
+  FontSizeAdjustBottomSheet(
+      {required this.context,
+      this.controller,
+      required this.color,
+      this.needForce = false});
 
   bottomSheet() {
     return Get.bottomSheet(Container(
@@ -40,14 +45,16 @@ class FontSizeAdjustBottomSheet {
                     Container(
                       width: Get.size.width - 200,
                       child: Slider.adaptive(
-                        activeColor: screensColors['songBook'],
-                        inactiveColor: screensColors['songBook'],
+                        activeColor: screensColors[color],
+                        inactiveColor: screensColors[color],
                         label: 'Font size',
                         value: controller!.fontSize.value,
                         min: 14,
                         max: 48,
                         divisions: 34,
-                        onChanged: (val) => controller!.altFontSize(val),
+                        onChanged: (val) => needForce
+                            ? controller!.altFontSizeForce(val)
+                            : controller!.altFontSize(val),
                       ),
                     ),
                   ],

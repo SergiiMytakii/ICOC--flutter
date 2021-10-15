@@ -65,6 +65,7 @@ flutter:
   assets:
 
     - assets/songs.json
+    - assets/db/ansver.db
 
     - assets/images/verse_of_day.jpeg
     - assets/images/logo_icoc_drawer.png

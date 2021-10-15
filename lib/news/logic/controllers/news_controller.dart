@@ -10,11 +10,13 @@ class NewsController extends GetxController {
   List<int> categoriesInt = [];
   RxList<String> allCategories = <String>[].obs;
   RxBool fullText = false.obs;
+  GetStorage box = GetStorage();
+  RxDouble fontSize = 14.0.obs;
 
   @override
   void onInit() async {
     allNews.value = await newsService.getNews();
-
+    loadFontSize();
     allCategories.value = getCategories();
     news.value = List.from(allNews);
     print(news.length);
@@ -54,6 +56,22 @@ class NewsController extends GetxController {
   void clearFilter() {
     news.value = List.from(allNews);
     notifyChildrens();
+  }
+
+  void loadFontSize() {
+    if (box.read('news_fontSize') != null)
+      fontSize.value = box.read('news_fontSize');
+  }
+
+  altFontSizeForce(double val) {
+    fontSize.value = val;
+    box.write('news_fontSize', val);
+    Get.forceAppUpdate();
+  }
+
+  altFontSize(double val) {
+    fontSize.value = val;
+    box.write('news_fontSize', val);
   }
 }
 

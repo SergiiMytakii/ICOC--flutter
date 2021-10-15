@@ -1,5 +1,4 @@
-import 'package:flutter_html/flutter_html.dart';
-import 'package:icoc/bible_study/logic/bible_study_controller.dart';
+import 'package:flutter_html/flutter_html.dart' as html;
 
 import '../../index.dart';
 
@@ -7,10 +6,15 @@ class OneLessonScreen extends StatelessWidget {
   OneLessonScreen() {
     Wakelock.enable();
   }
-  BibleStudyController bibleStudyController = Get.find<BibleStudyController>();
+  final BibleStudyController bibleStudyController =
+      Get.find<BibleStudyController>();
 
   @override
   Widget build(BuildContext context) {
+    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+        context: context,
+        controller: bibleStudyController,
+        color: 'firstPrinciples');
     int indexTopic = Get.arguments[0];
     int indexLesson = Get.arguments[1];
     return Obx(
@@ -21,14 +25,34 @@ class OneLessonScreen extends StatelessWidget {
           ),
           backgroundColor: screensColors['firstPrinciples']!.withOpacity(0.8),
           centerTitle: true,
+          actions: [
+            IconButton(
+                icon: Icon(
+                  Icons.text_fields_outlined,
+                ),
+                onPressed: () => fontSozeAdjust.bottomSheet()),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Html(
-              data: bibleStudyController
-                  .topics[indexTopic].lessons[indexLesson].text,
-            ),
+            child: html.Html(
+                data: bibleStudyController
+                    .topics[indexTopic].lessons[indexLesson].text,
+                style: {
+                  "body": html.Style(
+                    fontSize:
+                        html.FontSize(bibleStudyController.fontSize.value),
+                  ),
+                  "h5": html.Style(
+                    fontSize:
+                        html.FontSize(bibleStudyController.fontSize.value),
+                  ),
+                  "p": html.Style(
+                    fontSize:
+                        html.FontSize(bibleStudyController.fontSize.value),
+                  ),
+                }),
           ),
         ),
       ),

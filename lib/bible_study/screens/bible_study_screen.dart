@@ -31,12 +31,12 @@ class BibleStudyScreen extends StatelessWidget {
                     children: [
                       ListTile(
                         leading: Container(
-                          width: 60,
+                          width: 40,
                         ),
                         title: Text(
                           bibleStudyController.topics[index].topic,
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                          maxLines: 2,
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         subtitle: Text(
