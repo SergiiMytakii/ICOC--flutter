@@ -78,6 +78,7 @@ class PlaylistSongCard extends GetView<OrderLangController> {
         Divider(
           indent: 50,
           color: dividerColor,
+          thickness: 1.2,
         ),
       ],
     );

@@ -9,6 +9,7 @@ class NewsController extends GetxController {
   RxList<News> news = <News>[].obs;
   List<int> categoriesInt = [];
   RxList<String> allCategories = <String>[].obs;
+  RxBool fullText = false.obs;
 
   @override
   void onInit() async {
@@ -48,6 +49,11 @@ class NewsController extends GetxController {
       }
     } else
       news = allNews;
+  }
+
+  void clearFilter() {
+    news.value = List.from(allNews);
+    notifyChildrens();
   }
 }
 

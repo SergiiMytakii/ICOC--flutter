@@ -9,4 +9,7 @@ abstract class Routes {
   static const SLIDES_SCREEN = '/slides_screen';
   static const SONG_SCREEN = '/song_screen';
   static const ABOUT_APP_SCREEN = '/about_app_screen';
+  static const ONE_NEWS_SCREEN = '/one_news_screen';
+  static const ONE_TOPIC_SCREEN = '/one_topic_screen';
+  static const ONE_LESSON_SCREEN = '/one_lesson_screen';
 }

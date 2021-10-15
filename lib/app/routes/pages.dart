@@ -1,5 +1,3 @@
-import 'package:icoc/app/screens/about_app_screen.dart';
-
 import '../../index.dart';
 
 class Pages {
@@ -25,7 +23,7 @@ class Pages {
       ),
       GetPage(
         name: Routes.FIRST_PRINCIPLES,
-        page: () => FirstPrinciples(),
+        page: () => BibleStudyScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),
@@ -62,6 +60,24 @@ class Pages {
       GetPage(
         name: Routes.ABOUT_APP_SCREEN,
         page: () => AboutAppScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.ONE_NEWS_SCREEN,
+        page: () => OneNewsScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.ONE_TOPIC_SCREEN,
+        page: () => OneTopicScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.ONE_LESSON_SCREEN,
+        page: () => OneLessonScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

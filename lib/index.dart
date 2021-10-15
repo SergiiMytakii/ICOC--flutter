@@ -49,7 +49,7 @@ export 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
 export 'package:icoc/song_book/screens/widgets/favorites_song_card.dart';
 export 'package:icoc/app/screens/main_screen.dart';
 export 'package:icoc/app/settings/general_settings_screen.dart';
-export 'package:icoc/first_principles/screens/first_principles_screen.dart';
+export 'package:icoc/bible_study/screens/bible_study_screen.dart';
 export 'package:icoc/news/screens/news_screen.dart';
 export 'package:icoc/q_and_a/screens/q_and_a_screen.dart';
 export 'package:icoc/song_book/screens/playlist_screen.dart';
@@ -69,6 +69,10 @@ export 'package:icoc/song_book/screens/playlists_list_screen.dart';
 export 'package:icoc/song_book/screens/song_book_screen.dart';
 export 'package:icoc/app/screens/widgets/loading.dart';
 export 'package:icoc/song_book/screens/widgets/song_card.dart';
+export 'package:icoc/app/screens/about_app_screen.dart';
+export 'package:icoc/news/screens/one_news_screen.dart';
+export 'package:icoc/bible_study/screens/one_lesson_screen.dart';
+export 'package:icoc/bible_study/screens/one_topic_screen.dart';
 
 //constants
 export 'package:icoc/app/constants.dart';
