@@ -1,5 +1,4 @@
 import 'package:icoc/index.dart';
-import 'package:icoc/news/logic/services/network_service.dart';
 import 'package:icoc/news/logic/services/news_service.dart';
 import 'package:icoc/news/models/news_model.dart';
 

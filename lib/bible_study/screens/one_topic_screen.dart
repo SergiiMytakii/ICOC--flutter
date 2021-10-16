@@ -2,7 +2,8 @@ import '../../index.dart';
 
 class OneTopicScreen extends StatelessWidget {
   OneTopicScreen({Key? key}) : super(key: key);
-  BibleStudyController bibleStudyController = Get.find<BibleStudyController>();
+  final BibleStudyController bibleStudyController =
+      Get.find<BibleStudyController>();
 
   @override
   Widget build(BuildContext context) {

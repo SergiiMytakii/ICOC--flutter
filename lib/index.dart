@@ -25,7 +25,7 @@ export 'package:icoc/song_book/logic/controllers/song_screen_controller.dart';
 export 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
 export 'package:icoc/bible_study/logic/bible_study_controller.dart';
 export 'package:icoc/news/logic/controllers/news_controller.dart';
-
+export 'package:icoc/q_and_a/logic/q_and_a_controller.dart';
 //servises
 export 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 export 'package:icoc/song_book/logic/services/database_firebase_service.dart';
