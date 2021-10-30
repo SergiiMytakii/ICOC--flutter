@@ -85,42 +85,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:423282730331:android:36b9c9fc287714361ce67e",
-        "android_client_info": {
-          "package_name": "uk.app.icoc"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "423282730331-g98rm5248s8v5jocbcc586lbvuu923lv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "423282730331-g98rm5248s8v5jocbcc586lbvuu923lv.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "423282730331-2tm0nuu0evg054gbkgot10epervh2a3n.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "ru.icoc.Projects"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

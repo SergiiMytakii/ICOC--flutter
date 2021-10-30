@@ -29,7 +29,6 @@ class BibleStudyController extends GetxController {
         keys.add(int.parse(key));
       });
       keys.sort();
-      log.d(keys);
       keys.forEach((key) {
         less.add(Lesson(
             id: key,

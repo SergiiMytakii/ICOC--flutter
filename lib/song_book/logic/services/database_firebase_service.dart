@@ -8,7 +8,7 @@ class DatabaseServiceFirebase {
 
   //function to add songs to firebase from json file
   Future insertSongsToFirebase() async {
-    List songsFromJson = await ImportSongs().loadSongsFromJson();
+    List<SongDetail> songsFromJson = await ImportSongs().loadSongsFromJson();
 
     for (SongDetail song in songsFromJson) {
       await songCollection.doc(song.id.toString()).set({
@@ -47,7 +47,7 @@ class DatabaseServiceFirebase {
 
   //get songs
   Stream<List<SongDetail>> get songs {
-    //insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
+    // insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
     return songCollection.snapshots().map(_songListFromSnapshot);
   }
 }
