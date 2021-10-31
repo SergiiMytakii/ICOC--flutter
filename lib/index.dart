@@ -12,6 +12,7 @@ export 'package:oktoast/oktoast.dart';
 export 'package:icoc/app/theme.dart';
 export 'package:flutter/services.dart';
 export 'package:wakelock/wakelock.dart';
+export 'package:qr_flutter/qr_flutter.dart';
 
 //controllers
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';
@@ -46,6 +47,7 @@ export 'package:icoc/app/routes/pages.dart';
 //screens and widgets
 export 'package:icoc/song_book/screens/widgets/add_song_to_playlist.dart';
 export 'package:icoc/app/screens/widgets/snackbar.dart';
+export 'package:icoc/app/screens/widgets/custom_button.dart';
 
 export 'package:icoc/song_book/screens/widgets/checkbox_list_tile.dart';
 export 'package:icoc/song_book/screens/widgets/font_size_adjust_bottom_sheet.dart';

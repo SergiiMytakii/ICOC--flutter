@@ -1,3 +1,4 @@
+import 'package:icoc/app/screens/share_app_screen.dart';
 import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
 
 import '../../index.dart';
@@ -86,6 +87,12 @@ class Pages {
       GetPage(
         name: Routes.ONE_Q_AND_A_SCREEN,
         page: () => OneQandAScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.SHARE_APP_SCREEN,
+        page: () => ShareAppScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

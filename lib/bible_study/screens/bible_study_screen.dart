@@ -36,7 +36,7 @@ class BibleStudyScreen extends StatelessWidget {
                         title: Text(
                           bibleStudyController.topics[index].topic,
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
+                          maxLines: 3,
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         subtitle: Text(

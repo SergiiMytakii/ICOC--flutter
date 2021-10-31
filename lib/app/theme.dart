@@ -7,6 +7,8 @@ final myDarkTheme = ThemeData.dark().copyWith(
       unselectedLabelStyle: TextStyle(fontSize: 20),
     ),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
+    iconTheme: IconThemeData(color: Colors.white10),
+    primaryIconTheme: IconThemeData(color: Colors.white70),
     brightness: Brightness.dark);
 final myLightTheme = ThemeData.light().copyWith(
     brightness: Brightness.light,
@@ -20,4 +22,5 @@ final myLightTheme = ThemeData.light().copyWith(
     primaryColorLight: Color(0xffbeaed5),
     primaryColorDark: Color(0xff614587),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.white),
-    iconTheme: IconThemeData(color: Colors.white10));
+    iconTheme: IconThemeData(color: Colors.white10),
+    primaryIconTheme: IconThemeData(color: Colors.black54));

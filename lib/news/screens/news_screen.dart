@@ -20,12 +20,12 @@ class NewsScreen extends StatelessWidget {
             PopupMenuItem(
               enabled: false,
               child: Text(
-                'Категории новостей',
+                'News category'.tr,
                 style: TextStyle(color: screensColors['news']),
               ),
             ),
             PopupMenuItem(
-              child: Text('All news'),
+              child: Text('All news'.tr),
               onTap: () {
                 newsController.clearFilter();
               },
@@ -58,7 +58,7 @@ class NewsScreen extends StatelessWidget {
                 icon: Icon(
                   Icons.filter_alt_outlined,
                 ),
-                tooltip: 'icon_button_actio)ns_app_bar_filter'.tr,
+                tooltip: 'Filter'.tr,
                 itemBuilder: (context) {
                   return categoriesItems;
                 }),
@@ -120,7 +120,7 @@ class NewsScreen extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 8),
                             alignment: Alignment.topLeft,
                             child: Text(
-                              'Категории новостей:',
+                              'News category'.tr,
                               textAlign: TextAlign.left,
                               style: TextStyle(color: screensColors['news']),
                             ),
@@ -137,8 +137,7 @@ class NewsScreen extends StatelessWidget {
                                                   color: screensColors['news']),
                                             ))
                                         .toList()),
-                                tooltip:
-                                    'icon_button_actio)ns_app_bar_filter'.tr,
+                                tooltip: 'Filter'.tr,
                                 itemBuilder: (context) => categoriesItems),
                           )
                         ],

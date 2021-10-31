@@ -9,6 +9,7 @@ const List<Color> dividerColors = [
 ];
 
 const Map<String, Color> screensColors = {
+  'general': Color(0xff6a4c93),
   'songBook': Color(0xffff595e),
   'news': Color(0xffffca3a),
   'firstPrinciples': Color(0xff8ac926),
@@ -21,6 +22,8 @@ final Map<String, Locale> languagesLocales = {
 };
 
 const String email = 'serjmitaki@gmail.com';
+const String payPalAccount = 'serjmitaki@gmail.com';
+const String monoBankCard = '4441 1144 5075 7396';
 const String versionApp = '4.0.0';
 const appUrlPlayMarket =
     'https://play.google.com/store/apps/details?id=ru.icoc.app';

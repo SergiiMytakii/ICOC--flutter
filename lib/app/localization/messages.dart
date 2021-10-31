@@ -117,7 +117,20 @@ class Messages extends Translations {
           'Sergii Gaponov': "Сергей Гапонов",
           'Sergii Mytakii': "Сергей Митакий",
           'Antonina Glajevskaya': "Антонина Глажевская",
-          'Wishes and suggestions: ': "Пожелания и предложения: "
+          'Wishes and suggestions: ': "Пожелания и предложения: ",
+          'Share this app': 'Поделиться приложением',
+          'News category': 'Категории новостей:',
+          'All news': 'Все новости',
+          'Filter': 'Фильтр',
+          'If you like this app and want it to be constantly improved and developed - you can support the project!':
+              'Если вам нравится это приложение и вы хотите, чтобы оно постоянно улучшалось и развивалось - вы можете поддержать проект!',
+          'Support ptoject': 'Поддержать проект',
+          'In Ukraine:': 'В Украине',
+          'MonoBank card:': 'Карта МоноБанк',
+          'Out from Ukraine:': 'Не из Украины',
+          'Copied to clipboard': 'Скопировано в буфер обмена',
+          'Share link': 'Отправить ссылку',
+          'QR code': 'QR код'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -182,7 +195,20 @@ class Messages extends Translations {
           'Sergii Gaponov': "Сергій Гапонов",
           'Sergii Mytakii': "Сергій Митакій",
           'Antonina Glajevskaya': "Антоніна Глажевська",
-          'Wishes and suggestions: ': "Побажання та пропозиції: "
+          'Wishes and suggestions: ': "Побажання та пропозиції: ",
+          'Share this app': 'Поділитися додатком',
+          'News category': 'Категоріі новин:',
+          'All news': 'Всі новини',
+          'Filter': 'Фильтр',
+          'If you like this app and want it to be constantly improved and developed - you can support the project!':
+              'Якщо вам подобається цей додаток і ви хочете, щоб він постійно покращувався та розвивався - ви можете підтримати проект!',
+          'Support ptoject': 'Підтримати проект',
+          'In Ukraine:': 'В Україні',
+          'MonoBank card:': 'Карта МоноБанку',
+          'Out from Ukraine:': 'Поза меж України',
+          'Copied to clipboard': 'Скопійовано до буферу обміну',
+          'Share link': 'Відправити ссилку',
+          'QR code': 'QR код'
         }
       };
 }

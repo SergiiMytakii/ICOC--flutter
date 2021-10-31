@@ -1,6 +1,11 @@
 import '../../index.dart';
 
-class AboutAppScreen extends StatelessWidget {
+class AboutAppScreen extends StatefulWidget {
+  @override
+  State<AboutAppScreen> createState() => _AboutAppScreenState();
+}
+
+class _AboutAppScreenState extends State<AboutAppScreen> {
   Future launchEmail() async {
     final url = 'mailto:$email?';
 
@@ -9,6 +14,10 @@ class AboutAppScreen extends StatelessWidget {
     } else
       showSnackbar('Error'.tr, 'Can\'t open Email app'.tr);
   }
+
+  bool isOpened = false;
+  bool _opacity = true;
+  final dataKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +29,7 @@ class AboutAppScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
-      body: Container(
-        height: Get.size.height,
-        width: Get.size.width,
+      body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(
@@ -30,7 +37,8 @@ class AboutAppScreen extends StatelessWidget {
             ),
             Text(
               'ICOC',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headline4!.copyWith(
+                  color: screensColors['general'], fontWeight: FontWeight.w700),
             ),
             SizedBox(
               height: 20,
@@ -83,7 +91,7 @@ class AboutAppScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.email_outlined,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.blueAccent,
                 ),
                 TextButton(
                   child: Text(
@@ -91,15 +99,122 @@ class AboutAppScreen extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyText2!
-                        .copyWith(color: Theme.of(context).primaryColor),
+                        .copyWith(color: Colors.blueAccent),
                   ),
                   onPressed: () => launchEmail(),
                 ),
               ],
             ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Text(
+                  'If you like this app and want it to be constantly improved and developed - you can support the project!'
+                      .tr,
+                  style: Theme.of(context).textTheme.bodyText2,
+                  textAlign: TextAlign.center),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: CustomButton(
+                  onPressed: () {
+                    setState(() {
+                      isOpened = !isOpened;
+                      Scrollable.ensureVisible(dataKey.currentContext!);
+                      _opacity = !_opacity;
+                    });
+                  },
+                  child: Text('Support ptoject'.tr),
+                  color: screensColors['general']!),
+            ),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 800),
+              height: isOpened ? 200 : 0,
+              width: double.maxFinite,
+              margin: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: EdgeInsets.all(8),
+              curve: Curves.fastOutSlowIn,
+              child: Column(children: [
+                Flexible(child: Text('In Ukraine:'.tr)),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Flexible(
+                      child: Row(
+                        children: [
+                          Text(
+                            'MonoBank card:'.tr,
+                          ),
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            monoBankCard,
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                          AnimatedOpacity(
+                            opacity: _opacity ? 0 : 1,
+                            duration: Duration(milliseconds: 800),
+                            child: IconButton(
+                              onPressed: () {
+                                _copyToClipboard(monoBankCard);
+                              },
+                              icon: Icon(Icons.copy_outlined),
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(child: Text('Out from Ukraine:'.tr)),
+                Flexible(
+                  child: Row(
+                    children: [
+                      Text('PayPal:'.tr),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text(
+                        payPalAccount,
+                        key: dataKey,
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      AnimatedOpacity(
+                        opacity: _opacity ? 0 : 1,
+                        duration: Duration(milliseconds: 800),
+                        child: IconButton(
+                            onPressed: () {
+                              _copyToClipboard(payPalAccount);
+                            },
+                            icon: Icon(
+                              Icons.copy_outlined,
+                              color: Theme.of(context).primaryIconTheme.color,
+                            )),
+                      ),
+                    ],
+                  ),
+                )
+              ]),
+            ),
+            SizedBox(
+              height: 200,
+            )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _copyToClipboard(String text) async {
+    await Clipboard.setData(ClipboardData(text: text));
+    showSnackbar('', 'Copied to clipboard'.tr);
   }
 }

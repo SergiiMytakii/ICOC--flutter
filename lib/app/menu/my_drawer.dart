@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import '../../index.dart';
 
@@ -47,7 +46,7 @@ class MyDrawer extends StatelessWidget {
             textAlign: TextAlign.start,
             style: Theme.of(context).textTheme.headline6,
           ),
-          onTap: () => Platform.isIOS? Share.share(appUrlAppStore): Share.share(appUrlPlayMarket),
+          onTap: () => Get.offAndToNamed(Routes.SHARE_APP_SCREEN),
         ),
       ],
     );
