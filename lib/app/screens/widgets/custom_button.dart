@@ -25,8 +25,7 @@ class CustomButton extends StatelessWidget {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: color,
-              //padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-              textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: onPressed,
             child: Center(child: child),
