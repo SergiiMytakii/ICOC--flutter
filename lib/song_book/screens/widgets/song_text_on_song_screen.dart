@@ -1,3 +1,5 @@
+import 'package:flutter_html/flutter_html.dart' as html;
+
 import '/index.dart';
 
 class SongTextOnSongScreen extends StatelessWidget {
@@ -40,14 +42,21 @@ class SongTextOnSongScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Text(
-              textVersion,
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText2!
-                  .copyWith(fontSize: _fontSize),
-            ),
+            textVersion.startsWith('<')
+                ? html.Html(
+                    data: textVersion,
+                    style: {
+                      "body": html.Style(fontSize: html.FontSize(_fontSize)),
+                    },
+                  )
+                : Text(
+                    textVersion,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontSize: _fontSize),
+                  ),
           ],
         );
       }),

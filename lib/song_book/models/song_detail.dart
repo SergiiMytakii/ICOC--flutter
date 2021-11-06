@@ -3,7 +3,7 @@ class SongDetail {
   final Map description;
   final Map title;
   final Map text;
-  final List? resources;
+  final Map? resources;
   final Map chords;
 
   SongDetail({

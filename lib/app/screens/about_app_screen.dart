@@ -30,6 +30,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             SizedBox(
@@ -122,7 +123,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                   onPressed: () {
                     setState(() {
                       isOpened = !isOpened;
-                      Scrollable.ensureVisible(dataKey.currentContext!);
+                      //Scrollable.ensureVisible(dataKey.currentContext!);
                       _opacity = !_opacity;
                     });
                   },
@@ -182,10 +183,10 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                       ),
                       Text(
                         payPalAccount,
-                        key: dataKey,
                       ),
                       Expanded(
                         child: Container(),
+                        key: dataKey,
                       ),
                       AnimatedOpacity(
                         opacity: _opacity ? 0 : 1,
@@ -204,9 +205,6 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 )
               ]),
             ),
-            SizedBox(
-              height: 200,
-            )
           ],
         ),
       ),

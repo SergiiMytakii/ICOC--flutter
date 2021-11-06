@@ -179,6 +179,7 @@ class DataSearch extends SearchDelegate {
         Divider(
           indent: 50,
           color: dividerColors[i],
+          thickness: 1.2,
         )
       ],
     );

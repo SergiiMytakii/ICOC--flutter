@@ -3781,7 +3781,7 @@ class ImportSongs {
         "v3": null,
         "v4": null
       }
-    }
+    },
   ];
 
   Future<String> loadSongsAsset() async {

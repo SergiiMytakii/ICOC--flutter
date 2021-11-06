@@ -17,7 +17,7 @@ export 'package:qr_flutter/qr_flutter.dart';
 //controllers
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 export 'package:icoc/app/settings/logic/General_settings_controller.dart';
-export 'package:icoc/app/controllers/main_screen_controller.dart';
+export 'package:icoc/app/logic/controllers/main_screen_controller.dart';
 export 'package:icoc/song_book/logic/controllers/order_lang_controller.dart';
 export 'package:icoc/song_book/logic/controllers/playlists_controller.dart';
 export 'package:icoc/song_book/logic/controllers/favorites_controller.dart';

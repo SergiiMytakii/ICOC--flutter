@@ -14,7 +14,7 @@ class SongsController extends GetxController {
   Future fetchDataFromFirebase() async {
     log.i('start to fetch data from FB');
     //update local SQL database from firebase
-    databaseServiceFirebase.songs.listen((songs) async {
+    databaseServiceFirebase.songs.then((songs) async {
       if (songs.isNotEmpty) {
         await databaseService.insertAllSongs(songs);
         await fetchSongsList();
@@ -47,7 +47,7 @@ class SongsController extends GetxController {
   }
 
   Future<void> checkDatabaseChanged() async {
-    databaseServiceFirebase.songs.listen((songsFromFB) async {
+    databaseServiceFirebase.songs.then((songsFromFB) async {
       songsInLocalDB = await databaseService.songsInLocalDB;
       if (songsInLocalDB != songsFromFB.length) {
         log.i(

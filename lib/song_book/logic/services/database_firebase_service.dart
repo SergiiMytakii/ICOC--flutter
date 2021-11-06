@@ -26,12 +26,12 @@ class DatabaseServiceFirebase {
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<SongDetail> songs = snapshot.docs.map((doc) {
       return SongDetail(
-          id: doc.get('id') ?? null,
+          id: doc.get('id') ?? 0,
           description: doc.get('description') ?? {},
           text: doc.get('text') ?? {},
           title: doc.get('title') ?? {},
           chords: doc.get('chords') ?? {},
-          resources: doc.get('resources') ?? []);
+          resources: doc.get('resources') ?? {});
     }).toList();
 
     //get rid from nullable values
@@ -46,8 +46,8 @@ class DatabaseServiceFirebase {
   }
 
   //get songs
-  Stream<List<SongDetail>> get songs {
+  Future<List<SongDetail>> get songs {
     // insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
-    return songCollection.snapshots().map(_songListFromSnapshot);
+    return songCollection.get().then((result) => _songListFromSnapshot(result));
   }
 }
