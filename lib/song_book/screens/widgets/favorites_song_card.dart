@@ -1,4 +1,5 @@
 import '/index.dart';
+import 'package:flutter_html/flutter_html.dart' as html;
 
 class FavoritesSongCard extends GetView<OrderLangController> {
   final Song song;
@@ -15,6 +16,7 @@ class FavoritesSongCard extends GetView<OrderLangController> {
   @override
   Widget build(BuildContext context) {
     Get.put(OrderLangController());
+    String text = controller.chooseCardLang(song, orderLang)?[1] ?? '';
     return Column(
       children: [
         Slidable(
@@ -57,12 +59,18 @@ class FavoritesSongCard extends GetView<OrderLangController> {
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
             ),
-            subtitle: Text(
-              controller.chooseCardLang(song, orderLang)?[1] ?? '',
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
+            subtitle: text.startsWith('<')
+                ? html.Html(
+                    data: text.startsWith('<p>1')
+                        ? text.substring(10, 90)
+                        : text.substring(0, 80),
+                  )
+                : Text(
+                    controller.chooseCardLang(song, orderLang)?[1] ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
           ),
         ),
         Divider(

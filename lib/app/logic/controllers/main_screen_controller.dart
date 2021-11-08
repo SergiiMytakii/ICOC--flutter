@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:icoc/app/logic/controllers/services/firebase_images_service.dart';
 
 import '/index.dart';
@@ -5,13 +7,23 @@ import '/index.dart';
 class MainScreenController extends GetxController {
   final songsController = Get.put(SongsController());
   var log = Logger();
-  //final FirebaseImagesService firebaseImagesService = FirebaseImagesService();
+  String versesOfTheDayUrls = '';
+  RxString url = ''.obs;
 
   @override
   void onInit() async {
     await checkItsFirstRun();
-    FirebaseImagesService.listAll(path);
+
+    url.value = await FirebaseImagesService.getUrl(path, randomInt);
     super.onInit();
+  }
+
+  int get randomInt {
+    var day = DateTime.now().day;
+    Random random = new Random();
+    int randomNumber = random.nextInt(2) + 1;
+
+    return randomNumber * day;
   }
 
   Future checkItsFirstRun() async {

@@ -59,8 +59,8 @@ class DataSearch extends SearchDelegate {
         builder: (context, AsyncSnapshot<List<Song>> songs) {
           if (!songs.hasData) {
             return Platform.isIOS
-                ? SliverToBoxAdapter(child: Center(child: Text(' No data'.tr)))
-                : Center(child: Text(' No data'.tr));
+                ? SliverToBoxAdapter(child: Loading())
+                : Loading();
           }
           return GetBuilder<OrderLangController>(
             init: OrderLangController(),
@@ -140,15 +140,22 @@ class DataSearch extends SearchDelegate {
                   color: screensColors['songBook'],
                   fontWeight: FontWeight.w900))
           : TextSpan(
-              text: '$word ',
+              text: '${trimText(word)} ',
             );
     }).toList();
   }
 
-  trimText(String word) {
-    //print(word);
+  String trimText(String word) {
     String word1 = word.replaceAll('[', '');
-    return word1;
+    word = word1.replaceAll('br', '<p>');
+    word1 = word.replaceAll(
+        RegExp(
+          r'<[^>]*>|&[^;]+;',
+          multiLine: true,
+        ),
+        '');
+    word = word1.replaceAll('/>', '');
+    return word;
   }
 
   Widget buildSongCardWithHighliting(AsyncSnapshot<List<Song>> songs, int index,

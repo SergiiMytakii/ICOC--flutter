@@ -30,7 +30,6 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
         child: Column(
           children: [
             SizedBox(
@@ -132,7 +131,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             ),
             AnimatedContainer(
               duration: Duration(milliseconds: 800),
-              height: isOpened ? 200 : 0,
+              height: isOpened ? 250 : 0,
               width: double.maxFinite,
               margin: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               padding: EdgeInsets.all(8),
@@ -145,17 +144,16 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                     child: Flexible(
                       child: Row(
                         children: [
-                          Text(
-                            'MonoBank card:'.tr,
+                          Expanded(
+                            child: Text(
+                              'MonoBank card:'.tr,
+                            ),
                           ),
                           SizedBox(
                             width: 12,
                           ),
                           Text(
                             monoBankCard,
-                          ),
-                          Expanded(
-                            child: Container(),
                           ),
                           AnimatedOpacity(
                             opacity: _opacity ? 0 : 1,
@@ -205,6 +203,9 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 )
               ]),
             ),
+            SizedBox(
+              height: 100,
+            )
           ],
         ),
       ),

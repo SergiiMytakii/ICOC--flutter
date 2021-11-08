@@ -75,7 +75,8 @@ class Messages extends Translations {
           'Out from Ukraine:': 'Out from Ukraine:',
           'Copied to clipboard': 'Copied to clipboard',
           'Share link': 'Share link',
-          'QR code': 'QR code'
+          'QR code': 'QR code',
+          'Verse of the day': 'Verse of the day'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -153,7 +154,8 @@ class Messages extends Translations {
           'Out from Ukraine:': 'Не из Украины',
           'Copied to clipboard': 'Скопировано в буфер обмена',
           'Share link': 'Отправить ссылку',
-          'QR code': 'QR код'
+          'QR code': 'QR код',
+          'Verse of the day': 'Отрывок дня'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -231,7 +233,8 @@ class Messages extends Translations {
           'Out from Ukraine:': 'Поза меж України',
           'Copied to clipboard': 'Скопійовано до буферу обміну',
           'Share link': 'Відправити ссилку',
-          'QR code': 'QR код'
+          'QR code': 'QR код',
+          'Verse of the day': 'Уривок дня'
         }
       };
 }

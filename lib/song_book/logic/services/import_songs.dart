@@ -3782,15 +3782,46 @@ class ImportSongs {
         "v4": null
       }
     },
+    {
+      "Id": 188,
+      "title": {
+        "ru": "Мой Бог чудесный",
+        "uk": null,
+        "en": "My God Is Awesome"
+      },
+      "description": {
+        "ru": "Чарли Дженкинс",
+        "uk": null,
+        "en": "Charles  Jenkins"
+      },
+      "text": {
+        "ru1":
+            "<p>1<br /> Мой Бог чудесный, Может двигать горы,<br /> От дождя укроет, выведет на свет.<br /> Мой Бог чудесный, раны исцеляет, <br /> Силами питает. Он царствует вовек.<br /> <br /> 2<br /> аш Бог прекрасный. Получив прощенье,<br /> Дивной благодатью мы были спасены.<br /> Наш Бог прекрасный. Он &ndash; Спаситель мира,<br /> Его святое имя будем славить мы.<br /> <br /> Припев<br /> Наш Бог чудесный, дивный, сильный, славный<br /> <br /> Мост<br /> Он сильный &ndash; 4р Сильный, сильный<br /> Он святый &ndash; 4р Святый, Святый<br /> Велик &ndash; 4р Славный, Славный<br /> Он сильный &ndash; 4р Сильный, Сильный<br /> Спаситель наш&ndash; 4р Дивный, Дивный <br /> Он святый &ndash; 4р Святый, Святый<br /> и так далее.</p>",
+        "ru2": null,
+        "uk1": null,
+        "uk2": null,
+        "en1":
+            "<p>My God is awesome<br />He can move mountains<br />Keep me in the valley<br />Hide me from the rain</p> <p>My God is awesome<br />Heals me when i'm broken<br />Gives strength where i've been weakened<br />Forever he will reign</p> <p>My God is awesome<br />He can move mountains<br />Keep me in the valley<br />Hide me from the rain</p> <p>My God is awesome<br />Heals me when i'm broken<br />Gives strength where i've been weakened<br />Forever he will reign</p> <p>My God is awesome, awesome, awesome, awesome [x2]</p> <p>My God is awesome<br />Savior of the whole world<br />Giver of salvation<br />By his stripes i am healed</p> <p>My God is awesome<br />Today i am forgiven<br />His grace is why i'm living<br />Praise his holy name</p> <p>My God is awesome, awesome, awesome, awesome [x2]</p> <p>He's mighty [x4]<br />Awesome, awesome</p> <p>He's holy [x4]<br />Awesome, awesome</p> <p>He's great [x4]<br />Awesome, awesome</p> <p>Deliverer [x4]<br />Awesome, awesome</p> <p>Provider [x4]<br />Awesome, awesome</p> <p>Protector [x4]<br />Awesome, awesome</p> <p>My God is awesome<br />He can move mountains<br />Keep me in the valley<br />Hide me from the rain</p> <p>My God is awesome<br />Heals me when i'm broken<br />Gives strength where i've been weakened<br />Praise his holy name</p>",
+        "en2": null
+      },
+      "chords": {
+        "v1":
+            "<p><strong>Key: G</strong></p> <p>&nbsp;</p> <p>&nbsp;</p> <p>[Verse 1]</p> <p>&nbsp;</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, He can move mountains</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Keep me in the valley, hide me from the rain</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, heals me when I'm broken</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Strength where I've been weakened, forever He will reign</p> <p>&nbsp;</p> <p>&nbsp;</p> <p>[Chorus]</p> <p>&nbsp;</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, awesome</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>&nbsp;</p> <p>[Verse 2]</p> <p>&nbsp;</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, Savior of the whole world</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Giver of salvation, by His stripes I am healed</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, today I am forgiven</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>His grace is why I'm living, praise His holy name</p> <p>&nbsp;</p> <p>&nbsp;</p> <p>[Bridge]</p> <p>&nbsp;</p> <p>G</p> <p>He's Mighty (He's Mighty), He's Mighty (He's Mighty)</p> <p>D</p> <p>He's Mighty (He's Mighty), He's Mighty (He's Mighty)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>He's Holy (He's Holy), He's Holy (He's Holy)</p> <p>D</p> <p>He's Holy (He's Holy), He's Holy (He's Holy)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>He's Great (He's Great), He's Great (He's Great)</p> <p>D</p> <p>He's Great (He's Great), He's Great (He's Great)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>He's Mighty (He's Mighty), He's Mighty (He's Mighty)</p> <p>D</p> <p>He's Mighty (He's Mighty), He's Mighty (He's Mighty)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>Deliverer (Deliverer), Deliverer (Deliverer)</p> <p>D</p> <p>Deliverer (Deliverer), Deliverer (Deliverer)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>He's Holy (He's Holy), He's Holy (He's Holy)</p> <p>D</p> <p>He's Holy (He's Holy), He's Holy (He's Holy)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>Provider (Provider), Provider (Provider)</p> <p>D</p> <p>Provider (Provider), Provider (Provider)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>G</p> <p>Protector (Protector), Protector (Protector)</p> <p>D</p> <p>Protector (Protector), Protector (Protector)</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Awesome, awesome</p> <p>&nbsp;</p> <p>&nbsp;</p> <p>[Verse 3]</p> <p>&nbsp;</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, He can move mountains</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Keep me in the valley, hide me from the rain</p> <p>G&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D</p> <p>My God is awesome, heals me when I'm broken</p> <p>Em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C</p> <p>Strength where I've been weakened, praise His holy name</p> <p>&nbsp;</p>",
+        "v2": null,
+        "v3": null,
+        "v4": null
+      }
+    }
   ];
 
-  Future<String> loadSongsAsset() async {
-    return await rootBundle.loadString('assets/songs.json');
-  }
+//когда песни были в отдельном файле
+  // Future<String> loadSongsAsset() async {
+  //   return await rootBundle.loadString('assets/songs.json');
+  // }
 
   Future<List<SongDetail>> loadSongsFromJson() async {
     print('start parsing');
-    String jsonString = await loadSongsAsset();
+    //String jsonString = await loadSongsAsset();
     //print(jsonString);
     //final jsonResponse = json.decode(jsonString);
     //print(jsonResponse);

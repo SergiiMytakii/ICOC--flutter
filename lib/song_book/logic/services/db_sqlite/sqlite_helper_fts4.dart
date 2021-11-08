@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 import '/index.dart';
 
@@ -403,7 +405,7 @@ class DatabaseHelperFTS4 {
     final Database? database = await db;
 
     List<Song> songs = [];
-    log.i('query' + query);
+    // log.i('query' + query);
     if (query != '') {
       // search in titiles
 
@@ -529,71 +531,21 @@ class DatabaseHelperFTS4 {
     }
   }
 
-  Stream<List<Song>> getSearchResultByNumber(String query) async* {
+  Stream<List<Song>> getSearchResultByNumber(String searchQuery) async* {
     final Database? database = await db;
-    List<Song> songs = [];
 
-    if (query != '') {
-      if (controller.songLang['ru']!) {
-        final List<Map<String, dynamic>> searchInIds =
-            await database!.rawQuery('''
-                  SELECT $TABLE_TITLE.$ID_SONG,
-                  $TABLE_TITLE.$TITLE_RU,
-                  $TABLE_TEXT_RU.$TEXT_RU AS text_ru
-                  FROM $TABLE_TITLE
-                  JOIN $TABLE_TEXT_RU ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_RU.$ID_SONG
-                  WHERE $TABLE_TITLE.$ID_SONG = $query
-                  ''');
-
-        for (Map map in searchInIds) {
-          Song song = Song(
-              id: map['id_song'],
-              title: {'ru': map['ru']},
-              text: {'ru': map['text_ru'] ?? ''});
-          songs.add(song);
-        }
-      }
-      if (controller.songLang['uk']!) {
-        final List<Map<String, dynamic>> searchInIds =
-            await database!.rawQuery('''
-                  SELECT $TABLE_TITLE.$ID_SONG,
-                  $TABLE_TITLE.$TITLE_UK,
-                  $TABLE_TEXT_UK.$TEXT_UK AS text_uk
-                  FROM $TABLE_TITLE
-                  JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-                  WHERE $TABLE_TITLE.$ID_SONG = $query
-                  ''');
-
-        for (Map map in searchInIds) {
-          Song song = Song(
-              id: map['id_song'],
-              title: {'uk': map['uk']},
-              text: {'uk': map['text_uk'] ?? ''});
-          songs.add(song);
-        }
-      }
-
-      if (controller.songLang['en']!) {
-        final List<Map<String, dynamic>> searchInIds =
-            await database!.rawQuery('''
-                  SELECT $TABLE_TITLE.$ID_SONG,
-                  $TABLE_TITLE.$TITLE_EN,
-                  $TABLE_TEXT_EN.$TEXT_EN AS text_en
-                  FROM $TABLE_TITLE
-                  JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-                  WHERE $TABLE_TITLE.$ID_SONG = $query
-                  ''');
-
-        for (Map map in searchInIds) {
-          Song song = Song(
-              id: map['id_song'],
-              title: {'en': map['en']},
-              text: {'en': map['text_en'] ?? ''});
-          songs.add(song);
-        }
-      }
-    }
-    yield songs;
+    final List<Map<String, dynamic>> items = await database!.rawQuery('''
+        SELECT $query
+        FROM $TABLE_TITLE
+        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
+        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
+        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
+        GROUP BY $TABLE_TITLE.$ID_SONG
+          ''');
+    List<Song> songs = convertToSongs(items);
+    yield songs
+        .where((song) => song.id.toString().contains(searchQuery))
+        .toList();
   }
 
 /* functions for playlists*/

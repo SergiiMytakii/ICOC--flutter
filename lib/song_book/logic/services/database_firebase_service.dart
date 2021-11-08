@@ -9,7 +9,7 @@ class DatabaseServiceFirebase {
   //function to add songs to firebase from json file
   Future insertSongsToFirebase() async {
     List<SongDetail> songsFromJson = await ImportSongs().loadSongsFromJson();
-
+    songCollection.doc().delete();
     for (SongDetail song in songsFromJson) {
       await songCollection.doc(song.id.toString()).set({
         'id': song.id,

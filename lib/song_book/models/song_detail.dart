@@ -22,7 +22,7 @@ class SongDetail {
       title: parsedJson['title'],
       text: parsedJson['text'],
       description: parsedJson['description'],
-      resources: null,
+      resources: parsedJson['resourses'] ?? null,
       chords: parsedJson['chords'],
     );
   }
