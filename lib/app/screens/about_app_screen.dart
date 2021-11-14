@@ -84,6 +84,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               height: 40,
             ),
             Text(
+                'Ищем контент менеджера для добавления аудио и видео к песням. \n Если Бог положил вам такое на сердце - напишите нам об этом!'),
+            SizedBox(
+              height: 40,
+            ),
+            Text(
               'Wishes and suggestions: '.tr,
               style: Theme.of(context).textTheme.bodyText2,
             ),
@@ -111,11 +116,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             ),
             supportProjectBlock(context),
             Container(
-              height: 40,
-            ),
-            Container(
               height: 10,
-              color: Colors.pink,
               key: dataKey,
             )
           ],
