@@ -83,8 +83,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             SizedBox(
               height: 40,
             ),
-            Text(
-                'Ищем контент менеджера для добавления аудио и видео к песням. \n Если Бог положил вам такое на сердце - напишите нам об этом!'),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                  'Ищем контент менеджера для добавления аудио и видео к песням. \n Если Бог положил вам такое на сердце - напишите нам об этом!'),
+            ),
             SizedBox(
               height: 40,
             ),
