@@ -25,7 +25,10 @@ class MyCheckboxListTile extends GetView<SongsController> {
               ),
               value: songLangController.songLang[lang],
               contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              secondary: Icon(Icons.reorder),
+              secondary: Icon(
+                Icons.reorder,
+                color: screensColors['songBook'],
+              ),
               onChanged: (val) {
                 songLangController.setSongLang(lang, val!);
                 controller.fetchSongsList();

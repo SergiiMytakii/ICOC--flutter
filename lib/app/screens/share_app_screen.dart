@@ -1,3 +1,5 @@
+import 'package:flutter_svg/svg.dart';
+
 import '../../index.dart';
 
 class ShareAppScreen extends StatefulWidget {
@@ -23,13 +25,14 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _shareCard(appUrlPlayMarket, 'assets/images/googlePlayIcon.jpeg',
-                  'google_play'),
+              _shareCard(context, appUrlPlayMarket,
+                  'assets/images/logo-google-play.svg', 'google_play'),
               SizedBox(
                 height: 16,
               ),
-              _shareCard(appUrlAppStore, 'assets/images/appStoreIcon.jpeg',
-                  'app_store'),
+              _shareCard(context, appUrlAppStore,
+                  'assets/images/appStoreIcon.svg', 'app_store',
+                  appStore: 'App Store'),
               SizedBox(
                 height: 200,
               ),
@@ -40,12 +43,33 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
     );
   }
 
-  _shareCard(String link, String image, String store) {
+  _shareCard(BuildContext ct, String link, String image, String store,
+      {String? appStore}) {
     return Column(
       children: [
         Row(
           children: [
-            Container(width: 150, child: Image.asset(image)),
+            Column(
+              children: [
+                Container(
+                  height: 150,
+                  width: 150,
+                  padding: appStore != null
+                      ? const EdgeInsets.all(12.0)
+                      : EdgeInsets.zero,
+                  child: SvgPicture.asset(
+                    image,
+                  ),
+                ),
+                Text(
+                  appStore ?? '',
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Theme.of(ct).disabledColor,
+                      fontWeight: FontWeight.w600),
+                )
+              ],
+            ),
             SizedBox(
               width: 6,
             ),
@@ -65,8 +89,10 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                         height: 8,
                       ),
                       CustomButton(
-                          child: Text(
-                            'Share link'.tr,
+                          child: FittedBox(
+                            child: Text(
+                              'Share link'.tr,
+                            ),
                           ),
                           onPressed: () => Share.share(link),
                           color: screensColors['general']!),
@@ -103,6 +129,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
           curve: Curves.fastOutSlowIn,
           child: Center(
             child: QrImage(
+              backgroundColor: Colors.white,
               data: link,
               version: QrVersions.auto,
             ),

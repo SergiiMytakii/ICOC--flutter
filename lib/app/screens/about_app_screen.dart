@@ -30,6 +30,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             SizedBox(
@@ -108,103 +109,14 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             SizedBox(
               height: 40,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              child: Text(
-                  'If you like this app and want it to be constantly improved and developed - you can support the project!'
-                      .tr,
-                  style: Theme.of(context).textTheme.bodyText2,
-                  textAlign: TextAlign.center),
+            supportProjectBlock(context),
+            Container(
+              height: 40,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              child: CustomButton(
-                  onPressed: () {
-                    setState(() {
-                      isOpened = !isOpened;
-                      //Scrollable.ensureVisible(dataKey.currentContext!);
-                      _opacity = !_opacity;
-                    });
-                  },
-                  child: Text('Support ptoject'.tr),
-                  color: screensColors['general']!),
-            ),
-            AnimatedContainer(
-              duration: Duration(milliseconds: 800),
-              height: isOpened ? 250 : 0,
-              width: double.maxFinite,
-              margin: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              padding: EdgeInsets.all(8),
-              curve: Curves.fastOutSlowIn,
-              child: Column(children: [
-                Flexible(child: Text('In Ukraine:'.tr)),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Flexible(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'MonoBank card:'.tr,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            monoBankCard,
-                          ),
-                          AnimatedOpacity(
-                            opacity: _opacity ? 0 : 1,
-                            duration: Duration(milliseconds: 800),
-                            child: IconButton(
-                              onPressed: () {
-                                _copyToClipboard(monoBankCard);
-                              },
-                              icon: Icon(Icons.copy_outlined),
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(child: Text('Out from Ukraine:'.tr)),
-                Flexible(
-                  child: Row(
-                    children: [
-                      Text('PayPal:'.tr),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        payPalAccount,
-                      ),
-                      Expanded(
-                        child: Container(),
-                        key: dataKey,
-                      ),
-                      AnimatedOpacity(
-                        opacity: _opacity ? 0 : 1,
-                        duration: Duration(milliseconds: 800),
-                        child: IconButton(
-                            onPressed: () {
-                              _copyToClipboard(payPalAccount);
-                            },
-                            icon: Icon(
-                              Icons.copy_outlined,
-                              color: Theme.of(context).primaryIconTheme.color,
-                            )),
-                      ),
-                    ],
-                  ),
-                )
-              ]),
-            ),
-            SizedBox(
-              height: 100,
+            Container(
+              height: 10,
+              color: Colors.pink,
+              key: dataKey,
             )
           ],
         ),
@@ -215,5 +127,108 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
   Future<void> _copyToClipboard(String text) async {
     await Clipboard.setData(ClipboardData(text: text));
     showSnackbar('', 'Copied to clipboard'.tr);
+  }
+
+  supportProjectBlock(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          child: Text(
+              'If you like this app and want it to be constantly improved and developed - you can support the project!'
+                  .tr,
+              style: Theme.of(context).textTheme.bodyText2,
+              textAlign: TextAlign.center),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          child: CustomButton(
+              onPressed: () async {
+                setState(() {
+                  isOpened = !isOpened;
+
+                  _opacity = !_opacity;
+                });
+                if (isOpened) {
+                  await Future.delayed(Duration(milliseconds: 500));
+                  Scrollable.ensureVisible(dataKey.currentContext!);
+                }
+              },
+              child: Text('Support ptoject'.tr),
+              color: screensColors['general']!),
+        ),
+        AnimatedContainer(
+          duration: Duration(milliseconds: 800),
+          height: isOpened ? 250 : 0,
+          width: double.maxFinite,
+          margin: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: EdgeInsets.all(8),
+          curve: Curves.fastOutSlowIn,
+          child: Column(children: [
+            Flexible(child: Text('In Ukraine:'.tr)),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'MonoBank card:'.tr,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      monoBankCard,
+                    ),
+                    AnimatedOpacity(
+                      opacity: _opacity ? 0 : 1,
+                      duration: Duration(milliseconds: 800),
+                      child: IconButton(
+                        onPressed: () {
+                          _copyToClipboard(monoBankCard);
+                        },
+                        icon: Icon(Icons.copy_outlined),
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Flexible(child: Text('Out from Ukraine:'.tr)),
+            Flexible(
+              child: Row(
+                children: [
+                  Text('PayPal:'.tr),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    payPalAccount,
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  AnimatedOpacity(
+                    opacity: _opacity ? 0 : 1,
+                    duration: Duration(milliseconds: 800),
+                    child: IconButton(
+                        onPressed: () {
+                          _copyToClipboard(payPalAccount);
+                        },
+                        icon: Icon(
+                          Icons.copy_outlined,
+                          color: Theme.of(context).primaryIconTheme.color,
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        ),
+      ],
+    );
   }
 }

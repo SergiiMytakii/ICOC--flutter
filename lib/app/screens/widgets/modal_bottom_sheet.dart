@@ -5,26 +5,35 @@ import 'package:flutter/material.dart';
 import 'package:getxfire/getxfire.dart';
 
 class ModalBottomSheet extends StatelessWidget {
-  const ModalBottomSheet({Key? key, this.child}) : super(key: key);
+  const ModalBottomSheet(
+      {Key? key, this.child, this.height, this.blurBackground = true})
+      : super(key: key);
 
   final Widget? child;
+  final double? height;
+  final bool blurBackground;
 
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+      filter: blurBackground
+          ? ImageFilter.blur(sigmaX: 2, sigmaY: 2)
+          : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context)
+              .bottomSheetTheme
+              .backgroundColor!
+              .withOpacity(0),
           borderRadius: Platform.isIOS
               ? BorderRadius.only(
-                  topRight: Radius.circular(12),
-                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15),
                 )
               : BorderRadius.zero,
         ),
         child: Container(
-          height: Get.size.height / 1.15,
+          height: height ?? Get.size.height / 1.15,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

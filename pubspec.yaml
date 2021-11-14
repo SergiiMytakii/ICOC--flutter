@@ -33,6 +33,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_slidable: ^0.6.0
+  flutter_svg: ^0.23.0+1
   get_storage: ^2.0.3
   getxfire: ^0.3.1
   html: ^0.15.0
@@ -65,13 +66,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
 
-
     - assets/db/ansver.db
 
     - assets/images/verse_of_day.jpeg
     - assets/images/logo_icoc_drawer.png
-    - assets/images/appStoreIcon.jpeg
+    - assets/images/appStoreIcon.svg
     - assets/images/googlePlayIcon.jpeg
+    - assets/images/logo-google-play.svg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

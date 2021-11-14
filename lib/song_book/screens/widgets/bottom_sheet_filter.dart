@@ -40,8 +40,15 @@ class BottomSheetFilter extends StatelessWidget {
                   }),
                 ),
               ),
-              FittedBox(
-                child: Text('hint reorder lang'.tr),
+              Expanded(
+                child: Text(
+                  'hint reorder lang'.tr,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: screensColors['songBook']),
+                  textAlign: TextAlign.center,
+                ),
               )
             ],
           ),

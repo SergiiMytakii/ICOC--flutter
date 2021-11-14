@@ -17,7 +17,10 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
           showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
-                return BottomSheetFilter();
+                return ModalBottomSheet(
+                    height: 380,
+                    blurBackground: false,
+                    child: BottomSheetFilter());
               });
         },
       ),

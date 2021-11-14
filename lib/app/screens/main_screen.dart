@@ -154,7 +154,7 @@ class MainScreen extends GetView<MainScreenController> {
             )
           : Container(
               height: size.height / 2.5,
-              child: CircularProgressIndicator.adaptive(),
+              child: Center(child: CircularProgressIndicator.adaptive()),
             ),
     );
   }

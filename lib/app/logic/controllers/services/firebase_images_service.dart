@@ -20,8 +20,8 @@ class FirebaseImagesService {
 
   static Future<String> getUrl(String path, int imageName) async {
     final ref = FirebaseStorage.instance.ref(path);
-    Logger().e(imageName);
     final url = await ref.child('$imageName.jpeg').getDownloadURL();
+    Logger().e(url);
 
     return url;
   }
