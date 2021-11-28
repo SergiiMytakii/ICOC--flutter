@@ -1,3 +1,5 @@
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
 import '/index.dart';
 
 class SongScreenController extends GetxController {
@@ -7,6 +9,8 @@ class SongScreenController extends GetxController {
   DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
   final songDetail =
       SongDetail(id: 0, title: {}, description: {}, text: {}, chords: {}).obs;
+  final RxMap resources = {}.obs;
+  RxList resourcesIds = [].obs;
   int songId;
   SongScreenController({
     required this.songId,
@@ -24,6 +28,7 @@ class SongScreenController extends GetxController {
     orderLang = orderLangController.orderLang;
     await fetchSongdetail(songId);
     getTitlesForTabs();
+    fetchResources(songId);
     countTabs();
     loadFontSize();
     super.onInit();
@@ -31,6 +36,24 @@ class SongScreenController extends GetxController {
 
   Future fetchSongdetail(int songId) async {
     songDetail.value = await databaseService.getSongDetail(songId);
+  }
+
+//take resources directly from fireBase
+  Future fetchResources(int songId) async {
+    print('start to get resources');
+    resources.value = await DatabaseServiceFirebase().resources(songId);
+    String? videoId;
+    for (String item in resources.values) {
+      print(item);
+      try {
+        videoId = YoutubePlayer.convertUrlToId(item);
+      } on Exception catch (e) {
+        showSnackbar('Error'.tr, 'Can not play video');
+        print(e);
+      }
+      resourcesIds.add(videoId);
+    }
+    print(resourcesIds); // BBAyRBTfsOU
   }
 
   void getTitlesForTabs() {

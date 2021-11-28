@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '/index.dart';
 
 class DatabaseServiceFirebase {
@@ -49,5 +51,16 @@ class DatabaseServiceFirebase {
   Future<List<SongDetail>> get songs {
     // insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
     return songCollection.get().then((result) => _songListFromSnapshot(result));
+  }
+
+  //get resources
+  Future<Map<String, dynamic>> resources(int songId) async {
+    Map<String, dynamic> resources = {};
+    await songCollection
+        .where('id', isEqualTo: songId)
+        .get()
+        .then((value) => resources = value.docs.first.get("resources") ?? {});
+
+    return resources;
   }
 }
