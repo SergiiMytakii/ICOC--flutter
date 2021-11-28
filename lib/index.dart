@@ -13,6 +13,7 @@ export 'package:icoc/app/theme.dart';
 export 'package:flutter/services.dart';
 export 'package:wakelock/wakelock.dart';
 export 'package:qr_flutter/qr_flutter.dart';
+export 'package:html/parser.dart';
 
 //controllers
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';

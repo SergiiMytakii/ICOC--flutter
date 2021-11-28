@@ -16,6 +16,7 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
         onPressed: () {
           showModalBottomSheet(
               context: context,
+              backgroundColor: Colors.transparent,
               builder: (BuildContext context) {
                 return ModalBottomSheet(
                     height: 380,

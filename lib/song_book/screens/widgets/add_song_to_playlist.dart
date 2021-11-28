@@ -40,7 +40,6 @@ class AddSongToPlaylistsScreen extends GetView<PlaylistsController> {
           ),
         ),
         Divider(
-          indent: 50,
           color: dividerColors[0],
           thickness: 1.2,
         ),

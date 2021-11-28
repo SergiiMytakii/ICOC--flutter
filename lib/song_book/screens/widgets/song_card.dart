@@ -18,6 +18,8 @@ class SongCard extends GetView<OrderLangController> {
   Widget build(BuildContext context) {
     Get.put(OrderLangController());
     String text = controller.chooseCardLang(song, orderLang)?[1] ?? '';
+    var document = parse(text);
+    text = parse(document.body!.text).documentElement!.text;
     return Column(
       children: [
         Slidable(
@@ -60,18 +62,12 @@ class SongCard extends GetView<OrderLangController> {
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
             ),
-            subtitle: text.startsWith('<')
-                ? html.Html(
-                    data: text.startsWith('<p>1')
-                        ? text.substring(10, 90)
-                        : text.substring(0, 80),
-                  )
-                : Text(
-                    text,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
+            subtitle: Text(
+              text,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
           ),
         ),
         Divider(

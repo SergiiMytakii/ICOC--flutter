@@ -29,6 +29,11 @@ class DatabaseHelperFTS4 {
   static const String TABLE_CHORDS = 'chords';
   static const String CHORDS = 'chords_v';
 
+  // static const String TABLE_RESOURCES = 'resources'; //todo may you don't need it
+  // static const String RESOURCES_RU = 'res_ru';
+  // static const String RESOURCES_UK = 'res_uk';
+  // static const String RESOURCES_EN = 'res_en';
+
   static const String TABLE_FAVORITES = 'favorites';
   static const String FAVORITE_STATUS = 'favoriteStatus';
 
@@ -141,6 +146,8 @@ class DatabaseHelperFTS4 {
           'CREATE VIRTUAL TABLE $TABLE_TEXT_EN USING fts4 (tokenize = unicode61, $ID_SONG, $TEXT_EN)');
       await db.execute(
           'CREATE TABLE $TABLE_DESCRIPTION ($ID_SONG INTEGER PRIMARY KEY, $DESCRIPTION_RU TEXT, $DESCRIPTION_UK TEXT, $DESCRIPTION_EN TEXT)');
+      // await db.execute( //todo may you don't need it
+      //     'CREATE TABLE $TABLE_RESOURCES($ID INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER PRIMARY KEY, $RESOURCES_RU TEXT, $RESOURCES_UK TEXT, $RESOURCES_EN TEXT)');
       await db.execute(
           'CREATE TABLE $TABLE_CHORDS ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER, $CHORDS TEXT)');
       await db.execute(
@@ -169,6 +176,7 @@ class DatabaseHelperFTS4 {
     database.delete(TABLE_TEXT_EN);
     database.delete(TABLE_DESCRIPTION);
     database.delete(TABLE_CHORDS);
+    // database.delete(TABLE_RESOURCES);//todo may you don't need it
 
     for (SongDetail song in songs) {
       await database.insert(

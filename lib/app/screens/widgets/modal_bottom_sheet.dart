@@ -19,12 +19,9 @@ class ModalBottomSheet extends StatelessWidget {
       filter: blurBackground
           ? ImageFilter.blur(sigmaX: 2, sigmaY: 2)
           : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-      child: DecoratedBox(
+      child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context)
-              .bottomSheetTheme
-              .backgroundColor!
-              .withOpacity(0),
+          color: Theme.of(context).canvasColor,
           borderRadius: Platform.isIOS
               ? BorderRadius.only(
                   topRight: Radius.circular(15),
@@ -32,28 +29,26 @@ class ModalBottomSheet extends StatelessWidget {
                 )
               : BorderRadius.zero,
         ),
-        child: Container(
-          height: height ?? Get.size.height / 1.15,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Platform.isIOS)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(12),
-                      height: 6,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(25)),
-                    ),
-                  ],
-                ),
-              child!,
-            ],
-          ),
+        height: height ?? Get.size.height / 1.15,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Platform.isIOS)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(12),
+                    height: 6,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(25)),
+                  ),
+                ],
+              ),
+            child!,
+          ],
         ),
       ),
     );

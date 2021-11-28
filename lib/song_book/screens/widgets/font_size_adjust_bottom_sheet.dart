@@ -24,10 +24,7 @@ class FontSizeAdjustBottomSheet {
         context: Get.context!,
         isScrollControlled: true,
         enableDrag: true,
-        backgroundColor: Theme.of(context)
-            .bottomSheetTheme
-            .backgroundColor!
-            .withOpacity(0.9),
+        backgroundColor: Colors.transparent,
         barrierColor: Colors.black.withOpacity(0.2),
         builder: (context) => ModalBottomSheet(
             height: Get.size.height / 4,

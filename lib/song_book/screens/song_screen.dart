@@ -33,6 +33,12 @@ class SongScreen extends GetView<SongScreenController> {
             actions: [
               IconButton(
                 icon: Icon(
+                  Icons.video_collection,
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
                   Icons.share,
                 ),
                 onPressed: () {

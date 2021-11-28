@@ -18,12 +18,12 @@ class SongDetail {
   factory SongDetail.fromJson(Map<String, dynamic> parsedJson) {
     //print(parsedJson);
     return SongDetail(
-      id: parsedJson['Id'],
-      title: parsedJson['title'],
-      text: parsedJson['text'],
-      description: parsedJson['description'],
+      id: parsedJson['Id'] ?? 0,
+      title: parsedJson['title'] ?? '',
+      text: parsedJson['text'] ?? '',
+      description: parsedJson['description'] ?? '',
       resources: parsedJson['resourses'] ?? null,
-      chords: parsedJson['chords'],
+      chords: parsedJson['chords'] ?? '',
     );
   }
 
@@ -66,4 +66,20 @@ class SongDetail {
       'v4': chords['v4'],
     };
   }
+
+//todo may you don't need it
+  // Map<String, Object?> toMapResources() {
+  //   if (resources != null)
+  //     return {
+  //       'id': id,
+  //       'ru1': resources!['ru1'],
+  //       'ru2': resources!['ru2'],
+  //       'uk1': resources!['uk1'],
+  //       'uk2': resources!['uk2'],
+  //       'en1': resources!['en1'],
+  //       'en2': resources!['en2'],
+  //     };
+  //   else
+  //     return {};
+  // }
 }

@@ -7,11 +7,13 @@ class SongTextOnSongScreen extends StatelessWidget {
       {required this.title,
       required this.textVersion,
       required this.description,
+      this.resources,
       this.controller});
 
   final String textVersion;
   final String description;
   final String title;
+  final Map? resources;
   final SongScreenController? controller;
 
   @override
@@ -41,6 +43,16 @@ class SongTextOnSongScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline6!,
               ),
             ),
+            resources != null
+                ? Container(
+                    alignment: Alignment.topRight,
+                    margin: EdgeInsets.symmetric(vertical: 7),
+                    child: Text(
+                      resources!['en1'],
+                      style: Theme.of(context).textTheme.headline6!,
+                    ),
+                  )
+                : Container(),
             SizedBox(height: 10),
             textVersion.startsWith('<')
                 ? html.Html(

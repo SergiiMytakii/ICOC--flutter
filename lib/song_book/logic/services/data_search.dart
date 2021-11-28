@@ -1,6 +1,7 @@
 import 'dart:io';
 import '/index.dart';
 
+
 class DataSearch extends SearchDelegate {
   final songsController = Get.put(SongsController());
   @override
@@ -129,8 +130,9 @@ class DataSearch extends SearchDelegate {
         songs.data![index].text['en'] ??
         '';
     //print(textFromSnapshot);
-
-    final List<String> text = textFromSnapshot.split(' ');
+    var document = parse(textFromSnapshot);
+    String parsedString = parse(document.body!.text).documentElement!.text;
+    final List<String> text = parsedString.split(' ');
     // print(text);
     return text.map((word) {
       return word.contains('[')
@@ -147,15 +149,16 @@ class DataSearch extends SearchDelegate {
 
   String trimText(String word) {
     String word1 = word.replaceAll('[', '');
-    word = word1.replaceAll('br', '<p>');
-    word1 = word.replaceAll(
-        RegExp(
-          r'<[^>]*>|&[^;]+;',
-          multiLine: true,
-        ),
-        '');
-    word = word1.replaceAll('/>', '');
-    return word;
+    // word = word1.replaceAll('br', '<p>');
+    // word = word1.replaceAll(
+    //     RegExp(
+    //       r'<[^>]*>|&[^;]+;',
+    //       multiLine: true,
+    //     ),
+    //     '');
+    //word = word1.replaceAll('/>', '');
+
+    return word1;
   }
 
   Widget buildSongCardWithHighliting(AsyncSnapshot<List<Song>> songs, int index,
