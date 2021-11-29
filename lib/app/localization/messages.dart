@@ -76,7 +76,9 @@ class Messages extends Translations {
           'Copied to clipboard': 'Copied to clipboard',
           'Share link': 'Share link',
           'QR code': 'QR code',
-          'Verse of the day': 'Verse of the day'
+          'Verse of the day': 'Verse of the day',
+          'Video & audio': 'Video & audio',
+          'To lyrics': 'To lyrics'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -155,7 +157,9 @@ class Messages extends Translations {
           'Copied to clipboard': 'Скопировано в буфер обмена',
           'Share link': 'Отправить ссылку',
           'QR code': 'QR код',
-          'Verse of the day': 'Отрывок дня'
+          'Verse of the day': 'Отрывок дня',
+          'Video & audio': 'Видео и аудио',
+          'To lyrics': 'К словам'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -234,7 +238,9 @@ class Messages extends Translations {
           'Copied to clipboard': 'Скопійовано до буферу обміну',
           'Share link': 'Відправити ссилку',
           'QR code': 'QR код',
-          'Verse of the day': 'Уривок дня'
+          'Verse of the day': 'Уривок дня',
+          'Video & audio': 'Відео та аудіо',
+          'To lyrics': 'До текстів'
         }
       };
 }

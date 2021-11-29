@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
+import 'package:icoc/song_book/screens/video_list_screen.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../index.dart';
@@ -18,11 +19,11 @@ class _SongScreenState extends State<SongScreen> {
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
   bool showVideos = false;
+  String videoId = '';
   @override
   Widget build(BuildContext context) {
     final songId = Get.arguments != null ? Get.arguments[0] : 1;
     final controller = Get.put(SongScreenController(songId: songId));
-
     favoritesController.getFavoriteStatus(songId);
     final SlidesController slidesController = Get.put(SlidesController());
     var fontSozeAdjust = FontSizeAdjustBottomSheet(
@@ -42,15 +43,22 @@ class _SongScreenState extends State<SongScreen> {
             ),
             elevation: 0,
             actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.video_collection,
-                ),
-                onPressed: () {
-                  setState(() {
-                    showVideos = !showVideos;
-                  });
-                },
+              Obx(
+                () => controller.resources.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.video_collection,
+                        ),
+                        onPressed: () async {
+                          await Get.to(VideoListScreen())?.then((value) {
+                            setState(() {
+                              videoId = value;
+                              showVideos = !showVideos;
+                            });
+                          });
+                        },
+                      )
+                    : Container(),
               ),
               IconButton(
                 icon: Icon(
@@ -88,6 +96,7 @@ class _SongScreenState extends State<SongScreen> {
             ],
           ),
           body: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
               TabBarView(
                 children: [
@@ -113,51 +122,43 @@ class _SongScreenState extends State<SongScreen> {
               ),
               if (showVideos)
                 Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: 300,
-                      width: Get.size.width,
-                      child: Obx(
-                        () => SingleChildScrollView(
-                            child: Column(
-                          children: [
-                            ...List.generate(
-                              controller.resourcesIds.length,
-                              (index) => _youtubePlayer(
-                                  context, controller.resourcesIds[index]),
-                            )
-                          ],
-                        )),
-                      ),
-                    ))
+                  width: Get.width,
+                  //bottom: 0,
+                  child: Stack(children: [
+                    Miniplayer(
+                        minHeight: 80,
+                        maxHeight: Get.size.height / 3,
+                        builder: (height, percentage) {
+                          print(videoId);
+                          return YoutubePlayer(
+                            width: Get.width,
+                            controller: YoutubePlayerController(
+                              initialVideoId: videoId,
+                              flags: YoutubePlayerFlags(
+                                hideControls: true,
+                                controlsVisibleAtStart: true,
+                                mute: false,
+                              ),
+                            ),
+                          );
+                        }),
+                    Positioned(
+                      right: 0,
+                      child: IconButton(
+                          color: screensColors['songBook'],
+                          onPressed: () {
+                            setState(() {
+                              showVideos = false;
+                            });
+                          },
+                          icon: Icon(Icons.close_outlined)),
+                    )
+                  ]),
+                ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Widget _youtubePlayer(BuildContext context, String id) {
-    return Miniplayer(
-        backgroundColor: Colors.transparent,
-        minHeight: 70,
-        maxHeight: 300,
-        builder: (height, percentage) => Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: YoutubePlayer(
-                  thumbnail: Text(YoutubePlayer.getThumbnail(videoId: id)),
-                  controller: YoutubePlayerController(
-                    initialVideoId: id,
-                    flags: YoutubePlayerFlags(
-                      hideThumbnail: true,
-                      //hideControls: true,
-                      controlsVisibleAtStart: true,
-                      autoPlay: false,
-                      mute: false,
-                    ),
-                  ),
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: screensColors['songBook']),
-            ));
   }
 }
