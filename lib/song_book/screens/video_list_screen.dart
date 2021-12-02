@@ -38,7 +38,7 @@ class VideoListScreen extends StatelessWidget {
                 initialVideoId: id,
                 flags: YoutubePlayerFlags(
                   hideThumbnail: true,
-                  hideControls: true,
+                  //hideControls: true,
                   controlsVisibleAtStart: true,
                   autoPlay: false,
                   mute: false,
