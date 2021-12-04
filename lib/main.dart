@@ -7,7 +7,7 @@ void main() async {
   await GetStorage.init();
   await Firebase.initializeApp();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  GetStorage box = GetStorage();
+  final GetStorage box = GetStorage();
   String? appLocale;
   if (await box.read('locale') != null) {
     appLocale = box.read('locale');

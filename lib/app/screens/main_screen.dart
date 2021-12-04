@@ -24,10 +24,24 @@ class MainScreen extends StatelessWidget {
                 onPressed: () => Scaffold.of(context).openDrawer()),
           ),
           actions: [
-            IconButton(
-              icon: Icon(Icons.notifications_none_outlined),
-              onPressed: () => Get.to(NotificationsScreen()),
-            ),
+            Obx(() => Stack(children: [
+                  IconButton(
+                    icon: Icon(Icons.notifications_none_outlined),
+                    onPressed: () => Get.to(() => NotificationsScreen()),
+                  ),
+                  controller.amountNotifications > 0
+                      ? Positioned(
+                          left: 10,
+                          top: 10,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 8,
+                            child: FittedBox(
+                                child: Text(
+                                    controller.amountNotifications.toString())),
+                          ))
+                      : Container()
+                ])),
             SizedBox(
               width: 15,
             )

@@ -93,7 +93,7 @@ class _SongScreenState extends State<SongScreen> {
                 onPressed: () async {
                   await Get.to(() => VideoListScreen())?.then((value) {
                     setState(() {
-                      videoId = value;
+                      if (value != null) videoId = value;
                       showVideos = !showVideos;
                     });
                   });
@@ -150,11 +150,15 @@ class _SongScreenState extends State<SongScreen> {
           builder: (height, percentage) {
             print(videoId);
             return YoutubePlayer(
+              bottomActions: [
+                CurrentPosition(),
+                //ProgressBar(isExpanded: true),
+              ],
               width: Get.width,
               controller: YoutubePlayerController(
                 initialVideoId: videoId,
                 flags: YoutubePlayerFlags(
-                  controlsVisibleAtStart: true,
+                  //controlsVisibleAtStart: true,
                   mute: false,
                 ),
               ),

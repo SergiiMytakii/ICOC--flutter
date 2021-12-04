@@ -12,24 +12,29 @@ class MainScreenController extends GetxController {
   String versesOfTheDayUrls = '';
   RxString url = ''.obs;
   RxList<NotificationsModel> notifications = <NotificationsModel>[].obs;
+  final GetStorage box = GetStorage();
+  RxInt amountNotifications = 0.obs;
   @override
   void onInit() async {
     await checkItsFirstRun();
-    getNotifications();
+    await getNotifications();
     url.value = await FirebaseImagesService.getUrl(path, randomInt);
+    countNotifications();
+    //box.erase(); // to clean cach
     super.onInit();
   }
 
-  void getNotifications() async {
+  Future getNotifications() async {
     final QuerySnapshot dataSnapShots =
         await NotificationsServiceFirebase().notifications;
     String locale = Get.locale!.languageCode.toString();
 
     dataSnapShots.docs.where((doc) => doc.id == 'MainScreen').forEach((doc) {
-      log.e(doc.get(locale));
-      log.e(locale);
+      // log.e(doc.get(locale));
+      // log.e(locale);
       List notif = doc.get(locale);
-      notif.forEach((item) => notifications.add(NotificationsModel(
+
+      notif.reversed.forEach((item) => notifications.add(NotificationsModel(
           title: item["title"], text: item["text"], link: item["link"])));
     });
   }
@@ -51,5 +56,32 @@ class MainScreenController extends GetxController {
       box.write('first_run', false);
     } else
       songsController.fetchSongsList();
+  }
+
+  bool checkIsRead(String text) {
+    Map? readStatus = box.read('notifications');
+
+    if (readStatus != null) {
+      if (readStatus.values.contains(text))
+        return true;
+      else
+        return false;
+    } else
+      return false;
+  }
+
+  void countNotifications() {
+    Map? readStatus = box.read('notifications');
+    if (readStatus != null) {
+      for (NotificationsModel item in notifications) {
+        log.e(item.text);
+        log.v(readStatus.values);
+        if (!readStatus.values.contains(item.text)) {
+          amountNotifications.value++;
+        }
+      }
+    } else
+      amountNotifications.value = notifications.length;
+    log.e(amountNotifications);
   }
 }
