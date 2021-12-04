@@ -1,88 +1,93 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:icoc/app/screens/notifications_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../index.dart';
 
-class MainScreen extends GetView<MainScreenController> {
+class MainScreen extends StatelessWidget {
   final size = Get.size;
   double sizeOfCell() => (size.width - 15) / 2;
+  final controller = Get.put(MainScreenController());
   @override
   Widget build(BuildContext context) {
-    Get.put(MainScreenController());
-    //ImportSongs().loadSongsFromJson();  - if needed to insert songs to database from json file
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text('ICOC'),
-        leading: Builder(
-          builder: (context) => IconButton(
-              icon: Platform.isIOS
-                  ? Icon(CupertinoIcons.ellipsis)
-                  : Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer()),
-        ),
-        actions: [
-          Icon(Icons.notifications_none_outlined),
-          SizedBox(
-            width: 15,
-          )
-        ],
-        elevation: 6,
-      ),
-      drawer: Drawer(
-        child: MyDrawer(),
-      ),
-      body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            verseOfTheDay(context),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7.5),
-              child: Table(
-                defaultColumnWidth: FixedColumnWidth(sizeOfCell()),
-                children: [
-                  TableRow(
-                    children: [
-                      tableItem(
-                          context,
-                          'drawer_song_book'.tr,
-                          screensColors['songBook']!,
-                          Icons.music_note,
-                          sizeOfCell(),
-                          Routes.SONGBOOK),
-                      tableItem(
-                          context,
-                          'drawer_news'.tr,
-                          screensColors['news']!,
-                          Icons.language,
-                          sizeOfCell(),
-                          Routes.NEWS),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      tableItem(
-                          context,
-                          'drawer_first_principles'.tr,
-                          screensColors['firstPrinciples']!,
-                          Icons.import_contacts,
-                          sizeOfCell(),
-                          Routes.FIRST_PRINCIPLES),
-                      tableItem(
-                          context,
-                          'drawer_q_and_a'.tr,
-                          screensColors['Q&A']!,
-                          Icons.question_answer,
-                          sizeOfCell(),
-                          Routes.Q_AND_ANSVERS),
-                    ],
-                  ),
-                ],
-              ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('ICOC'),
+          leading: Builder(
+            builder: (context) => IconButton(
+                icon: Platform.isIOS
+                    ? Icon(CupertinoIcons.ellipsis)
+                    : Icon(Icons.menu),
+                onPressed: () => Scaffold.of(context).openDrawer()),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.notifications_none_outlined),
+              onPressed: () => Get.to(NotificationsScreen()),
             ),
+            SizedBox(
+              width: 15,
+            )
           ],
+          elevation: 6,
+        ),
+        drawer: Drawer(
+          child: MyDrawer(),
+        ),
+        body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              verseOfTheDay(context),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 7.5),
+                child: Table(
+                  defaultColumnWidth: FixedColumnWidth(sizeOfCell()),
+                  children: [
+                    TableRow(
+                      children: [
+                        tableItem(
+                            context,
+                            'drawer_song_book'.tr,
+                            screensColors['songBook']!,
+                            Icons.music_note,
+                            sizeOfCell(),
+                            Routes.SONGBOOK),
+                        tableItem(
+                            context,
+                            'drawer_news'.tr,
+                            screensColors['news']!,
+                            Icons.language,
+                            sizeOfCell(),
+                            Routes.NEWS),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        tableItem(
+                            context,
+                            'drawer_first_principles'.tr,
+                            screensColors['firstPrinciples']!,
+                            Icons.import_contacts,
+                            sizeOfCell(),
+                            Routes.FIRST_PRINCIPLES),
+                        tableItem(
+                            context,
+                            'drawer_q_and_a'.tr,
+                            screensColors['Q&A']!,
+                            Icons.question_answer,
+                            sizeOfCell(),
+                            Routes.Q_AND_ANSVERS),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

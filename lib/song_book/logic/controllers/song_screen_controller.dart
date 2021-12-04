@@ -1,3 +1,4 @@
+import 'package:icoc/song_book/models/resour%D1%81es.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '/index.dart';
@@ -9,8 +10,8 @@ class SongScreenController extends GetxController {
   DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
   final songDetail =
       SongDetail(id: 0, title: {}, description: {}, text: {}, chords: {}).obs;
-  final RxMap resources = {}.obs;
-  RxList resourcesIds = [].obs;
+  List<dynamic> resources = [];
+  RxList<Resources> resourcesIds = <Resources>[].obs;
   int songId;
   SongScreenController({
     required this.songId,
@@ -41,19 +42,21 @@ class SongScreenController extends GetxController {
 //take resources directly from fireBase
   Future fetchResources(int songId) async {
     print('start to get resources');
-    resources.value = await DatabaseServiceFirebase().resources(songId);
+    resources = await DatabaseServiceFirebase().resources(songId);
     String? videoId;
-    for (String item in resources.values) {
-      print(item);
+    for (Map item in resources) {
       try {
-        videoId = YoutubePlayer.convertUrlToId(item);
+        videoId = YoutubePlayer.convertUrlToId(item['link']);
       } on Exception catch (e) {
-        showSnackbar('Error'.tr, 'Can not play video');
+        showSnackbar('Error'.tr, 'Can not play video'.tr);
         print(e);
       }
-      resourcesIds.add(videoId);
+      resourcesIds.add(
+          Resources(lang: item['lang'], title: item['title'], link: videoId!));
     }
-    print(resourcesIds); // BBAyRBTfsOU
+    print(resourcesIds.first.lang); //
+    print(resourcesIds.first.title); //
+    print(resourcesIds.first.link); //
   }
 
   void getTitlesForTabs() {

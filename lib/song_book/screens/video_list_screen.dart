@@ -1,3 +1,4 @@
+import 'package:icoc/song_book/models/resour%D1%81es.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../index.dart';
@@ -26,16 +27,14 @@ class VideoListScreen extends StatelessWidget {
     );
   }
 
-  Widget _youtubePlayer(BuildContext context, String id) {
+  Widget _youtubePlayer(BuildContext context, Resources video) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Column(
         children: [
           YoutubePlayer(
-              // thumbnail: Text(YoutubePlayer.getThumbnail(videoId: id)),
-
               controller: YoutubePlayerController(
-                initialVideoId: id,
+                initialVideoId: video.link,
                 flags: YoutubePlayerFlags(
                   hideThumbnail: true,
                   //hideControls: true,
@@ -55,19 +54,28 @@ class VideoListScreen extends StatelessWidget {
                   child: IconButton(
                       color: Colors.white,
                       onPressed: () {
-                        Get.back(result: id);
+                        Get.back(result: video.link);
                       },
                       icon: Icon(Icons.arrow_back)),
                 ),
               ),
-              Expanded(
-                  child: Text(
+              Text(
                 'To lyrics'.tr,
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
                     .copyWith(color: screensColors['songBook']),
-              ))
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Text(
+                video.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: screensColors['songBook']),
+              ),
             ],
           )
         ],

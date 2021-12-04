@@ -3,7 +3,7 @@ class SongDetail {
   final Map description;
   final Map title;
   final Map text;
-  final Map? resources;
+  final List? resources;
   final Map chords;
 
   SongDetail({
@@ -22,7 +22,7 @@ class SongDetail {
       title: parsedJson['title'] ?? '',
       text: parsedJson['text'] ?? '',
       description: parsedJson['description'] ?? '',
-      resources: parsedJson['resourses'] ?? null,
+      resources: parsedJson['resourses'] ?? [],
       chords: parsedJson['chords'] ?? '',
     );
   }

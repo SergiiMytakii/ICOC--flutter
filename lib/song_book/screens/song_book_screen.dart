@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import '/index.dart';
 
 class SongBookScreen extends StatelessWidget {
-  final controller = Get.put(SongsController());
+  final SongsController controller = Get.find();
   final DataSearch dataSearch = DataSearch();
   @override
   Widget build(BuildContext context) {

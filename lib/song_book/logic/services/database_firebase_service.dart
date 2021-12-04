@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import '/index.dart';
 
 class DatabaseServiceFirebase {
@@ -28,12 +26,12 @@ class DatabaseServiceFirebase {
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<SongDetail> songs = snapshot.docs.map((doc) {
       return SongDetail(
-          id: doc.get('id') ?? 0,
-          description: doc.get('description') ?? {},
-          text: doc.get('text') ?? {},
-          title: doc.get('title') ?? {},
-          chords: doc.get('chords') ?? {},
-          resources: doc.get('resources') ?? {});
+        id: doc.get('id') ?? 0,
+        description: doc.get('description') ?? {},
+        text: doc.get('text') ?? {},
+        title: doc.get('title') ?? {},
+        chords: doc.get('chords') ?? {},
+      );
     }).toList();
 
     //get rid from nullable values
@@ -54,12 +52,12 @@ class DatabaseServiceFirebase {
   }
 
   //get resources
-  Future<Map<String, dynamic>> resources(int songId) async {
-    Map<String, dynamic> resources = {};
+  Future<List<dynamic>> resources(int songId) async {
+    List<dynamic> resources = [];
     await songCollection
         .where('id', isEqualTo: songId)
         .get()
-        .then((value) => resources = value.docs.first.get("resources") ?? {});
+        .then((value) => resources = value.docs.first.get("resources") ?? []);
 
     return resources;
   }

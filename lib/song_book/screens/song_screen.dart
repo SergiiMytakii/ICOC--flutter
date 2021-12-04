@@ -34,80 +34,21 @@ class _SongScreenState extends State<SongScreen> {
       () => DefaultTabController(
         length: controller.amountOfTabs.value,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: screensColors['songBook'],
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: [
-                for (final item in controller.tabItemsSongs) Tab(text: item),
-                for (final item in controller.tabItemsChords) Tab(text: item),
-              ],
-            ),
-            elevation: 0,
-            actions: [
-              controller.resources.isNotEmpty
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.video_collection,
-                      ),
-                      onPressed: () async {
-                        await Get.to(() => VideoListScreen())?.then((value) {
-                          setState(() {
-                            videoId = value;
-                            showVideos = !showVideos;
-                          });
-                        });
-                      },
-                    )
-                  : Container(),
-              IconButton(
-                icon: Icon(
-                  Icons.share,
-                ),
-                onPressed: () {
-                  String song = slidesController.slideTitle.value +
-                      '\n\n' +
-                      slidesController.slideText.value;
-                  Share.share(song);
-                },
-              ),
-              IconButton(
-                icon: Icon(
-                  favoritesController.favStatus.value
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-                ),
-                onPressed: () => favoritesController.toggleFavStatus(songId),
-              ),
-              IconButton(
-                  icon: Icon(
-                    Icons.text_fields_outlined,
-                  ),
-                  onPressed: () => fontSozeAdjust.bottomSheet()),
-              IconButton(
-                icon: Icon(Icons.slideshow_outlined),
-                onPressed: () {
-                  slidesController.getFirstSlide();
-                  Get.toNamed(
-                    Routes.SLIDES_SCREEN,
-                  );
-                },
-              ),
-            ],
-          ),
+          appBar: appBar(controller, slidesController, songId, fontSozeAdjust),
           body: Column(
-            // alignment: Alignment.bottomCenter,
             children: [
+              //adjust size text screen and player dynamicly
               ValueListenableBuilder(
                   valueListenable: playerExpandProgress,
                   builder:
                       (BuildContext context, double height, Widget? child) {
-                    log.w(showVideos);
-                    log.w(playerExpandProgress.value);
+                    // log.w(showVideos);
+                    double? height = Scaffold.of(context).appBarMaxHeight;
+                    // log.w(height);
 
                     return SizedBox(
                       height: Get.size.height -
-                          132 -
+                          height! -
                           (showVideos ? playerExpandProgress.value : 0),
                       child: child,
                     );
@@ -126,6 +67,80 @@ class _SongScreenState extends State<SongScreen> {
     );
   }
 
+  AppBar appBar(
+      SongScreenController controller,
+      SlidesController slidesController,
+      songId,
+      FontSizeAdjustBottomSheet fontSozeAdjust) {
+    return AppBar(
+      backgroundColor: screensColors['songBook'],
+      bottom: TabBar(
+        isScrollable: true,
+        tabs: [
+          for (final item in controller.tabItemsSongs) Tab(text: item),
+          for (final item in controller.tabItemsChords) Tab(text: item),
+        ],
+      ),
+      elevation: 0,
+      actions: [
+        controller.resourcesIds.isNotEmpty
+            ? IconButton(
+                autofocus: true,
+                tooltip: 'Video & audio'.tr,
+                icon: Icon(
+                  Icons.video_collection,
+                ),
+                onPressed: () async {
+                  await Get.to(() => VideoListScreen())?.then((value) {
+                    setState(() {
+                      videoId = value;
+                      showVideos = !showVideos;
+                    });
+                  });
+                },
+              )
+            : Container(),
+        IconButton(
+          tooltip: 'Share'.tr,
+          icon: Icon(
+            Icons.share,
+          ),
+          onPressed: () {
+            String song = slidesController.slideTitle.value +
+                '\n\n' +
+                slidesController.slideText.value;
+            Share.share(song);
+          },
+        ),
+        IconButton(
+          tooltip: "to favorite".tr,
+          icon: Icon(
+            favoritesController.favStatus.value
+                ? Icons.favorite
+                : Icons.favorite_border,
+          ),
+          onPressed: () => favoritesController.toggleFavStatus(songId),
+        ),
+        IconButton(
+            tooltip: 'Font size'.tr,
+            icon: Icon(
+              Icons.text_fields_outlined,
+            ),
+            onPressed: () => fontSozeAdjust.bottomSheet()),
+        IconButton(
+          tooltip: 'Slides'.tr,
+          icon: Icon(Icons.mobile_screen_share_outlined),
+          onPressed: () {
+            slidesController.getFirstSlide();
+            Get.toNamed(
+              Routes.SLIDES_SCREEN,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   Stack _miniPlayerBuilder() {
     return Stack(children: [
       Miniplayer(
@@ -139,7 +154,6 @@ class _SongScreenState extends State<SongScreen> {
               controller: YoutubePlayerController(
                 initialVideoId: videoId,
                 flags: YoutubePlayerFlags(
-                  hideControls: true,
                   controlsVisibleAtStart: true,
                   mute: false,
                 ),

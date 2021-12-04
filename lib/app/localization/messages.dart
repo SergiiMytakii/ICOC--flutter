@@ -78,7 +78,10 @@ class Messages extends Translations {
           'QR code': 'QR code',
           'Verse of the day': 'Verse of the day',
           'Video & audio': 'Video & audio',
-          'To lyrics': 'To lyrics'
+          'To lyrics': 'To lyrics',
+          'Can not play video': 'Can not play video',
+          'Slides': 'Slides',
+          'Share': "Share"
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -159,7 +162,10 @@ class Messages extends Translations {
           'QR code': 'QR код',
           'Verse of the day': 'Отрывок дня',
           'Video & audio': 'Видео и аудио',
-          'To lyrics': 'К словам'
+          'To lyrics': 'К словам',
+          'Can not play video': 'Ошибка воспроизведения видео',
+          'Slides': "Слайды",
+          'Share': "Поделиться"
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -240,7 +246,10 @@ class Messages extends Translations {
           'QR code': 'QR код',
           'Verse of the day': 'Уривок дня',
           'Video & audio': 'Відео та аудіо',
-          'To lyrics': 'До текстів'
+          'To lyrics': 'До текстів',
+          'Can not play video': 'Помилка відео',
+          'Slides': "Слайди",
+          'Share': "Поділитися"
         }
       };
 }
