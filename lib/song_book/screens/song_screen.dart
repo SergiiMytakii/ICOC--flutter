@@ -93,8 +93,10 @@ class _SongScreenState extends State<SongScreen> {
                 onPressed: () async {
                   await Get.to(() => VideoListScreen())?.then((value) {
                     setState(() {
-                      if (value != null) videoId = value;
-                      showVideos = !showVideos;
+                      if (value != null) {
+                        videoId = value;
+                        showVideos = !showVideos;
+                      }
                     });
                   });
                 },

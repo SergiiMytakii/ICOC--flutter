@@ -40,10 +40,12 @@ class MainScreenController extends GetxController {
   }
 
   int get randomInt {
+    //total amount  photos in firebase
+    final int totalAmount = 93;
     var day = DateTime.now().day;
-    Random random = new Random();
-    int randomNumber = random.nextInt(2) + 1;
-
+    final Random random = new Random();
+    final int randomNumber = random.nextInt(2) + 1;
+    assert(randomNumber * day < totalAmount);
     return randomNumber * day;
   }
 
@@ -75,13 +77,13 @@ class MainScreenController extends GetxController {
     if (readStatus != null) {
       for (NotificationsModel item in notifications) {
         log.e(item.text);
-        log.v(readStatus.values);
+        // log.v(readStatus.values);
         if (!readStatus.values.contains(item.text)) {
           amountNotifications.value++;
         }
       }
     } else
       amountNotifications.value = notifications.length;
-    log.e(amountNotifications);
+    //log.e(amountNotifications);
   }
 }

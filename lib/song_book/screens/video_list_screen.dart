@@ -33,13 +33,11 @@ class VideoListScreen extends StatelessWidget {
   }
 
   Widget _youtubePlayer(BuildContext context, Resources video) {
-    // log.i(MediaQuery.of(context).orientation);
+    log.e(context.isLandscape);
     YoutubePlayerController youtubePlayerController = YoutubePlayerController(
       initialVideoId: video.link,
       flags: YoutubePlayerFlags(
-        forceHD: MediaQuery.of(context).orientation == Orientation.portrait
-            ? false
-            : true,
+        forceHD: context.isPortrait ? false : true,
         //controlsVisibleAtStart: true,
         autoPlay: false,
         mute: false,
@@ -57,46 +55,48 @@ class VideoListScreen extends StatelessWidget {
               //showVideoProgressIndicator: true,
               progressIndicatorColor: screensColors['songBook']),
           builder: (context, player) {
-            return Column(
-              children: [
-                player,
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: CircleAvatar(
-                        backgroundColor: screensColors['songBook'],
-                        child: IconButton(
-                            color: Colors.white,
-                            onPressed: () {
-                              Get.back(result: video.link);
-                            },
-                            icon: Icon(Icons.arrow_back)),
-                      ),
-                    ),
-                    Text(
-                      'To lyrics'.tr,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6!
-                          .copyWith(color: screensColors['songBook']),
-                    ),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Expanded(
-                      child: Text(
-                        video.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline6!
-                            .copyWith(color: screensColors['songBook']),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            );
+            return context.isPortrait
+                ? Column(
+                    children: [
+                      player,
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: CircleAvatar(
+                              backgroundColor: screensColors['songBook'],
+                              child: IconButton(
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    Get.back(result: video.link);
+                                  },
+                                  icon: Icon(Icons.arrow_back)),
+                            ),
+                          ),
+                          Text(
+                            'To lyrics'.tr,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: screensColors['songBook']),
+                          ),
+                          Expanded(
+                            child: Container(),
+                          ),
+                          Expanded(
+                            child: Text(
+                              video.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: screensColors['songBook']),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                : Container();
           }),
     );
   }

@@ -1,3 +1,5 @@
+import 'package:flutter_html/flutter_html.dart';
+
 import '../../index.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -56,9 +58,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         ),
                       ),
                       title: Text(controller.notifications[index].title),
-                      subtitle: Text(
-                        controller.notifications[index].text,
-                      ),
+                      subtitle: controller.notifications[index].text
+                              .trim()
+                              .startsWith('<')
+                          ? Html(data: controller.notifications[index].text)
+                          : Text(
+                              controller.notifications[index].text,
+                            ),
                     ),
                     Divider(
                       indent: 50,
