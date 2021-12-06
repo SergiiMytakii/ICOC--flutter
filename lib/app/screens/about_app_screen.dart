@@ -80,6 +80,15 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               'Antonina Glajevskaya'.tr,
               style: Theme.of(context).textTheme.bodyText2,
             ),
+            Text(
+              'Oksana Strelchenya'.tr,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+            Text(
+              'Loginova Irina'.tr,
+              style: Theme.of(context).textTheme.bodyText2,
+            ),
+
             SizedBox(
               height: 40,
             ),

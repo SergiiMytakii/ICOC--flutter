@@ -17,13 +17,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     int i = 0;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Notifications'.tr),
-          centerTitle: true,
-        ),
-        body: Obx(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notifications'.tr),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: Obx(
           () => ListView.builder(
               itemCount: controller.notifications.length,
               itemBuilder: (BuildContext context, index) {

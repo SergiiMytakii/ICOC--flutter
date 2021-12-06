@@ -11,47 +11,48 @@ class MainScreen extends StatelessWidget {
   final controller = Get.put(MainScreenController());
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: Text('ICOC'),
-          leading: Builder(
-            builder: (context) => IconButton(
-                icon: Platform.isIOS
-                    ? Icon(CupertinoIcons.ellipsis)
-                    : Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer()),
-          ),
-          actions: [
-            Obx(() => Stack(children: [
-                  IconButton(
-                    icon: Icon(Icons.notifications_none_outlined),
-                    onPressed: () => Get.to(() => NotificationsScreen()),
-                  ),
-                  controller.amountNotifications > 0
-                      ? Positioned(
-                          left: 10,
-                          top: 10,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.red,
-                            radius: 8,
-                            child: FittedBox(
-                                child: Text(
-                                    controller.amountNotifications.toString())),
-                          ))
-                      : Container()
-                ])),
-            SizedBox(
-              width: 15,
-            )
-          ],
-          elevation: 6,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: Text('ICOC'),
+        centerTitle: true,
+        leading: Builder(
+          builder: (context) => IconButton(
+              icon: Platform.isIOS
+                  ? Icon(CupertinoIcons.ellipsis)
+                  : Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer()),
         ),
-        drawer: Drawer(
-          child: MyDrawer(),
-        ),
-        body: SingleChildScrollView(
+        actions: [
+          Obx(() => Stack(children: [
+                IconButton(
+                  icon: Icon(Icons.notifications_none_outlined),
+                  onPressed: () => Get.to(() => NotificationsScreen()),
+                ),
+                controller.amountNotifications > 0
+                    ? Positioned(
+                        left: 10,
+                        top: 10,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: 8,
+                          child: FittedBox(
+                              child: Text(
+                                  controller.amountNotifications.toString())),
+                        ))
+                    : Container()
+              ])),
+          SizedBox(
+            width: 15,
+          )
+        ],
+        elevation: 0,
+      ),
+      drawer: Drawer(
+        child: MyDrawer(),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
