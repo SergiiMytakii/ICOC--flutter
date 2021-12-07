@@ -1,5 +1,3 @@
-
-
 import '/index.dart';
 
 class SongLangController extends GetxController {
@@ -8,6 +6,7 @@ class SongLangController extends GetxController {
   @override
   void onInit() {
     loadSonglang();
+
     super.onInit();
   }
 

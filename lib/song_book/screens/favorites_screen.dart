@@ -1,9 +1,9 @@
 import '/index.dart';
 
-class FavoritesScreen extends GetView<FavoritesController> {
+class FavoritesScreen extends StatelessWidget {
+  final FavoritesController controller = Get.put(FavoritesController());
   @override
   Widget build(BuildContext context) {
-    Get.put(FavoritesController());
     int i = 0;
 
     return Scaffold(

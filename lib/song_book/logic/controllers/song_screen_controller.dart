@@ -19,8 +19,8 @@ class SongScreenController extends GetxController {
 
   final tabItemsSongs = [].obs;
   final tabItemsChords = [].obs;
-  OrderLangController orderLangController = Get.put(
-      OrderLangController()); //try to use instead final orderLangController = Get.find<OrderLangController>();
+  final OrderLangController orderLangController = Get
+      .find(); //try to use instead final orderLangController = Get.find<OrderLangController>();
   List<String> orderLang = [];
   RxInt amountOfTabs = 0.obs;
 

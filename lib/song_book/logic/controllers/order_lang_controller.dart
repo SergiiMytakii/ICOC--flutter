@@ -24,7 +24,7 @@ class OrderLangController extends GetxController {
     update();
   }
 
-  List<String?>? chooseCardLang(Song song, List<String> orderLang) {
+  List<String?>? chooseCardLang(Song song) {
     String? title;
     String? text;
 

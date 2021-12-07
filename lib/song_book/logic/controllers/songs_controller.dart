@@ -10,6 +10,8 @@ class SongsController extends GetxController {
   RxBool isSelected = true.obs;
   DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
   DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
+  final GetStorage box = GetStorage();
+  OrderLangController controller = Get.put(OrderLangController());
 
   Future fetchDataFromFirebase() async {
     log.i('start to fetch data from FB');
@@ -41,9 +43,20 @@ class SongsController extends GetxController {
                 ' Нажмите, чтобы \nобновить страницу'.tr);
       }
     }, onDone: () {
+      _orderSongs();
       log.i('fetch songs done');
       checkDatabaseChanged();
     });
+  }
+
+  void _orderSongs() {
+    bool byNumber = box.read('sortByNumber') ?? true;
+    if (byNumber)
+      songs.sort((a, b) => a.id.compareTo(b.id));
+    else
+      songs.sort((a, b) => controller
+          .chooseCardLang(a)![0]!
+          .compareTo(controller.chooseCardLang(b)![0]!));
   }
 
   Future<void> checkDatabaseChanged() async {

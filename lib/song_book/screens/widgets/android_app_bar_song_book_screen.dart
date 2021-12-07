@@ -25,14 +25,10 @@ class AndroidAppBar extends StatelessWidget {
                 context: context,
                 isScrollControlled: true,
                 enableDrag: true,
-                // backgroundColor: Theme.of(context)
-                //     .bottomSheetTheme
-                //     .backgroundColor!
-                //     .withOpacity(0.1),
                 barrierColor: Colors.black.withOpacity(0.2),
                 builder: (BuildContext context) {
                   return ModalBottomSheet(
-                      height: 380,
+                      height: 420,
                       blurBackground: false,
                       child: BottomSheetFilter());
                 });

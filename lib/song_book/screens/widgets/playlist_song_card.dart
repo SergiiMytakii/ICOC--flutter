@@ -20,7 +20,7 @@ class PlaylistSongCard extends GetView<OrderLangController> {
   @override
   Widget build(BuildContext context) {
     Get.put(OrderLangController());
-    String text = controller.chooseCardLang(song, orderLang)?[1] ?? '';
+    String text = controller.chooseCardLang(song)?[1] ?? '';
     return Column(
       children: [
         Slidable(
@@ -64,7 +64,7 @@ class PlaylistSongCard extends GetView<OrderLangController> {
                 style: Theme.of(context).textTheme.headline6),
             title: Text(
               //show title and text language accordingly to app lang
-              controller.chooseCardLang(song, orderLang)?[0] ?? '',
+              controller.chooseCardLang(song)?[0] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
@@ -76,7 +76,7 @@ class PlaylistSongCard extends GetView<OrderLangController> {
                         : text.substring(0, 80),
                   )
                 : Text(
-                    controller.chooseCardLang(song, orderLang)?[1] ?? '',
+                    controller.chooseCardLang(song)?[1] ?? '',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: Theme.of(context).textTheme.bodyText2,

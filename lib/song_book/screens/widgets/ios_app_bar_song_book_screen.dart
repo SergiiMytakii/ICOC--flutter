@@ -19,7 +19,7 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) {
                 return ModalBottomSheet(
-                    height: 380,
+                    height: 420,
                     blurBackground: false,
                     child: BottomSheetFilter());
               });
@@ -41,7 +41,9 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
             bottom: 8,
           ),
           child: CupertinoSearchTextField(
+            suffixMode: OverlayVisibilityMode.always,
             onChanged: (val) {
+              print(val);
               controller.query.value = val;
             },
             backgroundColor: Colors.white.withOpacity(0.2),

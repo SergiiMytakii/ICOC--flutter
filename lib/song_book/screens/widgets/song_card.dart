@@ -1,5 +1,6 @@
+
 import '/index.dart';
-import 'package:flutter_html/flutter_html.dart' as html;
+
 
 class SongCard extends StatelessWidget {
   final Song song;
@@ -17,7 +18,8 @@ class SongCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(OrderLangController());
-    String text = controller.chooseCardLang(song, orderLang)?[1] ?? '';
+
+    String text = controller.chooseCardLang(song)?[1] ?? '';
     var document = parse(text);
     text = parse(document.body!.text).documentElement!.text;
     return Column(
@@ -52,12 +54,12 @@ class SongCard extends StatelessWidget {
           child: ListTile(
             onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
                 arguments: [song.id, controller])),
-            horizontalTitleGap: 0,
+            horizontalTitleGap: 2,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
             title: Text(
               //show title and text language accordingly to app lang
-              controller.chooseCardLang(song, orderLang)?[0] ?? '',
+              controller.chooseCardLang(song)?[0] ?? '',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
@@ -68,6 +70,18 @@ class SongCard extends StatelessWidget {
               maxLines: 2,
               style: Theme.of(context).textTheme.bodyText2,
             ),
+            // trailing: songScreenController.resourcesIds.isNotEmpty
+            //     ? IconButton(
+            //         autofocus: true,
+            //         tooltip: 'Video & audio'.tr,
+            //         icon: Icon(
+            //           Icons.video_collection,
+            //         ),
+            //         onPressed: () async {
+            //           await Get.to(() => VideoListScreen());
+            //         },
+            //       )
+            //     : Container(),
           ),
         ),
         Divider(
