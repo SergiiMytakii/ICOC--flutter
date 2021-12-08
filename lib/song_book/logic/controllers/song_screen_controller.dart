@@ -13,9 +13,8 @@ class SongScreenController extends GetxController {
   List<dynamic> resources = [];
   RxList<Resources> resourcesIds = <Resources>[].obs;
   int songId;
-  SongScreenController({
-    required this.songId,
-  });
+  String? prefferedLangFromSearch;
+  SongScreenController({required this.songId, this.prefferedLangFromSearch});
 
   final tabItemsSongs = [].obs;
   final tabItemsChords = [].obs;
@@ -28,9 +27,9 @@ class SongScreenController extends GetxController {
   void onInit() async {
     orderLang = orderLangController.orderLang;
     await fetchSongdetail(songId);
-    getTitlesForTabs();
-    fetchResources(songId);
     countTabs();
+    getTitlesForTabs(prefLangFromSearch: prefferedLangFromSearch);
+    fetchResources(songId);
     loadFontSize();
     super.onInit();
   }
@@ -44,22 +43,22 @@ class SongScreenController extends GetxController {
     print('start to get resources');
     resources = await DatabaseServiceFirebase().resources(songId);
     String? videoId;
-    for (Map item in resources) {
-      try {
-        videoId = YoutubePlayer.convertUrlToId(item['link']);
-      } on Exception catch (e) {
-        showSnackbar('Error'.tr, 'Can not play video'.tr);
-        print(e);
+    if (resources.isNotEmpty) {
+      for (Map item in resources) {
+        try {
+          videoId = YoutubePlayer.convertUrlToId(item['link']);
+        } on Exception catch (e) {
+          showSnackbar('Error'.tr, 'Can not play video'.tr);
+          print(e);
+        }
+        resourcesIds.add(Resources(
+            lang: item['lang'], title: item['title'], link: videoId!));
       }
-      resourcesIds.add(
-          Resources(lang: item['lang'], title: item['title'], link: videoId!));
     }
-    print(resourcesIds.first.lang); //
-    print(resourcesIds.first.title); //
-    print(resourcesIds.first.link); //
+    //
   }
 
-  void getTitlesForTabs() {
+  void getTitlesForTabs({String? prefLangFromSearch}) {
     //get the tabs titles
     tabItemsSongs.value = songDetail.value.text.keys.toList();
     tabItemsChords.value = songDetail.value.chords.keys.toList();
@@ -69,8 +68,12 @@ class SongScreenController extends GetxController {
     if (tabItemsSongs.length == 1) return;
 
     // count index of first lang
-    int index = tabItemsSongs.indexWhere((key) => key.startsWith(orderLang[0]));
 
+    // log.e(prefLangFromSearch);
+    // log.v(tabItemsSongs);
+    int index = tabItemsSongs.indexWhere(
+        (key) => key.startsWith(prefLangFromSearch ?? orderLang[0]));
+    //log.e(index);
     // if tab in the first place and we have just 2 items - return
     if (index == 0 && tabItemsSongs.length == 2) return;
 

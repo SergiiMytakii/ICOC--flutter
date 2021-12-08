@@ -1,9 +1,9 @@
 import 'dart:io';
 import '/index.dart';
 
-
 class DataSearch extends SearchDelegate {
   final songsController = Get.put(SongsController());
+  final log = Logger();
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -167,10 +167,10 @@ class DataSearch extends SearchDelegate {
     return Column(
       children: [
         ListTile(
-          onTap: (() => onTapHandler(id)),
+          onTap: (() => onTapHandler(id, songs.data![index].text.keys.first)),
           horizontalTitleGap: 0,
-          leading: Text(songs.data![index].id.toString(),
-              style: Theme.of(context).textTheme.headline6),
+          leading:
+              Text(id.toString(), style: Theme.of(context).textTheme.headline6),
           title: RichText(
             text: TextSpan(
                 style: Theme.of(context).textTheme.headline6,
@@ -195,7 +195,8 @@ class DataSearch extends SearchDelegate {
     );
   }
 
-  onTapHandler(int id) {
-    Get.toNamed(Routes.SONG_SCREEN, arguments: [id, songsController]);
+  onTapHandler(int id, String lang) {
+    //log.e(lang);
+    Get.toNamed(Routes.SONG_SCREEN, arguments: [id, lang]);
   }
 }

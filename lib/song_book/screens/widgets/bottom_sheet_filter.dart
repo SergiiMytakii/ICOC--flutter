@@ -35,7 +35,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
 
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          height: 380,
+          height: Get.size.height / 2.1,
           child: Column(
             children: [
               Padding(
@@ -79,7 +79,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 ),
               ),
               Container(
-                height: 180,
+                height: 175,
                 margin: EdgeInsets.only(top: 10),
                 child: ReorderableListView(
                   scrollDirection: Axis.vertical,

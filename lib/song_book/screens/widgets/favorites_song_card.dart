@@ -47,14 +47,17 @@ class FavoritesSongCard extends GetView<OrderLangController> {
             )
           ],
           child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
-                arguments: [song.id, controller])),
+            onTap: (() =>
+                Get.toNamed(Routes.SONG_SCREEN, arguments: [song.id])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
             title: Text(
               //show title and text language accordingly to app lang
-              controller.chooseCardLang(song,)?[0] ?? '',
+              controller.chooseCardLang(
+                    song,
+                  )?[0] ??
+                  '',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.headline6,
@@ -66,7 +69,10 @@ class FavoritesSongCard extends GetView<OrderLangController> {
                         : text.substring(0, 80),
                   )
                 : Text(
-                    controller.chooseCardLang(song,)?[1] ?? '',
+                    controller.chooseCardLang(
+                          song,
+                        )?[1] ??
+                        '',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: Theme.of(context).textTheme.bodyText2,

@@ -13,13 +13,6 @@ class FontSizeAdjustBottomSheet {
       this.needForce = false});
 
   bottomSheet() {
-    // return Get.bottomSheet(Container(
-    //     padding: EdgeInsets.all(16),
-    //     height: 200,
-    //     color: Theme.of(context)
-    //         .bottomSheetTheme
-    //         .backgroundColor!
-    //         .withOpacity(0.8),
     showModalBottomSheet(
         context: Get.context!,
         isScrollControlled: true,

@@ -19,7 +19,7 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) {
                 return ModalBottomSheet(
-                    height: 420,
+                    height: Get.size.height / 1.8,
                     blurBackground: false,
                     child: BottomSheetFilter());
               });

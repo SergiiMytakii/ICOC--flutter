@@ -16,25 +16,50 @@ class SongScreen extends StatefulWidget {
 }
 
 class _SongScreenState extends State<SongScreen> {
-  final FavoritesController favoritesController =
-      Get.put(FavoritesController());
+  final FavoritesController favoritesController = Get.find();
   bool showVideos = false;
   final log = Logger();
   String videoId = '';
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
+  final SlidesController slidesController = Get.put(SlidesController());
+  late final int songId;
+  late String? prefferedLangFromSearch;
+  late final SongScreenController songScreenController;
+  int initialIndex = 0;
+  @override
+  void initState() {
+    songId = Get.arguments != null ? Get.arguments[0] : 1;
+    prefferedLangFromSearch = Get.arguments != null && Get.arguments.length > 1
+        ? Get.arguments[1]
+        : null;
+    songScreenController = Get.put(SongScreenController(
+        songId: songId, prefferedLangFromSearch: prefferedLangFromSearch));
+    favoritesController.getFavoriteStatus(songId);
+
+    //   List langs = List.from(songScreenController.tabItemsSongs
+    //       .map((element) => element.toString().substring(0, 2)));
+
+    //   initialIndex = langs.indexOf(prefferedLangFromSearch);
+    //   if (initialIndex == -1) {
+    //     initialIndex = 0;
+    //   }
+
+    //
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final songId = Get.arguments != null ? Get.arguments[0] : 1;
-    final controller = Get.put(SongScreenController(songId: songId));
-    favoritesController.getFavoriteStatus(songId);
-    final SlidesController slidesController = Get.put(SlidesController());
-    var fontSozeAdjust = FontSizeAdjustBottomSheet(
-        context: context, controller: controller, color: 'songBook');
-    return Obx(
-      () => DefaultTabController(
-        length: controller.amountOfTabs.value,
+    log.w(prefferedLangFromSearch);
+
+    return Obx(() {
+      return DefaultTabController(
+        initialIndex: initialIndex,
+        length: songScreenController.amountOfTabs.value,
         child: Scaffold(
-          appBar: appBar(controller, slidesController, songId, fontSozeAdjust),
+          appBar:
+              appBar(context, songScreenController, slidesController, songId),
           body: Column(
             children: [
               //adjust size text screen and player dynamicly
@@ -53,7 +78,7 @@ class _SongScreenState extends State<SongScreen> {
                       child: child,
                     );
                   },
-                  child: _tabBarBuilder(controller)),
+                  child: _tabBarBuilder(songScreenController)),
               if (showVideos)
                 Container(
                   width: Get.width,
@@ -63,15 +88,18 @@ class _SongScreenState extends State<SongScreen> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   AppBar appBar(
-      SongScreenController controller,
-      SlidesController slidesController,
-      songId,
-      FontSizeAdjustBottomSheet fontSozeAdjust) {
+    BuildContext context,
+    SongScreenController controller,
+    SlidesController slidesController,
+    songId,
+  ) {
+    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+        context: context, controller: songScreenController, color: 'songBook');
     return AppBar(
       backgroundColor: screensColors['songBook'],
       bottom: TabBar(

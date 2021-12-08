@@ -76,7 +76,7 @@ class MainScreenController extends GetxController {
     Map? readStatus = box.read('notifications');
     if (readStatus != null) {
       for (NotificationsModel item in notifications) {
-        log.e(item.text);
+        //log.e(item.text);
         // log.v(readStatus.values);
         if (!readStatus.values.contains(item.text)) {
           amountNotifications.value++;

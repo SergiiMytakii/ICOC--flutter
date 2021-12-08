@@ -28,7 +28,7 @@ class AndroidAppBar extends StatelessWidget {
                 barrierColor: Colors.black.withOpacity(0.2),
                 builder: (BuildContext context) {
                   return ModalBottomSheet(
-                      height: 420,
+                      height: Get.size.height / 1.8,
                       blurBackground: false,
                       child: BottomSheetFilter());
                 });

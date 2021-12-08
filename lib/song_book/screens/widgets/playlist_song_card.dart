@@ -57,8 +57,8 @@ class PlaylistSongCard extends GetView<OrderLangController> {
                     playlistsController.removeFromPlaylist(playlistId, song.id))
           ],
           child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
-                arguments: [song.id, controller])),
+            onTap: (() =>
+                Get.toNamed(Routes.SONG_SCREEN, arguments: [song.id])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

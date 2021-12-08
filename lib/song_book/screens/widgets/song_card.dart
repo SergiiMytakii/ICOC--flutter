@@ -1,6 +1,4 @@
-
 import '/index.dart';
-
 
 class SongCard extends StatelessWidget {
   final Song song;
@@ -52,8 +50,9 @@ class SongCard extends StatelessWidget {
             ),
           ],
           child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN,
-                arguments: [song.id, controller])),
+            onTap: (() => Get.toNamed(Routes.SONG_SCREEN, arguments: [
+                  song.id,
+                ])),
             horizontalTitleGap: 2,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

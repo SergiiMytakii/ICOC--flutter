@@ -430,9 +430,10 @@ class DatabaseHelperFTS4 {
 
         for (Map map in searchInTitles) {
           Song song = Song(
-              id: map['id_song'],
-              title: {'ru': map['title_ru']},
-              text: {'ru': map['text_ru'] ?? ''});
+            id: map['id_song'],
+            title: {'ru': map['title_ru']},
+            text: {'ru': map['text_ru'] ?? ''},
+          );
           songs.add(song);
         }
 
@@ -450,9 +451,10 @@ class DatabaseHelperFTS4 {
 
         for (Map map in searhInTexts) {
           Song song = Song(
-              id: map['id_song'],
-              title: {'ru': map['ru']},
-              text: {'ru': map['text_ru'] ?? ''});
+            id: map['id_song'],
+            title: {'ru': map['ru']},
+            text: {'ru': map['text_ru'] ?? ''},
+          );
           songs.add(song);
         }
       }
@@ -469,9 +471,10 @@ class DatabaseHelperFTS4 {
 
         for (Map map in searchInTitles) {
           Song song = Song(
-              id: map['id_song'],
-              title: {'uk': map['title_uk']},
-              text: {'uk': map['text_uk'] ?? ''});
+            id: map['id_song'],
+            title: {'uk': map['title_uk']},
+            text: {'uk': map['text_uk'] ?? ''},
+          );
           songs.add(song);
         }
         final List<Map<String, dynamic>> searhInTexts =
@@ -489,8 +492,8 @@ class DatabaseHelperFTS4 {
         for (Map map in searhInTexts) {
           Song song = Song(
               id: map['id_song'],
-              title: {'ru': map['uk']},
-              text: {'ru': map['text_uk'] ?? ''});
+              title: {'uk': map['uk']},
+              text: {'uk': map['text_uk'] ?? ''});
           songs.add(song);
         }
       }
