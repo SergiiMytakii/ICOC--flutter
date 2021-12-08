@@ -81,7 +81,10 @@ class Messages extends Translations {
           'To lyrics': 'To lyrics',
           'Can not play video': 'Can not play video',
           'Slides': 'Slides',
-          'Share': "Share"
+          'Share': "Share",
+          'Sort by': ' Sort songs by',
+          'By number': 'Number',
+          'By tittle': 'Title'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -167,7 +170,10 @@ class Messages extends Translations {
           'To lyrics': 'К словам',
           'Can not play video': 'Ошибка воспроизведения видео',
           'Slides': "Слайды",
-          'Share': "Поделиться"
+          'Share': "Поделиться",
+          'Sort by': 'Сортировать песни по',
+          'By number': 'Номеру',
+          'By tittle': 'Названию'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -253,7 +259,10 @@ class Messages extends Translations {
           'To lyrics': 'До текстів',
           'Can not play video': 'Помилка відео',
           'Slides': "Слайди",
-          'Share': "Поділитися"
+          'Share': "Поділитися",
+          'Sort by': 'Сортувати пісні за',
+          'By number': 'Номером',
+          'By tittle': 'Назвою'
         }
       };
 }

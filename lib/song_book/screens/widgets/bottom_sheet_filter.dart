@@ -36,13 +36,15 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           height: Get.size.height / 2.1,
-          child: Column(
+          child: ListView(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Sort by'.tr,
-                  style: Theme.of(context).textTheme.headline6,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Center(
+                  child: Text(
+                    'Sort by'.tr,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ),
               ),
               Row(
@@ -67,7 +69,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Divider(
                   thickness: 1.5,
                 ),
@@ -90,15 +92,13 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
                   }),
                 ),
               ),
-              Expanded(
-                child: Text(
-                  'hint reorder lang'.tr,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6!
-                      .copyWith(color: screensColors['songBook']),
-                  textAlign: TextAlign.center,
-                ),
+              Text(
+                'hint reorder lang'.tr,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: screensColors['songBook']),
+                textAlign: TextAlign.center,
               )
             ],
           ),
