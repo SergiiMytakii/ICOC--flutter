@@ -35,6 +35,7 @@ class SongsController extends GetxController {
     databaseService.getListSongs().listen((event) {
       log.i('got songs from SQL, ' + event.length.toString());
       songs.value = event;
+
       if (songs.length != 0) {
         loaded.value = true;
       } else {

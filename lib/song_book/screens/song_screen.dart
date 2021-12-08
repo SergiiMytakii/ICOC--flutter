@@ -35,23 +35,12 @@ class _SongScreenState extends State<SongScreen> {
     songScreenController = Get.put(SongScreenController(
         songId: songId, prefferedLangFromSearch: prefferedLangFromSearch));
     favoritesController.getFavoriteStatus(songId);
-
-    //   List langs = List.from(songScreenController.tabItemsSongs
-    //       .map((element) => element.toString().substring(0, 2)));
-
-    //   initialIndex = langs.indexOf(prefferedLangFromSearch);
-    //   if (initialIndex == -1) {
-    //     initialIndex = 0;
-    //   }
-
-    //
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    log.w(prefferedLangFromSearch);
+    //log.w(prefferedLangFromSearch);
 
     return Obx(() {
       return DefaultTabController(

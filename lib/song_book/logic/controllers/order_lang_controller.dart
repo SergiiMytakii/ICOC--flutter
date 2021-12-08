@@ -3,6 +3,7 @@ import '/index.dart';
 class OrderLangController extends GetxController {
   List<String> orderLang = ['ru', 'uk', 'en'];
   GetStorage box = GetStorage();
+  final log = Logger();
   @override
   void onInit() {
     loadOrderlang();
@@ -57,5 +58,6 @@ class OrderLangController extends GetxController {
       }
     });
     if (title != null) return [title, text];
+    update();
   }
 }

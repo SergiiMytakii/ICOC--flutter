@@ -15,12 +15,19 @@ class SongTextOnSongScreen extends StatelessWidget {
   final String title;
   final Map? resources;
   final SongScreenController? controller;
+  final log = Logger();
 
   @override
   Widget build(BuildContext context) {
-    SlidesController slidesController = Get.put(SlidesController());
+    SlidesController slidesController = Get.find();
+    if (textVersion.startsWith('<')) {
+      var document = parse(textVersion, generateSpans: true);
+      slidesController.slideText.value = document.body!.text;
+      log.v(document.body!.text);
+    } else
+      slidesController.slideText.value = textVersion;
     slidesController.slideTitle.value = title;
-    slidesController.slideText.value = textVersion;
+
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Obx(() {
@@ -43,16 +50,16 @@ class SongTextOnSongScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline6!,
               ),
             ),
-            resources != null
-                ? Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.symmetric(vertical: 7),
-                    child: Text(
-                      resources!['en1'],
-                      style: Theme.of(context).textTheme.headline6!,
-                    ),
-                  )
-                : Container(),
+            // resources != null
+            //     ? Container(
+            //         alignment: Alignment.topRight,
+            //         margin: EdgeInsets.symmetric(vertical: 7),
+            //         child: Text(
+            //           resources!['en1'],
+            //           style: Theme.of(context).textTheme.headline6!,
+            //         ),
+            //       )
+            //     : Container(),
             SizedBox(height: 10),
             textVersion.startsWith('<')
                 ? html.Html(

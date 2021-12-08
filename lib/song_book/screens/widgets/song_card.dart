@@ -6,6 +6,7 @@ class SongCard extends StatelessWidget {
   final Color dividerColor;
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
+  final log = Logger();
 
   SongCard(
       {required this.song,
@@ -18,8 +19,11 @@ class SongCard extends StatelessWidget {
     final controller = Get.put(OrderLangController());
 
     String text = controller.chooseCardLang(song)?[1] ?? '';
-    var document = parse(text);
-    text = parse(document.body!.text).documentElement!.text;
+    //если получаем html, то удаляем все теги
+    if (text.startsWith('<')) {
+      var document = parse(text);
+      text = parse(document.body!.text).documentElement!.text;
+    }
     return Column(
       children: [
         Slidable(

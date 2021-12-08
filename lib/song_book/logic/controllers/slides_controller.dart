@@ -29,7 +29,11 @@ class SlidesController extends GetxController {
         .replaceAll('\r\n \r\n', '\r\n \r\n%')
         .replaceAll('\r\n  \r\n', '\r\n \r\n%')
         .replaceAll('\r\n\r\n', '\r\n \r\n%');
-    splitted = addSeparates.split('%');
+    var result = addSeparates.split('%');
+    result.forEach((element) {
+      var result2 = element.split('.');
+      splitted.addAll(result2);
+    });
     amountLines = splitted.length;
     print('before amountLines $amountLines');
     if (amountLines < 2) {
