@@ -1,5 +1,3 @@
-import 'package:icoc/bible_study/logic/bible_study_controller.dart';
-
 import '../../index.dart';
 
 class BibleStudyScreen extends StatelessWidget {

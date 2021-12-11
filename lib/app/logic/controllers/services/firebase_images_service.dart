@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../../index.dart';
 
 String path = '/VerseOfTheDay';

@@ -1,5 +1,3 @@
-import 'package:icoc/q_and_a/logic/q_and_a_controller.dart';
-
 import '../../index.dart';
 
 class QuestionsAndAnwers extends StatelessWidget {
