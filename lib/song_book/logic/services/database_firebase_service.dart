@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '/index.dart';
 
 class DatabaseServiceFirebase {
@@ -25,13 +27,24 @@ class DatabaseServiceFirebase {
   //converting  snapshot to song list
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<SongDetail> songs = snapshot.docs.map((doc) {
+      //log.e(doc.get('resources'));
+      List resourses = [];
+      if (doc.get('resources') != null &&
+          doc.get('resources') is Iterable<dynamic>) {
+        resourses = List.from(doc.get('resources'));
+      }
       return SongDetail(
-        id: doc.get('id') ?? 0,
-        description: doc.get('description') ?? {},
-        text: doc.get('text') ?? {},
-        title: doc.get('title') ?? {},
-        chords: doc.get('chords') ?? {},
-      );
+          id: doc.get('id') ?? 0,
+          description: doc.get('description') ?? {},
+          text: doc.get('text') ?? {},
+          title: doc.get('title') ?? {},
+          chords: doc.get('chords') ?? {},
+          resources: resourses.isNotEmpty
+              ? resourses.map((item) {
+                  //log.e(item);
+                  return Resources.fromJson(item);
+                }).toList()
+              : []);
     }).toList();
 
     //get rid from nullable values

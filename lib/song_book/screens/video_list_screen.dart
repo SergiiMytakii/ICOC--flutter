@@ -1,13 +1,13 @@
-import 'package:icoc/song_book/models/resour%D1%81es.dart';
+import 'package:icoc/song_book/models/resources.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../index.dart';
 
 class VideoListScreen extends StatelessWidget {
   final log = Logger();
+  final SongScreenController controller = Get.find();
   @override
   Widget build(BuildContext context) {
-    final SongScreenController controller = Get.find();
     return Scaffold(
       appBar: MediaQuery.of(context).orientation == Orientation.portrait
           ? AppBar(

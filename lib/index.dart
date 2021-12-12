@@ -1,3 +1,5 @@
+import 'package:logger/logger.dart';
+
 //packages
 export 'package:getxfire/getxfire.dart';
 export 'package:get_storage/get_storage.dart';
@@ -95,3 +97,6 @@ export 'package:icoc/app/localization/messages.dart';
 export 'package:icoc/song_book/models/song.dart';
 export 'package:icoc/q_and_a/models/q_and_a_model.dart';
 export 'package:icoc/song_book/models/song_detail.dart';
+export 'package:icoc/song_book/models/resources.dart';
+
+final log = Logger();

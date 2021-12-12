@@ -1,9 +1,11 @@
+import '../../index.dart';
+
 class SongDetail {
   final int id;
   final Map description;
   final Map title;
   final Map text;
-  final List? resources;
+  final List<Resources>? resources;
   final Map chords;
 
   SongDetail({
@@ -16,7 +18,7 @@ class SongDetail {
   });
 
   factory SongDetail.fromJson(Map<String, dynamic> parsedJson) {
-    //print(parsedJson);
+    // log.d(parsedJson);
     return SongDetail(
       id: parsedJson['Id'] ?? 0,
       title: parsedJson['title'] ?? '',

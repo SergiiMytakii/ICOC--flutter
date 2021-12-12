@@ -6,12 +6,14 @@ class SongsController extends GetxController {
   var loaded = false.obs;
   var log = Logger();
   RxString updateLoadingProgress = 'Loading songs'.tr.obs;
+
   RxString query = ''.obs;
   RxBool isSelected = true.obs;
   DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
   DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
   final GetStorage box = GetStorage();
   OrderLangController controller = Get.put(OrderLangController());
+  RxList<SongDetail> songsFromFB = <SongDetail>[].obs;
 
   Future fetchDataFromFirebase() async {
     log.i('start to fetch data from FB');
@@ -35,9 +37,9 @@ class SongsController extends GetxController {
     databaseService.getListSongs().listen((event) {
       log.i('got songs from SQL, ' + event.length.toString());
       songs.value = event;
-
       if (songs.length != 0) {
         loaded.value = true;
+        songsInLocalDB = event.length;
       } else {
         Future.delayed(Duration(seconds: 5)).then((value) =>
             updateLoadingProgress.value =
@@ -61,8 +63,9 @@ class SongsController extends GetxController {
   }
 
   Future<void> checkDatabaseChanged() async {
-    databaseServiceFirebase.songs.then((songsFromFB) async {
-      songsInLocalDB = await databaseService.songsInLocalDB;
+    databaseServiceFirebase.songs.then((result) async {
+      //songsInLocalDB = await databaseService.songsInLocalDB;
+      songsFromFB.value = result;
       if (songsInLocalDB != songsFromFB.length) {
         log.i(
             'databases are different  $songsInLocalDB  vs  ${songsFromFB.length}');
@@ -70,7 +73,7 @@ class SongsController extends GetxController {
         await databaseService.insertAllSongs(songsFromFB);
         fetchSongsList();
       } else
-        log.i('Databases are equal');
+        log.i('Databases are equal' + songsInLocalDB.toString());
     });
   }
 }
