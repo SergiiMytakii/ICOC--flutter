@@ -5,7 +5,8 @@ import '../../index.dart';
 
 class VideoListScreen extends StatelessWidget {
   final log = Logger();
-  final SongScreenController controller = Get.find();
+  final SongsController controller = Get.find();
+  final SongDetail song = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,27 +16,34 @@ class VideoListScreen extends StatelessWidget {
               backgroundColor: screensColors['songBook'],
             )
           : null,
-      body: Obx(
-        () => SingleChildScrollView(
-            child: Column(
-          children: [
-            ...List.generate(
-              controller.resourcesIds.length,
-              (index) => _youtubePlayer(
-                context,
-                controller.resourcesIds[index],
-              ),
-            )
-          ],
-        )),
-      ),
+      body: SingleChildScrollView(
+          child: Column(
+        children: [
+          ...List.generate(
+            song.resources!.length,
+            (index) => _youtubePlayer(
+              context,
+              song.resources![index],
+            ),
+          )
+        ],
+      )),
     );
   }
 
   Widget _youtubePlayer(BuildContext context, Resources video) {
     log.e(context.isLandscape);
+    String videoId = '';
+    if (video.link.isNotEmpty) {
+      try {
+        videoId = YoutubePlayer.convertUrlToId(video.link) ?? '';
+      } on Exception catch (e) {
+        showSnackbar('Error'.tr, 'Can not play video'.tr);
+        print(e);
+      }
+    }
     YoutubePlayerController youtubePlayerController = YoutubePlayerController(
-      initialVideoId: video.link,
+      initialVideoId: videoId,
       flags: YoutubePlayerFlags(
         forceHD: context.isPortrait ? false : true,
         //controlsVisibleAtStart: true,
@@ -68,7 +76,7 @@ class VideoListScreen extends StatelessWidget {
                               child: IconButton(
                                   color: Colors.white,
                                   onPressed: () {
-                                    Get.back(result: video.link);
+                                    Get.back(result: videoId);
                                   },
                                   icon: Icon(Icons.arrow_back)),
                             ),

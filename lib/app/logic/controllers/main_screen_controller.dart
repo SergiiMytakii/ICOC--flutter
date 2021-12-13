@@ -16,10 +16,11 @@ class MainScreenController extends GetxController {
   RxInt amountNotifications = 0.obs;
   @override
   void onInit() async {
-    await checkItsFirstRun();
+    // await checkItsFirstRun();
     await getNotifications();
     url.value = await FirebaseImagesService.getUrl(path, randomInt);
     countNotifications();
+    songsController.fetchDataFromFirebase();
     //box.erase(); // to clean cach
     super.onInit();
   }
@@ -50,14 +51,14 @@ class MainScreenController extends GetxController {
   }
 
   Future checkItsFirstRun() async {
-    GetStorage box = GetStorage();
-    if (box.read('first_run') == null) {
-      log.i('first run');
-      await songsController.fetchDataFromFirebase();
+    // GetStorage box = GetStorage();
+    // if (box.read('first_run') == null) {
+    //   log.i('first run');
+    // await songsController.fetchDataFromFirebase();
 
-      box.write('first_run', false);
-    } else
-      songsController.fetchSongsList();
+    //   box.write('first_run', false);
+    // } else
+    //   songsController.fetchSongsList();
   }
 
   bool checkIsRead(String text) {

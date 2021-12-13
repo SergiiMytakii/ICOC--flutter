@@ -31,7 +31,7 @@ class MyCheckboxListTile extends GetView<SongsController> {
               ),
               onChanged: (val) {
                 songLangController.setSongLang(lang, val!);
-                controller.fetchSongsList();
+                controller.fetchDataFromFirebase();
               }),
         );
       },

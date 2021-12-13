@@ -6,7 +6,7 @@ class PlaylistSongCard extends GetView<OrderLangController> {
       Get.put(FavoritesController());
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
-  final Song song;
+  final SongDetail song;
   final orderLang;
   final Color dividerColor;
   final playlistId;
@@ -58,7 +58,7 @@ class PlaylistSongCard extends GetView<OrderLangController> {
           ],
           child: ListTile(
             onTap: (() =>
-                Get.toNamed(Routes.SONG_SCREEN, arguments: [song.id])),
+                Get.toNamed(Routes.SONG_SCREEN, arguments: [song])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

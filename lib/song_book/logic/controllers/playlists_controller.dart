@@ -6,7 +6,7 @@ class PlaylistsController extends GetxController {
   var playlists = <Map<String, Object?>>[].obs;
   RxBool showList = false.obs;
   final textController = TextEditingController().obs;
-  final songsInPlaylist = <Song>[].obs;
+  final songsInPlaylist = <SongDetail>[].obs;
   final TextEditingController textEditingController = TextEditingController();
 
   @override

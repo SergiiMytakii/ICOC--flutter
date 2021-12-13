@@ -92,13 +92,13 @@ class DatabaseHelperFTS4 {
     return query;
   }
 
-  List<Song> convertToSongs(List<Map<String, dynamic>> items) {
-    List<Song> songs = [];
+  List<SongDetail> convertToSongs(List<Map<String, dynamic>> items) {
+    List<SongDetail> songs = [];
     for (Map map in items) {
       if (map['title_ru'] != null ||
           map['title_uk'] != null ||
           map['title_en'] != null) {
-        Song song = Song(id: map['id_song'], text: {
+        SongDetail song = SongDetail(id: map['id_song'], text: {
           'ru': map['text_ru'],
           'uk': map['text_uk'],
           'en': map['text_en']
@@ -202,19 +202,21 @@ class DatabaseHelperFTS4 {
       ''', [song.id, value]);
         }
       });
-
-      await database.insert(
-        TABLE_DESCRIPTION,
-        song.toMapDescription(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-
-      song.chords.forEach((key, value) async {
-        await database.rawQuery('''
+      if (song.description != null) {
+        await database.insert(
+          TABLE_DESCRIPTION,
+          song.toMapDescription()!,
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      if (song.chords != null) {
+        song.chords!.forEach((key, value) async {
+          await database.rawQuery('''
         INSERT INTO $TABLE_CHORDS ($ID_SONG, $CHORDS)
         VALUES (?,?)
       ''', [song.id, value]);
-      });
+        });
+      }
     }
     log.i('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
@@ -227,7 +229,7 @@ class DatabaseHelperFTS4 {
   }
 
 /* get list of all songs */
-  Stream<List<Song>> getListSongs() async* {
+  Stream<List<SongDetail>> getListSongs() async* {
     final Database? database = await db;
 
     final List<Map<String, dynamic>> items = await database!.rawQuery('''
@@ -238,7 +240,7 @@ class DatabaseHelperFTS4 {
         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
         GROUP BY $TABLE_TITLE.$ID_SONG
           ''');
-    List<Song> songs = convertToSongs(items);
+    List<SongDetail> songs = convertToSongs(items);
     yield songs;
   }
 
@@ -386,7 +388,7 @@ class DatabaseHelperFTS4 {
       return false;
   }
 
-  Stream<List<Song>> getListFavorites() async* {
+  Stream<List<SongDetail>> getListFavorites() async* {
     final Database? database = await db;
 
     final List<Map<String, dynamic>> items = await database!.rawQuery('''
@@ -400,17 +402,17 @@ class DatabaseHelperFTS4 {
          ORDER BY $TABLE_FAVORITES.$ID_SONG
           ''');
 
-    List<Song> songs = convertToSongs(items);
+    List<SongDetail> songs = convertToSongs(items);
 
     yield songs;
   }
 
 /* functions for full text search */
 
-  Stream<List<Song>> getSearchResult(String query) async* {
+  Stream<List<SongDetail>> getSearchResult(String query) async* {
     final Database? database = await db;
 
-    List<Song> songs = [];
+    List<SongDetail> songs = [];
     // log.i('query' + query);
     if (query != '') {
       // search in titiles
@@ -427,7 +429,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searchInTitles) {
-          Song song = Song(
+          SongDetail song = SongDetail(
             id: map['id_song'],
             title: {'ru': map['title_ru']},
             text: {'ru': map['text_ru'] ?? ''},
@@ -448,7 +450,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searhInTexts) {
-          Song song = Song(
+          SongDetail song = SongDetail(
             id: map['id_song'],
             title: {'ru': map['ru']},
             text: {'ru': map['text_ru'] ?? ''},
@@ -468,7 +470,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searchInTitles) {
-          Song song = Song(
+          SongDetail song = SongDetail(
             id: map['id_song'],
             title: {'uk': map['title_uk']},
             text: {'uk': map['text_uk'] ?? ''},
@@ -488,7 +490,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searhInTexts) {
-          Song song = Song(
+          SongDetail song = SongDetail(
               id: map['id_song'],
               title: {'uk': map['uk']},
               text: {'uk': map['text_uk'] ?? ''});
@@ -507,7 +509,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searchInTitles) {
-          Song song = Song(
+          SongDetail song = SongDetail(
               id: map['id_song'],
               title: {'en': map['title_en']},
               text: {'en': map['text_en'] ?? ''});
@@ -529,7 +531,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searhInTexts) {
-          Song song = Song(
+          SongDetail song = SongDetail(
               id: map['id_song'],
               title: {'en': map['en']},
               text: {'en': map['text_en'] ?? ''});
@@ -540,7 +542,7 @@ class DatabaseHelperFTS4 {
     }
   }
 
-  Stream<List<Song>> getSearchResultByNumber(String searchQuery) async* {
+  Stream<List<SongDetail>> getSearchResultByNumber(String searchQuery) async* {
     final Database? database = await db;
 
     final List<Map<String, dynamic>> items = await database!.rawQuery('''
@@ -551,7 +553,7 @@ class DatabaseHelperFTS4 {
         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
         GROUP BY $TABLE_TITLE.$ID_SONG
           ''');
-    List<Song> songs = convertToSongs(items);
+    List<SongDetail> songs = convertToSongs(items);
     yield songs
         .where((song) => song.id.toString().contains(searchQuery))
         .toList();
@@ -619,7 +621,7 @@ class DatabaseHelperFTS4 {
         ''', [newName, playlistId]);
   }
 
-  Stream<List<Song>> getSongsInPlaylist(int playlistId) async* {
+  Stream<List<SongDetail>> getSongsInPlaylist(int playlistId) async* {
     // Get a reference to the database.
     final Database database = (await db)!;
 
@@ -633,7 +635,7 @@ class DatabaseHelperFTS4 {
         WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
         ORDER BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
     ''');
-    List<Song> songs = convertToSongs(items);
+    List<SongDetail> songs = convertToSongs(items);
     yield songs;
   }
 

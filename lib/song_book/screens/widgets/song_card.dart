@@ -1,7 +1,8 @@
+import '../video_list_screen.dart';
 import '/index.dart';
 
 class SongCard extends StatelessWidget {
-  final Song song;
+  final SongDetail song;
   final orderLang;
   final Color dividerColor;
   final FavoritesController favoritesController =
@@ -24,6 +25,7 @@ class SongCard extends StatelessWidget {
       var document = parse(text);
       text = parse(document.body!.text).documentElement!.text;
     }
+    //log.e(text);
     return Column(
       children: [
         Slidable(
@@ -54,9 +56,10 @@ class SongCard extends StatelessWidget {
             ),
           ],
           child: ListTile(
-            onTap: (() => Get.toNamed(Routes.SONG_SCREEN, arguments: [
-                  song.id,
-                ])),
+            onTap: (() => Get.toNamed(
+                  Routes.SONG_SCREEN,
+                  arguments: [song],
+                )),
             horizontalTitleGap: 2,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),
@@ -73,18 +76,14 @@ class SongCard extends StatelessWidget {
               maxLines: 2,
               style: Theme.of(context).textTheme.bodyText2,
             ),
-            // trailing: songScreenController.resourcesIds.isNotEmpty
-            //     ? IconButton(
-            //         autofocus: true,
-            //         tooltip: 'Video & audio'.tr,
-            //         icon: Icon(
-            //           Icons.video_collection,
-            //         ),
-            //         onPressed: () async {
-            //           await Get.to(() => VideoListScreen());
-            //         },
-            //       )
-            //     : Container(),
+            trailing: song.resources != null
+                ? Icon(
+                    Icons.library_music_outlined,
+                  )
+                : Container(
+                    height: 1,
+                    width: 1,
+                  ),
           ),
         ),
         Divider(

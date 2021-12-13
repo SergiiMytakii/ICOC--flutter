@@ -22,14 +22,14 @@ class SongList extends GetView<SongsController> {
                     init: OrderLangController(),
                     builder: (orLangController) {
                       return SongCard(
-                        song: controller.songs[index],
+                        song: controller.songsFromFB[index],
                         orderLang: orLangController.orderLang,
                         dividerColor: dividerColors[i],
                       );
                     },
                   );
                 },
-                childCount: controller.songs.length,
+                childCount: controller.songsFromFB.length,
               ),
             )
           : SliverToBoxAdapter(

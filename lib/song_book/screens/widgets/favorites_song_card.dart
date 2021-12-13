@@ -2,7 +2,7 @@ import '/index.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 
 class FavoritesSongCard extends GetView<OrderLangController> {
-  final Song song;
+  final SongDetail song;
   final orderLang;
   final Color dividerColor;
   final FavoritesController favoritesController =
@@ -47,8 +47,7 @@ class FavoritesSongCard extends GetView<OrderLangController> {
             )
           ],
           child: ListTile(
-            onTap: (() =>
-                Get.toNamed(Routes.SONG_SCREEN, arguments: [song.id])),
+            onTap: (() => Get.toNamed(Routes.SONG_SCREEN, arguments: [song])),
             horizontalTitleGap: 0,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

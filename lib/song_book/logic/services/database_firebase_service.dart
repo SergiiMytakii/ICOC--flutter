@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import '/index.dart';
 
 class DatabaseServiceFirebase {
   var log = Logger();
+
   //get access to database
   final CollectionReference songCollection =
       FirebaseFirestore.instance.collection('Songs');
@@ -26,6 +25,9 @@ class DatabaseServiceFirebase {
 
   //converting  snapshot to song list
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
+    final SongLangController songLangController = Get.find();
+    final lang = songLangController.songLang;
+
     List<SongDetail> songs = snapshot.docs.map((doc) {
       //log.e(doc.get('resources'));
       List resourses = [];
@@ -33,45 +35,59 @@ class DatabaseServiceFirebase {
           doc.get('resources') is Iterable<dynamic>) {
         resourses = List.from(doc.get('resources'));
       }
+
       return SongDetail(
           id: doc.get('id') ?? 0,
-          description: doc.get('description') ?? {},
+          description: doc.get('description'),
           text: doc.get('text') ?? {},
           title: doc.get('title') ?? {},
-          chords: doc.get('chords') ?? {},
+          chords: doc.get('chords'),
           resources: resourses.isNotEmpty
               ? resourses.map((item) {
                   //log.e(item);
                   return Resources.fromJson(item);
                 }).toList()
-              : []);
+              : null);
     }).toList();
 
     //get rid from nullable values
+
     songs.forEach((song) {
       song.title.removeWhere((key, value) => value == null);
       song.text.removeWhere((key, value) => value == null);
-      song.description.removeWhere((key, value) => value == null);
-      song.chords.removeWhere((key, value) => value == null);
+      if (song.description != null)
+        song.description!.removeWhere((key, value) => value == null);
+      if (song.chords != null)
+        song.chords!.removeWhere((key, value) => value == null);
+      if (!lang['ru']!) {
+        song.title.removeWhere((key, value) => key == 'ru');
+        song.text.removeWhere((key, value) => key.contains('ru'));
+        if (song.description != null)
+          song.description!.removeWhere((key, value) => key.contains('ru'));
+      }
+      if (!lang['uk']!) {
+        song.title.removeWhere((key, value) => key == 'uk');
+        song.text.removeWhere((key, value) => key.contains('uk'));
+        if (song.description != null)
+          song.description!.removeWhere((key, value) => key.contains('uk'));
+      }
+      if (!lang['en']!) {
+        song.title.removeWhere((key, value) => key == 'en');
+        song.text.removeWhere((key, value) => key.contains('en'));
+        if (song.description != null)
+          song.description!.removeWhere((key, value) => key.contains('en'));
+      }
     });
 
     return songs;
   }
 
   //get songs
-  Future<List<SongDetail>> get songs {
+  Stream<List<SongDetail>> get songs {
     // insertSongsToFirebase(); //use this line to insert all songs from assets/songs.json
-    return songCollection.get().then((result) => _songListFromSnapshot(result));
-  }
-
-  //get resources
-  Future<List<dynamic>> resources(int songId) async {
-    List<dynamic> resources = [];
-    await songCollection
-        .where('id', isEqualTo: songId)
-        .get()
-        .then((value) => resources = value.docs.first.get("resources") ?? []);
-
-    return resources;
+    //List<SongDetail> songs = [];
+    return songCollection
+        .snapshots()
+        .map((event) => _songListFromSnapshot(event));
   }
 }

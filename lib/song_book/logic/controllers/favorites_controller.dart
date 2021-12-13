@@ -1,7 +1,7 @@
 import '/index.dart';
 
 class FavoritesController extends GetxController {
-  var favSongs = <Song>[].obs;
+  var favSongs = <SongDetail>[].obs;
   final favStatus = false.obs;
 
   @override

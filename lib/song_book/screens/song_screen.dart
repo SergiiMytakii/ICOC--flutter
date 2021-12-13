@@ -19,19 +19,18 @@ class _SongScreenState extends State<SongScreen> {
   String videoId = '';
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
   final SlidesController slidesController = Get.put(SlidesController());
-  late final int songId;
+  final SongDetail song = Get.arguments[0];
   late String? prefferedLangFromSearch;
   late final SongScreenController songScreenController;
-  int initialIndex = 0;
+
   @override
   void initState() {
-    songId = Get.arguments != null ? Get.arguments[0] : 1;
     prefferedLangFromSearch = Get.arguments != null && Get.arguments.length > 1
         ? Get.arguments[1]
         : null;
     songScreenController = Get.put(SongScreenController(
-        songId: songId, prefferedLangFromSearch: prefferedLangFromSearch));
-    favoritesController.getFavoriteStatus(songId);
+        songDetail: song, prefferedLangFromSearch: prefferedLangFromSearch));
+    favoritesController.getFavoriteStatus(song.id);
     super.initState();
   }
 
@@ -41,11 +40,9 @@ class _SongScreenState extends State<SongScreen> {
 
     return Obx(() {
       return DefaultTabController(
-        initialIndex: initialIndex,
         length: songScreenController.amountOfTabs.value,
         child: Scaffold(
-          appBar:
-              appBar(context, songScreenController, slidesController, songId),
+          appBar: appBar(context, songScreenController, slidesController, song),
           body: Column(
             children: [
               //adjust size text screen and player dynamicly
@@ -82,7 +79,7 @@ class _SongScreenState extends State<SongScreen> {
     BuildContext context,
     SongScreenController controller,
     SlidesController slidesController,
-    songId,
+    SongDetail song,
   ) {
     var fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, controller: songScreenController, color: 'songBook');
@@ -97,15 +94,16 @@ class _SongScreenState extends State<SongScreen> {
       ),
       elevation: 0,
       actions: [
-        controller.resourcesIds.isNotEmpty
+        song.resources != null
             ? IconButton(
                 autofocus: true,
                 tooltip: 'Video & audio'.tr,
                 icon: Icon(
-                  Icons.video_collection,
+                  Icons.library_music_outlined,
                 ),
                 onPressed: () async {
-                  await Get.to(() => VideoListScreen())?.then((value) {
+                  await Get.to(() => VideoListScreen(), arguments: song)
+                      ?.then((value) {
                     setState(() {
                       if (value != null) {
                         videoId = value;
@@ -135,7 +133,7 @@ class _SongScreenState extends State<SongScreen> {
                 ? Icons.favorite
                 : Icons.favorite_border,
           ),
-          onPressed: () => favoritesController.toggleFavStatus(songId),
+          onPressed: () => favoritesController.toggleFavStatus(song.id),
         ),
         IconButton(
             tooltip: 'Font size'.tr,
@@ -199,21 +197,21 @@ class _SongScreenState extends State<SongScreen> {
       children: [
         for (final item in controller.tabItemsSongs)
           SongTextOnSongScreen(
-            title:
-                controller.songDetail.value.title[item.substring(0, 2)] ?? '',
-            textVersion: controller.songDetail.value.text[item] ?? '',
-            description:
-                controller.songDetail.value.description[item.substring(0, 2)] ??
-                    '',
+            title: song.title[item.substring(0, 2)] ?? '',
+            textVersion: song.text[item] ?? '',
+            description: song.description != null
+                ? song.description![item.substring(0, 2)] ?? ''
+                : '',
             controller: controller,
           ),
-        for (final item in controller.tabItemsChords)
-          SongTextOnSongScreen(
-            title: '',
-            description: '',
-            textVersion: controller.songDetail.value.chords[item],
-            controller: controller,
-          ),
+        if (song.chords != null)
+          for (final item in controller.tabItemsChords)
+            SongTextOnSongScreen(
+              title: '',
+              description: '',
+              textVersion: song.chords![item],
+              controller: controller,
+            ),
       ],
     );
   }

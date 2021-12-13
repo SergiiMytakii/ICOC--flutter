@@ -37,13 +37,13 @@ class DataSearch extends SearchDelegate {
     return searchResults(query);
   }
 
-  Stream<List<Song>> searchStream(String query) {
+  Stream<List<SongDetail>> searchStream(String query) {
     //trim query and delete dots, comas, ets.
     final String trimmedQuery =
         query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яёієї0-9]+"), ' ');
 
     if (trimmedQuery == '') {
-      return DatabaseHelperFTS4().getListSongs();
+      return DatabaseServiceFirebase().songs;
     } else {
       if (trimmedQuery.contains(RegExp(r'[0-9]'))) {
         return DatabaseHelperFTS4().getSearchResultByNumber(trimmedQuery);
@@ -55,9 +55,9 @@ class DataSearch extends SearchDelegate {
   Widget searchResults(String query) {
     int i = 0;
 
-    return StreamBuilder<List<Song>>(
+    return StreamBuilder<List<SongDetail>>(
         stream: searchStream(query),
-        builder: (context, AsyncSnapshot<List<Song>> songs) {
+        builder: (context, AsyncSnapshot<List<SongDetail>> songs) {
           if (!songs.hasData) {
             return Platform.isIOS
                 ? SliverToBoxAdapter(child: Loading())
@@ -101,7 +101,7 @@ class DataSearch extends SearchDelegate {
 
   // returns TextSpan with hihglited words for title
   List<TextSpan> title(
-      AsyncSnapshot<List<Song>> songs, int index, BuildContext context) {
+      AsyncSnapshot<List<SongDetail>> songs, int index, BuildContext context) {
     String titleFromSnapshot = songs.data![index].title['ru'] ??
         songs.data![index].title['uk'] ??
         songs.data![index].title['en'] ??
@@ -124,7 +124,7 @@ class DataSearch extends SearchDelegate {
 
   // returns TextSpan with hihglited words for text
   List<TextSpan> text(
-      AsyncSnapshot<List<Song>> songs, int index, BuildContext context) {
+      AsyncSnapshot<List<SongDetail>> songs, int index, BuildContext context) {
     String textFromSnapshot = songs.data![index].text['ru'] ??
         songs.data![index].text['uk'] ??
         songs.data![index].text['en'] ??
@@ -161,8 +161,8 @@ class DataSearch extends SearchDelegate {
     return word1;
   }
 
-  Widget buildSongCardWithHighliting(AsyncSnapshot<List<Song>> songs, int index,
-      BuildContext context, int i, List<String> _orderLang) {
+  Widget buildSongCardWithHighliting(AsyncSnapshot<List<SongDetail>> songs,
+      int index, BuildContext context, int i, List<String> _orderLang) {
     int id = songs.data![index].id;
     return Column(
       children: [
