@@ -167,7 +167,8 @@ class DataSearch extends SearchDelegate {
     return Column(
       children: [
         ListTile(
-          onTap: (() => onTapHandler(id, songs.data![index].text.keys.first)),
+          onTap: (() => onTapHandler(
+              songs.data![index], songs.data![index].text.keys.first)),
           horizontalTitleGap: 0,
           leading:
               Text(id.toString(), style: Theme.of(context).textTheme.headline6),
@@ -195,8 +196,8 @@ class DataSearch extends SearchDelegate {
     );
   }
 
-  onTapHandler(int id, String lang) {
+  onTapHandler(SongDetail song, String lang) {
     //log.e(lang);
-    Get.toNamed(Routes.SONG_SCREEN, arguments: [id, lang]);
+    Get.toNamed(Routes.SONG_SCREEN, arguments: [song, lang]);
   }
 }
