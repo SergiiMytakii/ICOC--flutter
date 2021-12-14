@@ -3,22 +3,16 @@ import '/index.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;
-  final orderLang;
+
   final Color dividerColor;
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
-  final log = Logger();
+  final OrderLangController controller = Get.find();
 
-  SongCard(
-      {required this.song,
-      required this.orderLang,
-      required this.dividerColor});
+  SongCard({required this.song, required this.dividerColor});
 
-  @override
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(OrderLangController());
-
     String text = controller.chooseCardLang(song)?[1] ?? '';
     //если получаем html, то удаляем все теги
     if (text.startsWith('<')) {

@@ -1,7 +1,7 @@
 import '/index.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 
-class FavoritesSongCard extends GetView<OrderLangController> {
+class FavoritesSongCard extends StatelessWidget {
   final SongDetail song;
   final orderLang;
   final Color dividerColor;
@@ -11,11 +11,10 @@ class FavoritesSongCard extends GetView<OrderLangController> {
       {required this.song,
       required this.orderLang,
       required this.dividerColor});
+  final OrderLangController controller = Get.find();
 
   @override
-  @override
   Widget build(BuildContext context) {
-    Get.put(OrderLangController());
     String text = controller.chooseCardLang(song)?[1] ?? '';
     return Column(
       children: [

@@ -1,10 +1,10 @@
 import '/index.dart';
 
-class SongList extends GetView<SongsController> {
+class SongList extends StatelessWidget {
   final log = Logger();
+  final SongsController controller = Get.find();
   @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
     int i = 0;
     return Obx(() {
       return controller.loaded.value
@@ -18,15 +18,9 @@ class SongList extends GetView<SongsController> {
                     i = 0;
                   }
 
-                  return GetBuilder<OrderLangController>(
-                    init: OrderLangController(),
-                    builder: (orLangController) {
-                      return SongCard(
-                        song: controller.songsFromFB[index],
-                        orderLang: orLangController.orderLang,
-                        dividerColor: dividerColors[i],
-                      );
-                    },
+                  return SongCard(
+                    song: controller.songsFromFB[index],
+                    dividerColor: dividerColors[i],
                   );
                 },
                 childCount: controller.songsFromFB.length,
