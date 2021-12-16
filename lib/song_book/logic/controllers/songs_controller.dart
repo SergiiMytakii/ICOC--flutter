@@ -21,6 +21,7 @@ class SongsController extends GetxController {
     databaseServiceFirebase.songs.listen((songs) async {
       if (songs.isNotEmpty) {
         songsFromFB.value = songs;
+
         databaseService.insertAllSongs(songs);
         _orderSongs();
         loaded.value = true;

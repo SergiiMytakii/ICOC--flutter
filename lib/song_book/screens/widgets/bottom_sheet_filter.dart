@@ -31,6 +31,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
           controller.orderLang.insert(newIndex, item);
           //writing new order of lang-s to preferences
           controller.setOrderLang();
+          Get.forceAppUpdate();
         }
 
         return Container(

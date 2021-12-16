@@ -58,17 +58,18 @@ class DatabaseServiceFirebase {
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     List<SongDetail> songs = snapshot.docs.map((doc) {
       List resourses = [];
-      if (doc.get('resources') != null &&
-          doc.get('resources') is Iterable<dynamic>) {
+      Map data = doc.data() as Map;
+
+      if (data['resources'] != null && data['resources'] is Iterable<dynamic>) {
         resourses = List.from(doc.get('resources'));
       }
 
       final song = SongDetail(
-          id: doc.get('id') ?? 0,
-          description: doc.get('description'),
-          text: doc.get('text') ?? {},
-          title: doc.get('title') ?? {},
-          chords: doc.get('chords') ?? {},
+          id: data['id'] ?? 0,
+          description: data['description'],
+          text: data['text'] ?? {},
+          title: data['title'] ?? {},
+          chords: data['chords'] ?? {},
           resources: resourses.isNotEmpty
               ? resourses.map((item) {
                   //log.e(item);

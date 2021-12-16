@@ -21,6 +21,10 @@ class SongList extends StatelessWidget {
                   return SongCard(
                     song: controller.songsFromFB[index],
                     dividerColor: dividerColors[i],
+                    slideActions: [
+                      AddToFavorites(songId: controller.songsFromFB[index].id),
+                      AddToPlayList(songId: controller.songsFromFB[index].id)
+                    ],
                   );
                 },
                 childCount: controller.songsFromFB.length,

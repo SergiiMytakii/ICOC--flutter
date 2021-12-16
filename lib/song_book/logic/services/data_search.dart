@@ -43,7 +43,7 @@ class DataSearch extends SearchDelegate {
         query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яёієї0-9]+"), ' ');
 
     if (trimmedQuery == '') {
-      return DatabaseServiceFirebase().songs;
+      return DatabaseHelperFTS4().getListSongs();
     } else {
       if (trimmedQuery.contains(RegExp(r'[0-9]'))) {
         return DatabaseHelperFTS4().getSearchResultByNumber(trimmedQuery);

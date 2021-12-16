@@ -56,7 +56,7 @@ class MainScreen extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              verseOfTheDay(context),
+              VerseOfTheDay(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7.5),
                 child: Table(
@@ -108,87 +108,6 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  verseOfTheDay(BuildContext context) {
-    return Obx(
-      () => controller.url.isNotEmpty
-          ? Container(
-              height: size.height / 2.5,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                elevation: 0,
-                margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () => showBigPicture(context),
-                      child: Hero(
-                        tag: 'verse',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15),
-                          ),
-                          child: Image.network(
-                            controller.url.value,
-                            height: size.height / 2.5,
-                            width: size.width - 24,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                        ),
-                        child: Container(
-                          color: Colors.black12.withOpacity(0.3),
-                          width: size.width - 48,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Verse of the day'.tr,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  shareImage(controller.url.value);
-                                },
-                                child: Icon(Icons.share_outlined,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : Container(
-              height: size.height / 2.5,
-              child: Center(child: CircularProgressIndicator.adaptive()),
-            ),
-    );
-  }
-
-  void shareImage(String url) async {
-    final response = await get(Uri.parse(url));
-    final Directory temp = await getTemporaryDirectory();
-    final File imageFile = File('${temp.path}/tempImage');
-    imageFile.writeAsBytesSync(response.bodyBytes);
-    Share.shareFiles(
-      ['${temp.path}/tempImage'],
-    );
-  }
-
   tableItem(BuildContext context, String title, Color color, IconData icon,
       double sizeOfCell, String routeName) {
     return Container(
@@ -237,6 +156,81 @@ class MainScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class VerseOfTheDay extends StatelessWidget {
+  final MainScreenController controller = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => controller.url.isNotEmpty
+          ? Container(
+              height: Get.size.height / 2.5,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                elevation: 0,
+                margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () => showBigPicture(context),
+                      child: Hero(
+                        tag: 'verse',
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                          child: Image.network(
+                            controller.url.value,
+                            height: Get.size.height / 2.5,
+                            width: Get.size.width - 24,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                        child: Container(
+                          color: Colors.black12.withOpacity(0.3),
+                          width: Get.size.width - 48,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Verse of the day'.tr,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  shareImage(controller.url.value);
+                                },
+                                child: Icon(Icons.share_outlined,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Container(
+              height: Get.size.height / 2.5,
+              child: Center(child: CircularProgressIndicator.adaptive()),
+            ),
+    );
+  }
 
   showBigPicture(BuildContext context) {
     showDialog(
@@ -255,5 +249,15 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             ));
+  }
+
+  void shareImage(String url) async {
+    final response = await get(Uri.parse(url));
+    final Directory temp = await getTemporaryDirectory();
+    final File imageFile = File('${temp.path}/tempImage');
+    imageFile.writeAsBytesSync(response.bodyBytes);
+    Share.shareFiles(
+      ['${temp.path}/tempImage'],
+    );
   }
 }

@@ -81,7 +81,7 @@ class _SongScreenState extends State<SongScreen> {
     SlidesController slidesController,
     SongDetail song,
   ) {
-    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+    var fontSizeAdjust = FontSizeAdjustBottomSheet(
         context: context, controller: songScreenController, color: 'songBook');
     return AppBar(
       backgroundColor: screensColors['songBook'],
@@ -140,7 +140,7 @@ class _SongScreenState extends State<SongScreen> {
             icon: Icon(
               Icons.text_fields_outlined,
             ),
-            onPressed: () => fontSozeAdjust.bottomSheet()),
+            onPressed: () => fontSizeAdjust.bottomSheet()),
         IconButton(
           tooltip: 'Slides'.tr,
           icon: Icon(Icons.mobile_screen_share_outlined),

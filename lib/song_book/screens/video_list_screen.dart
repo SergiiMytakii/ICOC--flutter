@@ -68,37 +68,43 @@ class VideoListScreen extends StatelessWidget {
                     children: [
                       player,
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: CircleAvatar(
-                              backgroundColor: screensColors['songBook'],
-                              child: IconButton(
-                                  color: Colors.white,
-                                  onPressed: () {
-                                    Get.back(result: videoId);
-                                  },
-                                  icon: Icon(Icons.arrow_back)),
-                            ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: screensColors['songBook'],
+                                  child: IconButton(
+                                      iconSize: 16,
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        Get.back(result: videoId);
+                                      },
+                                      icon: Icon(Icons.arrow_back)),
+                                ),
+                              ),
+                              Text(
+                                'To lyrics'.tr,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(color: screensColors['songBook']),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                            ],
                           ),
+                          Expanded(child: Container()),
                           Text(
-                            'To lyrics'.tr,
+                            video.title,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6!
                                 .copyWith(color: screensColors['songBook']),
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          Expanded(
-                            child: Text(
-                              video.title,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(color: screensColors['songBook']),
-                            ),
                           ),
                         ],
                       )

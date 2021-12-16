@@ -25,10 +25,14 @@ class FavoritesScreen extends StatelessWidget {
                 return GetBuilder<OrderLangController>(
                   init: OrderLangController(),
                   builder: (orLangController) {
-                    return FavoritesSongCard(
+                    return SongCard(
                       song: controller.favSongs[index],
-                      orderLang: orLangController.orderLang,
                       dividerColor: dividerColors[i],
+                      slideActions: [
+                        DeleteFromFavorites(
+                            songId: controller.favSongs[index].id),
+                        AddToPlayList(songId: controller.favSongs[index].id)
+                      ],
                     );
                   },
                 );

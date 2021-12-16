@@ -56,11 +56,17 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   return GetBuilder<OrderLangController>(
                     init: OrderLangController(),
                     builder: (orLangController) {
-                      return PlaylistSongCard(
-                          song: controller.songsInPlaylist[index],
-                          orderLang: orLangController.orderLang,
-                          dividerColor: dividerColors[i],
-                          playlistId: playlist['id']);
+                      SongDetail song = controller.songsInPlaylist[index];
+                      return SongCard(
+                        song: song,
+                        dividerColor: dividerColors[i],
+                        slideActions: [
+                          AddToFavorites(songId: song.id),
+                          AddToPlayList(songId: song.id),
+                          RemoveFromPlaylist(
+                              playlistId: playlist['id'], songId: song.id)
+                        ],
+                      );
                     },
                   );
                 },
