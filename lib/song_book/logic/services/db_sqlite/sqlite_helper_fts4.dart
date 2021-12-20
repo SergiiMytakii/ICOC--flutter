@@ -644,7 +644,7 @@ class DatabaseHelperFTS4 {
       TABLE_RESOURCES,
       columns: ['$VIDEO_ID', '$VIDEO_TITLE', '$VIDEO_LANG'],
     );
-    log.i(query);
+
     List<Resources> videos = query
         .map((item) => Resources(
             lang: item[VIDEO_LANG],
@@ -668,6 +668,6 @@ class DatabaseHelperFTS4 {
     int result = await database.delete(TABLE_RESOURCES,
         where: '$VIDEO_ID = ?', whereArgs: [video.link]);
 
-    log.w(result.toString() + video.link);
+    // log.w(result.toString() + video.link);
   }
 }

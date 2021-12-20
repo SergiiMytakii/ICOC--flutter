@@ -9,6 +9,7 @@ class VideoPlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Favorite video'.tr),
         backgroundColor: screensColors['songBook'],
       ),

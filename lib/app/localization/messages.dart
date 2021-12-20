@@ -84,7 +84,8 @@ class Messages extends Translations {
           'Share': "Share",
           'Sort by': ' Sort songs by',
           'By number': 'Number',
-          'By tittle': 'Title'
+          'By tittle': 'Title',
+          'Favorite video': 'Favorite videos'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -173,7 +174,8 @@ class Messages extends Translations {
           'Share': "Поделиться",
           'Sort by': 'Сортировать песни по',
           'By number': 'Номеру',
-          'By tittle': 'Названию'
+          'By tittle': 'Названию',
+          'Favorite video': 'Любимые видео'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -262,7 +264,8 @@ class Messages extends Translations {
           'Share': "Поділитися",
           'Sort by': 'Сортувати пісні за',
           'By number': 'Номером',
-          'By tittle': 'Назвою'
+          'By tittle': 'Назвою',
+          'Favorite video': 'Улюблені відео'
         }
       };
 }

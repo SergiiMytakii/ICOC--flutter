@@ -17,13 +17,16 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   @override
   void initState() {
     isFavorite = controller.getFavoriteStatus(widget.video.link);
-    if (widget.video.link.isNotEmpty && widget.video.link.contains('youtube')) {
+    log.e('run init state');
+    if (widget.video.link.isNotEmpty && widget.video.link.contains('youtu')) {
       try {
         videoId = YoutubePlayer.convertUrlToId(widget.video.link) ?? '';
       } on Exception catch (e) {
         showSnackbar('Error'.tr, 'Can not play video'.tr);
         print(e);
       }
+    } else {
+      showSnackbar('Error'.tr, 'Can not play video'.tr);
     }
     youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
@@ -37,6 +40,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
 
   @override
   Widget build(BuildContext context) {
+    log.e('run build ' + isFavorite.toString() + widget.video.title);
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: YoutubePlayerBuilder(
@@ -94,13 +98,19 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {
+                            onPressed: () async {
                               isFavorite
-                                  ? controller.deleteFromFavorites(widget.video)
-                                  : controller.addToFavorites(widget.video);
-                              setState(() {
-                                isFavorite = !isFavorite;
-                              });
+                                  ? await controller
+                                      .deleteFromFavorites(widget.video)
+                                  : await controller
+                                      .addToFavorites(widget.video);
+                              if (widget.withToLyrics)
+                                setState(() {
+                                  isFavorite = !isFavorite;
+                                  log.i(widget.video.title +
+                                      " " +
+                                      isFavorite.toString());
+                                });
                             },
                             icon: Icon(
                                 isFavorite
