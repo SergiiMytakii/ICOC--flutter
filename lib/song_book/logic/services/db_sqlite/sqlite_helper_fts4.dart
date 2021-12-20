@@ -387,23 +387,14 @@ class DatabaseHelperFTS4 {
       return false;
   }
 
-  Stream<List<SongDetail>> getListFavorites() async* {
+  Stream<List<int>> getListFavorites() async* {
     final Database? database = await db;
 
-    final List<Map<String, dynamic>> items = await database!.rawQuery('''
-        SELECT $query
-        FROM $TABLE_TITLE
-        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
-        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-         INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
-        GROUP BY $TABLE_FAVORITES.$ID_SONG
-         ORDER BY $TABLE_FAVORITES.$ID_SONG
-          ''');
+    final List<Map<String, dynamic>> items =
+        await database!.query(TABLE_FAVORITES, columns: [ID_SONG]);
+    List<int> songsIds = items.map((e) => e.values.first as int).toList();
 
-    List<SongDetail> songs = convertToSongs(items);
-
-    yield songs;
+    yield songsIds;
   }
 
 /* functions for full text search */
@@ -620,22 +611,17 @@ class DatabaseHelperFTS4 {
         ''', [newName, playlistId]);
   }
 
-  Stream<List<SongDetail>> getSongsInPlaylist(int playlistId) async* {
+  Stream<List<int>> getSongsInPlaylist(int playlistId) async* {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    final List<Map<String, dynamic>> items = await database.rawQuery('''
-    SELECT  $query
-        FROM $TABLE_TITLE
-        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
-        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-        INNER JOIN $TABLE_PLAYLISTS_SONGS ON $TABLE_TITLE.$ID_SONG = $TABLE_PLAYLISTS_SONGS.$ID_SONG 
-        WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
-        ORDER BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
-    ''');
-    List<SongDetail> songs = convertToSongs(items);
-    yield songs;
+    final List<Map<String, dynamic>> items = await database.query(
+        TABLE_PLAYLISTS_SONGS,
+        columns: [ID_SONG],
+        where: '$PLAYLIST_ID = ?',
+        whereArgs: [playlistId]);
+    List<int> songsIds = items.map((e) => e.values.first as int).toList();
+    yield songsIds;
   }
 
   Future<void> removeFromPlaylist(int playlistId, int id) async {

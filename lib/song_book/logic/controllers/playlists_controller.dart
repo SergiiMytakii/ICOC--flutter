@@ -8,7 +8,7 @@ class PlaylistsController extends GetxController {
   final textController = TextEditingController().obs;
   final songsInPlaylist = <SongDetail>[].obs;
   final TextEditingController textEditingController = TextEditingController();
-
+  final SongsController songsController = Get.find();
   @override
   void onInit() {
     getPlaylists();
@@ -54,7 +54,11 @@ class PlaylistsController extends GetxController {
 
   void getSongsInPlaylist(int playlistId) async {
     DatabaseHelperFTS4().getSongsInPlaylist(playlistId).listen((songsFromDb) {
-      songsInPlaylist.value = songsFromDb;
+      songsInPlaylist.clear();
+      for (int id in songsFromDb) {
+        songsInPlaylist
+            .addAll(songsController.songsFromFB.where((song) => song.id == id));
+      }
     });
   }
 
