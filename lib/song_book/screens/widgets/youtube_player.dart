@@ -86,13 +86,12 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
                                 ),
                               ],
                             ),
-                          Expanded(child: Container()),
-                          Text(
-                            widget.video.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(color: screensColors['songBook']),
+                          Expanded(
+                            child: Center(
+                              child: Text(widget.video.title,
+                                  style:
+                                      Theme.of(context).textTheme.bodyText1!),
+                            ),
                           ),
                           IconButton(
                             onPressed: () {
