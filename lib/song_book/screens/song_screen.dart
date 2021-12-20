@@ -1,6 +1,4 @@
-import 'package:icoc/song_book/screens/video_list_screen.dart';
-import 'package:miniplayer/miniplayer.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
 import '../../index.dart';
 
 class SongScreen extends StatefulWidget {

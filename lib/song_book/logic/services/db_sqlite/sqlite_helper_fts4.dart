@@ -27,11 +27,6 @@ class DatabaseHelperFTS4 {
   static const String TABLE_CHORDS = 'chords';
   static const String CHORDS = 'chords_v';
 
-  // static const String TABLE_RESOURCES = 'resources'; //todo may you don't need it
-  // static const String RESOURCES_RU = 'res_ru';
-  // static const String RESOURCES_UK = 'res_uk';
-  // static const String RESOURCES_EN = 'res_en';
-
   static const String TABLE_FAVORITES = 'favorites';
   static const String FAVORITE_STATUS = 'favoriteStatus';
 
@@ -41,7 +36,11 @@ class DatabaseHelperFTS4 {
   static const String TABLE_PLAYLISTS_SONGS = 'playlistsSongs';
   static const String PLAYLIST_ID = 'playlistId';
 
-  //SongsController songsController = Get.put(SongsController());
+  static const String TABLE_RESOURCES = 'resources';
+  static const String VIDEO_ID = 'videoId';
+  static const String VIDEO_TITLE = 'videoTitle';
+  static const String VIDEO_LANG = 'videoLang';
+
   List<String> columnsTitle = [ID_SONG];
   var columnsText = [];
   List<String> columnsDescription = [];
@@ -132,7 +131,7 @@ class DatabaseHelperFTS4 {
     String path = join((await getDatabasesPath()), DB_NAME);
     //await deleteDatabase(path);   // - if we need to clean database
 
-    return await openDatabase(path, version: 3,
+    return await openDatabase(path, version: 5,
         onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
@@ -144,8 +143,8 @@ class DatabaseHelperFTS4 {
           'CREATE VIRTUAL TABLE $TABLE_TEXT_EN USING fts4 (tokenize = unicode61, $ID_SONG, $TEXT_EN)');
       await db.execute(
           'CREATE TABLE $TABLE_DESCRIPTION ($ID_SONG INTEGER PRIMARY KEY, $DESCRIPTION_RU TEXT, $DESCRIPTION_UK TEXT, $DESCRIPTION_EN TEXT)');
-      // await db.execute( //todo may you don't need it
-      //     'CREATE TABLE $TABLE_RESOURCES($ID INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER PRIMARY KEY, $RESOURCES_RU TEXT, $RESOURCES_UK TEXT, $RESOURCES_EN TEXT)');
+      await db.execute(
+          'CREATE TABLE $TABLE_RESOURCES($ID INTEGER PRIMARY KEY AUTOINCREMENT, $VIDEO_ID TEXT, $VIDEO_TITLE TEXT, $VIDEO_LANG TEXT)');
       await db.execute(
           'CREATE TABLE $TABLE_CHORDS ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER, $CHORDS TEXT)');
       await db.execute(
@@ -649,5 +648,40 @@ class DatabaseHelperFTS4 {
         WHERE $PLAYLIST_ID = ? 
         AND $ID_SONG =?;
         ''', [playlistId, id]);
+  }
+
+//work with video
+
+  Future<List<Resources>> fetchFavoritesVideos() async {
+    final Database database = (await db)!;
+    final List<Map<String, dynamic>> query = await database.query(
+      TABLE_RESOURCES,
+      columns: ['$VIDEO_ID', '$VIDEO_TITLE', '$VIDEO_LANG'],
+    );
+    log.i(query);
+    List<Resources> videos = query
+        .map((item) => Resources(
+            lang: item[VIDEO_LANG],
+            title: item[VIDEO_TITLE],
+            link: item[VIDEO_ID]))
+        .toList();
+    return videos;
+  }
+
+  addVideoToFavorites(Resources video) async {
+    final Database database = (await db)!;
+    await database.insert(TABLE_RESOURCES, {
+      VIDEO_ID: video.link,
+      VIDEO_LANG: video.lang,
+      VIDEO_TITLE: video.title
+    });
+  }
+
+  deleteVideoFromFavorites(Resources video) async {
+    final Database database = (await db)!;
+    int result = await database.delete(TABLE_RESOURCES,
+        where: '$VIDEO_ID = ?', whereArgs: [video.link]);
+
+    log.w(result.toString() + video.link);
   }
 }

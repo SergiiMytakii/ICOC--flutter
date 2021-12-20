@@ -7,7 +7,7 @@ import '../../index.dart';
 
 class MainScreen extends StatelessWidget {
   final size = Get.size;
-  double sizeOfCell() => (size.width - 15) / 2;
+  double get sizeOfCell => (size.width - 15) / 2;
   final controller = Get.put(MainScreenController());
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class MainScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7.5),
                 child: Table(
-                  defaultColumnWidth: FixedColumnWidth(sizeOfCell()),
+                  defaultColumnWidth: FixedColumnWidth(sizeOfCell),
                   children: [
                     TableRow(
                       children: [
@@ -69,14 +69,14 @@ class MainScreen extends StatelessWidget {
                             'drawer_song_book'.tr,
                             screensColors['songBook']!,
                             Icons.music_note,
-                            sizeOfCell(),
+                            sizeOfCell,
                             Routes.SONGBOOK),
                         tableItem(
                             context,
                             'drawer_news'.tr,
                             screensColors['news']!,
                             Icons.language,
-                            sizeOfCell(),
+                            sizeOfCell,
                             Routes.NEWS),
                       ],
                     ),
@@ -87,14 +87,14 @@ class MainScreen extends StatelessWidget {
                             'drawer_first_principles'.tr,
                             screensColors['firstPrinciples']!,
                             Icons.import_contacts,
-                            sizeOfCell(),
+                            sizeOfCell,
                             Routes.FIRST_PRINCIPLES),
                         tableItem(
                             context,
                             'drawer_q_and_a'.tr,
                             screensColors['Q&A']!,
                             Icons.question_answer,
-                            sizeOfCell(),
+                            sizeOfCell,
                             Routes.Q_AND_ANSVERS),
                       ],
                     ),

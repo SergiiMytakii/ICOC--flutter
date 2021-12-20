@@ -16,6 +16,10 @@ export 'package:flutter/services.dart';
 export 'package:wakelock/wakelock.dart';
 export 'package:qr_flutter/qr_flutter.dart';
 export 'package:html/parser.dart';
+export 'package:youtube_player_flutter/youtube_player_flutter.dart';
+export 'package:icoc/song_book/screens/video_list_screen.dart';
+export 'package:miniplayer/miniplayer.dart';
+export 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 //controllers
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';
@@ -30,6 +34,7 @@ export 'package:icoc/song_book/logic/controllers/song_lang_controller.dart';
 export 'package:icoc/bible_study/logic/bible_study_controller.dart';
 export 'package:icoc/news/logic/controllers/news_controller.dart';
 export 'package:icoc/q_and_a/logic/q_and_a_controller.dart';
+export 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
 //servises
 export 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 export 'package:icoc/song_book/logic/services/database_firebase_service.dart';
@@ -55,7 +60,7 @@ export 'package:icoc/song_book/screens/widgets/slide_actions.dart';
 export 'package:icoc/song_book/screens/widgets/checkbox_list_tile.dart';
 export 'package:icoc/song_book/screens/widgets/font_size_adjust_bottom_sheet.dart';
 export 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
-export 'package:icoc/song_book/screens/widgets/favorites_song_card.dart';
+export 'package:icoc/song_book/screens/widgets/youtube_player.dart';
 export 'package:icoc/app/screens/main_screen.dart';
 export 'package:icoc/app/settings/general_settings_screen.dart';
 export 'package:icoc/bible_study/screens/bible_study_screen.dart';
@@ -67,7 +72,7 @@ export 'package:icoc/song_book/screens/song_screen.dart';
 export 'package:icoc/song_book/screens/widgets/bottom_navigation_bar.dart';
 export 'package:icoc/app/menu/my_drawer.dart';
 export 'package:icoc/song_book/screens/add_song_from_playlist.dart';
-export 'package:icoc/song_book/screens/widgets/playlist_song_card.dart';
+
 export 'package:icoc/song_book/screens/widgets/android_app_bar_song_book_screen.dart';
 export 'package:icoc/song_book/screens/widgets/ios_app_bar_song_book_screen.dart';
 export 'package:icoc/song_book/screens/widgets/song_list.dart';

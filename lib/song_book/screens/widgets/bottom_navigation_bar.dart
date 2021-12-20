@@ -1,3 +1,5 @@
+import 'package:icoc/song_book/screens/video_player_screen.dart';
+
 import '/index.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -7,10 +9,11 @@ class MyBottomNavigationBar extends StatefulWidget {
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   final PageController _pageController = PageController();
-  final List _pages = [
+  final List<Widget> _pages = [
     SongBookScreen(),
     FavoritesScreen(),
     PlaylistsListScreen(),
+    VideoPlayerScreen()
   ];
 
   int _selectedPageIndex = 0;
@@ -25,9 +28,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        //type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectedPageIndex,
-
         selectedItemColor: screensColors['songBook']!.withOpacity(0.8),
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -52,12 +54,16 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             label: 'bottom_navigation_bar_playlists'.tr,
             icon: Icon(Icons.playlist_play),
           ),
+          BottomNavigationBarItem(
+            label: 'Video'.tr,
+            icon: Icon(
+              Icons.play_circle,
+            ),
+          ),
         ],
       ),
       body: PageView(
-        children: [
-          ..._pages,
-        ],
+        children: _pages,
         onPageChanged: (index) => _selectPage(index),
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
