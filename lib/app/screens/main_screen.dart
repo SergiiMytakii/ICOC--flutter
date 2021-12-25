@@ -6,8 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import '../../index.dart';
 
 class MainScreen extends StatelessWidget {
-  final size = Get.size;
-  double get sizeOfCell => (size.width - 15) / 2;
   final controller = Get.put(MainScreenController());
   @override
   Widget build(BuildContext context) {
@@ -24,24 +22,7 @@ class MainScreen extends StatelessWidget {
               onPressed: () => Scaffold.of(context).openDrawer()),
         ),
         actions: [
-          Obx(() => Stack(children: [
-                IconButton(
-                  icon: Icon(Icons.notifications_none_outlined),
-                  onPressed: () => Get.to(() => NotificationsScreen()),
-                ),
-                controller.amountNotifications > 0
-                    ? Positioned(
-                        left: 10,
-                        top: 10,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.red,
-                          radius: 8,
-                          child: FittedBox(
-                              child: Text(
-                                  controller.amountNotifications.toString())),
-                        ))
-                    : Container()
-              ])),
+          _buildNotificationsIcon(),
           SizedBox(
             width: 15,
           )
@@ -60,7 +41,7 @@ class MainScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 7.5),
                 child: Table(
-                  defaultColumnWidth: FixedColumnWidth(sizeOfCell),
+                  //defaultColumnWidth: FixedColumnWidth(sizeOfCell),
                   children: [
                     TableRow(
                       children: [
@@ -69,14 +50,12 @@ class MainScreen extends StatelessWidget {
                             'drawer_song_book'.tr,
                             screensColors['songBook']!,
                             Icons.music_note,
-                            sizeOfCell,
                             Routes.SONGBOOK),
                         tableItem(
                             context,
                             'drawer_news'.tr,
                             screensColors['news']!,
                             Icons.language,
-                            sizeOfCell,
                             Routes.NEWS),
                       ],
                     ),
@@ -87,14 +66,12 @@ class MainScreen extends StatelessWidget {
                             'drawer_first_principles'.tr,
                             screensColors['firstPrinciples']!,
                             Icons.import_contacts,
-                            sizeOfCell,
                             Routes.FIRST_PRINCIPLES),
                         tableItem(
                             context,
                             'drawer_q_and_a'.tr,
                             screensColors['Q&A']!,
                             Icons.question_answer,
-                            sizeOfCell,
                             Routes.Q_AND_ANSVERS),
                       ],
                     ),
@@ -108,8 +85,29 @@ class MainScreen extends StatelessWidget {
     );
   }
 
+  Obx _buildNotificationsIcon() {
+    return Obx(() => Stack(children: [
+          IconButton(
+            icon: Icon(Icons.notifications_none_outlined),
+            onPressed: () => Get.to(() => NotificationsScreen()),
+          ),
+          controller.amountNotifications > 0
+              ? Positioned(
+                  left: 10,
+                  top: 10,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 8,
+                    child: FittedBox(
+                        child: Text(controller.amountNotifications.toString())),
+                  ))
+              : Container()
+        ]));
+  }
+
   tableItem(BuildContext context, String title, Color color, IconData icon,
-      double sizeOfCell, String routeName) {
+      String routeName) {
+    double sizeOfCell = (MediaQuery.of(context).size.width - 15) / 2;
     return Container(
       height: sizeOfCell,
       width: sizeOfCell,

@@ -6,12 +6,10 @@ class VideoListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MediaQuery.of(context).orientation == Orientation.portrait
-          ? AppBar(
-              title: Text('Video & audio'.tr),
-              backgroundColor: screensColors['songBook'],
-            )
-          : null,
+      appBar: AppBar(
+        title: Text('Video & audio'.tr),
+        backgroundColor: screensColors['songBook'],
+      ),
       body: ListView.builder(
         itemBuilder: (context, index) => MyYoutubePlayer(
           video: song.resources![index],
