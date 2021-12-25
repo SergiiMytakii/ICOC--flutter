@@ -1,8 +1,9 @@
 import '../../../index.dart';
 
 class FullScreenMode extends StatefulWidget {
-  const FullScreenMode({Key? key}) : super(key: key);
-
+  FullScreenMode({Key? key, required this.youtubePlayerController})
+      : super(key: key);
+  final YoutubePlayerController youtubePlayerController;
   @override
   State<FullScreenMode> createState() => _FullScreenModeState();
 }
@@ -21,12 +22,26 @@ class _FullScreenModeState extends State<FullScreenMode> {
   @override
   void dispose() async {
     super.dispose();
+    widget.youtubePlayerController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('hi'),
-    );
+    widget.youtubePlayerController.fitWidth(Get.size);
+    widget.youtubePlayerController.play();
+    log.i('play');
+
+    return YoutubePlayerBuilder(
+        onExitFullScreen: () {
+          // youtubePlayerController.dispose();
+          SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+          log.i('dispose');
+        },
+        player: YoutubePlayer(
+          controller: widget.youtubePlayerController,
+        ),
+        builder: (context, player) {
+          return player;
+        });
   }
 }

@@ -40,15 +40,17 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   }
 
   @override
+  void dispose() {
+    youtubePlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // log.e('run build ' + isFavorite.toString() + widget.video.title);
     return YoutubePlayerBuilder(
-        onExitFullScreen: () {
-          // youtubePlayerController.dispose();
-          SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-          log.i('dispose');
-        },
-        onEnterFullScreen: () => Get.to(() => FullScreenMode()),
+        onEnterFullScreen: () => Get.to(() =>
+            FullScreenMode(youtubePlayerController: youtubePlayerController)),
         player: YoutubePlayer(
             controller: youtubePlayerController,
             progressIndicatorColor: screensColors['songBook']),
