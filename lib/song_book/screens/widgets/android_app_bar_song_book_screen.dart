@@ -14,6 +14,14 @@ class AndroidAppBar extends StatelessWidget {
       ),
       centerTitle: true,
       backgroundColor: screensColors['songBook'],
+      leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+          tooltip: 'icon_button_actions_app_bar_filter'.tr,
+          onPressed: () {
+            Get.back();
+          }),
       actions: [
         IconButton(
           icon: Icon(

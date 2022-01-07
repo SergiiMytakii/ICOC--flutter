@@ -1,7 +1,6 @@
 import '/index.dart';
 
 class SongList extends StatelessWidget {
-  final log = Logger();
   final SongsController controller = Get.find();
   @override
   Widget build(BuildContext context) {

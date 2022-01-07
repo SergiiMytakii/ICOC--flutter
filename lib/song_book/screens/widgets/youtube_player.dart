@@ -1,12 +1,12 @@
-import 'package:icoc/song_book/screens/widgets/full_screen_mode.dart';
-
 import '../../../index.dart';
 
 class MyYoutubePlayer extends StatefulWidget {
   final Resources video;
-  final bool withToLyrics;
-  MyYoutubePlayer({Key? key, required this.video, this.withToLyrics = true})
-      : super(key: key);
+
+  MyYoutubePlayer({
+    Key? key,
+    required this.video,
+  }) : super(key: key);
   @override
   State<MyYoutubePlayer> createState() => _MyYoutubePlayerState();
 }
@@ -14,12 +14,10 @@ class MyYoutubePlayer extends StatefulWidget {
 class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   String videoId = '';
   late YoutubePlayerController youtubePlayerController;
-  final VideoPlayerController controller = Get.find();
-  late bool isFavorite;
+
   @override
   void initState() {
-    isFavorite = controller.getFavoriteStatus(widget.video.link);
-    if (widget.video.link.isNotEmpty && widget.video.link.contains('youtu')) {
+    if (widget.video.link.isNotEmpty) {
       try {
         videoId = YoutubePlayer.convertUrlToId(widget.video.link) ?? '';
       } on Exception catch (e) {
@@ -32,94 +30,70 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
       flags: YoutubePlayerFlags(
-        autoPlay: false,
+        autoPlay: true,
         mute: false,
       ),
     );
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp
+    ]);
     super.initState();
   }
 
   @override
   void dispose() {
     youtubePlayerController.dispose();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // log.e('run build ' + isFavorite.toString() + widget.video.title);
-    return YoutubePlayerBuilder(
-        onEnterFullScreen: () => Get.to(() =>
-            FullScreenMode(youtubePlayerController: youtubePlayerController)),
-        player: YoutubePlayer(
-            controller: youtubePlayerController,
-            progressIndicatorColor: screensColors['songBook']),
-        builder: (context, player) {
-          return Column(
-            children: [
-              player,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (widget.withToLyrics)
-                    Row(
+    //log.e('run build ' + widget.video.title + '  ');
+    return Scaffold(
+      appBar: context.isPortrait
+          ? AppBar(
+              title: Text(widget.video.title),
+              backgroundColor: screensColors['songBook'],
+              centerTitle: true,
+            )
+          : null,
+      body: Container(
+        color: context.isPortrait ? ThemeData.dark().canvasColor : Colors.black,
+        child: Column(
+          children: [
+            Expanded(child: Container()),
+            SizedBox(
+              height: context.isLandscape
+                  ? MediaQuery.of(context).size.height
+                  : null,
+              width: context.isLandscape
+                  ? (MediaQuery.of(context).size.height * 1.6)
+                  : null,
+              child: YoutubePlayerBuilder(
+                  onEnterFullScreen: () {
+                    log.e(MediaQuery.of(context).size.height.toString() +
+                        ' x ' +
+                        MediaQuery.of(context).size.width.toString());
+                  },
+                  player: YoutubePlayer(
+                      controller: youtubePlayerController,
+                      progressIndicatorColor: screensColors['songBook']),
+                  builder: (context, player) {
+                    return Column(
                       children: [
-                        IconButton(
-                            iconSize: 20,
-                            color: screensColors['songBook'],
-                            onPressed: () {
-                              Get.back(result: videoId);
-                            },
-                            icon: Icon(Icons.arrow_back)),
-                        GestureDetector(
-                          onTap: () {
-                            Get.back(result: videoId);
-                          },
-                          child: Text(
-                            'To lyrics'.tr,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(color: screensColors['songBook']),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        player,
                       ],
-                    ),
-                  Expanded(
-                    child: Center(
-                      child: Text(widget.video.title,
-                          style: Theme.of(context).textTheme.bodyText1!),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      isFavorite
-                          ? await controller.deleteFromFavorites(widget.video)
-                          : await controller.addToFavorites(widget.video);
-                      if (widget.withToLyrics)
-                        setState(() {
-                          isFavorite = !isFavorite;
-                          log.i(
-                              widget.video.title + " " + isFavorite.toString());
-                        });
-                    },
-                    icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: screensColors['songBook']
-
-                        //: Theme.of(context).canvasColor,
-                        ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              )
-            ],
-          );
-        });
+                    );
+                  }),
+            ),
+            Expanded(child: Container()),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 
 import '../../index.dart';
 
 class SongScreen extends StatefulWidget {
-  SongScreen() {
+  final SongDetail song;
+  final String? prefferedLangFromSearch;
+  SongScreen(this.song, {this.prefferedLangFromSearch}) {
     Wakelock.enable();
   }
 
@@ -13,34 +16,31 @@ class SongScreen extends StatefulWidget {
 class _SongScreenState extends State<SongScreen> {
   final FavoritesController favoritesController = Get.find();
   bool showVideos = false;
-  final log = Logger();
+  bool miniPlayerOpened = false;
   String videoId = '';
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
   final SlidesController slidesController = Get.put(SlidesController());
-  final SongDetail song = Get.arguments[0];
-  late String? prefferedLangFromSearch;
-  late final SongScreenController songScreenController;
+
+  final SongScreenController songScreenController =
+      Get.put(SongScreenController());
 
   @override
   void initState() {
-    prefferedLangFromSearch = Get.arguments != null && Get.arguments.length > 1
-        ? Get.arguments[1]
-        : null;
-    songScreenController = Get.put(SongScreenController(
-        songDetail: song, prefferedLangFromSearch: prefferedLangFromSearch));
-    favoritesController.getFavoriteStatus(song.id);
+    favoritesController.getFavoriteStatus(widget.song.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //log.w(prefferedLangFromSearch);
+    log.e('build song screen');
 
+    songScreenController.getData(widget.song, widget.prefferedLangFromSearch);
     return Obx(() {
       return DefaultTabController(
         length: songScreenController.amountOfTabs.value,
         child: Scaffold(
-          appBar: appBar(context, songScreenController, slidesController, song),
+          appBar: appBar(
+              context, songScreenController, slidesController, widget.song),
           body: Column(
             children: [
               //adjust size text screen and player dynamicly
@@ -49,12 +49,12 @@ class _SongScreenState extends State<SongScreen> {
                   builder:
                       (BuildContext context, double height, Widget? child) {
                     // log.w(showVideos);
-                    double? height = Scaffold.of(context).appBarMaxHeight;
+                    double? appBarHeight = Scaffold.of(context).appBarMaxHeight;
                     // log.w(height);
 
                     return SizedBox(
                       height: Get.size.height -
-                          height! -
+                          appBarHeight! -
                           (showVideos ? playerExpandProgress.value : 0),
                       child: child,
                     );
@@ -100,8 +100,11 @@ class _SongScreenState extends State<SongScreen> {
                   Icons.library_music_outlined,
                 ),
                 onPressed: () async {
-                  await Get.to(() => VideoListScreen(), arguments: song)
-                      ?.then((value) {
+                  await Navigator.push(context, CupertinoPageRoute(
+                    builder: (context) {
+                      return VideoListScreen(song);
+                    },
+                  )).then((value) {
                     setState(() {
                       if (value != null) {
                         videoId = value;
@@ -154,18 +157,16 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   Stack _miniPlayerBuilder() {
+    MiniplayerController miniplayerController = MiniplayerController();
     return Stack(children: [
       Miniplayer(
+          controller: miniplayerController,
           valueNotifier: playerExpandProgress,
           minHeight: 80,
           maxHeight: Get.size.height / 3,
           builder: (height, percentage) {
-            print(videoId);
+            //print(videoId);
             return YoutubePlayer(
-              bottomActions: [
-                CurrentPosition(),
-                //ProgressBar(isExpanded: true),
-              ],
               width: Get.width,
               controller: YoutubePlayerController(
                 initialVideoId: videoId,
@@ -186,6 +187,25 @@ class _SongScreenState extends State<SongScreen> {
               });
             },
             icon: Icon(Icons.close_outlined)),
+      ),
+      Positioned(
+        left: 0,
+        child: IconButton(
+            color: screensColors['songBook'],
+            onPressed: () {
+              if (miniPlayerOpened) {
+                log.i(miniPlayerOpened);
+
+                miniplayerController.animateToHeight(state: PanelState.MIN);
+              } else {
+                miniplayerController.animateToHeight(state: PanelState.MAX);
+              }
+              setState(() {
+                miniPlayerOpened = !miniPlayerOpened;
+              });
+            },
+            icon: Icon(
+                miniPlayerOpened ? Icons.arrow_downward : Icons.arrow_upward)),
       )
     ]);
   }
@@ -195,19 +215,19 @@ class _SongScreenState extends State<SongScreen> {
       children: [
         for (final item in controller.tabItemsSongs)
           SongTextOnSongScreen(
-            title: song.title[item.substring(0, 2)] ?? '',
-            textVersion: song.text[item] ?? '',
-            description: song.description != null
-                ? song.description![item.substring(0, 2)] ?? ''
+            title: widget.song.title[item.substring(0, 2)] ?? '',
+            textVersion: widget.song.text[item] ?? '',
+            description: widget.song.description != null
+                ? widget.song.description![item.substring(0, 2)] ?? ''
                 : '',
             controller: controller,
           ),
-        if (song.chords != null)
+        if (widget.song.chords != null)
           for (final item in controller.tabItemsChords)
             SongTextOnSongScreen(
               title: '',
               description: '',
-              textVersion: song.chords![item],
+              textVersion: widget.song.chords![item] ?? '',
               controller: controller,
             ),
       ],

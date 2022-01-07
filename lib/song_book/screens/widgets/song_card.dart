@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '/index.dart';
 
 class SongCard extends StatelessWidget {
@@ -28,10 +30,13 @@ class SongCard extends StatelessWidget {
           actionPane: SlidableScrollActionPane(),
           secondaryActions: slideActions,
           child: ListTile(
-            onTap: (() => Get.toNamed(
-                  Routes.SONG_SCREEN,
-                  arguments: [song],
-                )),
+            onTap: (() {
+              Navigator.push(context, CupertinoPageRoute(
+                builder: (context) {
+                  return SongScreen(song);
+                },
+              ));
+            }),
             horizontalTitleGap: 2,
             leading: Text(song.id.toString(),
                 style: Theme.of(context).textTheme.headline6),

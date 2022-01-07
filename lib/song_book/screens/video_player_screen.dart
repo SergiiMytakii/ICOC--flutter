@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
 
 import '../../index.dart';
@@ -12,11 +14,19 @@ class VideoPlayerScreen extends StatelessWidget {
         centerTitle: true,
         title: Text('Favorite video'.tr),
         backgroundColor: screensColors['songBook'],
+        leading: IconButton(
+            icon: Icon(
+              Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
+            ),
+            tooltip: 'icon_button_actions_app_bar_filter'.tr,
+            onPressed: () {
+              Get.back();
+            }),
       ),
       body: Obx(() => ListView.builder(
-            itemBuilder: (context, index) => MyYoutubePlayer(
+            itemBuilder: (context, index) => VideoCard(
               withToLyrics: false,
-              video: controller.favoritesVideos[index],
+              resources: controller.favoritesVideos[index],
             ),
             itemCount: controller.favoritesVideos.length,
           )),

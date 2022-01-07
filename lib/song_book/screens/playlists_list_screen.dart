@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+
 import '/index.dart';
 
 class PlaylistsListScreen extends StatefulWidget {
@@ -99,7 +103,11 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
                 ),
                 onTap: () {
                   controller.isReadOnly.value = true;
-                  Get.toNamed(Routes.PLAYLISTS, arguments: playlist);
+
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) {
+                    return PlaylistScreen(playlist: playlist);
+                  }));
                 },
               ),
             ),
@@ -122,6 +130,14 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
             centerTitle: true,
             title: Text('bottom_navigation_bar_playlists'.tr),
             backgroundColor: screensColors['songBook'],
+            leading: IconButton(
+                icon: Icon(
+                  Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
+                ),
+                tooltip: 'icon_button_actions_app_bar_filter'.tr,
+                onPressed: () {
+                  Get.back();
+                }),
             actions: [
               IconButton(
                   icon: Icon(Icons.add),

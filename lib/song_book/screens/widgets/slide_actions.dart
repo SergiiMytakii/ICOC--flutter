@@ -58,7 +58,7 @@ class RemoveFromPlaylist extends StatelessWidget {
   }) : super(key: key);
 
   final PlaylistsController playlistsController = Get.find();
-  final int playlistId;
+  final int? playlistId;
   final int songId;
 
   @override
@@ -67,8 +67,11 @@ class RemoveFromPlaylist extends StatelessWidget {
         caption: 'remove from playlist'.tr,
         color: screensColors['songBook'],
         icon: Icons.remove_circle_outline_outlined,
-        onTap: () =>
-            playlistsController.removeFromPlaylist(playlistId, songId));
+        onTap: () {
+          if (playlistId != null) {
+            playlistsController.removeFromPlaylist(playlistId!, songId);
+          }
+        });
   }
 }
 

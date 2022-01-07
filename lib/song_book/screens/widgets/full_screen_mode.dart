@@ -16,6 +16,7 @@ class _FullScreenModeState extends State<FullScreenMode> {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.portraitUp
     ]);
+    widget.youtubePlayerController.play();
     super.initState();
   }
 
@@ -28,8 +29,7 @@ class _FullScreenModeState extends State<FullScreenMode> {
   @override
   Widget build(BuildContext context) {
     widget.youtubePlayerController.fitWidth(Get.size);
-    widget.youtubePlayerController.play();
-    log.i('play');
+    log.i(widget.youtubePlayerController.initialVideoId);
 
     return YoutubePlayerBuilder(
         onExitFullScreen: () {

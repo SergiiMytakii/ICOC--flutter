@@ -48,20 +48,8 @@ class Pages {
         transitionDuration: Duration(milliseconds: 250),
       ),
       GetPage(
-        name: Routes.PLAYLISTS,
-        page: () => PlaylistScreen(),
-        transition: Transition.native,
-        transitionDuration: Duration(milliseconds: 250),
-      ),
-      GetPage(
         name: Routes.SLIDES_SCREEN,
         page: () => SlidesScreen(),
-        transition: Transition.native,
-        transitionDuration: Duration(milliseconds: 250),
-      ),
-      GetPage(
-        name: Routes.SONG_SCREEN,
-        page: () => SongScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

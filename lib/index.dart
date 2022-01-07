@@ -72,7 +72,7 @@ export 'package:icoc/song_book/screens/song_screen.dart';
 export 'package:icoc/song_book/screens/widgets/bottom_navigation_bar.dart';
 export 'package:icoc/app/menu/my_drawer.dart';
 export 'package:icoc/song_book/screens/add_song_from_playlist.dart';
-
+export 'package:icoc/song_book/screens/widgets/video_card.dart';
 export 'package:icoc/song_book/screens/widgets/android_app_bar_song_book_screen.dart';
 export 'package:icoc/song_book/screens/widgets/ios_app_bar_song_book_screen.dart';
 export 'package:icoc/song_book/screens/widgets/song_list.dart';

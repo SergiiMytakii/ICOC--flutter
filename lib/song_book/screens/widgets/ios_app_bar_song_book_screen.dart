@@ -7,6 +7,14 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
     title: Text(title),
     backgroundColor: screensColors['songBook'],
     centerTitle: true,
+    leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios_new,
+        ),
+        tooltip: 'icon_button_actions_app_bar_filter'.tr,
+        onPressed: () {
+          Get.back();
+        }),
     actions: [
       IconButton(
         icon: Icon(
