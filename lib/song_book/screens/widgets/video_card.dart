@@ -66,31 +66,28 @@ class _VideoCardState extends State<VideoCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               if (widget.withToLyrics)
-                Row(
-                  children: [
-                    IconButton(
-                        iconSize: 20,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context, [videoId]);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_back,
                         color: screensColors['songBook'],
-                        onPressed: () {
-                          Get.back(result: videoId);
-                        },
-                        icon: Icon(Icons.arrow_back)),
-                    GestureDetector(
-                      onTap: () {
-                        Get.back(result: videoId);
-                      },
-                      child: Text(
+                      ),
+                      Text(
                         'To lyrics'.tr,
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1!
                             .copyWith(color: screensColors['songBook']),
                       ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                  ],
+                      SizedBox(
+                        width: 8,
+                      ),
+                    ],
+                  ),
                 ),
               Expanded(
                 child: Center(

@@ -38,7 +38,7 @@ class SongScreenController extends GetxController {
     // count index of first lang
 
     // log.e(prefLangFromSearch);
-    log.v(tabItemsSongs);
+    //log.v(tabItemsSongs);
     int index = tabItemsSongs.indexWhere(
         (key) => key.startsWith(prefLangFromSearch ?? orderLang[0]));
     //log.e(index);

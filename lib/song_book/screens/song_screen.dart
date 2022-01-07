@@ -20,7 +20,7 @@ class _SongScreenState extends State<SongScreen> {
   String videoId = '';
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
   final SlidesController slidesController = Get.put(SlidesController());
-
+  MiniplayerController miniplayerController = MiniplayerController();
   final SongScreenController songScreenController =
       Get.put(SongScreenController());
 
@@ -55,7 +55,8 @@ class _SongScreenState extends State<SongScreen> {
                     return SizedBox(
                       height: Get.size.height -
                           appBarHeight! -
-                          (showVideos ? playerExpandProgress.value : 0),
+                          (showVideos ? playerExpandProgress.value : 0) -
+                          50,
                       child: child,
                     );
                   },
@@ -63,7 +64,6 @@ class _SongScreenState extends State<SongScreen> {
               if (showVideos)
                 Container(
                   width: Get.width,
-                  //bottom: 0,
                   child: _miniPlayerBuilder(),
                 ),
             ],
@@ -105,9 +105,10 @@ class _SongScreenState extends State<SongScreen> {
                       return VideoListScreen(song);
                     },
                   )).then((value) {
+                    log.i('coming back');
                     setState(() {
                       if (value != null) {
-                        videoId = value;
+                        videoId = value[0];
                         showVideos = !showVideos;
                       }
                     });
@@ -157,7 +158,6 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   Stack _miniPlayerBuilder() {
-    MiniplayerController miniplayerController = MiniplayerController();
     return Stack(children: [
       Miniplayer(
           controller: miniplayerController,
