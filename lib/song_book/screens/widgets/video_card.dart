@@ -13,6 +13,7 @@ class VideoCard extends StatefulWidget {
 
 class _VideoCardState extends State<VideoCard> {
   final VideoPlayerController controller = Get.find();
+
   late bool isFavorite;
   String videoId = '';
   @override
@@ -39,8 +40,18 @@ class _VideoCardState extends State<VideoCard> {
         children: [
           InkWell(
             onTap: () {
-              Get.to(() => MyYoutubePlayer(video: widget.resources),
-                  transition: Transition.downToUp, fullscreenDialog: true);
+              if (controller.selectedVideo.value.link.isEmpty) {
+                controller.miniplayerController.animateToHeight(
+                    state: PanelState.MAX, duration: Duration(seconds: 1));
+              } else {
+                log.e('clean');
+                controller.selectedVideo.value =
+                    Resources(lang: '', title: '', link: '');
+              }
+              controller.selectedVideo.value = widget.resources;
+              //Get.appUpdate();
+              // Get.to(() => MyYoutubePlayer(video: widget.resources),
+              //     transition: Transition.downToUp, fullscreenDialog: true);
             },
             child: Image.network(
               YoutubePlayer.getThumbnail(

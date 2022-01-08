@@ -166,6 +166,7 @@ class _SongScreenState extends State<SongScreen> {
           maxHeight: Get.size.height / 3,
           builder: (height, percentage) {
             //print(videoId);
+
             return YoutubePlayer(
               width: Get.width,
               controller: YoutubePlayerController(

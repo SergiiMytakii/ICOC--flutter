@@ -1,9 +1,18 @@
 import 'package:icoc/index.dart';
 
 class VideoPlayerController extends GetxController {
-  RxList<Resources> favoritesVideos = <Resources>[].obs;
-  RxBool favoriteStatus = false.obs;
-  DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
+  final RxList<Resources> favoritesVideos = <Resources>[].obs;
+  final RxBool favoriteStatus = false.obs;
+  final DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
+  Rx<Resources> selectedVideo = Resources(lang: '', title: '', link: '').obs;
+  final MiniplayerController miniplayerController = MiniplayerController();
+
+  @override
+  void onClose() {
+    miniplayerController.dispose();
+    super.onClose();
+  }
+
   @override
   void onInit() {
     fetchFavoritesVideos();

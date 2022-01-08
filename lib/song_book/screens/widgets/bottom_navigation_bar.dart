@@ -28,6 +28,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           currentIndex: _selectedPageIndex,
           activeColor: screensColors['songBook']!.withOpacity(0.8),
           // backgroundColor: Colors.transparent,

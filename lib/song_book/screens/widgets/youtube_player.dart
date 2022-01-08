@@ -54,18 +54,17 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   Widget build(BuildContext context) {
     //log.e('run build ' + widget.video.title + '  ');
     return Scaffold(
-      appBar: context.isPortrait
-          ? AppBar(
-              title: Text(widget.video.title),
-              backgroundColor: screensColors['songBook'],
-              centerTitle: true,
-            )
-          : null,
+      // appBar: context.isPortrait
+      //     ? AppBar(
+      //         title: Text(widget.video.title),
+      //         backgroundColor: screensColors['songBook'],
+      //         centerTitle: true,
+      //       )
+      //     : null,
       body: Container(
         color: context.isPortrait ? ThemeData.dark().canvasColor : Colors.black,
         child: Column(
           children: [
-            Expanded(child: Container()),
             SizedBox(
               height: context.isLandscape
                   ? MediaQuery.of(context).size.height
@@ -83,6 +82,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
                       controller: youtubePlayerController,
                       progressIndicatorColor: screensColors['songBook']),
                   builder: (context, player) {
+                    //log.i(youtubePlayerController.value.position);
                     return Column(
                       children: [
                         player,
@@ -90,7 +90,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
                     );
                   }),
             ),
-            Expanded(child: Container()),
+            //Expanded(child: Container()),
           ],
         ),
       ),
