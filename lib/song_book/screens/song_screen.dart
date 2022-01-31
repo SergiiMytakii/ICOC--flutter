@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:icoc/song_book/screens/video_player_screen.dart';
 
 import '../../index.dart';
 
@@ -20,7 +21,7 @@ class _SongScreenState extends State<SongScreen> {
   String videoId = '';
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
   final SlidesController slidesController = Get.put(SlidesController());
-  MiniplayerController miniplayerController = MiniplayerController();
+  final MiniplayerController miniplayerController = MiniplayerController();
   final SongScreenController songScreenController =
       Get.put(SongScreenController());
 
@@ -32,8 +33,6 @@ class _SongScreenState extends State<SongScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log.e('build song screen');
-
     songScreenController.getData(widget.song, widget.prefferedLangFromSearch);
     return Obx(() {
       return DefaultTabController(
@@ -50,7 +49,8 @@ class _SongScreenState extends State<SongScreen> {
                       (BuildContext context, double height, Widget? child) {
                     // log.w(showVideos);
                     double? appBarHeight = Scaffold.of(context).appBarMaxHeight;
-                    // log.w(height);
+
+                    // log.w(Get.size.height);
 
                     return SizedBox(
                       height: Get.size.height -
@@ -102,7 +102,9 @@ class _SongScreenState extends State<SongScreen> {
                 onPressed: () async {
                   await Navigator.push(context, CupertinoPageRoute(
                     builder: (context) {
-                      return VideoListScreen(song);
+                      return VideoPlayerScreen(
+                        song: song,
+                      );
                     },
                   )).then((value) {
                     log.i('coming back');

@@ -17,7 +17,7 @@ export 'package:wakelock/wakelock.dart';
 export 'package:qr_flutter/qr_flutter.dart';
 export 'package:html/parser.dart';
 export 'package:youtube_player_flutter/youtube_player_flutter.dart';
-export 'package:icoc/song_book/screens/video_list_screen.dart';
+
 export 'package:miniplayer/miniplayer.dart';
 export 'package:youtube_player_flutter/youtube_player_flutter.dart';
 

@@ -19,7 +19,13 @@ class _VideoCardState extends State<VideoCard> {
   @override
   void initState() {
     isFavorite = controller.getFavoriteStatus(widget.resources.link);
-    if (widget.resources.link.isNotEmpty) {
+
+    super.initState();
+  }
+
+  void getVideoId() {
+    if (widget.resources.link.isNotEmpty &&
+        widget.resources.link.contains('yout')) {
       try {
         videoId = YoutubePlayer.convertUrlToId(widget.resources.link) ?? '';
       } on Exception catch (e) {
@@ -27,36 +33,44 @@ class _VideoCardState extends State<VideoCard> {
         print(e);
       }
     } else {
-      showSnackbar('Error'.tr, 'Can not play video'.tr);
+      videoId = widget.resources.link;
+      // log.v(videoId);
     }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: Get.size.width,
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              if (controller.selectedVideo.value.link.isEmpty) {
-                controller.miniplayerController.animateToHeight(
-                    state: PanelState.MAX, duration: Duration(seconds: 1));
-              } else {
-                log.e('clean');
-                controller.selectedVideo.value =
-                    Resources(lang: '', title: '', link: '');
-              }
-              controller.selectedVideo.value = widget.resources;
-              //Get.appUpdate();
-              // Get.to(() => MyYoutubePlayer(video: widget.resources),
-              //     transition: Transition.downToUp, fullscreenDialog: true);
-            },
+    getVideoId();
+    // log.i('with to lirics  ' + widget.withToLyrics.toString());
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async {
+            if (controller.selectedVideo.value.link.isEmpty) {
+              controller.miniplayerController.animateToHeight(
+                  state: PanelState.MAX, duration: Duration(seconds: 1));
+            } else {
+              controller.selectedVideo.value =
+                  Resources(lang: '', title: '', link: '');
+              Get.appUpdate();
+              await Future.delayed(Duration(milliseconds: 300));
+            }
+
+            controller.selectedVideo.value = widget.resources;
+            controller.shiftWaitingList(
+                selectedV: controller.selectedVideo.value);
+            controller.youtubePlayerController
+                .updateValue(YoutubePlayerValue(isPlaying: true));
+          },
+          child: Container(
+            width: double.maxFinite,
             child: Image.network(
-              YoutubePlayer.getThumbnail(
-                videoId: videoId,
-              ),
+              widget.resources.thumbnail ??
+                  YoutubePlayer.getThumbnail(
+                    videoId: videoId,
+                  ),
+              height: Get.width / 16 * 9,
+              fit: BoxFit.fitWidth,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent? loadingProgress) {
                 if (loadingProgress == null) {
@@ -73,64 +87,68 @@ class _VideoCardState extends State<VideoCard> {
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (widget.withToLyrics)
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context, [videoId]);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        color: screensColors['songBook'],
-                      ),
-                      Text(
-                        'To lyrics'.tr,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(color: screensColors['songBook']),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                    ],
-                  ),
-                ),
-              Expanded(
-                child: Center(
-                  child: Text(widget.resources.title,
-                      style: Theme.of(context).textTheme.bodyText1!),
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  isFavorite
-                      ? await controller.deleteFromFavorites(widget.resources)
-                      : await controller.addToFavorites(widget.resources);
-                  if (widget.withToLyrics)
-                    setState(() {
-                      isFavorite = !isFavorite;
-                      log.i(
-                          widget.resources.title + " " + isFavorite.toString());
-                    });
-                },
-                icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: screensColors['songBook']
-
-                    //: Theme.of(context).canvasColor,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            widget.withToLyrics
+                ? GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context, [videoId]);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_back,
+                          color: screensColors['songBook'],
+                        ),
+                        Text(
+                          'To lyrics'.tr,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: screensColors['songBook']),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                      ],
                     ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 25,
-          )
-        ],
-      ),
+                  )
+                : SizedBox(
+                    width: 16,
+                  ),
+            Expanded(
+              child: Text(widget.resources.title,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText1!),
+            ),
+            IconButton(
+              onPressed: () async {
+                isFavorite
+                    ? await controller.deleteFromFavorites(widget.resources)
+                    : await controller.addToFavorites(widget.resources);
+
+                // if (widget.withToLyrics) {
+                setState(() {
+                  isFavorite = !isFavorite;
+                  log.i(widget.resources.title + " " + isFavorite.toString());
+                });
+                // }
+              },
+              icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: screensColors['songBook']
+
+                  //: Theme.of(context).canvasColor,
+                  ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        )
+      ],
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+
 import '/index.dart';
 
 class DataSearch extends SearchDelegate {
@@ -167,8 +169,8 @@ class DataSearch extends SearchDelegate {
     return Column(
       children: [
         ListTile(
-          onTap: (() => onTapHandler(
-              songs.data![index], songs.data![index].text.keys.first)),
+          onTap: (() => onTapHandler(context, songs.data![index],
+              songs.data![index].title.keys.first)),
           horizontalTitleGap: 0,
           leading:
               Text(id.toString(), style: Theme.of(context).textTheme.headline6),
@@ -196,8 +198,19 @@ class DataSearch extends SearchDelegate {
     );
   }
 
-  onTapHandler(SongDetail song, String lang) {
-    //log.e(lang);
-    Get.toNamed(Routes.SONG_SCREEN, arguments: [song, lang]);
+  onTapHandler(BuildContext context, SongDetail songFromSearch, String lang) {
+    final SongsController controller = Get.find();
+    final song = controller.songsFromFB
+        .firstWhere((element) => element.id == songFromSearch.id);
+    log.e(lang);
+    Navigator.push(context, CupertinoPageRoute(
+      builder: (context) {
+        return SongScreen(
+          song,
+          prefferedLangFromSearch: lang,
+        );
+      },
+    ));
+    //Get.toNamed(Routes.SONG_SCREEN, arguments: [song, lang]);
   }
 }

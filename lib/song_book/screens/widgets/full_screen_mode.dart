@@ -23,16 +23,23 @@ class _FullScreenModeState extends State<FullScreenMode> {
   @override
   void dispose() async {
     super.dispose();
-    widget.youtubePlayerController.dispose();
+    //widget.youtubePlayerController.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.youtubePlayerController.fitWidth(Get.size);
-    log.i(widget.youtubePlayerController.initialVideoId);
+    log.e(Get.height.toString() + ' x ' + Get.width.toString());
+    log.i(widget.youtubePlayerController.value.position);
+    //widget.youtubePlayerController.fitWidth(Get.size);
+    widget.youtubePlayerController.fitHeight(Get.size);
+    //log.i(widget.youtubePlayerController.initialVideoId);
 
     return YoutubePlayerBuilder(
         onExitFullScreen: () {
+          // Get.back();
           // youtubePlayerController.dispose();
           SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
           log.i('dispose');

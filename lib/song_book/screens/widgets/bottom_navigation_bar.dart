@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:icoc/song_book/screens/video_player_screen.dart';
-
 import '/index.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -26,6 +25,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    kTabBarHeight = 50;
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,

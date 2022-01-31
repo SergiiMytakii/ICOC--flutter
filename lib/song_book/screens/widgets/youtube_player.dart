@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:icoc/song_book/logic/services/youtube_service.dart';
+
 import '../../../index.dart';
 
 class MyYoutubePlayer extends StatefulWidget {
@@ -13,11 +16,12 @@ class MyYoutubePlayer extends StatefulWidget {
 
 class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   String videoId = '';
-  late YoutubePlayerController youtubePlayerController;
+  //late YoutubePlayerController youtubePlayerController;
+  final VideoPlayerController controller = Get.find();
 
   @override
   void initState() {
-    if (widget.video.link.isNotEmpty) {
+    if (widget.video.link.isNotEmpty && widget.video.link.contains('yout')) {
       try {
         videoId = YoutubePlayer.convertUrlToId(widget.video.link) ?? '';
       } on Exception catch (e) {
@@ -25,72 +29,73 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
         print(e);
       }
     } else {
-      showSnackbar('Error'.tr, 'Can not play video'.tr);
+      videoId = widget.video.link;
+      //showSnackbar('Error'.tr, 'Can not play video'.tr);
     }
-    youtubePlayerController = YoutubePlayerController(
+    controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
       flags: YoutubePlayerFlags(
+        disableDragSeek: true,
         autoPlay: true,
         mute: false,
+        hideControls: true,
       ),
     );
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.portraitUp
-    ]);
+    controller.youtubePlayerController.play();
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    //   DeviceOrientation.portraitUp
+    // ]);
+    log.i(videoId);
+    controller.fetchRelatedVideos(videoId);
     super.initState();
   }
 
   @override
   void dispose() {
-    youtubePlayerController.dispose();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    controller.youtubePlayerController.dispose();
+    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //log.e('run build ' + widget.video.title + '  ');
     return Scaffold(
-      // appBar: context.isPortrait
-      //     ? AppBar(
-      //         title: Text(widget.video.title),
-      //         backgroundColor: screensColors['songBook'],
-      //         centerTitle: true,
-      //       )
-      //     : null,
       body: Container(
         color: context.isPortrait ? ThemeData.dark().canvasColor : Colors.black,
         child: Column(
           children: [
             SizedBox(
-              height: context.isLandscape
-                  ? MediaQuery.of(context).size.height
-                  : null,
-              width: context.isLandscape
-                  ? (MediaQuery.of(context).size.height * 1.6)
-                  : null,
+              // height: context.isLandscape ? Get.height : null,
+              //width: context.isLandscape ? Get.height * 1.6 : null,
               child: YoutubePlayerBuilder(
                   onEnterFullScreen: () {
-                    log.e(MediaQuery.of(context).size.height.toString() +
-                        ' x ' +
-                        MediaQuery.of(context).size.width.toString());
+                    // kTabBarHeight = 0;
+                    // youtubePlayerController.pause();
+                    // Get.to(() => FullScreenMode(
+                    //     youtubePlayerController: youtubePlayerController));
+                  },
+                  onExitFullScreen: () {
+                    // kTabBarHeight = 50;
+                    // youtubePlayerController.fitHeight(Get.size);
                   },
                   player: YoutubePlayer(
-                      controller: youtubePlayerController,
+                      onEnded: (v) => controller.playNext(),
+                      showVideoProgressIndicator: true,
+                      progressColors: ProgressBarColors(
+                          backgroundColor: Colors.red,
+                          handleColor: Colors.amberAccent,
+                          playedColor: Colors.amberAccent),
+                      controller: controller.youtubePlayerController,
                       progressIndicatorColor: screensColors['songBook']),
                   builder: (context, player) {
                     //log.i(youtubePlayerController.value.position);
-                    return Column(
-                      children: [
-                        player,
-                      ],
+                    return FittedBox(
+                      child: player,
                     );
                   }),
             ),
-            //Expanded(child: Container()),
           ],
         ),
       ),
