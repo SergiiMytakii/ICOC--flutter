@@ -54,7 +54,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
 
   @override
   void dispose() {
-    controller.youtubePlayerController.dispose();
+    //controller.youtubePlayerController.dispose();
     //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }

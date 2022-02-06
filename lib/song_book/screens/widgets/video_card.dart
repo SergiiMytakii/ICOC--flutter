@@ -59,8 +59,8 @@ class _VideoCardState extends State<VideoCard> {
             controller.selectedVideo.value = widget.resources;
             controller.shiftWaitingList(
                 selectedV: controller.selectedVideo.value);
-            controller.youtubePlayerController
-                .updateValue(YoutubePlayerValue(isPlaying: true));
+            // controller.youtubePlayerController
+            //     .updateValue(YoutubePlayerValue(isPlaying: true));
           },
           child: Container(
             width: double.maxFinite,

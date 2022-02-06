@@ -28,7 +28,9 @@ class YoutubeService extends YoutubeNetworkService {
                   ? data[index]["snippet"]["title"]
                   : '',
               thumbnail: data[index]["snippet"] != null
-                  ? data[index]["snippet"]["thumbnails"]["standard"]["url"]
+                  ? data[index]["snippet"]["thumbnails"]["standard"] != null
+                      ? data[index]["snippet"]["thumbnails"]["standard"]["url"]
+                      : null
                   : null,
               link: data[index]["id"]["videoId"]));
 

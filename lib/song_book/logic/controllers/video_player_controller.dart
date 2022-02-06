@@ -69,7 +69,7 @@ class VideoPlayerController extends GetxController {
         shift = false;
       }
     });
-    log.e(shift);
+    //log.e(shift);
     if (shift) {
       if (selectedV != null) {
         waitingList.removeWhere((element) => element.link == selectedV.link);
