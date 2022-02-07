@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '/index.dart';
 
@@ -66,22 +67,24 @@ class _PlaylistsListScreenState extends State<PlaylistsListScreen> {
     return Column(
       children: [
         Slidable(
-          actionPane: SlidableScrollActionPane(),
-          secondaryActions: [
-            IconSlideAction(
-                caption: 'rename playlists'.tr,
-                color: screensColors['songBook']!.withOpacity(0.5),
-                icon: Icons.drive_file_rename_outline,
-                onTap: () {
-                  controller.isReadOnly.value = false;
-                }),
-            IconSlideAction(
-              caption: 'delete from playlists'.tr,
-              color: screensColors['songBook'],
-              icon: Icons.delete_outline,
-              onTap: () => _removePlaylist(playlist),
-            ),
-          ],
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                  label: 'rename playlists'.tr,
+                  backgroundColor: screensColors['songBook']!.withOpacity(0.5),
+                  icon: Icons.drive_file_rename_outline,
+                  onPressed: (context) {
+                    controller.isReadOnly.value = false;
+                  }),
+              SlidableAction(
+                label: 'delete from playlists'.tr,
+                backgroundColor: screensColors['songBook']!,
+                icon: Icons.delete_outline,
+                onPressed: (contect) => _removePlaylist(playlist),
+              ),
+            ],
+          ),
           child: ListTile(
             leading: Icon(
               Icons.playlist_play_outlined,

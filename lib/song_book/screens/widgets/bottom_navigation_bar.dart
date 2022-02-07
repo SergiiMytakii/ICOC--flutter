@@ -25,7 +25,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    kTabBarHeight = 50;
+    // kTabBarHeight = 50;
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,

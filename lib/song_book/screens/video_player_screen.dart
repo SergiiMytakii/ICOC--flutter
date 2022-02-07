@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
+
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../index.dart';
 
 //we use it in wideoplayer tab and in every song to show videos for this song
@@ -157,7 +158,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   AnimatedContainer controlsPanel(double height, double fullSizePlayerHeight) {
-    log.i(controller.youtubePlayerController.value.isPlaying);
+    log.i(controller.youtubePlayerController.value.playerState ==
+        PlayerState.playing);
     return AnimatedContainer(
       decoration: BoxDecoration(
           border: Border.symmetric(
@@ -176,15 +178,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               color: screensColors['songBook'],
             ),
           ),
-          controller.youtubePlayerController.value.isPlaying
+          controller.youtubePlayerController.value.playerState ==
+                  PlayerState.playing
               ? IconButton(
                   icon: Icon(Icons.pause),
                   onPressed: () async {
                     controller.youtubePlayerController.pause();
-                    setState(() {
-                      controller.youtubePlayerController
-                          .updateValue(YoutubePlayerValue(isPlaying: false));
-                    });
+                    setState(() {});
                     //    controller.miniplayerController.animateToHeight(height:
                     //     + 15,
                     // );
@@ -198,10 +198,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               : IconButton(
                   onPressed: () {
                     controller.youtubePlayerController.play();
-                    setState(() {
-                      controller.youtubePlayerController
-                          .updateValue(YoutubePlayerValue(isPlaying: true));
-                    });
+                    setState(() {});
                   },
                   icon: Icon(
                     Icons.play_arrow,
@@ -237,7 +234,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget miniplayerControls() {
     return Row(
       children: [
-        controller.youtubePlayerController.value.isPlaying
+        controller.youtubePlayerController.value.playerState ==
+                PlayerState.playing
             ? IconButton(
                 icon: Icon(Icons.pause),
                 onPressed: () async {

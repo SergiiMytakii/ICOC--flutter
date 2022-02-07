@@ -1,3 +1,5 @@
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../../index.dart';
 
 class VideoCard extends StatefulWidget {
@@ -27,7 +29,8 @@ class _VideoCardState extends State<VideoCard> {
     if (widget.resources.link.isNotEmpty &&
         widget.resources.link.contains('yout')) {
       try {
-        videoId = YoutubePlayer.convertUrlToId(widget.resources.link) ?? '';
+        videoId =
+            YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
       } on Exception catch (e) {
         showSnackbar('Error'.tr, 'Can not play video'.tr);
         print(e);
@@ -66,7 +69,7 @@ class _VideoCardState extends State<VideoCard> {
             width: double.maxFinite,
             child: Image.network(
               widget.resources.thumbnail ??
-                  YoutubePlayer.getThumbnail(
+                  YoutubePlayerController.getThumbnail(
                     videoId: videoId,
                   ),
               height: Get.width / 16 * 9,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:icoc/song_book/screens/video_player_screen.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../index.dart';
 
@@ -169,14 +170,9 @@ class _SongScreenState extends State<SongScreen> {
           builder: (height, percentage) {
             //print(videoId);
 
-            return YoutubePlayer(
-              width: Get.width,
+            return YoutubePlayerIFrame(
               controller: YoutubePlayerController(
                 initialVideoId: videoId,
-                flags: YoutubePlayerFlags(
-                  //controlsVisibleAtStart: true,
-                  mute: false,
-                ),
               ),
             );
           }),

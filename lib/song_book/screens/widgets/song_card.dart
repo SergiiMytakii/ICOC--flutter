@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '/index.dart';
 
@@ -27,8 +28,10 @@ class SongCard extends StatelessWidget {
     return Column(
       children: [
         Slidable(
-          actionPane: SlidableScrollActionPane(),
-          secondaryActions: slideActions,
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: slideActions!,
+          ),
           child: ListTile(
             onTap: (() {
               Navigator.push(context, CupertinoPageRoute(

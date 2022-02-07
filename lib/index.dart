@@ -6,7 +6,7 @@ export 'package:get_storage/get_storage.dart';
 export 'package:flutter/material.dart';
 export 'package:get/get_utils/src/extensions/internacionalization.dart';
 export 'dart:convert';
-export 'package:flutter_slidable/flutter_slidable.dart';
+
 export 'package:flutter/services.dart';
 export 'package:share_plus/share_plus.dart';
 export 'package:path/path.dart';
@@ -16,10 +16,8 @@ export 'package:flutter/services.dart';
 export 'package:wakelock/wakelock.dart';
 export 'package:qr_flutter/qr_flutter.dart';
 export 'package:html/parser.dart';
-export 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 export 'package:miniplayer/miniplayer.dart';
-export 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 //controllers
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';

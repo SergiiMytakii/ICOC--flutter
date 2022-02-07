@@ -1,54 +1,56 @@
-import '../../../index.dart';
+// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class FullScreenMode extends StatefulWidget {
-  FullScreenMode({Key? key, required this.youtubePlayerController})
-      : super(key: key);
-  final YoutubePlayerController youtubePlayerController;
-  @override
-  State<FullScreenMode> createState() => _FullScreenModeState();
-}
+// import '../../../index.dart';
 
-class _FullScreenModeState extends State<FullScreenMode> {
-  @override
-  void initState() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.portraitUp
-    ]);
-    widget.youtubePlayerController.play();
-    super.initState();
-  }
+// class FullScreenMode extends StatefulWidget {
+//   FullScreenMode({Key? key, required this.youtubePlayerController})
+//       : super(key: key);
+//   final YoutubePlayerController youtubePlayerController;
+//   @override
+//   State<FullScreenMode> createState() => _FullScreenModeState();
+// }
 
-  @override
-  void dispose() async {
-    super.dispose();
-    //widget.youtubePlayerController.dispose();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-  }
+// class _FullScreenModeState extends State<FullScreenMode> {
+//   @override
+//   void initState() {
+//     SystemChrome.setPreferredOrientations([
+//       DeviceOrientation.landscapeLeft,
+//       DeviceOrientation.landscapeRight,
+//       DeviceOrientation.portraitUp
+//     ]);
+//     widget.youtubePlayerController.play();
+//     super.initState();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    log.e(Get.height.toString() + ' x ' + Get.width.toString());
-    log.i(widget.youtubePlayerController.value.position);
-    //widget.youtubePlayerController.fitWidth(Get.size);
-    widget.youtubePlayerController.fitHeight(Get.size);
-    //log.i(widget.youtubePlayerController.initialVideoId);
+//   @override
+//   void dispose() async {
+//     super.dispose();
+//     //widget.youtubePlayerController.dispose();
+//     SystemChrome.setPreferredOrientations([
+//       DeviceOrientation.portraitUp,
+//     ]);
+//   }
 
-    return YoutubePlayerBuilder(
-        onExitFullScreen: () {
-          // Get.back();
-          // youtubePlayerController.dispose();
-          SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-          log.i('dispose');
-        },
-        player: YoutubePlayer(
-          controller: widget.youtubePlayerController,
-        ),
-        builder: (context, player) {
-          return player;
-        });
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     log.e(Get.height.toString() + ' x ' + Get.width.toString());
+//     log.i(widget.youtubePlayerController.value.position);
+//     //widget.youtubePlayerController.fitWidth(Get.size);
+//     widget.youtubePlayerController.fitHeight(Get.size);
+//     //log.i(widget.youtubePlayerController.initialVideoId);
+
+//     return YoutubePlayerBuilder(
+//         onExitFullScreen: () {
+//           // Get.back();
+//           // youtubePlayerController.dispose();
+//           SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+//           log.i('dispose');
+//         },
+//         player: YoutubePlayer(
+//           controller: widget.youtubePlayerController,
+//         ),
+//         builder: (context, player) {
+//           return player;
+//         });
+//   }
+// }

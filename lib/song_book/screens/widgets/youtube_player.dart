@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/logic/services/youtube_service.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../index.dart';
 
@@ -23,7 +22,8 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   void initState() {
     if (widget.video.link.isNotEmpty && widget.video.link.contains('yout')) {
       try {
-        videoId = YoutubePlayer.convertUrlToId(widget.video.link) ?? '';
+        videoId =
+            YoutubePlayerController.convertUrlToId(widget.video.link) ?? '';
       } on Exception catch (e) {
         showSnackbar('Error'.tr, 'Can not play video'.tr);
         print(e);
@@ -34,20 +34,23 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     }
     controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        disableDragSeek: true,
+      params: YoutubePlayerParams(
+        strictRelatedVideos: true,
         autoPlay: true,
         mute: false,
-        hideControls: true,
+        showControls: true,
+        playlist: controller.playlist,
+        showFullscreenButton: false,
       ),
     );
-    controller.youtubePlayerController.play();
+
     // SystemChrome.setPreferredOrientations([
     //   DeviceOrientation.landscapeLeft,
     //   DeviceOrientation.landscapeRight,
     //   DeviceOrientation.portraitUp
     // ]);
     log.i(videoId);
+
     controller.fetchRelatedVideos(videoId);
     super.initState();
   }
@@ -69,32 +72,10 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
             SizedBox(
               // height: context.isLandscape ? Get.height : null,
               //width: context.isLandscape ? Get.height * 1.6 : null,
-              child: YoutubePlayerBuilder(
-                  onEnterFullScreen: () {
-                    // kTabBarHeight = 0;
-                    // youtubePlayerController.pause();
-                    // Get.to(() => FullScreenMode(
-                    //     youtubePlayerController: youtubePlayerController));
-                  },
-                  onExitFullScreen: () {
-                    // kTabBarHeight = 50;
-                    // youtubePlayerController.fitHeight(Get.size);
-                  },
-                  player: YoutubePlayer(
-                      onEnded: (v) => controller.playNext(),
-                      showVideoProgressIndicator: true,
-                      progressColors: ProgressBarColors(
-                          backgroundColor: Colors.red,
-                          handleColor: Colors.amberAccent,
-                          playedColor: Colors.amberAccent),
-                      controller: controller.youtubePlayerController,
-                      progressIndicatorColor: screensColors['songBook']),
-                  builder: (context, player) {
-                    //log.i(youtubePlayerController.value.position);
-                    return FittedBox(
-                      child: player,
-                    );
-                  }),
+              child: YoutubePlayerIFrame(
+                //onEnded: (v) => controller.playNext(),
+                controller: controller.youtubePlayerController,
+              ),
             ),
           ],
         ),

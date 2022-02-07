@@ -1,4 +1,5 @@
 import '../../../index.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AddToPlayList extends StatelessWidget {
   const AddToPlayList({
@@ -10,11 +11,11 @@ class AddToPlayList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconSlideAction(
-      caption: 'to playlist'.tr,
-      color: screensColors['songBook']!.withOpacity(0.81),
+    return SlidableAction(
+      label: 'to playlist'.tr,
+      backgroundColor: screensColors['songBook']!.withOpacity(0.81),
       icon: Icons.playlist_play_outlined,
-      onTap: () {
+      onPressed: (context) {
         showModalBottomSheet(
           context: Get.context!,
           isScrollControlled: true,
@@ -41,11 +42,11 @@ class DeleteFromFavorites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconSlideAction(
-      caption: 'delete from favorites'.tr,
-      color: screensColors['songBook']!.withOpacity(0.7),
+    return SlidableAction(
+      label: 'delete from favorites'.tr,
+      backgroundColor: screensColors['songBook']!.withOpacity(0.7),
       icon: Icons.favorite_border,
-      onTap: () => favoritesController.deleteFromFavorites(songId),
+      onPressed: (context) => favoritesController.deleteFromFavorites(songId),
     );
   }
 }
@@ -63,11 +64,11 @@ class RemoveFromPlaylist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconSlideAction(
-        caption: 'remove from playlist'.tr,
-        color: screensColors['songBook'],
+    return SlidableAction(
+        label: 'remove from playlist'.tr,
+        backgroundColor: screensColors['songBook']!,
         icon: Icons.remove_circle_outline_outlined,
-        onTap: () {
+        onPressed: (context) {
           if (playlistId != null) {
             playlistsController.removeFromPlaylist(playlistId!, songId);
           }
@@ -86,11 +87,11 @@ class AddToFavorites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconSlideAction(
-      caption: 'to favorite'.tr,
-      color: screensColors['songBook']!.withOpacity(0.5),
+    return SlidableAction(
+      label: 'to favorite'.tr,
+      backgroundColor: screensColors['songBook']!.withOpacity(0.5),
       icon: Icons.favorite_border,
-      onTap: () => favoritesController.addToFavorites(songId),
+      onPressed: (context) => favoritesController.addToFavorites(songId),
     );
   }
 }
