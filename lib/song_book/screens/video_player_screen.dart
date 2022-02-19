@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:icoc/song_book/screens/widgets/my_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../index.dart';
@@ -16,12 +17,20 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  final VideoPlayerController controller = Get.put(VideoPlayerController());
+  final GetxVideoPlayerController controller =
+      Get.put(GetxVideoPlayerController());
 
   double controlsBarHeight = 50;
 
   double minHeight = 60;
   bool isFavorite = true;
+  bool isShuffleOn = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -86,7 +95,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                   : Get.width,
                               child:
                                   controller.selectedVideo.value.link.isNotEmpty
-                                      ? MyYoutubePlayer(
+                                      ? YoutubeVideo(
+                                          // ? MyYoutubePlayer(
                                           video: controller.selectedVideo.value)
                                       : Container(),
                             ),
@@ -105,9 +115,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                             if (height < 100) miniplayerControls(),
                           ],
                         ),
-                        if (height > Get.height / 2)
-                          controlsPanel(height, fullSizePlayerHeight),
-                        if (height > Get.height / 2 + 100)
+                        if (height > Get.height / 1.5)
+                          controlsPanel(context, height, fullSizePlayerHeight),
+                        if (height > Get.height / 1.5)
                           currentVideoInfo(
                               context, height, fullSizePlayerHeight),
                         if (height > fullSizePlayerHeight)
@@ -122,9 +132,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   AnimatedContainer currentVideoInfo(
       BuildContext context, double height, double fullSizePlayerHeight) {
+    isFavorite =
+        controller.getFavoriteStatus(controller.selectedVideo.value.link);
     return AnimatedContainer(
       height: height > Get.height - fullSizePlayerHeight ? 50 : 0,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 800),
       child: Row(
         children: [
           Expanded(
@@ -145,7 +157,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       .addToFavorites(controller.selectedVideo.value);
 
               setState(() {
-                isFavorite = !isFavorite;
+                // isFavorite = !isFavorite;
                 // log.i(widget.resources.title + " " + isFavorite.toString());
               });
             },
@@ -157,15 +169,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     );
   }
 
-  AnimatedContainer controlsPanel(double height, double fullSizePlayerHeight) {
-    log.i(controller.youtubePlayerController.value.playerState ==
-        PlayerState.playing);
+  AnimatedContainer controlsPanel(
+      BuildContext ctx, double height, double fullSizePlayerHeight) {
+    //log.i(controller.myVideoPlayerController.value.isPlaying);
     return AnimatedContainer(
       decoration: BoxDecoration(
+          color: Theme.of(ctx).scaffoldBackgroundColor,
           border: Border.symmetric(
               horizontal: BorderSide(color: Colors.grey, width: 1))),
       height: height > Get.height - fullSizePlayerHeight ? 50 : 0,
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 800),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -178,26 +191,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               color: screensColors['songBook'],
             ),
           ),
-          controller.youtubePlayerController.value.playerState ==
-                  PlayerState.playing
+          controller.myVideoPlayerController.value.isPlaying
               ? IconButton(
                   icon: Icon(Icons.pause),
                   onPressed: () async {
-                    controller.youtubePlayerController.pause();
+                    controller.myVideoPlayerController.pause();
                     setState(() {});
-                    //    controller.miniplayerController.animateToHeight(height:
-                    //     + 15,
-                    // );
-                    // await Future.delayed(Duration(milliseconds: 100));
-                    // controller.miniplayerController.animateToHeight(
-                    //   height: minHeight,
-                    // );
                   },
                   color: screensColors['songBook'],
                 )
               : IconButton(
                   onPressed: () {
-                    controller.youtubePlayerController.play();
+                    controller.myVideoPlayerController.play();
                     setState(() {});
                   },
                   icon: Icon(
@@ -216,13 +221,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           ),
           IconButton(
             onPressed: () {
-              controller.waitingList.shuffle();
+              isShuffleOn
+                  ? controller.waitingList = controller.favoritesVideos
+                  : controller.waitingList.shuffle();
+              setState(() {
+                isShuffleOn = !isShuffleOn;
+              });
               controller.waitingList.forEach((element) {
                 print(element.title);
               });
             },
             icon: Icon(
-              Icons.shuffle,
+              isShuffleOn ? Icons.shuffle_on_outlined : Icons.shuffle,
               color: screensColors['songBook'],
             ),
           ),
@@ -234,12 +244,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget miniplayerControls() {
     return Row(
       children: [
-        controller.youtubePlayerController.value.playerState ==
-                PlayerState.playing
+        controller.myVideoPlayerController.value.isPlaying
             ? IconButton(
                 icon: Icon(Icons.pause),
                 onPressed: () async {
-                  controller.youtubePlayerController.pause();
+                  controller.myVideoPlayerController.pause();
                   controller.miniplayerController.animateToHeight(
                     height: minHeight + 15,
                   );
@@ -253,7 +262,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             : IconButton(
                 icon: Icon(Icons.play_arrow),
                 onPressed: () async {
-                  controller.youtubePlayerController.play();
+                  controller.myVideoPlayerController.play();
                   controller.miniplayerController
                       .animateToHeight(height: minHeight + 15);
                   await Future.delayed(Duration(milliseconds: 100));
@@ -279,6 +288,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     if (height > Get.height / 2) {
       countControlsHeight = 100;
     }
+    print(height);
     double listViewHeight = height - fullSizePlayerHeight - countControlsHeight;
     listViewHeight = listViewHeight < 0 ? 0 : listViewHeight;
 

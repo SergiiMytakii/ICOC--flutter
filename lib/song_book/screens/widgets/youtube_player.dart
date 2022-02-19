@@ -16,7 +16,7 @@ class MyYoutubePlayer extends StatefulWidget {
 class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   String videoId = '';
   //late YoutubePlayerController youtubePlayerController;
-  final VideoPlayerController controller = Get.find();
+  final GetxVideoPlayerController controller = Get.find();
 
   @override
   void initState() {
@@ -50,7 +50,8 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     //   DeviceOrientation.portraitUp
     // ]);
     log.i(videoId);
-
+    controller.youtubePlayerController.cue(videoId);
+    controller.youtubePlayerController.play();
     controller.fetchRelatedVideos(videoId);
     super.initState();
   }

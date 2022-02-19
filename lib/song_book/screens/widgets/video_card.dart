@@ -14,7 +14,7 @@ class VideoCard extends StatefulWidget {
 }
 
 class _VideoCardState extends State<VideoCard> {
-  final VideoPlayerController controller = Get.find();
+  final GetxVideoPlayerController controller = Get.find();
 
   late bool isFavorite;
   String videoId = '';
@@ -26,19 +26,21 @@ class _VideoCardState extends State<VideoCard> {
   }
 
   void getVideoId() {
-    if (widget.resources.link.isNotEmpty &&
-        widget.resources.link.contains('yout')) {
-      try {
-        videoId =
-            YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
-      } on Exception catch (e) {
-        showSnackbar('Error'.tr, 'Can not play video'.tr);
-        print(e);
-      }
-    } else {
-      videoId = widget.resources.link;
-      // log.v(videoId);
-    }
+    videoId = VideoPlayerController.getIdFromUrl(widget.resources.link);
+    //if you use Youtube_player or youtube iFrame player
+    // if (widget.resources.link.isNotEmpty &&
+    //     widget.resources.link.contains('yout')) {
+    //   try {
+    //     videoId =
+    //         YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
+    //   } on Exception catch (e) {
+    //     showSnackbar('Error'.tr, 'Can not play video'.tr);
+    //     print(e);
+    //   }
+    // } else {
+    //   videoId = widget.resources.link;
+    //   // log.v(videoId);
+    // }
   }
 
   @override
@@ -60,8 +62,9 @@ class _VideoCardState extends State<VideoCard> {
             }
 
             controller.selectedVideo.value = widget.resources;
-            controller.shiftWaitingList(
-                selectedV: controller.selectedVideo.value);
+            // controller.shiftWaitingList(
+            //     selectedV: controller.selectedVideo.value);
+            // controller.myVideoPlayerController.play();
             // controller.youtubePlayerController
             //     .updateValue(YoutubePlayerValue(isPlaying: true));
           },
@@ -74,20 +77,20 @@ class _VideoCardState extends State<VideoCard> {
                   ),
               height: Get.width / 16 * 9,
               fit: BoxFit.fitWidth,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return Center(
-                  child: CircularProgressIndicator.adaptive(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                );
-              },
+              // loadingBuilder: (BuildContext context, Widget child,
+              //     ImageChunkEvent? loadingProgress) {
+              //   if (loadingProgress == null) {
+              //     return child;
+              //   }
+              //   return Center(
+              //     child: CircularProgressIndicator.adaptive(
+              //       value: loadingProgress.expectedTotalBytes != null
+              //           ? loadingProgress.cumulativeBytesLoaded /
+              //               loadingProgress.expectedTotalBytes!
+              //           : null,
+              //     ),
+              //   );
+              // },
             ),
           ),
         ),

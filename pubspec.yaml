@@ -47,6 +47,7 @@ dependencies:
   url_launcher: ^6.0.12
   video_player: ^2.2.10
   wakelock: ^0.6.1+1
+  youtube_explode_dart: ^1.10.9+1
   youtube_player_iframe: ^2.2.2
 
 dependency_overrides: null

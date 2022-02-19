@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:icoc/index.dart';
 import 'package:icoc/song_book/logic/services/youtube_service.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-class VideoPlayerController extends GetxController {
+class GetxVideoPlayerController extends GetxController {
   final RxList<Resources> favoritesVideos = <Resources>[].obs;
   final RxList<String> playlist = <String>[].obs;
   final RxList<Resources> relatedVideos = <Resources>[].obs;
@@ -16,7 +14,8 @@ class VideoPlayerController extends GetxController {
   RxList<Resources> waitingList = <Resources>[].obs;
   YoutubePlayerController youtubePlayerController =
       YoutubePlayerController(initialVideoId: '');
-
+  VideoPlayerController myVideoPlayerController =
+      VideoPlayerController.network('');
   @override
   void onClose() {
     miniplayerController.dispose();
@@ -32,16 +31,8 @@ class VideoPlayerController extends GetxController {
 
   Future fetchFavoritesVideos() async {
     favoritesVideos.value = await databaseHelperFTS4.fetchFavoritesVideos();
-    favoritesVideos.forEach((e) {
-      String id = YoutubePlayerController.convertUrlToId(e.link) ?? '';
-      if (id.isNotEmpty) {
-        playlist.add(id);
-      }
-    });
 
-    log.i(playlist);
-
-    // waitingList = favoritesVideos;
+    waitingList = favoritesVideos;
   }
 
   bool getFavoriteStatus(videoID) {
@@ -58,7 +49,7 @@ class VideoPlayerController extends GetxController {
   Future addToFavorites(Resources video) async {
     await databaseHelperFTS4.addVideoToFavorites(video);
     await fetchFavoritesVideos();
-    Get.showSnackbar(GetBar(
+    Get.showSnackbar(GetSnackBar(
       duration: Duration(milliseconds: 800),
       message: 'Added to favorite list'.tr,
     ));
@@ -67,7 +58,7 @@ class VideoPlayerController extends GetxController {
   Future deleteFromFavorites(Resources video) async {
     await databaseHelperFTS4.deleteVideoFromFavorites(video);
     await fetchFavoritesVideos();
-    Get.showSnackbar(GetBar(
+    Get.showSnackbar(GetSnackBar(
       duration: Duration(milliseconds: 800),
       message: 'Deleted from favorite list'.tr,
     ));
@@ -90,28 +81,32 @@ class VideoPlayerController extends GetxController {
         waitingList.insert(waitingList.length, temp);
       }
       waitingList.forEach((element) {
-        // log.e(element.title);
+        print(element.title);
       });
     }
   }
 
   void fetchRelatedVideos(String videoId) async {
-    relatedVideos.value =
-        await YoutubeService().fetchRelatedVideos(videoId) ?? [];
+    //log.i(videoId);
+    relatedVideos.value = await YoutubeService().fetchRelatedVideos(videoId);
   }
 
-  void playNext() {
+  void playNext() async {
     shiftWaitingList();
-    // waitingList.shuffle();
-    youtubePlayerController.load(
-        YoutubePlayerController.convertUrlToId(waitingList[0].link) ?? '');
+    selectedVideo.value = Resources(lang: '', title: '', link: '');
+    Get.appUpdate();
+    await Future.delayed(Duration(milliseconds: 300));
+    selectedVideo.value = waitingList.first;
+    myVideoPlayerController.value.copyWith(isPlaying: true);
   }
 
-  void playPrevios() {
+  void playPrevios() async {
     shiftWaitingListBack();
-    // waitingList.shuffle();
-    youtubePlayerController.load(
-        YoutubePlayerController.convertUrlToId(waitingList[0].link) ?? '');
+
+    selectedVideo.value = Resources(lang: '', title: '', link: '');
+    Get.appUpdate();
+    await Future.delayed(Duration(milliseconds: 300));
+    selectedVideo.value = waitingList.first;
   }
 
   void shiftWaitingListBack() {

@@ -95,7 +95,8 @@ class Pages {
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
         binding: BindingsBuilder(() {
-          Get.lazyPut<VideoPlayerController>(() => VideoPlayerController());
+          Get.lazyPut<GetxVideoPlayerController>(
+              () => GetxVideoPlayerController());
         }),
       ),
     ];

@@ -42,7 +42,7 @@ export 'package:icoc/song_book/logic/services/import_songs.dart';
 export 'package:icoc/song_book/logic/services/data_search_from_playlist.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:icoc/q_and_a/logic/sqlite_database_service.dart';
-
+export 'package:icoc/song_book/screens/widgets/ext_video_player.dart';
 //debug
 export 'package:logger/logger.dart';
 

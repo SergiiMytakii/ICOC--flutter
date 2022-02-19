@@ -5,7 +5,7 @@ class YoutubeService extends YoutubeNetworkService {
   // List<News> newsFromJson(String? str) =>
   //     List<News>.from(json.decode(str!).map((x) => News.fromJson(x)));
 
-  Future<List<Resources>?> fetchRelatedVideos(String videoId) async {
+  Future<List<Resources>> fetchRelatedVideos(String videoId) async {
     Map<String, String> data = {
       'part': 'snippet',
       'key': YOUTUBE_API_KEY,
@@ -17,9 +17,9 @@ class YoutubeService extends YoutubeNetworkService {
           "Content-Type": "application/json",
         },
         query: data);
+    //log.i(response.body);
     if (response.statusCode == 200) {
       List data = response.body['items'];
-      //log.i(data);
       List<Resources> relatedVideos = List.generate(
           data.length,
           (index) => Resources(
@@ -39,6 +39,7 @@ class YoutubeService extends YoutubeNetworkService {
       });
       relatedVideos.removeWhere((element) => element.title.isEmpty);
       return relatedVideos;
-    }
+    } else
+      return [];
   }
 }
