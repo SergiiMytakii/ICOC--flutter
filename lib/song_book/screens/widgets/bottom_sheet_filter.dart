@@ -31,6 +31,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
           controller.orderLang.insert(newIndex, item);
           //writing new order of lang-s to preferences
           controller.setOrderLang();
+          Get.forceAppUpdate();
         }
 
         return Container(
@@ -132,9 +133,9 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
 
   void _orderSongs(OrderLangController controller, bool sortByNumber) {
     if (sortByNumber)
-      songsController.songs.sort((a, b) => a.id.compareTo(b.id));
+      songsController.songsFromFB.sort((a, b) => a.id.compareTo(b.id));
     else
-      songsController.songs.sort((a, b) => controller
+      songsController.songsFromFB.sort((a, b) => controller
           .chooseCardLang(a)![0]!
           .compareTo(controller.chooseCardLang(b)![0]!));
   }

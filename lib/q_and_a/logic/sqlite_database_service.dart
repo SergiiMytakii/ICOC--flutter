@@ -1,4 +1,3 @@
-import 'package:icoc/q_and_a/models/q_and_a_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io' as io;
 import '../../index.dart';

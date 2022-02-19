@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:sqflite/sqflite.dart';
 import '/index.dart';
 
@@ -29,11 +27,6 @@ class DatabaseHelperFTS4 {
   static const String TABLE_CHORDS = 'chords';
   static const String CHORDS = 'chords_v';
 
-  // static const String TABLE_RESOURCES = 'resources'; //todo may you don't need it
-  // static const String RESOURCES_RU = 'res_ru';
-  // static const String RESOURCES_UK = 'res_uk';
-  // static const String RESOURCES_EN = 'res_en';
-
   static const String TABLE_FAVORITES = 'favorites';
   static const String FAVORITE_STATUS = 'favoriteStatus';
 
@@ -43,7 +36,11 @@ class DatabaseHelperFTS4 {
   static const String TABLE_PLAYLISTS_SONGS = 'playlistsSongs';
   static const String PLAYLIST_ID = 'playlistId';
 
-  //SongsController songsController = Get.put(SongsController());
+  static const String TABLE_RESOURCES = 'resources';
+  static const String VIDEO_ID = 'videoId';
+  static const String VIDEO_TITLE = 'videoTitle';
+  static const String VIDEO_LANG = 'videoLang';
+
   List<String> columnsTitle = [ID_SONG];
   var columnsText = [];
   List<String> columnsDescription = [];
@@ -94,13 +91,13 @@ class DatabaseHelperFTS4 {
     return query;
   }
 
-  List<Song> convertToSongs(List<Map<String, dynamic>> items) {
-    List<Song> songs = [];
+  List<SongDetail> convertToSongs(List<Map<String, dynamic>> items) {
+    List<SongDetail> songs = [];
     for (Map map in items) {
       if (map['title_ru'] != null ||
           map['title_uk'] != null ||
           map['title_en'] != null) {
-        Song song = Song(id: map['id_song'], text: {
+        SongDetail song = SongDetail(id: map['id_song'], text: {
           'ru': map['text_ru'],
           'uk': map['text_uk'],
           'en': map['text_en']
@@ -134,7 +131,7 @@ class DatabaseHelperFTS4 {
     String path = join((await getDatabasesPath()), DB_NAME);
     //await deleteDatabase(path);   // - if we need to clean database
 
-    return await openDatabase(path, version: 3,
+    return await openDatabase(path, version: 5,
         onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $TITLE_RU,  $TITLE_UK, $TITLE_EN)');
@@ -146,8 +143,8 @@ class DatabaseHelperFTS4 {
           'CREATE VIRTUAL TABLE $TABLE_TEXT_EN USING fts4 (tokenize = unicode61, $ID_SONG, $TEXT_EN)');
       await db.execute(
           'CREATE TABLE $TABLE_DESCRIPTION ($ID_SONG INTEGER PRIMARY KEY, $DESCRIPTION_RU TEXT, $DESCRIPTION_UK TEXT, $DESCRIPTION_EN TEXT)');
-      // await db.execute( //todo may you don't need it
-      //     'CREATE TABLE $TABLE_RESOURCES($ID INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER PRIMARY KEY, $RESOURCES_RU TEXT, $RESOURCES_UK TEXT, $RESOURCES_EN TEXT)');
+      await db.execute(
+          'CREATE TABLE $TABLE_RESOURCES($ID INTEGER PRIMARY KEY AUTOINCREMENT, $VIDEO_ID TEXT, $VIDEO_TITLE TEXT, $VIDEO_LANG TEXT)');
       await db.execute(
           'CREATE TABLE $TABLE_CHORDS ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER, $CHORDS TEXT)');
       await db.execute(
@@ -204,19 +201,21 @@ class DatabaseHelperFTS4 {
       ''', [song.id, value]);
         }
       });
-
-      await database.insert(
-        TABLE_DESCRIPTION,
-        song.toMapDescription(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-
-      song.chords.forEach((key, value) async {
-        await database.rawQuery('''
+      if (song.description != null) {
+        await database.insert(
+          TABLE_DESCRIPTION,
+          song.toMapDescription()!,
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      if (song.chords != null) {
+        song.chords!.forEach((key, value) async {
+          await database.rawQuery('''
         INSERT INTO $TABLE_CHORDS ($ID_SONG, $CHORDS)
         VALUES (?,?)
       ''', [song.id, value]);
-      });
+        });
+      }
     }
     log.i('HAS BEEN INSERTED SONGS:  ${songs.length}');
   }
@@ -229,7 +228,7 @@ class DatabaseHelperFTS4 {
   }
 
 /* get list of all songs */
-  Stream<List<Song>> getListSongs() async* {
+  Stream<List<SongDetail>> getListSongs() async* {
     final Database? database = await db;
 
     final List<Map<String, dynamic>> items = await database!.rawQuery('''
@@ -240,7 +239,7 @@ class DatabaseHelperFTS4 {
         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
         GROUP BY $TABLE_TITLE.$ID_SONG
           ''');
-    List<Song> songs = convertToSongs(items);
+    List<SongDetail> songs = convertToSongs(items);
     yield songs;
   }
 
@@ -388,31 +387,22 @@ class DatabaseHelperFTS4 {
       return false;
   }
 
-  Stream<List<Song>> getListFavorites() async* {
+  Stream<List<int>> getListFavorites() async* {
     final Database? database = await db;
 
-    final List<Map<String, dynamic>> items = await database!.rawQuery('''
-        SELECT $query
-        FROM $TABLE_TITLE
-        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
-        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-         INNER JOIN $TABLE_FAVORITES ON $TABLE_TITLE.$ID_SONG = $TABLE_FAVORITES.$ID_SONG 
-        GROUP BY $TABLE_FAVORITES.$ID_SONG
-         ORDER BY $TABLE_FAVORITES.$ID_SONG
-          ''');
+    final List<Map<String, dynamic>> items =
+        await database!.query(TABLE_FAVORITES, columns: [ID_SONG]);
+    List<int> songsIds = items.map((e) => e.values.first as int).toList();
 
-    List<Song> songs = convertToSongs(items);
-
-    yield songs;
+    yield songsIds;
   }
 
 /* functions for full text search */
 
-  Stream<List<Song>> getSearchResult(String query) async* {
+  Stream<List<SongDetail>> getSearchResult(String query) async* {
     final Database? database = await db;
 
-    List<Song> songs = [];
+    List<SongDetail> songs = [];
     // log.i('query' + query);
     if (query != '') {
       // search in titiles
@@ -429,7 +419,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searchInTitles) {
-          Song song = Song(
+          SongDetail song = SongDetail(
             id: map['id_song'],
             title: {'ru': map['title_ru']},
             text: {'ru': map['text_ru'] ?? ''},
@@ -450,7 +440,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searhInTexts) {
-          Song song = Song(
+          SongDetail song = SongDetail(
             id: map['id_song'],
             title: {'ru': map['ru']},
             text: {'ru': map['text_ru'] ?? ''},
@@ -470,7 +460,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searchInTitles) {
-          Song song = Song(
+          SongDetail song = SongDetail(
             id: map['id_song'],
             title: {'uk': map['title_uk']},
             text: {'uk': map['text_uk'] ?? ''},
@@ -490,7 +480,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searhInTexts) {
-          Song song = Song(
+          SongDetail song = SongDetail(
               id: map['id_song'],
               title: {'uk': map['uk']},
               text: {'uk': map['text_uk'] ?? ''});
@@ -509,7 +499,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searchInTitles) {
-          Song song = Song(
+          SongDetail song = SongDetail(
               id: map['id_song'],
               title: {'en': map['title_en']},
               text: {'en': map['text_en'] ?? ''});
@@ -531,7 +521,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
         for (Map map in searhInTexts) {
-          Song song = Song(
+          SongDetail song = SongDetail(
               id: map['id_song'],
               title: {'en': map['en']},
               text: {'en': map['text_en'] ?? ''});
@@ -542,7 +532,7 @@ class DatabaseHelperFTS4 {
     }
   }
 
-  Stream<List<Song>> getSearchResultByNumber(String searchQuery) async* {
+  Stream<List<SongDetail>> getSearchResultByNumber(String searchQuery) async* {
     final Database? database = await db;
 
     final List<Map<String, dynamic>> items = await database!.rawQuery('''
@@ -553,7 +543,7 @@ class DatabaseHelperFTS4 {
         LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
         GROUP BY $TABLE_TITLE.$ID_SONG
           ''');
-    List<Song> songs = convertToSongs(items);
+    List<SongDetail> songs = convertToSongs(items);
     yield songs
         .where((song) => song.id.toString().contains(searchQuery))
         .toList();
@@ -621,22 +611,17 @@ class DatabaseHelperFTS4 {
         ''', [newName, playlistId]);
   }
 
-  Stream<List<Song>> getSongsInPlaylist(int playlistId) async* {
+  Stream<List<int>> getSongsInPlaylist(int playlistId) async* {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    final List<Map<String, dynamic>> items = await database.rawQuery('''
-    SELECT  $query
-        FROM $TABLE_TITLE
-        LEFT JOIN $TABLE_TEXT_RU ON $TABLE_TEXT_RU.$ID_SONG = $TABLE_TITLE.$ID_SONG 
-        LEFT JOIN $TABLE_TEXT_UK ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_UK.$ID_SONG
-        LEFT JOIN $TABLE_TEXT_EN ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT_EN.$ID_SONG
-        INNER JOIN $TABLE_PLAYLISTS_SONGS ON $TABLE_TITLE.$ID_SONG = $TABLE_PLAYLISTS_SONGS.$ID_SONG 
-        WHERE $TABLE_PLAYLISTS_SONGS.$PLAYLIST_ID = $playlistId
-        ORDER BY $TABLE_PLAYLISTS_SONGS.$ID_SONG
-    ''');
-    List<Song> songs = convertToSongs(items);
-    yield songs;
+    final List<Map<String, dynamic>> items = await database.query(
+        TABLE_PLAYLISTS_SONGS,
+        columns: [ID_SONG],
+        where: '$PLAYLIST_ID = ?',
+        whereArgs: [playlistId]);
+    List<int> songsIds = items.map((e) => e.values.first as int).toList();
+    yield songsIds;
   }
 
   Future<void> removeFromPlaylist(int playlistId, int id) async {
@@ -649,5 +634,40 @@ class DatabaseHelperFTS4 {
         WHERE $PLAYLIST_ID = ? 
         AND $ID_SONG =?;
         ''', [playlistId, id]);
+  }
+
+//work with video
+
+  Future<List<Resources>> fetchFavoritesVideos() async {
+    final Database database = (await db)!;
+    final List<Map<String, dynamic>> query = await database.query(
+      TABLE_RESOURCES,
+      columns: ['$VIDEO_ID', '$VIDEO_TITLE', '$VIDEO_LANG'],
+    );
+
+    List<Resources> videos = query
+        .map((item) => Resources(
+            lang: item[VIDEO_LANG],
+            title: item[VIDEO_TITLE],
+            link: item[VIDEO_ID]))
+        .toList();
+    return videos;
+  }
+
+  addVideoToFavorites(Resources video) async {
+    final Database database = (await db)!;
+    await database.insert(TABLE_RESOURCES, {
+      VIDEO_ID: video.link,
+      VIDEO_LANG: video.lang,
+      VIDEO_TITLE: video.title
+    });
+  }
+
+  deleteVideoFromFavorites(Resources video) async {
+    final Database database = (await db)!;
+    int result = await database.delete(TABLE_RESOURCES,
+        where: '$VIDEO_ID = ?', whereArgs: [video.link]);
+
+    // log.w(result.toString() + video.link);
   }
 }

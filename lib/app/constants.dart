@@ -24,9 +24,11 @@ final Map<String, Locale> languagesLocales = {
 const String email = 'serjmitaki@gmail.com';
 const String payPalAccount = 'serjmitaki@gmail.com';
 const String monoBankCard = '4441 1144 5075 7396';
-const String versionApp = '4.0.1';
+const String versionApp = '4.0.6';
 const appUrlPlayMarket =
     'https://play.google.com/store/apps/details?id=ru.icoc.app';
 const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
 
 enum SlideActions { AllSongs, Favorites, Playlists }
+
+const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';

@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:flutter_html/shims/dart_ui_real.dart';
-import 'package:icoc/news/logic/controllers/news_controller.dart';
+
 
 import '../../index.dart';
 

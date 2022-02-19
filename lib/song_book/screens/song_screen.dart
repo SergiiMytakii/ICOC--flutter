@@ -1,13 +1,13 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/screens/video_list_screen.dart';
-import 'package:miniplayer/miniplayer.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:icoc/song_book/screens/video_player_screen.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../index.dart';
 
 class SongScreen extends StatefulWidget {
-  SongScreen() {
+  final SongDetail song;
+  final String? prefferedLangFromSearch;
+  SongScreen(this.song, {this.prefferedLangFromSearch}) {
     Wakelock.enable();
   }
 
@@ -18,37 +18,29 @@ class SongScreen extends StatefulWidget {
 class _SongScreenState extends State<SongScreen> {
   final FavoritesController favoritesController = Get.find();
   bool showVideos = false;
-  final log = Logger();
+  bool miniPlayerOpened = false;
   String videoId = '';
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
   final SlidesController slidesController = Get.put(SlidesController());
-  late final int songId;
-  late String? prefferedLangFromSearch;
-  late final SongScreenController songScreenController;
-  int initialIndex = 0;
+  final MiniplayerController miniplayerController = MiniplayerController();
+  final SongScreenController songScreenController =
+      Get.put(SongScreenController());
+
   @override
   void initState() {
-    songId = Get.arguments != null ? Get.arguments[0] : 1;
-    prefferedLangFromSearch = Get.arguments != null && Get.arguments.length > 1
-        ? Get.arguments[1]
-        : null;
-    songScreenController = Get.put(SongScreenController(
-        songId: songId, prefferedLangFromSearch: prefferedLangFromSearch));
-    favoritesController.getFavoriteStatus(songId);
+    favoritesController.getFavoriteStatus(widget.song.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //log.w(prefferedLangFromSearch);
-
+    songScreenController.getData(widget.song, widget.prefferedLangFromSearch);
     return Obx(() {
       return DefaultTabController(
-        initialIndex: initialIndex,
         length: songScreenController.amountOfTabs.value,
         child: Scaffold(
-          appBar:
-              appBar(context, songScreenController, slidesController, songId),
+          appBar: appBar(
+              context, songScreenController, slidesController, widget.song),
           body: Column(
             children: [
               //adjust size text screen and player dynamicly
@@ -57,13 +49,15 @@ class _SongScreenState extends State<SongScreen> {
                   builder:
                       (BuildContext context, double height, Widget? child) {
                     // log.w(showVideos);
-                    double? height = Scaffold.of(context).appBarMaxHeight;
-                    // log.w(height);
+                    double? appBarHeight = Scaffold.of(context).appBarMaxHeight;
+
+                    // log.w(Get.size.height);
 
                     return SizedBox(
                       height: Get.size.height -
-                          height! -
-                          (showVideos ? playerExpandProgress.value : 0),
+                          appBarHeight! -
+                          (showVideos ? playerExpandProgress.value : 0) -
+                          50,
                       child: child,
                     );
                   },
@@ -71,7 +65,6 @@ class _SongScreenState extends State<SongScreen> {
               if (showVideos)
                 Container(
                   width: Get.width,
-                  //bottom: 0,
                   child: _miniPlayerBuilder(),
                 ),
             ],
@@ -85,9 +78,9 @@ class _SongScreenState extends State<SongScreen> {
     BuildContext context,
     SongScreenController controller,
     SlidesController slidesController,
-    songId,
+    SongDetail song,
   ) {
-    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+    var fontSizeAdjust = FontSizeAdjustBottomSheet(
         context: context, controller: songScreenController, color: 'songBook');
     return AppBar(
       backgroundColor: screensColors['songBook'],
@@ -100,18 +93,25 @@ class _SongScreenState extends State<SongScreen> {
       ),
       elevation: 0,
       actions: [
-        controller.resourcesIds.isNotEmpty
+        song.resources != null
             ? IconButton(
                 autofocus: true,
                 tooltip: 'Video & audio'.tr,
                 icon: Icon(
-                  Icons.video_collection,
+                  Icons.library_music_outlined,
                 ),
                 onPressed: () async {
-                  await Get.to(() => VideoListScreen())?.then((value) {
+                  await Navigator.push(context, CupertinoPageRoute(
+                    builder: (context) {
+                      return VideoPlayerScreen(
+                        song: song,
+                      );
+                    },
+                  )).then((value) {
+                    log.i('coming back');
                     setState(() {
                       if (value != null) {
-                        videoId = value;
+                        videoId = value[0];
                         showVideos = !showVideos;
                       }
                     });
@@ -138,14 +138,14 @@ class _SongScreenState extends State<SongScreen> {
                 ? Icons.favorite
                 : Icons.favorite_border,
           ),
-          onPressed: () => favoritesController.toggleFavStatus(songId),
+          onPressed: () => favoritesController.toggleFavStatus(song.id),
         ),
         IconButton(
             tooltip: 'Font size'.tr,
             icon: Icon(
               Icons.text_fields_outlined,
             ),
-            onPressed: () => fontSozeAdjust.bottomSheet()),
+            onPressed: () => fontSizeAdjust.bottomSheet()),
         IconButton(
           tooltip: 'Slides'.tr,
           icon: Icon(Icons.mobile_screen_share_outlined),
@@ -163,23 +163,16 @@ class _SongScreenState extends State<SongScreen> {
   Stack _miniPlayerBuilder() {
     return Stack(children: [
       Miniplayer(
+          controller: miniplayerController,
           valueNotifier: playerExpandProgress,
           minHeight: 80,
           maxHeight: Get.size.height / 3,
           builder: (height, percentage) {
-            print(videoId);
-            return YoutubePlayer(
-              bottomActions: [
-                CurrentPosition(),
-                //ProgressBar(isExpanded: true),
-              ],
-              width: Get.width,
+            //print(videoId);
+
+            return YoutubePlayerIFrame(
               controller: YoutubePlayerController(
                 initialVideoId: videoId,
-                flags: YoutubePlayerFlags(
-                  //controlsVisibleAtStart: true,
-                  mute: false,
-                ),
               ),
             );
           }),
@@ -193,6 +186,25 @@ class _SongScreenState extends State<SongScreen> {
               });
             },
             icon: Icon(Icons.close_outlined)),
+      ),
+      Positioned(
+        left: 0,
+        child: IconButton(
+            color: screensColors['songBook'],
+            onPressed: () {
+              if (miniPlayerOpened) {
+                log.i(miniPlayerOpened);
+
+                miniplayerController.animateToHeight(state: PanelState.MIN);
+              } else {
+                miniplayerController.animateToHeight(state: PanelState.MAX);
+              }
+              setState(() {
+                miniPlayerOpened = !miniPlayerOpened;
+              });
+            },
+            icon: Icon(
+                miniPlayerOpened ? Icons.arrow_downward : Icons.arrow_upward)),
       )
     ]);
   }
@@ -202,21 +214,21 @@ class _SongScreenState extends State<SongScreen> {
       children: [
         for (final item in controller.tabItemsSongs)
           SongTextOnSongScreen(
-            title:
-                controller.songDetail.value.title[item.substring(0, 2)] ?? '',
-            textVersion: controller.songDetail.value.text[item] ?? '',
-            description:
-                controller.songDetail.value.description[item.substring(0, 2)] ??
-                    '',
+            title: widget.song.title[item.substring(0, 2)] ?? '',
+            textVersion: widget.song.text[item] ?? '',
+            description: widget.song.description != null
+                ? widget.song.description![item.substring(0, 2)] ?? ''
+                : '',
             controller: controller,
           ),
-        for (final item in controller.tabItemsChords)
-          SongTextOnSongScreen(
-            title: '',
-            description: '',
-            textVersion: controller.songDetail.value.chords[item],
-            controller: controller,
-          ),
+        if (widget.song.chords != null)
+          for (final item in controller.tabItemsChords)
+            SongTextOnSongScreen(
+              title: '',
+              description: '',
+              textVersion: widget.song.chords![item] ?? '',
+              controller: controller,
+            ),
       ],
     );
   }

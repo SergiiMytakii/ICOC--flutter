@@ -1,5 +1,7 @@
 import 'package:icoc/app/screens/share_app_screen.dart';
 import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
+import 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
+import 'package:icoc/song_book/screens/video_player_screen.dart';
 
 import '../../index.dart';
 
@@ -11,6 +13,9 @@ class Pages {
         page: () => MainScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<MainScreenController>(() => MainScreenController());
+        }),
       ),
       GetPage(
         name: Routes.SONGBOOK,
@@ -43,20 +48,8 @@ class Pages {
         transitionDuration: Duration(milliseconds: 250),
       ),
       GetPage(
-        name: Routes.PLAYLISTS,
-        page: () => PlaylistScreen(),
-        transition: Transition.native,
-        transitionDuration: Duration(milliseconds: 250),
-      ),
-      GetPage(
         name: Routes.SLIDES_SCREEN,
         page: () => SlidesScreen(),
-        transition: Transition.native,
-        transitionDuration: Duration(milliseconds: 250),
-      ),
-      GetPage(
-        name: Routes.SONG_SCREEN,
-        page: () => SongScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),
@@ -95,6 +88,16 @@ class Pages {
         page: () => ShareAppScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.VIDEO_PLAYER_SCREEN,
+        page: () => VideoPlayerScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<GetxVideoPlayerController>(
+              () => GetxVideoPlayerController());
+        }),
       ),
     ];
   }

@@ -14,4 +14,5 @@ abstract class Routes {
   static const ONE_LESSON_SCREEN = '/one_lesson_screen';
   static const ONE_Q_AND_A_SCREEN = '/one_q_and_a_screen';
   static const SHARE_APP_SCREEN = '/share_app_screen';
+  static const VIDEO_PLAYER_SCREEN = '/video_player_screen';
 }

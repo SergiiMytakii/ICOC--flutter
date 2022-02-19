@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:icoc/song_book/screens/video_player_screen.dart';
 import '/index.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -6,11 +8,11 @@ class MyBottomNavigationBar extends StatefulWidget {
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  final PageController _pageController = PageController();
-  final List _pages = [
+  final List<Widget> _pages = [
     SongBookScreen(),
     FavoritesScreen(),
     PlaylistsListScreen(),
+    VideoPlayerScreen()
   ];
 
   int _selectedPageIndex = 0;
@@ -23,45 +25,64 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        //type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedPageIndex,
+    // kTabBarHeight = 50;
+    return CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          currentIndex: _selectedPageIndex,
+          activeColor: screensColors['songBook']!.withOpacity(0.8),
+          // backgroundColor: Colors.transparent,
 
-        selectedItemColor: screensColors['songBook']!.withOpacity(0.8),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        onTap: (index) {
-          _selectPage(index);
-          _pageController.animateToPage(
-            _selectedPageIndex,
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.ease,
-          );
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: 'bottom_navigation_bar_list'.tr,
-            icon: Icon(Icons.queue_music),
-          ),
-          BottomNavigationBarItem(
-            label: 'bottom_navigation_bar_favorites'.tr,
-            icon: Icon(Icons.favorite),
-          ),
-          BottomNavigationBarItem(
-            label: 'bottom_navigation_bar_playlists'.tr,
-            icon: Icon(Icons.playlist_play),
-          ),
-        ],
-      ),
-      body: PageView(
-        children: [
-          ..._pages,
-        ],
-        onPageChanged: (index) => _selectPage(index),
-        physics: NeverScrollableScrollPhysics(),
-        controller: _pageController,
-      ),
-    );
+          onTap: (index) {
+            _selectPage(index);
+          },
+          items: [
+            BottomNavigationBarItem(
+              label: 'bottom_navigation_bar_list'.tr,
+              icon: Icon(Icons.queue_music),
+            ),
+            BottomNavigationBarItem(
+              label: 'bottom_navigation_bar_favorites'.tr,
+              icon: Icon(Icons.favorite),
+            ),
+            BottomNavigationBarItem(
+              label: 'bottom_navigation_bar_playlists'.tr,
+              icon: Icon(Icons.playlist_play),
+            ),
+            BottomNavigationBarItem(
+              label: 'Video'.tr,
+              icon: Icon(
+                Icons.play_circle,
+              ),
+            ),
+          ],
+        ),
+        tabBuilder: (context, int) {
+          switch (int) {
+            case 0:
+              {
+                return CupertinoTabView(builder: (context) => SongBookScreen());
+              }
+            case 1:
+              {
+                return CupertinoTabView(
+                    builder: (context) => FavoritesScreen());
+              }
+            case 2:
+              {
+                return CupertinoTabView(
+                    builder: (context) => PlaylistsListScreen());
+              }
+            case 3:
+              {
+                return CupertinoTabView(
+                    builder: (context) => VideoPlayerScreen());
+              }
+            default:
+              {
+                return CupertinoTabView(builder: (context) => SongBookScreen());
+              }
+          }
+        });
   }
 }

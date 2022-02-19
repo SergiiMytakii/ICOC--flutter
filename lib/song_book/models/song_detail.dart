@@ -1,22 +1,24 @@
+import '../../index.dart';
+
 class SongDetail {
   final int id;
-  final Map description;
+  final Map? description;
   final Map title;
   final Map text;
-  final List? resources;
-  final Map chords;
+  final List<Resources>? resources;
+  final Map? chords;
 
   SongDetail({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     required this.text,
-    required this.chords,
+    this.chords,
     this.resources,
   });
 
   factory SongDetail.fromJson(Map<String, dynamic> parsedJson) {
-    //print(parsedJson);
+    // log.d(parsedJson);
     return SongDetail(
       id: parsedJson['Id'] ?? 0,
       title: parsedJson['title'] ?? '',
@@ -48,23 +50,25 @@ class SongDetail {
     };
   }
 
-  Map<String, Object?> toMapDescription() {
-    return {
-      'id_song': id,
-      'ru': description['ru'],
-      'uk': description['uk'],
-      'en': description['en'],
-    };
+  Map<String, Object?>? toMapDescription() {
+    if (description != null)
+      return {
+        'id_song': id,
+        'ru': description!['ru'],
+        'uk': description!['uk'],
+        'en': description!['en'],
+      };
   }
 
-  Map<String, Object?> toMapChords() {
-    return {
-      'id_song': id,
-      'v1': chords['v1'],
-      'v2': chords['v2'],
-      'v3': chords['v3'],
-      'v4': chords['v4'],
-    };
+  Map<String, Object?>? toMapChords() {
+    if (chords != null)
+      return {
+        'id_song': id,
+        'v1': chords!['v1'],
+        'v2': chords!['v2'],
+        'v3': chords!['v3'],
+        'v4': chords!['v4'],
+      };
   }
 
 //todo may you don't need it

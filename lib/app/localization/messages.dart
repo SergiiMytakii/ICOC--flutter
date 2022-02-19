@@ -26,8 +26,8 @@ class Messages extends Translations {
           "ru": "Russian",
           "en": "English",
           "uk": "Ukrainian",
-          "to favorite": "To favorite",
-          "to playlist": "To playlist",
+          "to favorite": "Favorites",
+          "to playlist": "Playlist",
           "delete from favorites": "Delete",
           "Added to favorite list": "Added to favorite list",
           "Deleted from favorites": "Deleted from favorites",
@@ -40,7 +40,7 @@ class Messages extends Translations {
           "New playlist": "New playlist",
           "Deleted from favorite list": "Deleted from favorite list",
           "name of playlist": "Name of playlist",
-          "remove from playlist": "Remove",
+          "remove from playlist": "Delete",
           "Please enter name of playlist": "Please enter name of playlist",
           "The playlist with given name alredy exist":
               "The playlist with given name alredy exist",
@@ -84,7 +84,9 @@ class Messages extends Translations {
           'Share': "Share",
           'Sort by': ' Sort songs by',
           'By number': 'Number',
-          'By tittle': 'Title'
+          'By tittle': 'Title',
+          'Favorite video': 'Favorite videos',
+          'Video': 'Video'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -109,8 +111,8 @@ class Messages extends Translations {
           "ru": "русский",
           "en": "английский",
           "uk": "украинский",
-          "to favorite": "В избранные",
-          "to playlist": "В плейлисты",
+          "to favorite": "Избранные",
+          "to playlist": "Плейлисты",
           "delete from favorites": "Удалить",
           "Added to favorite list": "Добавлено в избранные",
           "Deleted from favorites": "Удалено из избранных",
@@ -173,7 +175,9 @@ class Messages extends Translations {
           'Share': "Поделиться",
           'Sort by': 'Сортировать песни по',
           'By number': 'Номеру',
-          'By tittle': 'Названию'
+          'By tittle': 'Названию',
+          'Favorite video': 'Любимые видео',
+          'Video': 'Видео'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -198,8 +202,8 @@ class Messages extends Translations {
           "ru": "російська",
           "en": "англійська",
           "uk": "українська",
-          "to favorite": "До улюблених",
-          "to playlist": "До плейлиста",
+          "to favorite": "Улюблені",
+          "to playlist": "Плейлисти",
           "delete from favorites": "Видалити",
           "Added to favorite list": "Додано в улюблені",
           "Deleted from favorites": "Видалено з улюблених",
@@ -262,7 +266,9 @@ class Messages extends Translations {
           'Share': "Поділитися",
           'Sort by': 'Сортувати пісні за',
           'By number': 'Номером',
-          'By tittle': 'Назвою'
+          'By tittle': 'Назвою',
+          'Favorite video': 'Улюблені відео',
+          'Video': 'Відео'
         }
       };
 }
