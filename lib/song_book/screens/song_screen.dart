@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:icoc/song_book/screens/video_player_screen.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -50,14 +52,15 @@ class _SongScreenState extends State<SongScreen> {
                       (BuildContext context, double height, Widget? child) {
                     // log.w(showVideos);
                     double? appBarHeight = Scaffold.of(context).appBarMaxHeight;
-
+                    double iosPadding = Platform.isIOS ? 34 : 0;
                     // log.w(Get.size.height);
 
                     return SizedBox(
                       height: Get.size.height -
                           appBarHeight! -
                           (showVideos ? playerExpandProgress.value : 0) -
-                          50,
+                          50 -
+                          iosPadding,
                       child: child,
                     );
                   },
@@ -105,6 +108,8 @@ class _SongScreenState extends State<SongScreen> {
                     builder: (context) {
                       return VideoPlayerScreen(
                         song: song,
+                        withControlPanel: false,
+                        playNextOn: false,
                       );
                     },
                   )).then((value) {

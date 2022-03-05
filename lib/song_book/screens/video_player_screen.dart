@@ -8,7 +8,14 @@ import '../../index.dart';
 //we use it in wideoplayer tab and in every song to show videos for this song
 class VideoPlayerScreen extends StatefulWidget {
   final SongDetail? song;
-  VideoPlayerScreen({Key? key, this.song}) : super(key: key) {
+  final bool withControlPanel;
+  final bool playNextOn;
+  VideoPlayerScreen(
+      {Key? key,
+      this.song,
+      this.withControlPanel = true,
+      this.playNextOn = true})
+      : super(key: key) {
     Wakelock.enable();
   }
 
@@ -20,11 +27,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   final GetxVideoPlayerController controller =
       Get.put(GetxVideoPlayerController());
 
-  double controlsBarHeight = 50;
-
   double minHeight = 60;
   bool isFavorite = true;
   bool isShuffleOn = false;
+  double controlsPanelHeight = 0;
 
   @override
   void initState() {
@@ -33,6 +39,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.withControlPanel) {
+      controlsPanelHeight = 50;
+    }
     return Stack(children: [
       Scaffold(
         appBar: AppBar(
@@ -46,7 +55,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               ),
               tooltip: 'icon_button_actions_app_bar_filter'.tr,
               onPressed: () {
-                Get.back();
+                Navigator.pop(context);
               }),
         ),
         body: Obx(() {
@@ -75,7 +84,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   controller: controller.miniplayerController,
                   minHeight: minHeight,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  maxHeight: MediaQuery.of(context).size.height - 80,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      80 -
+                      (Platform.isIOS ? 47 : 0),
                   builder: (height, percentage) {
                     if (controller.selectedVideo.value.link.isEmpty)
                       return SizedBox.shrink();
@@ -96,6 +107,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                               child:
                                   controller.selectedVideo.value.link.isNotEmpty
                                       ? YoutubeVideo(
+                                          playNextOn: widget.playNextOn,
                                           // ? MyYoutubePlayer(
                                           video: controller.selectedVideo.value)
                                       : Container(),
@@ -115,7 +127,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                             if (height < 100) miniplayerControls(),
                           ],
                         ),
-                        if (height > Get.height / 1.5)
+                        if (height > Get.height / 1.5 &&
+                            widget.withControlPanel)
                           controlsPanel(context, height, fullSizePlayerHeight),
                         if (height > Get.height / 1.5)
                           currentVideoInfo(
@@ -177,7 +190,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           color: Theme.of(ctx).scaffoldBackgroundColor,
           border: Border.symmetric(
               horizontal: BorderSide(color: Colors.grey, width: 1))),
-      height: height > Get.height - fullSizePlayerHeight ? 50 : 0,
+      height:
+          height > Get.height - fullSizePlayerHeight ? controlsPanelHeight : 0,
       duration: Duration(milliseconds: 800),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -284,16 +298,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   Widget _relatedVideosList(double height, double fullSizePlayerHeight) {
-    double countControlsHeight = 0;
-    if (height > Get.height / 2) {
-      countControlsHeight = 100;
-    }
-    print(height);
-    double listViewHeight = height - fullSizePlayerHeight - countControlsHeight;
-    listViewHeight = listViewHeight < 0 ? 0 : listViewHeight;
-
-    return Container(
-      height: listViewHeight,
+    return Expanded(
       child: Obx(() => ListView.builder(
           itemCount: controller.relatedVideos.length,
           itemBuilder: (context, index) {
