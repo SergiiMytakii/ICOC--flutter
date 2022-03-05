@@ -19,9 +19,11 @@ class SongLangController extends GetxController {
     update();
   }
 
-  void setSongLang(String lang, bool val) {
-    songLang[lang] = val;
-    box.write('songLang', songLang);
-    update();
+  void setSongLang(String lang, bool? val) {
+    if (val != null) {
+      songLang[lang] = val;
+      box.write('songLang', songLang);
+      update();
+    }
   }
 }

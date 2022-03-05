@@ -1,67 +1,35 @@
 import 'package:icoc/song_book/models/resources.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '/index.dart';
 
 class SongScreenController extends GetxController {
   GetStorage box = GetStorage();
   RxDouble fontSize = 18.0.obs;
-  var log = Logger();
   DatabaseHelperFTS4 databaseService = DatabaseHelperFTS4();
-  final songDetail =
-      SongDetail(id: 0, title: {}, description: {}, text: {}, chords: {}).obs;
+
   List<dynamic> resources = [];
   RxList<Resources> resourcesIds = <Resources>[].obs;
-  int songId;
-  String? prefferedLangFromSearch;
-  SongScreenController({required this.songId, this.prefferedLangFromSearch});
 
   final tabItemsSongs = [].obs;
   final tabItemsChords = [].obs;
-  final OrderLangController orderLangController = Get
-      .find(); //try to use instead final orderLangController = Get.find<OrderLangController>();
+  final OrderLangController orderLangController = Get.find();
   List<String> orderLang = [];
   RxInt amountOfTabs = 0.obs;
 
-  @override
-  void onInit() async {
+  void getData(SongDetail songDetail, String? prefferedLangFromSearch) async {
     orderLang = orderLangController.orderLang;
-    await fetchSongdetail(songId);
-    countTabs();
-    getTitlesForTabs(prefLangFromSearch: prefferedLangFromSearch);
-    fetchResources(songId);
+
+    countTabs(songDetail);
+    getTitlesForTabs(songDetail, prefLangFromSearch: prefferedLangFromSearch);
+
     loadFontSize();
-    super.onInit();
   }
 
-  Future fetchSongdetail(int songId) async {
-    songDetail.value = await databaseService.getSongDetail(songId);
-  }
-
-//take resources directly from fireBase
-  Future fetchResources(int songId) async {
-    print('start to get resources');
-    resources = await DatabaseServiceFirebase().resources(songId);
-    String? videoId;
-    if (resources.isNotEmpty) {
-      for (Map item in resources) {
-        try {
-          videoId = YoutubePlayer.convertUrlToId(item['link']);
-        } on Exception catch (e) {
-          showSnackbar('Error'.tr, 'Can not play video'.tr);
-          print(e);
-        }
-        resourcesIds.add(Resources(
-            lang: item['lang'], title: item['title'], link: videoId!));
-      }
-    }
-    //
-  }
-
-  void getTitlesForTabs({String? prefLangFromSearch}) {
+  void getTitlesForTabs(SongDetail song, {String? prefLangFromSearch}) {
     //get the tabs titles
-    tabItemsSongs.value = songDetail.value.text.keys.toList();
-    tabItemsChords.value = songDetail.value.chords.keys.toList();
+    tabItemsSongs.value = song.text.keys.toList();
+
+    if (song.chords != null) tabItemsChords.value = song.chords!.keys.toList();
 
     //reorder tabs accordingly preferred  lang-s
     //if it's just 1 tab - return
@@ -70,7 +38,7 @@ class SongScreenController extends GetxController {
     // count index of first lang
 
     // log.e(prefLangFromSearch);
-    // log.v(tabItemsSongs);
+    //log.v(tabItemsSongs);
     int index = tabItemsSongs.indexWhere(
         (key) => key.startsWith(prefLangFromSearch ?? orderLang[0]));
     //log.e(index);
@@ -98,9 +66,9 @@ class SongScreenController extends GetxController {
     tabItemsSongs.insert(1, secondTab);
   }
 
-  countTabs() {
+  countTabs(SongDetail song) {
     amountOfTabs.value =
-        songDetail.value.text.length + songDetail.value.chords.length;
+        song.text.length + (song.chords != null ? song.chords!.length : 0);
     return amountOfTabs;
   }
 

@@ -30,3 +30,5 @@ const appUrlPlayMarket =
 const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
 
 enum SlideActions { AllSongs, Favorites, Playlists }
+
+const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';

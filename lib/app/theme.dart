@@ -5,7 +5,7 @@ final myDarkTheme = ThemeData.dark().copyWith(
       labelStyle: TextStyle(fontSize: 20),
       unselectedLabelStyle: TextStyle(fontSize: 20),
     ),
-    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
+    //bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
     iconTheme: IconThemeData(color: Colors.white10),
     primaryIconTheme: IconThemeData(color: Colors.white70),
     brightness: Brightness.dark);

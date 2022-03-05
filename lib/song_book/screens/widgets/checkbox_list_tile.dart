@@ -1,14 +1,13 @@
 import '/index.dart';
 
-class MyCheckboxListTile extends GetView<SongsController> {
+class MyCheckboxListTile extends StatelessWidget {
   final ValueKey key;
   final String orderLang;
-
+  final SongsController controller = Get.find();
   MyCheckboxListTile(this.orderLang, this.key);
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SongsController());
     String lang = orderLang;
 
     return GetBuilder<SongLangController>(
@@ -30,8 +29,9 @@ class MyCheckboxListTile extends GetView<SongsController> {
                 color: screensColors['songBook'],
               ),
               onChanged: (val) {
-                songLangController.setSongLang(lang, val!);
-                controller.fetchSongsList();
+                songLangController.setSongLang(lang, val);
+                controller.fetchDataFromFirebase();
+                Get.appUpdate();
               }),
         );
       },

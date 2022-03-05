@@ -25,7 +25,7 @@ class OrderLangController extends GetxController {
     update();
   }
 
-  List<String?>? chooseCardLang(Song song) {
+  List<String?>? chooseCardLang(dynamic song) {
     String? title;
     String? text;
 
@@ -34,7 +34,9 @@ class OrderLangController extends GetxController {
     song.title.keys.forEach((key) {
       if (key == orderLang[0] && key != null) {
         title = song.title[orderLang[0]];
-        text = song.text[orderLang[0]];
+        final Iterable keys = song.text.keys;
+        String k = keys.firstWhere((ke) => ke.contains(key));
+        text = song.text[k];
       }
     });
     if (title != null) return [title, text];
@@ -44,7 +46,9 @@ class OrderLangController extends GetxController {
     song.title.keys.forEach((key) {
       if (key == orderLang[1] && key != null) {
         title = song.title[orderLang[1]];
-        text = song.text[orderLang[1]];
+        final Iterable keys = song.text.keys;
+        String k = keys.firstWhere((ke) => ke.contains(key));
+        text = song.text[k];
       }
     });
     if (title != null) return [title, text];
@@ -54,7 +58,9 @@ class OrderLangController extends GetxController {
     song.title.keys.forEach((key) {
       if (key == orderLang[2] && key != null) {
         title = song.title[orderLang[2]];
-        text = song.text[orderLang[2]];
+        final Iterable keys = song.text.keys;
+        String k = keys.firstWhere((ke) => ke.contains(key));
+        text = song.text[k];
       }
     });
     if (title != null) return [title, text];

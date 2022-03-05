@@ -1,9 +1,9 @@
 import '/index.dart';
 
 class FavoritesController extends GetxController {
-  var favSongs = <Song>[].obs;
+  var favSongs = <SongDetail>[].obs;
   final favStatus = false.obs;
-
+  final SongsController songsController = Get.find();
   @override
   void onInit() async {
     fetchFavoritesList();
@@ -31,7 +31,11 @@ class FavoritesController extends GetxController {
 
   void fetchFavoritesList() async {
     DatabaseHelperFTS4().getListFavorites().listen((songsFromDb) {
-      favSongs.value = songsFromDb;
+      favSongs.clear();
+      for (int id in songsFromDb) {
+        favSongs
+            .addAll(songsController.songsFromFB.where((song) => song.id == id));
+      }
     });
   }
 

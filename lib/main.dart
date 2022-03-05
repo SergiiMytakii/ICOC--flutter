@@ -13,6 +13,9 @@ void main() async {
     appLocale = box.read('locale');
   }
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   runApp(MyApp(appLocale: appLocale, savedThemeMode: savedThemeMode));
 }
 

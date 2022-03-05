@@ -23,7 +23,7 @@ class SongTextOnSongScreen extends StatelessWidget {
     if (textVersion.startsWith('<')) {
       var document = parse(textVersion, generateSpans: true);
       slidesController.slideText.value = document.body!.text;
-      log.v(document.body!.text);
+      //log.v(document.body!.text);
     } else
       slidesController.slideText.value = textVersion;
     slidesController.slideTitle.value = title;

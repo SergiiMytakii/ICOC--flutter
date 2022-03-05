@@ -14,7 +14,7 @@ class NewsService extends NetworkService {
       //log.d(response.body);
       news = newsFromJson(response.bodyString);
       // log.d(news.first.title);
-      log.d(news[6].content);
+      
       return news;
     } else
       log.e(response.statusCode);

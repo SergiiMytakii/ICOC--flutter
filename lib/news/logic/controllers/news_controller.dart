@@ -32,7 +32,8 @@ class NewsController extends GetxController {
         }
       }
     });
-    return List.from(categoriesInt.map((element) => categories[element]));
+
+    return List.from(categoriesInt.map((element) => categories[element] ?? ''));
   }
 
   void filterNews(String category) {
