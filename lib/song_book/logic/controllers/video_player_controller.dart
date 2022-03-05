@@ -16,6 +16,7 @@ class GetxVideoPlayerController extends GetxController {
       YoutubePlayerController(initialVideoId: '');
   VideoPlayerController myVideoPlayerController =
       VideoPlayerController.network('');
+  RxBool end = false.obs;
   @override
   void onClose() {
     miniplayerController.dispose();

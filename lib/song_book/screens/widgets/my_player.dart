@@ -4,8 +4,9 @@ import '../../../index.dart';
 
 class YoutubeVideo extends StatefulWidget {
   final Resources video;
-
-  const YoutubeVideo({Key? key, required this.video}) : super(key: key);
+  final bool playNextOn;
+  const YoutubeVideo({Key? key, required this.video, this.playNextOn = true})
+      : super(key: key);
   @override
   YoutubeVideoState createState() => YoutubeVideoState();
 }
@@ -14,12 +15,15 @@ class YoutubeVideoState extends State<YoutubeVideo> {
   //late VideoPlayerController _controller;
   final GetxVideoPlayerController getxController = Get.find();
   String videoId = '';
+
   @override
   void initState() {
     super.initState();
-
     videoId = VideoPlayerController.getIdFromUrl(widget.video.link);
+    init();
+  }
 
+  void init() {
     getxController.fetchRelatedVideos(videoId);
     getxController.myVideoPlayerController = VideoPlayerController.network(
       widget.video.link,
@@ -30,8 +34,6 @@ class YoutubeVideoState extends State<YoutubeVideo> {
       playNextAfterEnd();
       setState(() {});
     });
-
-    // getxController.myVideoPlayerController.setLooping(true);
     getxController.myVideoPlayerController.initialize();
     getxController.myVideoPlayerController.play();
   }
@@ -50,7 +52,7 @@ class YoutubeVideoState extends State<YoutubeVideo> {
         alignment: Alignment.bottomCenter,
         children: <Widget>[
           VideoPlayer(getxController.myVideoPlayerController),
-          _PlayPauseOverlay(controller: getxController.myVideoPlayerController),
+          _playPauseOverlay(),
           VideoProgressIndicator(
             getxController.myVideoPlayerController,
             allowScrubbing: true,
@@ -60,45 +62,51 @@ class YoutubeVideoState extends State<YoutubeVideo> {
     );
   }
 
-  void playNextAfterEnd() {
+  void playNextAfterEnd() async {
     if (getxController.myVideoPlayerController.value.duration != null) {
       if (getxController.myVideoPlayerController.value.position ==
           getxController.myVideoPlayerController.value.duration!) {
         log.w('end');
-        if (getxController.waitingList.length > 1) getxController.playNext();
+        getxController.end.value = true;
+        await Future.delayed(Duration(seconds: 3));
+        if (getxController.waitingList.length > 1 && widget.playNextOn) {
+          getxController.playNext();
+          getxController.end.value = false;
+        }
       }
     }
   }
-}
 
-class _PlayPauseOverlay extends StatelessWidget {
-  _PlayPauseOverlay({required this.controller});
-
-  final VideoPlayerController controller;
-
-  @override
-  Widget build(BuildContext context) {
+  _playPauseOverlay() {
     return Stack(
       children: <Widget>[
         AnimatedSwitcher(
-          duration: Duration(milliseconds: 50),
+          duration: Duration(milliseconds: 100),
           reverseDuration: Duration(milliseconds: 200),
-          child: controller.value.isPlaying
+          child: getxController.myVideoPlayerController.value.isPlaying
               ? SizedBox.shrink()
               : Container(
                   color: Colors.black26,
                   child: Center(
                     child: Icon(
-                      Icons.play_arrow,
+                      getxController.end.value
+                          ? Icons.repeat
+                          : Icons.play_arrow,
                       color: Colors.white,
-                      size: 26.0,
+                      size: 40.0,
                     ),
                   ),
                 ),
         ),
         GestureDetector(
           onTap: () {
-            controller.value.isPlaying ? controller.pause() : controller.play();
+            if (getxController.end.value) {
+              init();
+            } else {
+              getxController.myVideoPlayerController.value.isPlaying
+                  ? getxController.myVideoPlayerController.pause()
+                  : getxController.myVideoPlayerController.play();
+            }
           },
         ),
       ],
