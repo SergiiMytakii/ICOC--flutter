@@ -22,8 +22,8 @@ class InstaPublicApi {
     final url = "https://www.instagram.com/$username/?__a=1";
 
     final res = await http.get(Uri.parse(url));
-    countInstaRequests++;
-    print(countInstaRequests);
+
+    print(countInstaRequests++);
     String body = res.body;
     //log.d(body);
     if (body.startsWith('<!DOCTYPE html>')) {
@@ -174,7 +174,7 @@ class InstaPublicApi {
                 ? e.node!.edgeMediaToCaption!.edges?.first.node?.text ?? ''
                 : '',
             dimensions: e.node!.dimensions,
-            isVideo: e.node!.isVideo,
+            isVideo: e.node!.isVideo ?? false,
             hasNestedImages: e.node!.edgeSidecarToChildren != null,
             displayUrl: e.node!.displayUrl,
             images: e.node!.edgeSidecarToChildren == null

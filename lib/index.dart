@@ -43,6 +43,7 @@ export 'package:icoc/song_book/logic/services/data_search_from_playlist.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:icoc/q_and_a/logic/sqlite_database_service.dart';
 export 'package:icoc/song_book/screens/videoplayer/widgets/ext_video_player.dart';
+export 'package:icoc/news/logic/services/insta_public_api/models/basic_model.dart';
 //debug
 export 'package:logger/logger.dart';
 
@@ -82,7 +83,7 @@ export 'package:icoc/song_book/screens/songs/song_book_screen.dart';
 export 'package:icoc/app/screens/widgets/loading.dart';
 export 'package:icoc/song_book/screens/songs/widgets/song_card.dart';
 export 'package:icoc/app/screens/about_app_screen.dart';
-export 'package:icoc/news/screens/one_news_screen.dart';
+export 'package:icoc/news/screens/icoc_ru_one_news_screen.dart';
 export 'package:icoc/bible_study/screens/one_lesson_screen.dart';
 export 'package:icoc/bible_study/screens/one_topic_screen.dart';
 

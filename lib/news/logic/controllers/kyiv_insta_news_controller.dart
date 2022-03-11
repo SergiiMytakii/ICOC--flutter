@@ -11,13 +11,11 @@ class KyivInstaNewsController extends GetxController {
   }
 
   getInstaMedia() async {
-    final info = await ipa.getBasicInfo();
+    // final info = await ipa.getBasicInfo();
 
-    print('Posts: ${info.noOfPosts}');
-    print('Followers: ${info.followers}');
-    print('Following: ${info.following}');
-    timelinePosts.value = await ipa.getAllPosts();
-    log.i(timelinePosts.first.displayUrl);
-    log.i(timelinePosts.first.videoUrl);
+    // print('Posts: ${info.noOfPosts}');
+    // print('Followers: ${info.followers}');
+    // print('Following: ${info.following}');
+    timelinePosts.value = await ipa.getTimelinePosts();
   }
 }

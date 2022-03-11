@@ -29,8 +29,8 @@ class Post {
       {this.dimensions,
       this.displayUrl,
       this.caption,
-      this.hasNestedImages,
-      this.isVideo,
+      this.hasNestedImages = false,
+      this.isVideo = false,
       this.likes,
       this.comments,
       this.images,
@@ -38,9 +38,9 @@ class Post {
 
   Dimensions? dimensions;
   String? displayUrl;
-  bool? isVideo;
+  bool isVideo;
   int? likes;
-  bool? hasNestedImages;
+  bool hasNestedImages;
   String? caption;
   int? comments;
   List<Img>? images;

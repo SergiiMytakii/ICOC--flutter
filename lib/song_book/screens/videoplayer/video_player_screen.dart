@@ -106,7 +106,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                   : Get.width,
                               child:
                                   controller.selectedVideo.value.link.isNotEmpty
-                                      ? YoutubeVideo(
+                                      ? MyPlayer(
                                           playNextOn: widget.playNextOn,
                                           // ? MyYoutubePlayer(
                                           video: controller.selectedVideo.value)
