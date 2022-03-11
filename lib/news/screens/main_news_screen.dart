@@ -1,10 +1,6 @@
-import 'package:icoc/news/logic/instagram.dart';
-
 import '../../index.dart';
-import 'package:flutter_html/flutter_html.dart' as html;
 
 class MainNewsScreen extends StatelessWidget {
-  final Instagram instagram = Instagram();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,39 +12,53 @@ class MainNewsScreen extends StatelessWidget {
         centerTitle: true,
         actions: [],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              item(
-                context,
-                Routes.ICOC_RU_NEWS,
-                Image.asset(
-                  'assets/images/icocRu.png',
-                  fit: BoxFit.contain,
-                ),
-                '',
-                Color(0xFF4a76a8),
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  _item(
+                    context,
+                    Routes.ICOC_RU_NEWS,
+                    Image.asset(
+                      'assets/images/icocRu.png',
+                      fit: BoxFit.contain,
+                    ),
+                    '',
+                    Color(0xFF4a76a8),
+                  ),
+                  _item(
+                    context,
+                    Routes.KYIV_INSTA_NEWS,
+                    Image.asset(
+                      'assets/images/kyivInsta.png',
+                      fit: BoxFit.contain,
+                    ),
+                    'Kyiv Church of Christ',
+                    screensColors['news']!,
+                  ),
+                ],
               ),
-              item(
-                context,
-                Routes.KYIV_INSTA_NEWS,
-                Image.asset(
-                  'assets/images/kyivInsta.png',
-                  fit: BoxFit.contain,
-                ),
-                'Kyiv Church of Christ',
-                screensColors['news']!,
-              )
-            ],
+            ),
           ),
-        ),
+          Expanded(
+            child: Container(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'use vpn if something not works'.tr,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget item(BuildContext context, String routeName, Widget picture,
+  Widget _item(BuildContext context, String routeName, Widget picture,
       String description, Color color) {
     return Container(
       height: 150,

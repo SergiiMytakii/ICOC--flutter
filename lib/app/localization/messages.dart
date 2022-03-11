@@ -86,7 +86,8 @@ class Messages extends Translations {
           'By number': 'Number',
           'By tittle': 'Title',
           'Favorite video': 'Favorite videos',
-          'Video': 'Video'
+          'Video': 'Video',
+          'use vpn if something not works': 'Use vpn if something not works'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -177,7 +178,9 @@ class Messages extends Translations {
           'By number': 'Номеру',
           'By tittle': 'Названию',
           'Favorite video': 'Любимые видео',
-          'Video': 'Видео'
+          'Video': 'Видео',
+          'use vpn if something not works':
+              'Если что то не загружается - используйте VPN'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -268,7 +271,9 @@ class Messages extends Translations {
           'By number': 'Номером',
           'By tittle': 'Назвою',
           'Favorite video': 'Улюблені відео',
-          'Video': 'Відео'
+          'Video': 'Відео',
+          'use vpn if something not works':
+              'Якщо щось не завантажується - використовуйте VPN'
         }
       };
 }
