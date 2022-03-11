@@ -32,3 +32,7 @@ const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
 enum SlideActions { AllSongs, Favorites, Playlists }
 
 const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';
+
+const String INSTAGRAM_CLIENT_ID = '663715198237865';
+const String INSTAGRAM_APP_SECRET = '6d31745de196c6c54a5d7f9ef9852519';
+const String INSTAGRAM_REDIRECT_URI = 'https://kievchurch.org/';

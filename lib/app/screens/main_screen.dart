@@ -56,7 +56,7 @@ class MainScreen extends StatelessWidget {
                             'drawer_news'.tr,
                             screensColors['news']!,
                             Icons.language,
-                            Routes.NEWS),
+                            Routes.MAIN_NEWS),
                       ],
                     ),
                     TableRow(

@@ -1,6 +1,6 @@
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../../index.dart';
+import '../../../../index.dart';
 
 class MyYoutubePlayer extends StatefulWidget {
   final Resources video;

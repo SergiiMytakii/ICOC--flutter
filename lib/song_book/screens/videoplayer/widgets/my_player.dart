@@ -1,17 +1,17 @@
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-import '../../../index.dart';
+import '../../../../index.dart';
 
-class YoutubeVideo extends StatefulWidget {
+class MyPlayer extends StatefulWidget {
   final Resources video;
   final bool playNextOn;
-  const YoutubeVideo({Key? key, required this.video, this.playNextOn = true})
+  const MyPlayer({Key? key, required this.video, this.playNextOn = true})
       : super(key: key);
   @override
   YoutubeVideoState createState() => YoutubeVideoState();
 }
 
-class YoutubeVideoState extends State<YoutubeVideo> {
+class YoutubeVideoState extends State<MyPlayer> {
   //late VideoPlayerController _controller;
   final GetxVideoPlayerController getxController = Get.find();
   String videoId = '';
@@ -32,7 +32,7 @@ class YoutubeVideoState extends State<YoutubeVideo> {
 
     getxController.myVideoPlayerController.addListener(() {
       playNextAfterEnd();
-      setState(() {});
+      //setState(() {});
     });
     getxController.myVideoPlayerController.initialize();
     getxController.myVideoPlayerController.play();
@@ -41,6 +41,7 @@ class YoutubeVideoState extends State<YoutubeVideo> {
   @override
   void dispose() {
     getxController.myVideoPlayerController.dispose();
+    log.i('dispose video controller');
     super.dispose();
   }
 

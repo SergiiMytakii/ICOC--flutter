@@ -4,7 +4,6 @@ import 'package:icoc/news/models/news_model.dart';
 import '../../../index.dart';
 
 class NewsService extends NetworkService {
-  final log = Logger();
   List<News> news = [];
 
   Future getNews() async {
@@ -14,11 +13,10 @@ class NewsService extends NetworkService {
       //log.d(response.body);
       news = newsFromJson(response.bodyString);
       // log.d(news.first.title);
-      
+
       return news;
     } else
       log.e(response.statusCode);
-    return response.statusCode;
   }
 
   List<News> newsFromJson(String? str) =>
