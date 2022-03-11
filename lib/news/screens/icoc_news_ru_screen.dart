@@ -1,10 +1,8 @@
-
 import 'package:flutter_html/flutter_html.dart' as html;
-
 
 import '../../index.dart';
 
-class NewsScreen extends StatelessWidget {
+class IcocNewsRuScreen extends StatelessWidget {
   final NewsController newsController = Get.put(NewsController());
 
   @override

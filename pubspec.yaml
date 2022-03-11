@@ -78,6 +78,9 @@ flutter:
     - assets/images/appStoreIcon.svg
     - assets/images/googlePlayIcon.jpeg
     - assets/images/logo-google-play.svg
+    - assets/images/kyivInsta.png
+    - assets/images/kyivNews.png
+    - assets/images/icocRu.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

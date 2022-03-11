@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:icoc/song_book/screens/widgets/my_player.dart';
+import 'package:icoc/song_book/screens/videoplayer/widgets/my_player.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../index.dart';
+import '../../../index.dart';
 
 //we use it in wideoplayer tab and in every song to show videos for this song
 class VideoPlayerScreen extends StatefulWidget {

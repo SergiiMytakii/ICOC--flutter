@@ -1,6 +1,6 @@
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../../index.dart';
+import '../../../../index.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({Key? key, required this.resources, this.withToLyrics = true})
