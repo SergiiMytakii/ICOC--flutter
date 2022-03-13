@@ -1,6 +1,8 @@
 import '../../index.dart';
 
 class MainNewsScreen extends StatelessWidget {
+  final KyivInstaNewsController controller = Get.put(KyivInstaNewsController());
+  final NewsController newsController = Get.put(NewsController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

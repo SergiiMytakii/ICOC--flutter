@@ -1,5 +1,5 @@
-import 'package:icoc/song_book/logic/services/youtube_network_service.dart';
-import '../../../index.dart';
+import 'package:icoc/app/logic/controllers/services/youtube_network_service.dart';
+import '../../../../index.dart';
 
 class YoutubeService extends YoutubeNetworkService {
   // List<News> newsFromJson(String? str) =>
@@ -12,7 +12,7 @@ class YoutubeService extends YoutubeNetworkService {
       'relatedToVideoId': videoId,
       'type': 'video'
     };
-    var response = await httpClient.get('',
+    var response = await httpClient.get('search',
         headers: {
           "Content-Type": "application/json",
         },
@@ -41,5 +41,40 @@ class YoutubeService extends YoutubeNetworkService {
       return relatedVideos;
     } else
       return [];
+  }
+
+  Future<List<Resources>> fetchVideosFromPlaylist(String playlistId) async {
+    Map<String, String> data = {
+      'part': 'snippet',
+      'playlistId': playlistId,
+      'maxResults': '30',
+      'key': YOUTUBE_API_KEY,
+    };
+
+    Map<String, String> headers = {
+      "Content-Type": 'application/json',
+    };
+
+    // Get Playlist Videos
+    var response =
+        await httpClient.get('playlistItems', headers: headers, query: data);
+    if (response.statusCode == 200) {
+      var data = response.body;
+
+      List<dynamic> videosJson = data['items'];
+      //log.d(videosJson);
+
+      // Fetch first eight videos from uploads playlist
+      List<Resources> videos = [];
+      videosJson.forEach(
+        (json) => videos.add(
+          Resources.fromJsonYoutobePlaylists(json['snippet']),
+        ),
+      );
+      return videos;
+    } else {
+      log.e(json.decode(response.body)['error']['message']);
+      return [];
+    }
   }
 }

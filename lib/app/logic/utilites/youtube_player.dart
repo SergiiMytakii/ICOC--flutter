@@ -1,6 +1,4 @@
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
-import '../../../../index.dart';
+import '../../../index.dart';
 
 class MyYoutubePlayer extends StatefulWidget {
   final Resources video;
@@ -16,10 +14,15 @@ class MyYoutubePlayer extends StatefulWidget {
 class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   String videoId = '';
   //late YoutubePlayerController youtubePlayerController;
-  final GetxVideoPlayerController controller = Get.find();
+  final PlaylistPlayerController controller = Get.find();
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp
+    ]);
     if (widget.video.link.isNotEmpty && widget.video.link.contains('yout')) {
       try {
         videoId =
@@ -35,13 +38,13 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
       params: YoutubePlayerParams(
-        strictRelatedVideos: true,
-        autoPlay: true,
-        mute: false,
-        showControls: true,
-        playlist: controller.playlist,
-        showFullscreenButton: false,
-      ),
+          strictRelatedVideos: true,
+          autoPlay: true,
+          mute: false,
+          desktopMode: true,
+          showControls: true,
+          showFullscreenButton: true,
+          enableCaption: false),
     );
 
     // SystemChrome.setPreferredOrientations([
@@ -52,14 +55,16 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     log.i(videoId);
     controller.youtubePlayerController.cue(videoId);
     controller.youtubePlayerController.play();
-    controller.fetchRelatedVideos(videoId);
+    controller.youtubePlayerController.value
+        .copyWith(playerState: PlayerState.playing);
+    log.e(controller.youtubePlayerController.value.playerState);
     super.initState();
   }
 
   @override
   void dispose() {
-    //controller.youtubePlayerController.dispose();
-    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    controller.youtubePlayerController.close();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 

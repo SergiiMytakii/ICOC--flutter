@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:icoc/song_book/screens/videoplayer/widgets/my_player.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../index.dart';
 
@@ -49,30 +47,39 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           title: Text(
               widget.song != null ? 'Video & audio'.tr : 'Favorite video'.tr),
           backgroundColor: screensColors['songBook'],
-          leading: IconButton(
-              icon: Icon(
-                Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
-              ),
-              tooltip: 'icon_button_actions_app_bar_filter'.tr,
-              onPressed: () {
-                Navigator.pop(context);
-              }),
+          //   leading: IconButton(
+          //       icon: Icon(
+          //         Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
+          //       ),
+          //       tooltip: 'icon_button_actions_app_bar_filter'.tr,
+          //       onPressed: () {
+          //         Get.back(canPop: false);
+          //         // Navigator.pop(context);
+          //         //Navigator.pop(context);
+          //       }),
         ),
         body: Obx(() {
           int length = controller.favoritesVideos.length;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 0),
-            child: ListView.builder(
-              itemBuilder: (context, index) => VideoCard(
-                withToLyrics: widget.song != null ? true : false,
-                resources: widget.song != null
-                    ? widget.song!.resources![index]
-                    : controller.favoritesVideos[index],
-              ),
-              itemCount:
-                  widget.song != null ? widget.song!.resources!.length : length,
-            ),
-          );
+          return length > 0 || widget.song != null
+              ? ListView.builder(
+                  itemBuilder: (context, index) => VideoCard(
+                    withToLyrics: widget.song != null ? true : false,
+                    resources: widget.song != null
+                        ? widget.song!.resources![index]
+                        : controller.favoritesVideos[index],
+                  ),
+                  itemCount: widget.song != null
+                      ? widget.song!.resources!.length
+                      : length,
+                )
+              : Center(
+                  child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'Go to all songs and add some videos from there'.tr,
+                    textAlign: TextAlign.center,
+                  ),
+                ));
         }),
       ),
       Positioned(
@@ -263,13 +270,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 icon: Icon(Icons.pause),
                 onPressed: () async {
                   controller.myVideoPlayerController.pause();
-                  controller.miniplayerController.animateToHeight(
-                    height: minHeight + 15,
-                  );
-                  await Future.delayed(Duration(milliseconds: 100));
-                  controller.miniplayerController.animateToHeight(
-                    height: minHeight,
-                  );
+                  await runAnimation();
                 },
                 color: screensColors['songBook'],
               )
@@ -277,11 +278,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 icon: Icon(Icons.play_arrow),
                 onPressed: () async {
                   controller.myVideoPlayerController.play();
-                  controller.miniplayerController
-                      .animateToHeight(height: minHeight + 15);
-                  await Future.delayed(Duration(milliseconds: 100));
-                  controller.miniplayerController
-                      .animateToHeight(height: minHeight);
+                  runAnimation();
                 },
                 color: screensColors['songBook'],
               ),
@@ -294,6 +291,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           },
         )
       ],
+    );
+  }
+
+  Future<void> runAnimation() async {
+    controller.miniplayerController.animateToHeight(
+      height: minHeight + 10,
+    );
+    await Future.delayed(Duration(milliseconds: 100));
+    controller.miniplayerController.animateToHeight(
+      height: minHeight,
     );
   }
 

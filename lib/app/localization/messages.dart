@@ -87,7 +87,10 @@ class Messages extends Translations {
           'By tittle': 'Title',
           'Favorite video': 'Favorite videos',
           'Video': 'Video',
-          'use vpn if something not works': 'Use vpn if something not works'
+          'use vpn if something not works': 'Use vpn if something not works',
+          'Go to all songs and add some videos from there':
+              'Go to all songs and add some videos from there',
+          'Q&A with Andy Fleming': 'Q&A with Andy Fleming'
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -180,7 +183,11 @@ class Messages extends Translations {
           'Favorite video': 'Любимые видео',
           'Video': 'Видео',
           'use vpn if something not works':
-              'Если что то не загружается - используйте VPN'
+              'Если что то не загружается - используйте VPN',
+          'Go to all songs and add some videos from there':
+              'Перейдите в раздел с песнями и добавьте оттуда несколько видео любимых песен',
+          'Q&A with Andy Fleming': "Вопросы и ответы с Энди Флеминг",
+          'Bible school': 'Библейская школа'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -273,7 +280,11 @@ class Messages extends Translations {
           'Favorite video': 'Улюблені відео',
           'Video': 'Відео',
           'use vpn if something not works':
-              'Якщо щось не завантажується - використовуйте VPN'
+              'Якщо щось не завантажується - використовуйте VPN',
+          'Go to all songs and add some videos from there':
+              'Перейдіть до розділу з піснями та додайте звідти кілька відео улюблених пісень',
+          'Q&A with Andy Fleming': "Питання та відповіді з Енді Флемінг",
+          'Bible school': 'Біблейська школа'
         }
       };
 }

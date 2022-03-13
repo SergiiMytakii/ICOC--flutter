@@ -37,9 +37,12 @@ class MainScreen extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
+              SizedBox(
+                height: 8,
+              ),
               VerseOfTheDay(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7.5),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Table(
                   //defaultColumnWidth: FixedColumnWidth(sizeOfCell),
                   children: [
@@ -75,6 +78,32 @@ class MainScreen extends StatelessWidget {
                             Routes.Q_AND_ANSVERS),
                       ],
                     ),
+                    TableRow(
+                      children: [
+                        tableItem(
+                            context,
+                            'Bible school'.tr,
+                            screensColors['songBook']!,
+                            Icons.video_collection,
+                            Routes.PLAYLISTS_PLAYER,
+                            arguments: [
+                              BIBLE_SCHOOL_PLAYLIST_ID,
+                              'Bible school'.tr,
+                              screensColors['songBook']!,
+                            ]),
+                        tableItem(
+                            context,
+                            'Q&A with Andy Fleming'.tr,
+                            screensColors['news']!,
+                            Icons.question_answer,
+                            Routes.PLAYLISTS_PLAYER,
+                            arguments: [
+                              Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
+                              'Q&A with Andy Fleming'.tr,
+                              screensColors['news']!
+                            ]),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -106,14 +135,15 @@ class MainScreen extends StatelessWidget {
   }
 
   tableItem(BuildContext context, String title, Color color, IconData icon,
-      String routeName) {
-    double sizeOfCell = (MediaQuery.of(context).size.width - 15) / 2;
+      String routeName,
+      {List? arguments}) {
+    double sizeOfCell = (MediaQuery.of(context).size.width) / 2;
     return Container(
       height: sizeOfCell,
       width: sizeOfCell,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8),
       child: InkWell(
-        onTap: () => Get.toNamed(routeName),
+        onTap: () => Get.toNamed(routeName, arguments: arguments),
         splashColor: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(15),
         child: Container(
@@ -163,12 +193,12 @@ class VerseOfTheDay extends StatelessWidget {
     return Obx(
       () => controller.url.isNotEmpty
           ? Container(
-              height: Get.size.height / 2.5,
+              // height: Get.size.height / 2.5,
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 elevation: 0,
-                margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Stack(
                   children: [
                     GestureDetector(
@@ -181,9 +211,9 @@ class VerseOfTheDay extends StatelessWidget {
                           ),
                           child: Image.network(
                             controller.url.value,
-                            height: Get.size.height / 2.5,
+                            //height: Get.size.height / 2.5,
                             width: Get.size.width - 24,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -235,6 +265,7 @@ class VerseOfTheDay extends StatelessWidget {
         context: context,
         builder: (context) => AlertDialog(
               elevation: 10,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               insetPadding: EdgeInsets.zero,
               contentPadding: EdgeInsets.zero,
               content: GestureDetector(

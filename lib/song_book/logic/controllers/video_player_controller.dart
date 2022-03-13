@@ -1,6 +1,4 @@
 import 'package:icoc/index.dart';
-import 'package:icoc/song_book/logic/services/youtube_service.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class GetxVideoPlayerController extends GetxController {
   final RxList<Resources> favoritesVideos = <Resources>[].obs;
@@ -12,8 +10,7 @@ class GetxVideoPlayerController extends GetxController {
       Resources(lang: '', title: '', link: '').obs;
   final MiniplayerController miniplayerController = MiniplayerController();
   RxList<Resources> waitingList = <Resources>[].obs;
-  YoutubePlayerController youtubePlayerController =
-      YoutubePlayerController(initialVideoId: '');
+
   VideoPlayerController myVideoPlayerController =
       VideoPlayerController.network('');
   RxBool end = false.obs;

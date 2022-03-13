@@ -18,8 +18,11 @@ export 'package:qr_flutter/qr_flutter.dart';
 export 'package:html/parser.dart';
 
 export 'package:miniplayer/miniplayer.dart';
+export 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 //controllers
+export 'package:icoc/app/modules/youtube_playlist_player/logic/playlist_player_controller.dart';
+export 'package:icoc/news/logic/controllers/kyiv_insta_news_controller.dart';
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 export 'package:icoc/app/settings/logic/General_settings_controller.dart';
 export 'package:icoc/app/logic/controllers/main_screen_controller.dart';
@@ -33,6 +36,7 @@ export 'package:icoc/bible_study/logic/bible_study_controller.dart';
 export 'package:icoc/news/logic/controllers/icoc_ru_news_controller.dart';
 export 'package:icoc/q_and_a/logic/q_and_a_controller.dart';
 export 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
+
 //servises
 export 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 export 'package:icoc/song_book/logic/services/database_firebase_service.dart';
@@ -42,8 +46,9 @@ export 'package:icoc/song_book/logic/services/import_songs.dart';
 export 'package:icoc/song_book/logic/services/data_search_from_playlist.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:icoc/q_and_a/logic/sqlite_database_service.dart';
-export 'package:icoc/song_book/screens/videoplayer/widgets/ext_video_player.dart';
+export 'package:icoc/app/logic/utilites/ext_video_player.dart';
 export 'package:icoc/news/logic/services/insta_public_api/models/basic_model.dart';
+export 'package:icoc/app/logic/controllers/services/youtube_service.dart';
 //debug
 export 'package:logger/logger.dart';
 
@@ -52,6 +57,7 @@ export 'package:icoc/app/routes/routes.dart';
 export 'package:icoc/app/routes/pages.dart';
 
 //screens and widgets
+export 'package:icoc/app/modules/youtube_playlist_player/screens/widgets/video_card_teaching.dart';
 export 'package:icoc/song_book/screens/playlists/add_song_to_playlist.dart';
 export 'package:icoc/app/screens/widgets/snackbar.dart';
 export 'package:icoc/app/screens/widgets/custom_button.dart';
@@ -59,7 +65,7 @@ export 'package:icoc/song_book/screens/songs/widgets/slide_actions.dart';
 export 'package:icoc/song_book/screens/songs/widgets/checkbox_list_tile.dart';
 export 'package:icoc/song_book/screens/widgets/font_size_adjust_bottom_sheet.dart';
 export 'package:icoc/app/screens/widgets/modal_bottom_sheet.dart';
-export 'package:icoc/song_book/screens/videoplayer/widgets/youtube_player.dart';
+export 'package:icoc/app/logic/utilites/youtube_player.dart';
 export 'package:icoc/app/screens/main_screen.dart';
 export 'package:icoc/app/settings/general_settings_screen.dart';
 export 'package:icoc/bible_study/screens/bible_study_screen.dart';
