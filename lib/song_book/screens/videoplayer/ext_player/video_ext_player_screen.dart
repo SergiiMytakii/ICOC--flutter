@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:icoc/song_book/screens/videoplayer/widgets/my_player.dart';
+import 'package:icoc/song_book/screens/videoplayer/ext_player/my_ext_player.dart';
 
-import '../../../index.dart';
+import '../../../../index.dart';
 
-//we use it in wideoplayer tab and in every song to show videos for this song
+//use with ext_player
 class VideoPlayerScreen extends StatefulWidget {
   final SongDetail? song;
   final bool withControlPanel;
@@ -113,7 +113,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                   : Get.width,
                               child:
                                   controller.selectedVideo.value.link.isNotEmpty
-                                      ? MyPlayer(
+                                      ? MyExtPlayer(
                                           playNextOn: widget.playNextOn,
                                           // ? MyYoutubePlayer(
                                           video: controller.selectedVideo.value)
@@ -191,7 +191,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   AnimatedContainer controlsPanel(
       BuildContext ctx, double height, double fullSizePlayerHeight) {
-    //log.i(controller.myVideoPlayerController.value.isPlaying);
+    //log.i(controller.myVideoExtPlayerController.value.isPlaying);
     return AnimatedContainer(
       decoration: BoxDecoration(
           color: Theme.of(ctx).scaffoldBackgroundColor,
@@ -212,18 +212,18 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               color: screensColors['songBook'],
             ),
           ),
-          controller.myVideoPlayerController.value.isPlaying
+          controller.myVideoExtPlayerController.value.isPlaying
               ? IconButton(
                   icon: Icon(Icons.pause),
                   onPressed: () async {
-                    controller.myVideoPlayerController.pause();
+                    controller.myVideoExtPlayerController.pause();
                     setState(() {});
                   },
                   color: screensColors['songBook'],
                 )
               : IconButton(
                   onPressed: () {
-                    controller.myVideoPlayerController.play();
+                    controller.myVideoExtPlayerController.play();
                     setState(() {});
                   },
                   icon: Icon(
@@ -265,11 +265,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget miniplayerControls() {
     return Row(
       children: [
-        controller.myVideoPlayerController.value.isPlaying
+        controller.myVideoExtPlayerController.value.isPlaying
             ? IconButton(
                 icon: Icon(Icons.pause),
                 onPressed: () async {
-                  controller.myVideoPlayerController.pause();
+                  controller.myVideoExtPlayerController.pause();
                   await runAnimation();
                 },
                 color: screensColors['songBook'],
@@ -277,7 +277,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             : IconButton(
                 icon: Icon(Icons.play_arrow),
                 onPressed: () async {
-                  controller.myVideoPlayerController.play();
+                  controller.myVideoExtPlayerController.play();
                   runAnimation();
                 },
                 color: screensColors['songBook'],

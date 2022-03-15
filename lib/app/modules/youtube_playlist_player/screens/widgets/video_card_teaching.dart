@@ -13,7 +13,7 @@ class VideoCardTeaching extends StatefulWidget {
 }
 
 class _VideoCardTeachingState extends State<VideoCardTeaching> {
-  final PlaylistPlayerController controller = Get.find();
+  final GetxVideoPlayerController controller = Get.find();
 
   String videoId = '';
   @override
@@ -57,11 +57,6 @@ class _VideoCardTeachingState extends State<VideoCardTeaching> {
                   }
 
                   controller.selectedVideo.value = widget.resources;
-                  // controller.shiftWaitingList(
-                  //     selectedV: controller.selectedVideo.value);
-                  // controller.myVideoPlayerController.play();
-                  // controller.youtubePlayerController
-                  //     .updateValue(YoutubePlayerValue(isPlaying: true));
                 },
                 child: Container(
                   width: double.maxFinite,

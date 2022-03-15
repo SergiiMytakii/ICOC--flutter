@@ -2,16 +2,16 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../../../index.dart';
 
-class MyPlayer extends StatefulWidget {
+class MyExtPlayer extends StatefulWidget {
   final Resources video;
   final bool playNextOn;
-  const MyPlayer({Key? key, required this.video, this.playNextOn = true})
+  const MyExtPlayer({Key? key, required this.video, this.playNextOn = true})
       : super(key: key);
   @override
-  YoutubeVideoState createState() => YoutubeVideoState();
+  MyExtPlayerState createState() => MyExtPlayerState();
 }
 
-class YoutubeVideoState extends State<MyPlayer> {
+class MyExtPlayerState extends State<MyExtPlayer> {
   //late VideoPlayerController _controller;
   final GetxVideoPlayerController getxController = Get.find();
   String videoId = '';
@@ -25,22 +25,22 @@ class YoutubeVideoState extends State<MyPlayer> {
 
   void init() {
     getxController.fetchRelatedVideos(videoId);
-    getxController.myVideoPlayerController = VideoPlayerController.network(
+    getxController.myVideoExtPlayerController = VideoPlayerController.network(
       widget.video.link,
       youtubeVideoQuality: VideoQuality.high1440,
     );
 
-    getxController.myVideoPlayerController.addListener(() {
+    getxController.myVideoExtPlayerController.addListener(() {
       playNextAfterEnd();
       //setState(() {});
     });
-    getxController.myVideoPlayerController.initialize();
-    getxController.myVideoPlayerController.play();
+    getxController.myVideoExtPlayerController.initialize();
+    getxController.myVideoExtPlayerController.play();
   }
 
   @override
   void dispose() {
-    getxController.myVideoPlayerController.dispose();
+    getxController.myVideoExtPlayerController.dispose();
     log.i('dispose video controller');
     super.dispose();
   }
@@ -48,14 +48,14 @@ class YoutubeVideoState extends State<MyPlayer> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: getxController.myVideoPlayerController.value.aspectRatio,
+      aspectRatio: getxController.myVideoExtPlayerController.value.aspectRatio,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          VideoPlayer(getxController.myVideoPlayerController),
+          VideoPlayer(getxController.myVideoExtPlayerController),
           _playPauseOverlay(),
           VideoProgressIndicator(
-            getxController.myVideoPlayerController,
+            getxController.myVideoExtPlayerController,
             allowScrubbing: true,
           ),
         ],
@@ -64,9 +64,9 @@ class YoutubeVideoState extends State<MyPlayer> {
   }
 
   void playNextAfterEnd() async {
-    if (getxController.myVideoPlayerController.value.duration != null) {
-      if (getxController.myVideoPlayerController.value.position ==
-          getxController.myVideoPlayerController.value.duration!) {
+    if (getxController.myVideoExtPlayerController.value.duration != null) {
+      if (getxController.myVideoExtPlayerController.value.position ==
+          getxController.myVideoExtPlayerController.value.duration!) {
         log.w('end');
         getxController.end.value = true;
         await Future.delayed(Duration(seconds: 3));
@@ -84,7 +84,7 @@ class YoutubeVideoState extends State<MyPlayer> {
         AnimatedSwitcher(
           duration: Duration(milliseconds: 100),
           reverseDuration: Duration(milliseconds: 200),
-          child: getxController.myVideoPlayerController.value.isPlaying
+          child: getxController.myVideoExtPlayerController.value.isPlaying
               ? SizedBox.shrink()
               : Container(
                   color: Colors.black26,
@@ -104,9 +104,9 @@ class YoutubeVideoState extends State<MyPlayer> {
             if (getxController.end.value) {
               init();
             } else {
-              getxController.myVideoPlayerController.value.isPlaying
-                  ? getxController.myVideoPlayerController.pause()
-                  : getxController.myVideoPlayerController.play();
+              getxController.myVideoExtPlayerController.value.isPlaying
+                  ? getxController.myVideoExtPlayerController.pause()
+                  : getxController.myVideoExtPlayerController.play();
             }
           },
         ),

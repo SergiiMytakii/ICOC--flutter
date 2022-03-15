@@ -83,13 +83,13 @@ class MainScreen extends StatelessWidget {
                         tableItem(
                             context,
                             'Bible school'.tr,
-                            screensColors['songBook']!,
+                            screensColors['general']!,
                             Icons.video_collection,
                             Routes.PLAYLISTS_PLAYER,
                             arguments: [
                               BIBLE_SCHOOL_PLAYLIST_ID,
                               'Bible school'.tr,
-                              screensColors['songBook']!,
+                              screensColors['general']!,
                             ]),
                         tableItem(
                             context,
@@ -193,7 +193,7 @@ class VerseOfTheDay extends StatelessWidget {
     return Obx(
       () => controller.url.isNotEmpty
           ? Container(
-              // height: Get.size.height / 2.5,
+              height: Get.size.height / 2.2,
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
@@ -211,8 +211,8 @@ class VerseOfTheDay extends StatelessWidget {
                           ),
                           child: Image.network(
                             controller.url.value,
-                            //height: Get.size.height / 2.5,
-                            width: Get.size.width - 24,
+                            height: Get.size.height / 2.2,
+                            width: Get.size.width - 32,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -227,9 +227,9 @@ class VerseOfTheDay extends StatelessWidget {
                         ),
                         child: Container(
                           color: Colors.black12.withOpacity(0.3),
-                          width: Get.size.width - 48,
+                          width: Get.size.width - 32,
                           padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -254,7 +254,7 @@ class VerseOfTheDay extends StatelessWidget {
               ),
             )
           : Container(
-              height: Get.size.height / 2.5,
+              height: Get.size.height / 2.2,
               child: Center(child: CircularProgressIndicator.adaptive()),
             ),
     );

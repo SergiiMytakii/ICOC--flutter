@@ -21,7 +21,7 @@ export 'package:miniplayer/miniplayer.dart';
 export 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 //controllers
-export 'package:icoc/app/modules/youtube_playlist_player/logic/playlist_player_controller.dart';
+
 export 'package:icoc/news/logic/controllers/kyiv_insta_news_controller.dart';
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 export 'package:icoc/app/settings/logic/General_settings_controller.dart';
@@ -57,6 +57,11 @@ export 'package:icoc/app/routes/routes.dart';
 export 'package:icoc/app/routes/pages.dart';
 
 //screens and widgets
+export 'package:icoc/app/modules/youtube_playlist_player/screens/youtube_playlist_player.dart';
+export 'package:icoc/app/screens/share_app_screen.dart';
+export 'package:icoc/news/screens/kyiv_insta_news_screen.dart';
+export 'package:icoc/news/screens/main_news_screen.dart';
+export 'package:icoc/song_book/screens/videoplayer/ext_player/video_ext_player_screen.dart';
 export 'package:icoc/app/modules/youtube_playlist_player/screens/widgets/video_card_teaching.dart';
 export 'package:icoc/song_book/screens/playlists/add_song_to_playlist.dart';
 export 'package:icoc/app/screens/widgets/snackbar.dart';

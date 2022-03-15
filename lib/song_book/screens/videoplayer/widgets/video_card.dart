@@ -1,5 +1,3 @@
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
 import '../../../../index.dart';
 
 class VideoCard extends StatefulWidget {
@@ -25,27 +23,9 @@ class _VideoCardState extends State<VideoCard> {
     super.initState();
   }
 
-  void getVideoId() {
-    videoId = VideoPlayerController.getIdFromUrl(widget.resources.link);
-    //if you use Youtube_player or youtube iFrame player
-    // if (widget.resources.link.isNotEmpty &&
-    //     widget.resources.link.contains('yout')) {
-    //   try {
-    //     videoId =
-    //         YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
-    //   } on Exception catch (e) {
-    //     showSnackbar('Error'.tr, 'Can not play video'.tr);
-    //     print(e);
-    //   }
-    // } else {
-    //   videoId = widget.resources.link;
-    //   // log.v(videoId);
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
-    getVideoId();
+    videoId = getVideoId(widget.resources.link);
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
     return Column(
       children: [
@@ -55,18 +35,16 @@ class _VideoCardState extends State<VideoCard> {
               controller.miniplayerController.animateToHeight(
                   state: PanelState.MAX, duration: Duration(seconds: 1));
             } else {
+              controller.youtubePlayerController.reset();
               controller.selectedVideo.value =
                   Resources(lang: '', title: '', link: '');
               Get.appUpdate();
               await Future.delayed(Duration(milliseconds: 300));
             }
-
             controller.selectedVideo.value = widget.resources;
-            // controller.shiftWaitingList(
-            //     selectedV: controller.selectedVideo.value);
-            // controller.myVideoPlayerController.play();
-            // controller.youtubePlayerController
-            //     .updateValue(YoutubePlayerValue(isPlaying: true));
+            controller.fetchRelatedVideos(videoId);
+            //controller.getPlaylist();
+            log.e('video selected');
           },
           child: Container(
             width: double.maxFinite,
@@ -75,22 +53,15 @@ class _VideoCardState extends State<VideoCard> {
                   YoutubePlayerController.getThumbnail(
                     videoId: videoId,
                   ),
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: myDarkTheme.scaffoldBackgroundColor,
+                  child: Image.asset('assets/images/logo_icoc_drawer.png',
+                      fit: BoxFit.fitWidth),
+                );
+              },
               height: Get.width / 16 * 9,
               fit: BoxFit.fitWidth,
-              // loadingBuilder: (BuildContext context, Widget child,
-              //     ImageChunkEvent? loadingProgress) {
-              //   if (loadingProgress == null) {
-              //     return child;
-              //   }
-              //   return Center(
-              //     child: CircularProgressIndicator.adaptive(
-              //       value: loadingProgress.expectedTotalBytes != null
-              //           ? loadingProgress.cumulativeBytesLoaded /
-              //               loadingProgress.expectedTotalBytes!
-              //           : null,
-              //     ),
-              //   );
-              // },
             ),
           ),
         ),
@@ -138,8 +109,8 @@ class _VideoCardState extends State<VideoCard> {
 
                 // if (widget.withToLyrics) {
                 setState(() {
-                  isFavorite = !isFavorite;
-                  log.i(widget.resources.title + " " + isFavorite.toString());
+                  // isFavorite = !isFavorite;
+                  // log.i(widget.resources.title + " " + isFavorite.toString());
                 });
                 // }
               },
@@ -156,5 +127,21 @@ class _VideoCardState extends State<VideoCard> {
         )
       ],
     );
+  }
+}
+
+String getVideoId(String link) {
+  //if you use Youtube_player or youtube iFrame player
+  if (link.isNotEmpty && link.contains('yout')) {
+    try {
+      return YoutubePlayerController.convertUrlToId(link) ?? '';
+    } on Exception catch (e) {
+      showSnackbar('Error'.tr, 'Can not play video'.tr);
+      print(e);
+      return '';
+    }
+  } else {
+    return link;
+    // log.v(videoId);
   }
 }

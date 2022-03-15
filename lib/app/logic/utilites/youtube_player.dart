@@ -1,5 +1,6 @@
 import '../../../index.dart';
 
+//uses IframeYoutubePlayer
 class MyYoutubePlayer extends StatefulWidget {
   final Resources video;
 
@@ -14,7 +15,7 @@ class MyYoutubePlayer extends StatefulWidget {
 class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
   String videoId = '';
   //late YoutubePlayerController youtubePlayerController;
-  final PlaylistPlayerController controller = Get.find();
+  final GetxVideoPlayerController controller = Get.find();
 
   @override
   void initState() {
@@ -35,11 +36,15 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
       videoId = widget.video.link;
       //showSnackbar('Error'.tr, 'Can not play video'.tr);
     }
+    //log.d('youtube player init $videoId');
+
     controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
       params: YoutubePlayerParams(
           strictRelatedVideos: true,
+          playlist: controller.playlist,
           autoPlay: true,
+          loop: true,
           mute: false,
           desktopMode: true,
           showControls: true,
@@ -47,17 +52,30 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
           enableCaption: false),
     );
 
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.portraitUp
-    // ]);
-    log.i(videoId);
+    //log.i(videoId);
     controller.youtubePlayerController.cue(videoId);
     controller.youtubePlayerController.play();
-    controller.youtubePlayerController.value
-        .copyWith(playerState: PlayerState.playing);
-    log.e(controller.youtubePlayerController.value.playerState);
+
+    controller.youtubePlayerController.listen((event) {
+      if (event.metaData.title.isNotEmpty) {
+        if (!controller.selectedVideo.value.link
+            .contains(event.metaData.videoId)) {
+          // controller.title.value = event.metaData.title;
+          // controller.videoIdforFavoriteStatus.value = event.metaData.videoId;
+          controller.selectedVideo.value = Resources(
+              lang: '',
+              title: event.metaData.title,
+              link: event.metaData.videoId);
+
+          print(controller.selectedVideo.value.title);
+        }
+      }
+    });
+
+    // controller.youtubePlayerController.value
+    //     .copyWith(playerState: PlayerState.playing);
+    // log.e(controller.youtubePlayerController.value.playerState);
+
     super.initState();
   }
 
@@ -79,7 +97,6 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
               // height: context.isLandscape ? Get.height : null,
               //width: context.isLandscape ? Get.height * 1.6 : null,
               child: YoutubePlayerIFrame(
-                //onEnded: (v) => controller.playNext(),
                 controller: controller.youtubePlayerController,
               ),
             ),
