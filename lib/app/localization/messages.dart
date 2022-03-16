@@ -188,7 +188,8 @@ class Messages extends Translations {
           'Go to all songs and add some videos from there':
               'Перейдите в раздел с песнями и добавьте оттуда несколько видео любимых песен',
           'Q&A with Andy Fleming': "Вопросы и ответы с Энди Флеминг",
-          'Bible school': 'Библейская школа'
+          'Bible school': 'Библейская школа',
+          'Related videos': 'Подобные видео на этом канале'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -285,7 +286,8 @@ class Messages extends Translations {
           'Go to all songs and add some videos from there':
               'Перейдіть до розділу з піснями та додайте звідти кілька відео улюблених пісень',
           'Q&A with Andy Fleming': "Питання та відповіді з Енді Флемінг",
-          'Bible school': 'Біблейська школа'
+          'Bible school': 'Біблейська школа',
+          'Related videos': 'Схожі відео на цьому каналі'
         }
       };
 }
