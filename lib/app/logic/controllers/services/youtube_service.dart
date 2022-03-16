@@ -4,7 +4,7 @@ import '../../../../index.dart';
 class YoutubeService extends YoutubeNetworkService {
   // List<News> newsFromJson(String? str) =>
   //     List<News>.from(json.decode(str!).map((x) => News.fromJson(x)));
-
+  int queryCount = 0;
   Future<List<Resources>> fetchRelatedVideos(String videoId) async {
     Map<String, String> data = {
       'part': 'snippet',
@@ -17,6 +17,8 @@ class YoutubeService extends YoutubeNetworkService {
           "Content-Type": "application/json",
         },
         query: data);
+    queryCount += 100;
+    print('queryCount $queryCount');
     //log.i(response.body);
     if (response.statusCode == 200) {
       List data = response.body['items'];
@@ -34,9 +36,9 @@ class YoutubeService extends YoutubeNetworkService {
                   : null,
               link: data[index]["id"]["videoId"]));
 
-      relatedVideos.forEach((element) {
-        print(element.thumbnail);
-      });
+      // relatedVideos.forEach((element) {
+      //   print(element.thumbnail);
+      // });
       relatedVideos.removeWhere((element) => element.title.isEmpty);
       return relatedVideos;
     } else
@@ -60,7 +62,8 @@ class YoutubeService extends YoutubeNetworkService {
         await httpClient.get('playlistItems', headers: headers, query: data);
     if (response.statusCode == 200) {
       var data = response.body;
-
+      queryCount += 1;
+      print('queryCount $queryCount');
       List<dynamic> videosJson = data['items'];
       //log.d(videosJson);
 

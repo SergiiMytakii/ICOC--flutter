@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+
 import '../../../index.dart';
 
 //uses IframeYoutubePlayer
@@ -98,6 +101,8 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
               //width: context.isLandscape ? Get.height * 1.6 : null,
               child: YoutubePlayerIFrame(
                 controller: controller.youtubePlayerController,
+                gestureRecognizers:
+                    <Factory<OneSequenceGestureRecognizer>>[].toSet(),
               ),
             ),
           ],

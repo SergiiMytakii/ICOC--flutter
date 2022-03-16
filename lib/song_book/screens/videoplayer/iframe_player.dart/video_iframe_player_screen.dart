@@ -113,8 +113,17 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
                                       : Get.width,
                                   child: controller
                                           .selectedVideo.value.link.isNotEmpty
-                                      ? MyYoutubePlayer(
-                                          video: controller.selectedVideo.value)
+                                      ? Stack(
+                                          children: [
+                                            MyYoutubePlayer(
+                                                video: controller
+                                                    .selectedVideo.value),
+                                            // Container(
+                                            //   color:
+                                            //       Colors.white.withOpacity(0.1),
+                                            // )
+                                          ],
+                                        )
                                       : Container(),
                                 ),
                                 if (height < 150)
