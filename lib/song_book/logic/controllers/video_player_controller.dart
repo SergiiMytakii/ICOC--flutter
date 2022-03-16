@@ -99,12 +99,7 @@ class GetxVideoPlayerController extends GetxController {
 
   void fetchRelatedVideos(String videoId) async {
     relatedVideos.value = await YoutubeService().fetchRelatedVideos(videoId);
-    relatedVideos.add(Resources(
-        lang: '',
-        title: 'title',
-        link: 'https://www.youtube.com/watch?v=XtwIT8JjddM'));
-    relatedVideos.add(Resources(
-        lang: '', title: 'title', link: 'https://youtu.be/Mp1QuJblwIo'));
+
     //log.i(videoId + ' ' + relatedVideos.length.toString());
   }
 

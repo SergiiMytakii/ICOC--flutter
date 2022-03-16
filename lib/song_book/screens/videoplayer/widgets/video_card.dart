@@ -33,7 +33,7 @@ class _VideoCardState extends State<VideoCard> {
           onTap: () async {
             if (controller.selectedVideo.value.link.isEmpty) {
               controller.miniplayerController.animateToHeight(
-                  state: PanelState.MAX, duration: Duration(seconds: 1));
+                  state: PanelState.MAX, duration: Duration(milliseconds: 700));
             } else {
               controller.youtubePlayerController.reset();
               controller.selectedVideo.value =
@@ -109,7 +109,7 @@ class _VideoCardState extends State<VideoCard> {
 
                 // if (widget.withToLyrics) {
                 setState(() {
-                  // isFavorite = !isFavorite;
+                  isFavorite = !isFavorite;
                   // log.i(widget.resources.title + " " + isFavorite.toString());
                 });
                 // }

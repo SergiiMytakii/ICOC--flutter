@@ -86,6 +86,7 @@ class MainScreen extends StatelessWidget {
                             screensColors['general']!,
                             Icons.video_collection,
                             Routes.PLAYLISTS_PLAYER,
+                            trailing: Trailing(),
                             arguments: [
                               BIBLE_SCHOOL_PLAYLIST_ID,
                               'Bible school'.tr,
@@ -97,6 +98,7 @@ class MainScreen extends StatelessWidget {
                             screensColors['news']!,
                             Icons.question_answer,
                             Routes.PLAYLISTS_PLAYER,
+                            trailing: Trailing(),
                             arguments: [
                               Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
                               'Q&A with Andy Fleming'.tr,
@@ -136,7 +138,7 @@ class MainScreen extends StatelessWidget {
 
   tableItem(BuildContext context, String title, Color color, IconData icon,
       String routeName,
-      {List? arguments}) {
+      {List? arguments, Widget? trailing}) {
     double sizeOfCell = (MediaQuery.of(context).size.width) / 2;
     return Container(
       height: sizeOfCell,
@@ -152,20 +154,28 @@ class MainScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                size: 36,
-                color: Colors.white,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    icon,
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                  trailing != null ? trailing : Container()
+                ],
               ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.white),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -182,6 +192,22 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Trailing extends StatelessWidget {
+  const Trailing({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'NEW!',
+      style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: Colors.red,
+          ),
     );
   }
 }

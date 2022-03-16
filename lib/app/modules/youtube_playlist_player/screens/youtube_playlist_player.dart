@@ -21,8 +21,8 @@ class YotubePlaylistPlayerScreen extends StatefulWidget {
 
 class _YotubePlaylistPlayerScreenState
     extends State<YotubePlaylistPlayerScreen> {
-  final GetxVideoPlayerController  controller =
-      Get.put(GetxVideoPlayerController ());
+  final GetxVideoPlayerController controller =
+      Get.put(GetxVideoPlayerController());
 
   double minHeight = 60;
   double controlsPanelHeight = 0;
@@ -55,12 +55,14 @@ class _YotubePlaylistPlayerScreenState
           body: Obx(() {
             int length = controller.videos.length;
 
-            return ListView.builder(
-              itemBuilder: (context, index) => VideoCardTeaching(
-                resources: controller.videos[index],
-              ),
-              itemCount: length,
-            );
+            return length > 0
+                ? ListView.builder(
+                    itemBuilder: (context, index) => VideoCardTeaching(
+                      resources: controller.videos[index],
+                    ),
+                    itemCount: length,
+                  )
+                : Loading();
           }),
         ),
         Positioned(

@@ -67,7 +67,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
               title: event.metaData.title,
               link: event.metaData.videoId);
 
-          print(controller.selectedVideo.value.title);
+          //print(controller.selectedVideo.value.title);
         }
       }
     });
