@@ -4,7 +4,7 @@ import 'package:icoc/news/screens/kyiv_insta_one_news.dart';
 import '../../index.dart';
 
 class KyivInstaNewsScreen extends StatelessWidget {
-  final KyivInstaNewsController controller = Get.put(KyivInstaNewsController());
+  final KyivInstaNewsController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -23,7 +23,18 @@ class KyivInstaNewsScreen extends StatelessWidget {
                 itemBuilder: (context, index) => OnePost(
                       post: controller.timelinePosts[index],
                     ))
-            : Loading(),
+            : Column(
+                children: [
+                  Loading(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'use vpn if something not works'.tr,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }

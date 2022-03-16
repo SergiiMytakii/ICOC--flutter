@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/screens/videoplayer/video_player_screen.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:icoc/song_book/screens/videoplayer/iframe_player.dart/video_iframe_player_screen.dart';
 
 import '../../../index.dart';
 
@@ -106,10 +105,13 @@ class _SongScreenState extends State<SongScreen> {
                 onPressed: () async {
                   await Navigator.push(context, CupertinoPageRoute(
                     builder: (context) {
-                      return VideoPlayerScreen(
+                      // return VideoPlayerScreen(
+                      //   song: song,
+                      //   withControlPanel: false,
+                      //   playNextOn: false,
+                      // );
+                      return VideoIframePlayerScreen(
                         song: song,
-                        withControlPanel: false,
-                        playNextOn: false,
                       );
                     },
                   )).then((value) {

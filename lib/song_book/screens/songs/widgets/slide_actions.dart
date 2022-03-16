@@ -82,7 +82,8 @@ class AddToFavorites extends StatelessWidget {
     required this.songId,
   }) : super(key: key);
 
-  final FavoritesController favoritesController = Get.find();
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
   final int songId;
 
   @override

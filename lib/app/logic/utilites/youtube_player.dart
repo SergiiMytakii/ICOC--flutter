@@ -1,7 +1,9 @@
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 
-import '../../../../index.dart';
+import '../../../index.dart';
 
+//uses IframeYoutubePlayer
 class MyYoutubePlayer extends StatefulWidget {
   final Resources video;
 
@@ -20,6 +22,11 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitUp
+    ]);
     if (widget.video.link.isNotEmpty && widget.video.link.contains('yout')) {
       try {
         videoId =
@@ -32,34 +39,53 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
       videoId = widget.video.link;
       //showSnackbar('Error'.tr, 'Can not play video'.tr);
     }
+    //log.d('youtube player init $videoId');
+
     controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
       params: YoutubePlayerParams(
-        strictRelatedVideos: true,
-        autoPlay: true,
-        mute: false,
-        showControls: true,
-        playlist: controller.playlist,
-        showFullscreenButton: false,
-      ),
+          strictRelatedVideos: true,
+          playlist: controller.playlist,
+          autoPlay: true,
+          loop: true,
+          mute: false,
+          desktopMode: true,
+          showControls: true,
+          showFullscreenButton: true,
+          enableCaption: false),
     );
 
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.portraitUp
-    // ]);
-    log.i(videoId);
+    //log.i(videoId);
     controller.youtubePlayerController.cue(videoId);
     controller.youtubePlayerController.play();
-    controller.fetchRelatedVideos(videoId);
+
+    controller.youtubePlayerController.listen((event) {
+      if (event.metaData.title.isNotEmpty) {
+        if (!controller.selectedVideo.value.link
+            .contains(event.metaData.videoId)) {
+          // controller.title.value = event.metaData.title;
+          // controller.videoIdforFavoriteStatus.value = event.metaData.videoId;
+          controller.selectedVideo.value = Resources(
+              lang: '',
+              title: event.metaData.title,
+              link: event.metaData.videoId);
+
+          //print(controller.selectedVideo.value.title);
+        }
+      }
+    });
+
+    // controller.youtubePlayerController.value
+    //     .copyWith(playerState: PlayerState.playing);
+    // log.e(controller.youtubePlayerController.value.playerState);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    //controller.youtubePlayerController.dispose();
-    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    controller.youtubePlayerController.close();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
@@ -74,8 +100,9 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
               // height: context.isLandscape ? Get.height : null,
               //width: context.isLandscape ? Get.height * 1.6 : null,
               child: YoutubePlayerIFrame(
-                //onEnded: (v) => controller.playNext(),
                 controller: controller.youtubePlayerController,
+                gestureRecognizers:
+                    <Factory<OneSequenceGestureRecognizer>>[].toSet(),
               ),
             ),
           ],

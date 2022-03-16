@@ -1,5 +1,3 @@
-import 'package:icoc/song_book/screens/videoplayer/widgets/my_player.dart';
-
 import '../../index.dart';
 
 class KyivInstaOneNewsScreen extends StatefulWidget {

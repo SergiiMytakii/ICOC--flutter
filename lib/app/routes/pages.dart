@@ -1,8 +1,7 @@
-import 'package:icoc/app/screens/share_app_screen.dart';
-import 'package:icoc/news/screens/kyiv_insta_news_screen.dart';
-import 'package:icoc/news/screens/main_news_screen.dart';
+
+
 import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
-import 'package:icoc/song_book/screens/videoplayer/video_player_screen.dart';
+
 
 import '../../index.dart';
 
@@ -45,6 +44,12 @@ class Pages {
       GetPage(
         name: Routes.KYIV_INSTA_NEWS,
         page: () => KyivInstaNewsScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.PLAYLISTS_PLAYER,
+        page: () => YotubePlaylistPlayerScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

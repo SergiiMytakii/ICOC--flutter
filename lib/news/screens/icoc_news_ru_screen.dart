@@ -3,7 +3,7 @@ import 'package:flutter_html/flutter_html.dart' as html;
 import '../../index.dart';
 
 class IcocNewsRuScreen extends StatelessWidget {
-  final NewsController newsController = Get.put(NewsController());
+  final NewsController newsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +142,18 @@ class IcocNewsRuScreen extends StatelessWidget {
                     ),
                   );
                 })
-            : Loading(),
+            : Column(
+                children: [
+                  Loading(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'use vpn if something not works'.tr,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
       );
     });
   }

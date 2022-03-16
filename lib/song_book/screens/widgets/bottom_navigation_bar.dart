@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/screens/videoplayer/video_player_screen.dart';
+import 'package:icoc/song_book/screens/videoplayer/ext_player/video_ext_player_screen.dart';
+import 'package:icoc/song_book/screens/videoplayer/iframe_player.dart/video_iframe_player_screen.dart';
 import '/index.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -8,13 +9,6 @@ class MyBottomNavigationBar extends StatefulWidget {
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  final List<Widget> _pages = [
-    SongBookScreen(),
-    FavoritesScreen(),
-    PlaylistsListScreen(),
-    VideoPlayerScreen()
-  ];
-
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
@@ -76,7 +70,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             case 3:
               {
                 return CupertinoTabView(
-                    builder: (context) => VideoPlayerScreen());
+                    builder: (context) =>
+                        VideoIframePlayerScreen()); // or use VideoExtPlayerScreen
               }
             default:
               {

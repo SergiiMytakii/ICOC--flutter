@@ -17,4 +17,5 @@ abstract class Routes {
   static const VIDEO_PLAYER_SCREEN = '/video_player_screen';
   static const MAIN_NEWS = '/main_news_screen';
   static const KYIV_INSTA_NEWS = '/kyiv_insta_news_screen';
+  static const PLAYLISTS_PLAYER = '/youtube_playlist_player';
 }
