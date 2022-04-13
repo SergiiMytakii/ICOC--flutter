@@ -91,7 +91,8 @@ class Messages extends Translations {
               'In some countries data could not be loaded. Use vpn if something not works',
           'Go to all songs and add some videos from there':
               'Go to all songs and add some videos from there',
-          'Q&A with Andy Fleming': 'Q&A with Andy Fleming'
+          'Q&A with Andy Fleming': 'Q&A with Andy Fleming',
+          'Bible school': 'Bible school',
         },
         'ru_RU': {
           "app_bar_title": "Песенник",

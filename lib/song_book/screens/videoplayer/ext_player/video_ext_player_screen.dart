@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:icoc/song_book/screens/videoplayer/ext_player/my_ext_player.dart';
-
+import '../../../../app/logic/controllers/audio_handler_controller.dart';
 import '../../../../index.dart';
 
 //use with ext_player
@@ -21,7 +21,8 @@ class VideoPlayerScreen extends StatefulWidget {
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
 
-class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+class _VideoPlayerScreenState extends State<VideoPlayerScreen>
+    with WidgetsBindingObserver {
   final GetxVideoPlayerController controller =
       Get.put(GetxVideoPlayerController());
 
@@ -32,7 +33,25 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  AudioHandlerController audioHandlerController = Get.find();
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    log.e('state = $state');
+    if (state == AppLifecycleState.paused) {
+      await Future.delayed(Duration.zero);
+      audioHandlerController.audioHandler!.play();
+      // controller.myVideoExtPlayerController.play();
+    }
   }
 
   @override
@@ -95,6 +114,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       80 -
                       (Platform.isIOS ? 47 : 0),
                   builder: (height, percentage) {
+                    log.w('build player');
                     if (controller.selectedVideo.value.link.isEmpty)
                       return SizedBox.shrink();
                     double fullSizePlayerHeight = Get.width / 16 * 9;

@@ -13,6 +13,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   final MainScreenController controller = Get.find();
 
   final GetStorage box = GetStorage();
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 } else {
                   i = 0;
                 }
-
+                Future.delayed(Duration(seconds: 3)).then((value) =>
+                    _markAsRead(controller.notifications[index].text));
+                bool isRead = !controller
+                    .checkIsRead(controller.notifications[index].text);
                 return Column(
                   children: [
                     ListTile(
@@ -44,15 +51,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           vertical: 16,
                         ),
                         child: CircleAvatar(
-                          backgroundColor: !controller.checkIsRead(
-                                  controller.notifications[index].text)
-                              ? Theme.of(context).primaryColor
+                          backgroundColor: isRead
+                              ? screensColors['songBook']
                               : Colors.transparent,
                           child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                    color: Theme.of(context).primaryColor),
+                                    color: isRead
+                                        ? screensColors['songBook']!
+                                        : Theme.of(context).primaryColor),
                               ),
                               child: Center(child: Text('i'))),
                         ),

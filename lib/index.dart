@@ -6,7 +6,7 @@ export 'package:get_storage/get_storage.dart';
 export 'package:flutter/material.dart';
 export 'package:get/get_utils/src/extensions/internacionalization.dart';
 export 'dart:convert';
-
+export 'package:audio_service/audio_service.dart';
 export 'package:flutter/services.dart';
 export 'package:share_plus/share_plus.dart';
 export 'package:path/path.dart';
@@ -38,6 +38,8 @@ export 'package:icoc/q_and_a/logic/q_and_a_controller.dart';
 export 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
 
 //servises
+
+export 'package:icoc/app/logic/services/service_locator.dart';
 export 'package:icoc/song_book/logic/services/db_sqlite/sqlite_helper_fts4.dart';
 export 'package:icoc/song_book/logic/services/database_firebase_service.dart';
 export 'package:icoc/song_book/logic/services/data_search.dart';
@@ -48,7 +50,7 @@ export 'package:url_launcher/url_launcher.dart';
 export 'package:icoc/q_and_a/logic/sqlite_database_service.dart';
 export 'package:icoc/app/logic/utilites/ext_video_player.dart';
 export 'package:icoc/news/logic/services/insta_public_api/models/basic_model.dart';
-export 'package:icoc/app/logic/controllers/services/youtube_service.dart';
+export 'package:icoc/app/logic/services/youtube_service.dart';
 //debug
 export 'package:logger/logger.dart';
 

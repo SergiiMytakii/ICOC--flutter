@@ -20,6 +20,8 @@ class MyExtPlayerState extends State<MyExtPlayer> {
   void initState() {
     super.initState();
     videoId = VideoPlayerController.getIdFromUrl(widget.video.link);
+    log.d(videoId);
+
     init();
   }
 
@@ -34,12 +36,14 @@ class MyExtPlayerState extends State<MyExtPlayer> {
       playNextAfterEnd();
       //setState(() {});
     });
+    getxController.myVideoExtPlayerController.setPlaybackSpeed(20);
     getxController.myVideoExtPlayerController.initialize();
     getxController.myVideoExtPlayerController.play();
   }
 
   @override
   void dispose() {
+    //WidgetsBinding.instance.
     getxController.myVideoExtPlayerController.dispose();
     log.i('dispose video controller');
     super.dispose();
@@ -69,8 +73,9 @@ class MyExtPlayerState extends State<MyExtPlayer> {
           getxController.myVideoExtPlayerController.value.duration!) {
         log.w('end');
         getxController.end.value = true;
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(Duration(seconds: 1));
         if (getxController.waitingList.length > 1 && widget.playNextOn) {
+          log.w(getxController.myVideoExtPlayerController.dataSource);
           getxController.playNext();
           getxController.end.value = false;
         }

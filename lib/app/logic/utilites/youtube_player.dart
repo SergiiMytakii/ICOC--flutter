@@ -15,13 +15,22 @@ class MyYoutubePlayer extends StatefulWidget {
   State<MyYoutubePlayer> createState() => _MyYoutubePlayerState();
 }
 
-class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
+class _MyYoutubePlayerState extends State<MyYoutubePlayer>
+    with WidgetsBindingObserver {
   String videoId = '';
   //late YoutubePlayerController youtubePlayerController;
   final GetxVideoPlayerController controller = Get.find();
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    log.e('state = $state');
+    if (state == AppLifecycleState.paused) {
+      controller.youtubePlayerController.play();
+    }
+  }
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addObserver(this);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -59,6 +68,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     controller.youtubePlayerController.cue(videoId);
     controller.youtubePlayerController.play();
 
+    //what this does?
     controller.youtubePlayerController.listen((event) {
       if (event.metaData.title.isNotEmpty) {
         if (!controller.selectedVideo.value.link
@@ -84,6 +94,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
 
   @override
   void dispose() {
+    log.e('player dispose');
     controller.youtubePlayerController.close();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
