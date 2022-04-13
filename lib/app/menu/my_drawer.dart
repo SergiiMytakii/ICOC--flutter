@@ -1,4 +1,3 @@
-
 import '../../index.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -47,6 +46,17 @@ class MyDrawer extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6,
           ),
           onTap: () => Get.offAndToNamed(Routes.SHARE_APP_SCREEN),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.info,
+          ),
+          title: Text(
+            'Terms of Use'.tr,
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          onTap: () => Get.offAndToNamed(Routes.TERMS_OF_USE),
         ),
       ],
     );

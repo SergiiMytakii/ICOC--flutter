@@ -31,7 +31,7 @@ class _VideoCardState extends State<VideoCard> {
       children: [
         InkWell(
           onTap: () async {
-            log.e('card tapped' + controller.selectedVideo.value.link);
+            log.e('card tapped' + controller.selectedVideo.value.title);
             if (controller.selectedVideo.value.link.isEmpty) {
               controller.miniplayerController.animateToHeight(
                   state: PanelState.MAX, duration: Duration(milliseconds: 700));
@@ -44,8 +44,10 @@ class _VideoCardState extends State<VideoCard> {
             }
             controller.selectedVideo.value = widget.resources;
             controller.fetchRelatedVideos(videoId);
-            //controller.getPlaylist();
-            log.e('video selected' + controller.selectedVideo.value.link);
+            controller.playlist
+                .insert(0, getVideoId(controller.selectedVideo.value.link));
+
+            log.e(controller.playlist);
           },
           child: Container(
             width: double.maxFinite,

@@ -21,10 +21,13 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
   //late YoutubePlayerController youtubePlayerController;
   final GetxVideoPlayerController controller = Get.find();
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     log.e('state = $state');
     if (state == AppLifecycleState.paused) {
-      controller.youtubePlayerController.play();
+      Future.delayed(Duration(milliseconds: 1000)).then((value) {
+        log.e('continue play');
+        controller.youtubePlayerController.play();
+      });
     }
   }
 
@@ -48,7 +51,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
       videoId = widget.video.link;
       //showSnackbar('Error'.tr, 'Can not play video'.tr);
     }
-    //log.d('youtube player init $videoId');
+    log.d('youtube player init ${widget.video.title}.  videoId $videoId');
 
     controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
@@ -87,15 +90,17 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
 
     // controller.youtubePlayerController.value
     //     .copyWith(playerState: PlayerState.playing);
-    // log.e(controller.youtubePlayerController.value.playerState);
+    log.v(
+        'from controller ${controller.youtubePlayerController.value.metaData.title}');
 
     super.initState();
   }
 
   @override
   void dispose() {
-    log.e('player dispose');
+    log.w('player dispose');
     controller.youtubePlayerController.close();
+    controller.getPlaylist();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }

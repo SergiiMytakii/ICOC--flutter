@@ -70,10 +70,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
             case 3:
               {
                 return CupertinoTabView(
-                    builder: (context) => //VideoIframePlayerScreen());
-                        VideoPlayerScreen(
-                          playNextOn: true,
-                        ));
+                    builder: (context) => VideoIframePlayerScreen());
+                // VideoPlayerScreen(
+                //   playNextOn: true,
+                // ));
               }
             default:
               {
