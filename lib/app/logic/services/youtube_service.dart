@@ -1,4 +1,4 @@
-import 'package:icoc/app/logic/controllers/services/youtube_network_service.dart';
+import 'package:icoc/app/logic/services/youtube_network_service.dart';
 import '../../../../index.dart';
 
 class YoutubeService extends YoutubeNetworkService {

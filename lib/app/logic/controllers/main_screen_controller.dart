@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:icoc/app/logic/controllers/services/firebase_images_service.dart';
-import 'package:icoc/app/logic/controllers/services/firebase_notifications_service.dart';
+import 'package:icoc/app/logic/services/firebase_images_service.dart';
+import 'package:icoc/app/logic/services/firebase_notifications_service.dart';
 import 'package:icoc/app/models/notifications_model.dart';
 
 import '/index.dart';

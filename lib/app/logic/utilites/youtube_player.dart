@@ -15,13 +15,25 @@ class MyYoutubePlayer extends StatefulWidget {
   State<MyYoutubePlayer> createState() => _MyYoutubePlayerState();
 }
 
-class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
+class _MyYoutubePlayerState extends State<MyYoutubePlayer>
+    with WidgetsBindingObserver {
   String videoId = '';
   //late YoutubePlayerController youtubePlayerController;
   final GetxVideoPlayerController controller = Get.find();
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    log.e('state = $state');
+    if (state == AppLifecycleState.paused) {
+      Future.delayed(Duration(milliseconds: 1000)).then((value) {
+        log.e('continue play');
+        controller.youtubePlayerController.play();
+      });
+    }
+  }
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addObserver(this);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -39,7 +51,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
       videoId = widget.video.link;
       //showSnackbar('Error'.tr, 'Can not play video'.tr);
     }
-    //log.d('youtube player init $videoId');
+    log.d('youtube player init ${widget.video.title}.  videoId $videoId');
 
     controller.youtubePlayerController = YoutubePlayerController(
       initialVideoId: videoId,
@@ -59,6 +71,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
     controller.youtubePlayerController.cue(videoId);
     controller.youtubePlayerController.play();
 
+    //what this does?
     controller.youtubePlayerController.listen((event) {
       if (event.metaData.title.isNotEmpty) {
         if (!controller.selectedVideo.value.link
@@ -77,14 +90,17 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer> {
 
     // controller.youtubePlayerController.value
     //     .copyWith(playerState: PlayerState.playing);
-    // log.e(controller.youtubePlayerController.value.playerState);
+    log.v(
+        'from controller ${controller.youtubePlayerController.value.metaData.title}');
 
     super.initState();
   }
 
   @override
   void dispose() {
+    log.w('player dispose');
     controller.youtubePlayerController.close();
+    controller.getPlaylist();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }

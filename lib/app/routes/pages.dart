@@ -1,7 +1,5 @@
-
-
+import 'package:icoc/app/screens/terms_of_use_screen.dart';
 import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
-
 
 import '../../index.dart';
 
@@ -104,6 +102,12 @@ class Pages {
       GetPage(
         name: Routes.SHARE_APP_SCREEN,
         page: () => ShareAppScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.TERMS_OF_USE,
+        page: () => TermsOfUseAndPolicy(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),

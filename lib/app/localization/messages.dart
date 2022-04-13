@@ -91,7 +91,29 @@ class Messages extends Translations {
               'In some countries data could not be loaded. Use vpn if something not works',
           'Go to all songs and add some videos from there':
               'Go to all songs and add some videos from there',
-          'Q&A with Andy Fleming': 'Q&A with Andy Fleming'
+          'Q&A with Andy Fleming': 'Q&A with Andy Fleming',
+          'Bible school': 'Bible school',
+          'Terms of Use': 'Terms of Use and Privacy Policy',
+          'terms of use part1': '''Thank you for using the ICOC app!
+The fact of installing and using the application means that you agree to these terms of use.
+
+The developer is not responsible for the quality of the content posted in this application, since he is not directly its author.
+All media resources are taken from publicly available sources.
+
+If you are the copyright holder of the content hosted in the application, and you did not give permission to publish it, please contact the developer (see section "About this application").
+
+Video content in the app is provided by YouTubeAPI Services.
+If you view video content in the application, this means that you have read the ''',
+          'terms of use part2': 'Terms of Use ',
+          'terms of use part3': 'of this service and agree to them.',
+          'Privacy policy1': 'Privacy policy.\n',
+          'Privacy policy2':
+              '''The application does not collect any personal information about the user. While browsing media content, Google services may collect some information about you. You can read more about Google's ''',
+          'Privacy policy3': 'Privacy Policy here. (follow link) ',
+          'Privacy policy4': '''
+
+
+If you have any additional questions - you can contact the developer (see section "About this application").''',
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
@@ -188,7 +210,29 @@ class Messages extends Translations {
           'Go to all songs and add some videos from there':
               'Перейдите в раздел с песнями и добавьте оттуда несколько видео любимых песен',
           'Q&A with Andy Fleming': "Вопросы и ответы с Энди Флеминг",
-          'Bible school': 'Библейская школа'
+          'Bible school': 'Библейская школа',
+          'Related videos': 'Подобные видео на этом канале',
+          'Terms of Use': 'Условия использования и политика конфидициальности',
+          'terms of use part1': '''Спасибо, что используете приложение ICOC! 
+Факт  установки и использования приложения подразумевает то, что вы согласны с данными условиями его использования. 
+
+Разработчик не несет ответствености за качество контента, размещенного в данном приложении, так как не является непосредственно его автором.
+Все медиаресурсы взяты из публичных общедоступных источников.
+
+Если вы являетесь правообладателем контента, размещенного в приложении, и вы не давали разрешения на его публикацию - свяжитесь, пожалуйста с разработчиком (см. в разделе "Об этом приложении").
+
+Видеоконтент в приложении предоставлен сервисом YouTubeAPI Services.
+Если вы просматриваете видеоконтент в приложении, это означает, что вы ознакомлены с ''',
+          'terms of use part2': 'условиями использования ',
+          'terms of use part3': 'данного сервиса и согласны с ними.',
+          'Privacy policy1': 'Политика конфидициальности\n',
+          'Privacy policy2':
+              'Приложение не собирает никакой личной информации о пользователе.  Просматривая медиаконтент сервисы Google могут собирать некоторую информацию о вас.  Подробнее  о политике конфидициальности Google можно прочитать ',
+          'Privacy policy3': 'здесь. (переход по ссылке)',
+          'Privacy policy4': '''
+
+
+Если у вас возникли дополнительные вопросы -  вы можете связаться с разработчиком (см. в разделе "Об этом приложении").''',
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
@@ -285,7 +329,30 @@ class Messages extends Translations {
           'Go to all songs and add some videos from there':
               'Перейдіть до розділу з піснями та додайте звідти кілька відео улюблених пісень',
           'Q&A with Andy Fleming': "Питання та відповіді з Енді Флемінг",
-          'Bible school': 'Біблейська школа'
+          'Bible school': 'Біблейська школа',
+          'Related videos': 'Схожі відео на цьому каналі',
+          'Terms of Use': 'Умови використання та політика конфединціності',
+          'terms of use part1': '''Дякую, що використовуєте додаток ICOC!
+Факт встановлення та використання додатку передбачає те, що ви погоджуєтесь з цими умовами його використання.
+
+Розробник не несе відповідальності за якість контенту, розміщеного в цьому додатку, оскільки не є його автором.
+Усі медіаресурси взято з публічних загальнодоступних джерел.
+
+Якщо ви є правовласником контенту, розміщеного в додатку, і ви не давали дозволу на його публікацію, будь ласка, зв'яжіться з розробником (див. розділ "Про цю програму").
+
+Відеоконтент у програмі наданий сервісом YouTubeAPI Services.
+Якщо ви переглядаєте відеоконтент у програмі, це означає, що ви ознайомлені з 
+''',
+          'terms of use part2': 'умовами використання ',
+          'terms of use part3': 'даного сервісу та погоджуєтеся з ними.',
+          'Privacy policy1': 'Політика конфединційності.\n',
+          'Privacy policy2':
+              'Додаток не збирає жодної особистої інформації про користувача. Переглядаючи медіаконтент, сервіси Google можуть збирати деяку інформацію про вас. Докладніше про політику конфідиційності Google можна прочитати ',
+          'Privacy policy3': 'тут. (перехід за посиланням)',
+          'Privacy policy4': '''
+
+
+Якщо у вас виникли додаткові питання - ви можете зв'язатися з розробником (див. розділ "Про цю програму").''',
         }
       };
 }

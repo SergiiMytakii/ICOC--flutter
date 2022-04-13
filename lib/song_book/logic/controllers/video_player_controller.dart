@@ -14,8 +14,10 @@ class GetxVideoPlayerController extends GetxController {
   RxList<Resources> waitingList = <Resources>[].obs;
   YoutubePlayerController youtubePlayerController =
       YoutubePlayerController(initialVideoId: '');
+  //for ext_player
   VideoPlayerController myVideoExtPlayerController =
       VideoPlayerController.network('');
+
   RxBool end = false.obs;
   RxString title = ''.obs;
   RxString videoIdforFavoriteStatus = ''.obs;
@@ -34,16 +36,16 @@ class GetxVideoPlayerController extends GetxController {
 
   Future fetchFavoritesVideos() async {
     favoritesVideos.value = await databaseHelperFTS4.fetchFavoritesVideos();
-
+    getPlaylist();
     waitingList = favoritesVideos;
   }
 
-  getPlaylist() {
+  void getPlaylist() {
     playlist.clear();
     favoritesVideos.forEach((element) {
       playlist.add(getVideoId(element.link));
     });
-    log.d(playlist);
+    //log.d(playlist);
   }
 
   bool getFavoriteStatus(videoID) {
@@ -75,6 +77,7 @@ class GetxVideoPlayerController extends GetxController {
     ));
   }
 
+//for ext_player
   void shiftWaitingList({Resources? selectedV}) {
     bool shift = true;
     favoritesVideos.forEach((element) {
@@ -103,15 +106,18 @@ class GetxVideoPlayerController extends GetxController {
     //log.i(videoId + ' ' + relatedVideos.length.toString());
   }
 
+//for ext_player
   void playNext() async {
     shiftWaitingList();
     selectedVideo.value = Resources(lang: '', title: '', link: '');
     Get.appUpdate();
     await Future.delayed(Duration(milliseconds: 300));
     selectedVideo.value = waitingList.first;
-    myVideoExtPlayerController.value.copyWith(isPlaying: true);
+    log.e(myVideoExtPlayerController.dataSource + ' ' + 'playnext done');
+    //myVideoExtPlayerController.play();
   }
 
+//for ext_player
   void playPrevios() async {
     shiftWaitingListBack();
 
@@ -121,6 +127,7 @@ class GetxVideoPlayerController extends GetxController {
     selectedVideo.value = waitingList.first;
   }
 
+//for ext_player
   void shiftWaitingListBack() {
     var temp = waitingList.removeLast();
     waitingList.insert(0, temp);

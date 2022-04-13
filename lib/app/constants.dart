@@ -39,3 +39,5 @@ const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';
 const String Q_AND_A_ANDY_FLEMING_PLAYLIST_ID =
     'PLGORKDMRdh2y8lVoDMjF59vv4z4-O-Lhm';
 const String BIBLE_SCHOOL_PLAYLIST_ID = 'PLGORKDMRdh2wkVRHzkClQrjFJA8sClTvY';
+const String YOUTUBE_TERMS_OF_SERVISES = 'https://www.youtube.com/t/terms';
+const String YOUTUBE_PRIVACY_POLICIES = 'https://policies.google.com/privacy';

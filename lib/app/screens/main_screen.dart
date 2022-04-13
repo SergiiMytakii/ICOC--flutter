@@ -86,7 +86,7 @@ class MainScreen extends StatelessWidget {
                             screensColors['general']!,
                             Icons.video_collection,
                             Routes.PLAYLISTS_PLAYER,
-                            trailing: Trailing(),
+                            trailing: Trailing(''),
                             arguments: [
                               BIBLE_SCHOOL_PLAYLIST_ID,
                               'Bible school'.tr,
@@ -98,7 +98,7 @@ class MainScreen extends StatelessWidget {
                             screensColors['news']!,
                             Icons.question_answer,
                             Routes.PLAYLISTS_PLAYER,
-                            trailing: Trailing(),
+                            trailing: Trailing(''),
                             arguments: [
                               Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
                               'Q&A with Andy Fleming'.tr,
@@ -197,14 +197,13 @@ class MainScreen extends StatelessWidget {
 }
 
 class Trailing extends StatelessWidget {
-  const Trailing({
-    Key? key,
-  }) : super(key: key);
+  String text;
+  Trailing(this.text);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      'NEW!',
+      text,
       style: Theme.of(context).textTheme.headline6!.copyWith(
             color: Colors.red,
           ),

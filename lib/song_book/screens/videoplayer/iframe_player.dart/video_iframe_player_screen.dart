@@ -1,6 +1,8 @@
+import 'package:icoc/app/logic/controllers/audio_handler_controller.dart';
+
 import '../../../../index.dart';
 
-//use with ext_player
+//use with iframe_player
 class VideoIframePlayerScreen extends StatefulWidget {
   final SongDetail? song;
 
@@ -35,6 +37,7 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
     super.dispose();
   }
 
+  AudioHandlerController audioHandlerController = Get.find();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -113,17 +116,8 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
                                       : Get.width,
                                   child: controller
                                           .selectedVideo.value.link.isNotEmpty
-                                      ? Stack(
-                                          children: [
-                                            MyYoutubePlayer(
-                                                video: controller
-                                                    .selectedVideo.value),
-                                            // Container(
-                                            //   color:
-                                            //       Colors.white.withOpacity(0.1),
-                                            // )
-                                          ],
-                                        )
+                                      ? MyYoutubePlayer(
+                                          video: controller.selectedVideo.value)
                                       : Container(),
                                 ),
                                 if (height < 150)
@@ -218,8 +212,6 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
     return Row(
       children: [
         YoutubeValueBuilder(
-          controller: controller
-              .youtubePlayerController, // This can be omitted, if using `YoutubePlayerControllerProvider`
           builder: (context, value) {
             return IconButton(
               icon: Icon(
@@ -229,6 +221,11 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
                   color: screensColors['songBook']),
               onPressed: value.isReady
                   ? () {
+                      //playback media
+                      value.playerState == PlayerState.playing
+                          ? audioHandlerController.audioHandler!.pause()
+                          : audioHandlerController.audioHandler!.play();
+                      //playback media
                       value.playerState == PlayerState.playing
                           ? context.ytController.pause()
                           : context.ytController.play();
