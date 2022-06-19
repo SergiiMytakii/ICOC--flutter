@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_svg/svg.dart';
 
 import '../../index.dart';
@@ -25,8 +27,9 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _shareCard(context, appUrlPlayMarket,
-                  'assets/images/logo-google-play.svg', 'google_play'),
+              if (Platform.isAndroid)
+                _shareCard(context, appUrlPlayMarket,
+                    'assets/images/logo-google-play.svg', 'google_play'),
               SizedBox(
                 height: 16,
               ),
