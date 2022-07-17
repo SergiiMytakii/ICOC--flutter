@@ -37,7 +37,7 @@ dependencies:
   flutter_slidable: ^1.2.0
   flutter_svg: ^1.0.3
   get_storage: ^2.0.3
-  getxfire: ^0.3.1
+  getxfire: ^0.3.3
   html: ^0.15.0
   http: ^0.13.4
   logger: ^1.0.0
