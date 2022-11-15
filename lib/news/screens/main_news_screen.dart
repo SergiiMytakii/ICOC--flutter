@@ -1,7 +1,7 @@
 import '../../index.dart';
 
 class MainNewsScreen extends StatelessWidget {
-  final KyivInstaNewsController controller = Get.put(KyivInstaNewsController());
+  //final KyivInstaNewsController controller = Get.put(KyivInstaNewsController());
   final NewsController newsController = Get.put(NewsController());
   @override
   Widget build(BuildContext context) {
@@ -31,16 +31,17 @@ class MainNewsScreen extends StatelessWidget {
                     '',
                     Color(0xFF4a76a8),
                   ),
-                  _item(
-                    context,
-                    Routes.KYIV_INSTA_NEWS,
-                    Image.asset(
-                      'assets/images/kyivInsta.png',
-                      fit: BoxFit.contain,
-                    ),
-                    'Kyiv Church of Christ',
-                    screensColors['news']!,
-                  ),
+                  //Not works due to instagram changes
+                  // _item( 
+                  //   context,
+                  //   Routes.KYIV_INSTA_NEWS,
+                  //   Image.asset(
+                  //     'assets/images/kyivInsta.png',
+                  //     fit: BoxFit.contain,
+                  //   ),
+                  //   'Kyiv Church of Christ',
+                  //   screensColors['news']!,
+                  // ),
                 ],
               ),
             ),

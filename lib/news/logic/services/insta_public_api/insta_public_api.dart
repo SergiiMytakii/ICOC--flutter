@@ -19,13 +19,14 @@ class InstaPublicApi {
 
   /// For Getting initial JSON
   Future<String> fetchResponse() async {
-    final url = "https://www.instagram.com/$username/?__a=1";
+    final url = "https://www.instagram.com/kcoc.ua/?__a=1";
 
-    final res = await http.get(Uri.parse(url));
+    final res =
+        await http.get(Uri.parse(url), headers: {'User-Agent': 'Mozilla'});
 
     print(countInstaRequests++);
     String body = res.body;
-    //log.d(body);
+    // log.d(body);
     if (body.startsWith('<!DOCTYPE html>')) {
       log.e(
           'HTML was returned instead of JSON\ni.e.You might have surpassed Instagram\'s no. of requests/hour limit');

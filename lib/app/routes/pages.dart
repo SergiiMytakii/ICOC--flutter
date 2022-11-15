@@ -39,12 +39,12 @@ class Pages {
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),
-      GetPage(
-        name: Routes.KYIV_INSTA_NEWS,
-        page: () => KyivInstaNewsScreen(),
-        transition: Transition.native,
-        transitionDuration: Duration(milliseconds: 250),
-      ),
+      // GetPage(
+      //   name: Routes.KYIV_INSTA_NEWS,
+      //   page: () => KyivInstaNewsScreen(),
+      //   transition: Transition.native,
+      //   transitionDuration: Duration(milliseconds: 250),
+      // ),
       GetPage(
         name: Routes.PLAYLISTS_PLAYER,
         page: () => YotubePlaylistPlayerScreen(),

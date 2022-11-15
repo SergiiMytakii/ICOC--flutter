@@ -22,7 +22,6 @@ export 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 //controllers
 
-export 'package:icoc/news/logic/controllers/kyiv_insta_news_controller.dart';
 export 'package:icoc/song_book/logic/controllers/songs_controller.dart';
 export 'package:icoc/app/settings/logic/General_settings_controller.dart';
 export 'package:icoc/app/logic/controllers/main_screen_controller.dart';
