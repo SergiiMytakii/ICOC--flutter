@@ -1,7 +1,8 @@
 import '/index.dart';
 import 'package:flutter/cupertino.dart';
 
-Widget iosAppbar(BuildContext context, dynamic controller, String title) {
+Widget iosAppbar(
+    BuildContext context, SongsController controller, String title) {
   return SliverAppBar(
     primary: true,
     title: Text(title),
@@ -51,9 +52,9 @@ Widget iosAppbar(BuildContext context, dynamic controller, String title) {
           child: CupertinoSearchTextField(
             suffixMode: OverlayVisibilityMode.always,
             onChanged: (val) {
-              print(val);
               controller.query.value = val;
             },
+            onSuffixTap: () => controller.query.value = '',
             backgroundColor: Colors.white.withOpacity(0.2),
           ),
         ),

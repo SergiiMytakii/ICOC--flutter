@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:icoc/song_book/screens/videoplayer/iframe_player.dart/video_iframe_player_screen.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../index.dart';
 
@@ -168,6 +169,8 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   Stack _miniPlayerBuilder() {
+    final controller = YoutubePlayerController();
+    controller.cueVideoById(videoId: videoId);
     return Stack(children: [
       Miniplayer(
           controller: miniplayerController,
@@ -177,10 +180,8 @@ class _SongScreenState extends State<SongScreen> {
           builder: (height, percentage) {
             //print(videoId);
 
-            return YoutubePlayerIFrame(
-              controller: YoutubePlayerController(
-                initialVideoId: videoId,
-              ),
+            return YoutubePlayer(
+              controller: controller,
             );
           }),
       Positioned(

@@ -37,7 +37,7 @@ class MyAudioHandler extends BaseAudioHandler {
       controls: [MediaControl.play],
     ));
     log.e('pause');
-    controller.youtubePlayerController.pause();
+    controller.youtubePlayerController.pauseVideo();
   }
 
   void _notifyAudioHandlerAboutPlaybackEvents() {

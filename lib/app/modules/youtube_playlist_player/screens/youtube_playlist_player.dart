@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:intl/intl.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../../../../index.dart';
 
 class YotubePlaylistPlayerScreen extends StatefulWidget {
@@ -187,14 +188,12 @@ class _YotubePlaylistPlayerScreenState
                       ? Icons.pause
                       : Icons.play_arrow,
                   color: widget.color),
-              onPressed: value.isReady
-                  ? () {
-                      value.playerState == PlayerState.playing
-                          ? context.ytController.pause()
-                          : context.ytController.play();
-                      runAnimation();
-                    }
-                  : null,
+              onPressed: () {
+                value.playerState == PlayerState.playing
+                    ? context.ytController.pauseVideo()
+                    : context.ytController.playVideo();
+                runAnimation();
+              },
             );
           },
         ),

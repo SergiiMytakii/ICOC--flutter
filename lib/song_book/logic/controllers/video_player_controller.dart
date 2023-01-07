@@ -1,4 +1,5 @@
 import 'package:icoc/index.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class GetxVideoPlayerController extends GetxController {
   YoutubeService youtubeService = YoutubeService();
@@ -12,8 +13,7 @@ class GetxVideoPlayerController extends GetxController {
       Resources(lang: '', title: '', link: '').obs;
   final MiniplayerController miniplayerController = MiniplayerController();
   RxList<Resources> waitingList = <Resources>[].obs;
-  YoutubePlayerController youtubePlayerController =
-      YoutubePlayerController(initialVideoId: '');
+  YoutubePlayerController youtubePlayerController = YoutubePlayerController();
   //for ext_player
   VideoPlayerController myVideoExtPlayerController =
       VideoPlayerController.network('');

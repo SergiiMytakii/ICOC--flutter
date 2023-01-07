@@ -1,4 +1,5 @@
 import 'package:icoc/app/logic/controllers/audio_handler_controller.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../../index.dart';
 
@@ -219,19 +220,17 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
                       ? Icons.pause
                       : Icons.play_arrow,
                   color: screensColors['songBook']),
-              onPressed: value.isReady
-                  ? () {
-                      //playback media
-                      value.playerState == PlayerState.playing
-                          ? audioHandlerController.audioHandler!.pause()
-                          : audioHandlerController.audioHandler!.play();
-                      //playback media
-                      value.playerState == PlayerState.playing
-                          ? context.ytController.pause()
-                          : context.ytController.play();
-                      runAnimation();
-                    }
-                  : null,
+              onPressed: () {
+                //playback media
+                value.playerState == PlayerState.playing
+                    ? audioHandlerController.audioHandler!.pause()
+                    : audioHandlerController.audioHandler!.play();
+                //playback media
+                value.playerState == PlayerState.playing
+                    ? context.ytController.pauseVideo()
+                    : context.ytController.playVideo();
+                runAnimation();
+              },
             );
           },
         ),

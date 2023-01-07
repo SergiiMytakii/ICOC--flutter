@@ -1,3 +1,5 @@
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../../../../index.dart';
 
 class VideoCardTeaching extends StatefulWidget {

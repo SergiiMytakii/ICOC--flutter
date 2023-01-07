@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../index.dart';
 
@@ -21,19 +22,9 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
   //late YoutubePlayerController youtubePlayerController;
   final GetxVideoPlayerController controller = Get.find();
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    log.e('state = $state');
-    if (state == AppLifecycleState.paused) {
-      Future.delayed(Duration(milliseconds: 1000)).then((value) {
-        log.e('continue play');
-        controller.youtubePlayerController.play();
-      });
-    }
-  }
-
   @override
   void initState() {
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -54,23 +45,23 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
     log.d('youtube player init ${widget.video.title}.  videoId $videoId');
 
     controller.youtubePlayerController = YoutubePlayerController(
-      initialVideoId: videoId,
       params: YoutubePlayerParams(
           strictRelatedVideos: true,
-          playlist: controller.playlist,
-          autoPlay: true,
           loop: true,
           mute: false,
-          desktopMode: true,
           showControls: true,
           showFullscreenButton: true,
           enableCaption: false),
     );
 
     //log.i(videoId);
-    controller.youtubePlayerController.cue(videoId);
-    controller.youtubePlayerController.play();
 
+    controller.youtubePlayerController.cuePlaylist(list: controller.playlist);
+    controller.youtubePlayerController.load(
+        params: controller.youtubePlayerController.params,
+        baseUrl: widget.video.link);
+    controller.youtubePlayerController.cueVideoById(videoId: videoId);
+    controller.youtubePlayerController.playVideo();
     //what this does?
     controller.youtubePlayerController.listen((event) {
       if (event.metaData.title.isNotEmpty) {
@@ -115,7 +106,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
             SizedBox(
               // height: context.isLandscape ? Get.height : null,
               //width: context.isLandscape ? Get.height * 1.6 : null,
-              child: YoutubePlayerIFrame(
+              child: YoutubePlayer(
                 controller: controller.youtubePlayerController,
                 gestureRecognizers:
                     <Factory<OneSequenceGestureRecognizer>>[].toSet(),

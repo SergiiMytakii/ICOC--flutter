@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
 //packages
-export 'package:getxfire/getxfire.dart';
+export 'package:get/get.dart';
 export 'package:get_storage/get_storage.dart';
 export 'package:flutter/material.dart';
 export 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -18,7 +18,7 @@ export 'package:qr_flutter/qr_flutter.dart';
 export 'package:html/parser.dart';
 
 export 'package:miniplayer/miniplayer.dart';
-export 'package:youtube_player_iframe/youtube_player_iframe.dart';
+// export 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 //controllers
 

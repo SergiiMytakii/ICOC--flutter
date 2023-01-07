@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:getxfire/getxfire.dart';
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet(
@@ -29,7 +28,7 @@ class ModalBottomSheet extends StatelessWidget {
                 )
               : BorderRadius.zero,
         ),
-        height: height ?? Get.size.height / 1.15,
+        height: height ?? MediaQuery.of(context).size.height / 1.15,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

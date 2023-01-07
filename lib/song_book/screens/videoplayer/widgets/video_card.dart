@@ -1,3 +1,5 @@
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../../../index.dart';
 
 class VideoCard extends StatefulWidget {
@@ -36,7 +38,8 @@ class _VideoCardState extends State<VideoCard> {
               controller.miniplayerController.animateToHeight(
                   state: PanelState.MAX, duration: Duration(milliseconds: 700));
             } else {
-              controller.youtubePlayerController.reset();
+              controller.youtubePlayerController.stopVideo();
+              controller.youtubePlayerController.update();
               controller.selectedVideo.value =
                   Resources(lang: '', title: '', link: '');
               Get.appUpdate();
