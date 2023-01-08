@@ -1,8 +1,4 @@
 import 'dart:ui';
-
-import 'package:audio_service/audio_service.dart';
-import 'package:icoc/app/logic/controllers/audio_handler_controller.dart';
-import 'package:icoc/app/logic/services/audio_handler.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'index.dart';
 
@@ -20,7 +16,6 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  AudioHandlerController controller = Get.put(AudioHandlerController());
 
   runApp(MyApp(appLocale: appLocale, savedThemeMode: savedThemeMode));
 }

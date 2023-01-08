@@ -111,16 +111,6 @@ class Pages {
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),
-      GetPage(
-        name: Routes.VIDEO_PLAYER_SCREEN,
-        page: () => VideoPlayerScreen(),
-        transition: Transition.native,
-        transitionDuration: Duration(milliseconds: 250),
-        binding: BindingsBuilder(() {
-          Get.lazyPut<GetxVideoPlayerController>(
-              () => GetxVideoPlayerController());
-        }),
-      ),
     ];
   }
 }

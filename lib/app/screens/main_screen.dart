@@ -56,26 +56,32 @@ class MainScreen extends StatelessWidget {
                             Routes.SONGBOOK),
                         tableItem(
                             context,
-                            'drawer_news'.tr,
-                            screensColors['news']!,
-                            Icons.language,
-                            Routes.MAIN_NEWS),
+                            'drawer_first_principles'.tr,
+                            screensColors['firstPrinciples']!,
+                            Icons.import_contacts,
+                            Routes.FIRST_PRINCIPLES),
                       ],
                     ),
                     TableRow(
                       children: [
                         tableItem(
                             context,
-                            'drawer_first_principles'.tr,
-                            screensColors['firstPrinciples']!,
-                            Icons.import_contacts,
-                            Routes.FIRST_PRINCIPLES),
-                        tableItem(
-                            context,
                             'drawer_q_and_a'.tr,
                             screensColors['Q&A']!,
                             Icons.question_answer,
                             Routes.Q_AND_ANSVERS),
+                        tableItem(
+                            context,
+                            'Q&A with Andy Fleming'.tr,
+                            screensColors['news']!,
+                            Icons.question_answer,
+                            Routes.PLAYLISTS_PLAYER,
+                            trailing: Trailing(''),
+                            arguments: [
+                              Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
+                              'Q&A with Andy Fleming'.tr,
+                              screensColors['news']!
+                            ]),
                       ],
                     ),
                     TableRow(
@@ -94,16 +100,10 @@ class MainScreen extends StatelessWidget {
                             ]),
                         tableItem(
                             context,
-                            'Q&A with Andy Fleming'.tr,
+                            'drawer_news'.tr,
                             screensColors['news']!,
-                            Icons.question_answer,
-                            Routes.PLAYLISTS_PLAYER,
-                            trailing: Trailing(''),
-                            arguments: [
-                              Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
-                              'Q&A with Andy Fleming'.tr,
-                              screensColors['news']!
-                            ]),
+                            Icons.language,
+                            Routes.MAIN_NEWS),
                       ],
                     ),
                   ],

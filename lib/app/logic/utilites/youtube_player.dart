@@ -21,15 +21,15 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
   String videoId = '';
   //late YoutubePlayerController youtubePlayerController;
   final GetxVideoPlayerController controller = Get.find();
-  @override
+
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.portraitUp
-    ]);
+    //WidgetsBinding.instance.addObserver(this);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeLeft,
+    //   DeviceOrientation.landscapeRight,
+    //   DeviceOrientation.portraitUp
+    // ]);
     if (widget.video.link.isNotEmpty && widget.video.link.contains('yout')) {
       try {
         videoId =
@@ -44,45 +44,34 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
     }
     log.d('youtube player init ${widget.video.title}.  videoId $videoId');
 
-    controller.youtubePlayerController = YoutubePlayerController(
-      params: YoutubePlayerParams(
-          strictRelatedVideos: true,
-          loop: true,
-          mute: false,
-          showControls: true,
-          showFullscreenButton: true,
-          enableCaption: false),
-    );
+    // controller.youtubePlayerController = YoutubePlayerController(
+    //   params: YoutubePlayerParams(
+    //       strictRelatedVideos: true,
+    //       loop: true,
+    //       mute: false,
+    //       showControls: true,
+    //       showFullscreenButton: true,
+    //       enableCaption: false),
+    // );
 
-    //log.i(videoId);
+    log.i(videoId);
 
-    controller.youtubePlayerController.cuePlaylist(list: controller.playlist);
-    controller.youtubePlayerController.load(
-        params: controller.youtubePlayerController.params,
-        baseUrl: widget.video.link);
-    controller.youtubePlayerController.cueVideoById(videoId: videoId);
-    controller.youtubePlayerController.playVideo();
-    //what this does?
+    // controller.youtubePlayerController.loadPlaylist(
+    //   list: controller.playlist.value,
+    //   listType: ListType.playlist,
+    // );
+    //controller.youtubePlayerController.loadVideoById(videoId: videoId);
     controller.youtubePlayerController.listen((event) {
       if (event.metaData.title.isNotEmpty) {
         if (!controller.selectedVideo.value.link
             .contains(event.metaData.videoId)) {
-          // controller.title.value = event.metaData.title;
-          // controller.videoIdforFavoriteStatus.value = event.metaData.videoId;
           controller.selectedVideo.value = Resources(
               lang: '',
               title: event.metaData.title,
               link: event.metaData.videoId);
-
-          //print(controller.selectedVideo.value.title);
         }
       }
     });
-
-    // controller.youtubePlayerController.value
-    //     .copyWith(playerState: PlayerState.playing);
-    log.v(
-        'from controller ${controller.youtubePlayerController.value.metaData.title}');
 
     super.initState();
   }
@@ -90,7 +79,7 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
   @override
   void dispose() {
     log.w('player dispose');
-    controller.youtubePlayerController.close();
+    //controller.youtubePlayerController.close();
     controller.getPlaylist();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
@@ -108,8 +97,8 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
               //width: context.isLandscape ? Get.height * 1.6 : null,
               child: YoutubePlayer(
                 controller: controller.youtubePlayerController,
-                gestureRecognizers:
-                    <Factory<OneSequenceGestureRecognizer>>[].toSet(),
+                // gestureRecognizers:
+                //     <Factory<OneSequenceGestureRecognizer>>[].toSet(),
               ),
             ),
           ],
