@@ -39,12 +39,12 @@ class _VideoCardState extends State<VideoCard> {
                   state: PanelState.MAX, duration: Duration(milliseconds: 700));
             } else {
               controller.youtubePlayerController.stopVideo();
-              controller.youtubePlayerController
-                  .update(playerState: PlayerState.ended);
-              controller.selectedVideo.value =
-                  Resources(lang: '', title: '', link: '');
-              Get.appUpdate();
-              await Future.delayed(Duration(milliseconds: 800));
+              // controller.youtubePlayerController
+              //     .update(playerState: PlayerState.ended);
+              // controller.selectedVideo.value =
+              //     Resources(lang: '', title: '', link: '');
+              // Get.appUpdate();
+              // await Future.delayed(Duration(milliseconds: 500));
             }
             controller.selectedVideo.value = widget.resources;
             await controller.fetchRelatedVideos(videoId);

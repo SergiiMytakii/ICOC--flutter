@@ -101,7 +101,7 @@ class _SongScreenState extends State<SongScreen> {
                 autofocus: true,
                 tooltip: 'Video & audio'.tr,
                 icon: Icon(
-                  Icons.library_music_outlined,
+                  Icons.play_circle,
                 ),
                 onPressed: () async {
                   await Navigator.push(context, CupertinoPageRoute(

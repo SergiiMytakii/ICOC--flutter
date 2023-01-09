@@ -34,7 +34,7 @@ class GetxVideoPlayerController extends GetxController {
           loop: true,
           mute: false,
           showControls: true,
-          showFullscreenButton: true,
+          showFullscreenButton: false,
           enableCaption: false),
     );
 

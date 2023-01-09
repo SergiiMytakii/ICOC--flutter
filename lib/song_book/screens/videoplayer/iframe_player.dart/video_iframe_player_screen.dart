@@ -137,7 +137,9 @@ class _VideoIframePlayerState extends State<VideoIframePlayerScreen> {
                             if (height > Get.height / 1.5)
                               currentVideoInfo(
                                   context, height, fullSizePlayerHeight),
-                            if (height > fullSizePlayerHeight)
+                            if (height > fullSizePlayerHeight &&
+                                !controller.youtubePlayerController.value
+                                    .fullScreenOption.enabled)
                               _relatedVideosList()
                           ],
                         ),

@@ -24,12 +24,6 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
 
   @override
   void initState() {
-    //WidgetsBinding.instance.addObserver(this);
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.portraitUp
-    // ]);
     if (widget.video.link.isNotEmpty && widget.video.link.contains('yout')) {
       try {
         videoId =
@@ -44,34 +38,17 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
     }
     log.d('youtube player init ${widget.video.title}.  videoId $videoId');
 
-    // controller.youtubePlayerController = YoutubePlayerController(
-    //   params: YoutubePlayerParams(
-    //       strictRelatedVideos: true,
-    //       loop: true,
-    //       mute: false,
-    //       showControls: true,
-    //       showFullscreenButton: true,
-    //       enableCaption: false),
-    // );
-
-    log.i(videoId);
-
-    // controller.youtubePlayerController.loadPlaylist(
-    //   list: controller.playlist.value,
-    //   listType: ListType.playlist,
-    // );
-    //controller.youtubePlayerController.loadVideoById(videoId: videoId);
-    controller.youtubePlayerController.listen((event) {
-      if (event.metaData.title.isNotEmpty) {
-        if (!controller.selectedVideo.value.link
-            .contains(event.metaData.videoId)) {
-          controller.selectedVideo.value = Resources(
-              lang: '',
-              title: event.metaData.title,
-              link: event.metaData.videoId);
-        }
-      }
-    });
+    // controller.youtubePlayerController.listen((event) {
+    //   if (event.metaData.title.isNotEmpty) {
+    //     if (!controller.selectedVideo.value.link
+    //         .contains(event.metaData.videoId)) {
+    //       controller.selectedVideo.value = Resources(
+    //           lang: '',
+    //           title: event.metaData.title,
+    //           link: event.metaData.videoId);
+    //     }
+    //   }
+    // });
 
     super.initState();
   }
@@ -79,31 +56,23 @@ class _MyYoutubePlayerState extends State<MyYoutubePlayer>
   @override
   void dispose() {
     log.w('player dispose');
-    //controller.youtubePlayerController.close();
-    controller.getPlaylist();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    //controller.getPlaylist();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: context.isPortrait ? ThemeData.dark().canvasColor : Colors.black,
-        child: Column(
-          children: [
-            SizedBox(
-              // height: context.isLandscape ? Get.height : null,
-              //width: context.isLandscape ? Get.height * 1.6 : null,
-              child: YoutubePlayer(
-                controller: controller.youtubePlayerController,
-                // gestureRecognizers:
-                //     <Factory<OneSequenceGestureRecognizer>>[].toSet(),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return YoutubePlayerScaffold(
+        controller: controller.youtubePlayerController,
+        builder: (context, player) {
+          return Scaffold(
+            body: Container(
+                width: double.infinity,
+                color: context.isPortrait
+                    ? ThemeData.dark().canvasColor
+                    : Colors.black,
+                child: player),
+          );
+        });
   }
 }

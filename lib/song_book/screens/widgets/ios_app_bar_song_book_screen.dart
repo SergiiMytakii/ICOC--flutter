@@ -50,11 +50,10 @@ Widget iosAppbar(
             bottom: 8,
           ),
           child: CupertinoSearchTextField(
-            suffixMode: OverlayVisibilityMode.always,
             onChanged: (val) {
               controller.query.value = val;
             },
-            onSuffixTap: () => controller.query.value = '',
+            //onSuffixTap: () => controller.query.value = '',
             backgroundColor: Colors.white.withOpacity(0.2),
           ),
         ),

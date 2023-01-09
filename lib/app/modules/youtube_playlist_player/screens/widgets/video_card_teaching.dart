@@ -59,6 +59,8 @@ class _VideoCardTeachingState extends State<VideoCardTeaching> {
                   }
 
                   controller.selectedVideo.value = widget.resources;
+                  controller.youtubePlayerController
+                      .loadVideoById(videoId: videoId);
                 },
                 child: Container(
                   width: double.maxFinite,
