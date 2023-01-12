@@ -27,6 +27,7 @@ class OneLessonScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             bibleStudyController.topics[indexTopic].lessons[indexLesson].title,
+            style: TextStyle(fontSize: 14),
           ),
           backgroundColor: screensColors['firstPrinciples']!.withOpacity(0.8),
           centerTitle: true,

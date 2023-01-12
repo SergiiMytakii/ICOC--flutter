@@ -3,7 +3,7 @@ description: icoc
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,12 +18,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 4.0.10+10
 
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
   adaptive_theme: ^3.1.1
-  get:
-  cloud_firestore: 
+  cloud_firestore: null
   cupertino_icons: ^1.0.3
   firebase_core: ^2.4.1
   firebase_storage: ^11.0.10
@@ -35,6 +34,7 @@ dependencies:
     sdk: flutter
   flutter_slidable: ^2.0.0
   flutter_svg: ^1.0.3
+  get: null
   get_storage: ^2.0.3
   html: ^0.15.0
   http: ^0.13.4
@@ -44,10 +44,10 @@ dependencies:
   provider: ^6.0.1
   qr_flutter: ^4.0.0
   share_plus: ^6.3.0
+  shared_preferences: ^2.0.13
   url_launcher: ^6.0.12
   wakelock: ^0.6.1+1
   youtube_player_iframe: ^4.0.1
-  shared_preferences: ^2.0.13
 
 dependency_overrides: null
 
@@ -69,7 +69,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-
     - assets/db/ansver.db
 
     - assets/images/verse_of_day.jpeg

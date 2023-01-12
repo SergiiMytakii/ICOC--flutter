@@ -28,7 +28,7 @@ class ModalBottomSheet extends StatelessWidget {
                 )
               : BorderRadius.zero,
         ),
-        height: height ?? MediaQuery.of(context).size.height / 1.15,
+        height: height ?? MediaQuery.of(context).size.height / 1.1,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,7 +37,7 @@ class ModalBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.all(8),
                     height: 6,
                     width: 50,
                     decoration: BoxDecoration(

@@ -17,7 +17,7 @@
         android:icon="@mipmap/launcher_icon">
             <!--android:name="io.flutter.embedding.android.FlutterActivity"-->
         <activity
-            android:name="com.ryanheise.audioservice.AudioServiceActivity"
+            android:name="io.flutter.embedding.android.FlutterActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

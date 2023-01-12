@@ -35,7 +35,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
         }
 
         return Container(
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           height: Get.size.height / 2.1,
           child: ListView(
             children: [

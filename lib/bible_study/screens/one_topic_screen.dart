@@ -15,6 +15,7 @@ class OneTopicScreen extends StatelessWidget {
               appBar: AppBar(
                 title: Text(
                   bibleStudyController.topics[indexTopic].topic,
+                  style: TextStyle(fontSize: 14),
                 ),
                 backgroundColor:
                     screensColors['firstPrinciples']!.withOpacity(0.8),
@@ -39,7 +40,7 @@ class OneTopicScreen extends StatelessWidget {
                             bibleStudyController
                                 .topics[indexTopic].lessons[index].title,
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                            maxLines: 3,
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
