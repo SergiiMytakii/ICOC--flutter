@@ -46,8 +46,8 @@ android {
         applicationId "ru.icoc.app"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 7
+        versionName "4.0.7"
         multiDexEnabled true
     }
 
