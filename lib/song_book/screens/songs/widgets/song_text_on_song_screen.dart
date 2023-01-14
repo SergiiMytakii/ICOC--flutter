@@ -62,7 +62,7 @@ class SongTextOnSongScreen extends StatelessWidget {
             //     : Container(),
             SizedBox(height: 10),
             textVersion.startsWith('<')
-                ? html.Html(
+                ? html.SelectableHtml(
                     data: textVersion,
                     style: {
                       "body": html.Style(fontSize: html.FontSize(_fontSize)),

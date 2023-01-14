@@ -37,9 +37,12 @@ class MainScreen extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
+              SizedBox(
+                height: 8,
+              ),
               VerseOfTheDay(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7.5),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Table(
                   //defaultColumnWidth: FixedColumnWidth(sizeOfCell),
                   children: [
@@ -53,26 +56,54 @@ class MainScreen extends StatelessWidget {
                             Routes.SONGBOOK),
                         tableItem(
                             context,
-                            'drawer_news'.tr,
-                            screensColors['news']!,
-                            Icons.language,
-                            Routes.NEWS),
+                            'drawer_first_principles'.tr,
+                            screensColors['firstPrinciples']!,
+                            Icons.import_contacts,
+                            Routes.FIRST_PRINCIPLES),
                       ],
                     ),
                     TableRow(
                       children: [
                         tableItem(
                             context,
-                            'drawer_first_principles'.tr,
-                            screensColors['firstPrinciples']!,
-                            Icons.import_contacts,
-                            Routes.FIRST_PRINCIPLES),
-                        tableItem(
-                            context,
                             'drawer_q_and_a'.tr,
                             screensColors['Q&A']!,
                             Icons.question_answer,
                             Routes.Q_AND_ANSVERS),
+                        tableItem(
+                            context,
+                            'Q&A with Andy Fleming'.tr,
+                            screensColors['news']!,
+                            Icons.question_answer,
+                            Routes.PLAYLISTS_PLAYER,
+                            trailing: Trailing(''),
+                            arguments: [
+                              Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
+                              'Q&A with Andy Fleming'.tr,
+                              screensColors['news']!
+                            ]),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        tableItem(
+                            context,
+                            'Bible school'.tr,
+                            screensColors['general']!,
+                            Icons.video_collection,
+                            Routes.PLAYLISTS_PLAYER,
+                            trailing: Trailing(''),
+                            arguments: [
+                              BIBLE_SCHOOL_PLAYLIST_ID,
+                              'Bible school'.tr,
+                              screensColors['general']!,
+                            ]),
+                        tableItem(
+                            context,
+                            'drawer_news'.tr,
+                            screensColors['news']!,
+                            Icons.language,
+                            Routes.MAIN_NEWS),
                       ],
                     ),
                   ],
@@ -106,14 +137,15 @@ class MainScreen extends StatelessWidget {
   }
 
   tableItem(BuildContext context, String title, Color color, IconData icon,
-      String routeName) {
-    double sizeOfCell = (MediaQuery.of(context).size.width - 15) / 2;
+      String routeName,
+      {List? arguments, Widget? trailing}) {
+    double sizeOfCell = (MediaQuery.of(context).size.width) / 2;
     return Container(
       height: sizeOfCell,
       width: sizeOfCell,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8),
       child: InkWell(
-        onTap: () => Get.toNamed(routeName),
+        onTap: () => Get.toNamed(routeName, arguments: arguments),
         splashColor: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(15),
         child: Container(
@@ -122,20 +154,28 @@ class MainScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                size: 36,
-                color: Colors.white,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    icon,
+                    size: 36,
+                    color: Colors.white,
+                  ),
+                  trailing != null ? trailing : Container()
+                ],
               ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.white),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -156,6 +196,21 @@ class MainScreen extends StatelessWidget {
   }
 }
 
+class Trailing extends StatelessWidget {
+  String text;
+  Trailing(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: Colors.red,
+          ),
+    );
+  }
+}
+
 class VerseOfTheDay extends StatelessWidget {
   final MainScreenController controller = Get.find();
   @override
@@ -163,12 +218,12 @@ class VerseOfTheDay extends StatelessWidget {
     return Obx(
       () => controller.url.isNotEmpty
           ? Container(
-              height: Get.size.height / 2.5,
+              height: Get.size.height / 2.2,
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15)),
                 elevation: 0,
-                margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Stack(
                   children: [
                     GestureDetector(
@@ -181,9 +236,9 @@ class VerseOfTheDay extends StatelessWidget {
                           ),
                           child: Image.network(
                             controller.url.value,
-                            height: Get.size.height / 2.5,
-                            width: Get.size.width - 24,
-                            fit: BoxFit.fill,
+                            height: Get.size.height / 2.2,
+                            width: Get.size.width - 32,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -197,9 +252,9 @@ class VerseOfTheDay extends StatelessWidget {
                         ),
                         child: Container(
                           color: Colors.black12.withOpacity(0.3),
-                          width: Get.size.width - 48,
+                          width: Get.size.width - 32,
                           padding:
-                              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -224,7 +279,7 @@ class VerseOfTheDay extends StatelessWidget {
               ),
             )
           : Container(
-              height: Get.size.height / 2.5,
+              height: Get.size.height / 2.2,
               child: Center(child: CircularProgressIndicator.adaptive()),
             ),
     );
@@ -235,6 +290,7 @@ class VerseOfTheDay extends StatelessWidget {
         context: context,
         builder: (context) => AlertDialog(
               elevation: 10,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               insetPadding: EdgeInsets.zero,
               contentPadding: EdgeInsets.zero,
               content: GestureDetector(

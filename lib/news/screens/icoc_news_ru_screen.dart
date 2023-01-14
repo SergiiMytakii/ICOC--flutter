@@ -1,11 +1,9 @@
-
 import 'package:flutter_html/flutter_html.dart' as html;
-
 
 import '../../index.dart';
 
-class NewsScreen extends StatelessWidget {
-  final NewsController newsController = Get.put(NewsController());
+class IcocNewsRuScreen extends StatelessWidget {
+  final NewsController newsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +79,7 @@ class NewsScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          html.Html(
+                          html.SelectableHtml(
                               data: newsController.news[index].title,
                               style: {
                                 // tables will have the below background color
@@ -144,7 +142,18 @@ class NewsScreen extends StatelessWidget {
                     ),
                   );
                 })
-            : Loading(),
+            : Column(
+                children: [
+                  Loading(),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'use vpn if something not works'.tr,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
       );
     });
   }

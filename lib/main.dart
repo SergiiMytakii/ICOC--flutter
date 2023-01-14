@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'index.dart';
 
 void main() async {
@@ -16,6 +16,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
+
   runApp(MyApp(appLocale: appLocale, savedThemeMode: savedThemeMode));
 }
 

@@ -1,6 +1,6 @@
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../../index.dart';
+import '../../../../index.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({Key? key, required this.resources, this.withToLyrics = true})
@@ -25,48 +25,36 @@ class _VideoCardState extends State<VideoCard> {
     super.initState();
   }
 
-  void getVideoId() {
-    videoId = VideoPlayerController.getIdFromUrl(widget.resources.link);
-    //if you use Youtube_player or youtube iFrame player
-    // if (widget.resources.link.isNotEmpty &&
-    //     widget.resources.link.contains('yout')) {
-    //   try {
-    //     videoId =
-    //         YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
-    //   } on Exception catch (e) {
-    //     showSnackbar('Error'.tr, 'Can not play video'.tr);
-    //     print(e);
-    //   }
-    // } else {
-    //   videoId = widget.resources.link;
-    //   // log.v(videoId);
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
-    getVideoId();
+    videoId = getVideoId(widget.resources.link);
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
     return Column(
       children: [
         InkWell(
           onTap: () async {
+            log.e('card tapped' + controller.selectedVideo.value.title);
             if (controller.selectedVideo.value.link.isEmpty) {
               controller.miniplayerController.animateToHeight(
-                  state: PanelState.MAX, duration: Duration(seconds: 1));
+                  state: PanelState.MAX, duration: Duration(milliseconds: 700));
             } else {
-              controller.selectedVideo.value =
-                  Resources(lang: '', title: '', link: '');
-              Get.appUpdate();
-              await Future.delayed(Duration(milliseconds: 300));
+              controller.youtubePlayerController.stopVideo();
+              // controller.youtubePlayerController
+              //     .update(playerState: PlayerState.ended);
+              // controller.selectedVideo.value =
+              //     Resources(lang: '', title: '', link: '');
+              // Get.appUpdate();
+              // await Future.delayed(Duration(milliseconds: 500));
             }
-
             controller.selectedVideo.value = widget.resources;
-            // controller.shiftWaitingList(
-            //     selectedV: controller.selectedVideo.value);
-            // controller.myVideoPlayerController.play();
+            await controller.fetchRelatedVideos(videoId);
+            controller.youtubePlayerController.loadVideoById(videoId: videoId);
+            //  controller.playlist.insert(0, getVideoId(widget.resources.link));
+            // log.e(controller.playlist);
             // controller.youtubePlayerController
-            //     .updateValue(YoutubePlayerValue(isPlaying: true));
+            //     // ignore: invalid_use_of_protected_member
+            //     .loadPlaylist(list: controller.playlist.value);
+            // controller.youtubePlayerController.playVideo();
           },
           child: Container(
             width: double.maxFinite,
@@ -75,22 +63,15 @@ class _VideoCardState extends State<VideoCard> {
                   YoutubePlayerController.getThumbnail(
                     videoId: videoId,
                   ),
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: myDarkTheme.scaffoldBackgroundColor,
+                  child: Image.asset('assets/images/logo_icoc_drawer.png',
+                      fit: BoxFit.fitWidth),
+                );
+              },
               height: Get.width / 16 * 9,
               fit: BoxFit.fitWidth,
-              // loadingBuilder: (BuildContext context, Widget child,
-              //     ImageChunkEvent? loadingProgress) {
-              //   if (loadingProgress == null) {
-              //     return child;
-              //   }
-              //   return Center(
-              //     child: CircularProgressIndicator.adaptive(
-              //       value: loadingProgress.expectedTotalBytes != null
-              //           ? loadingProgress.cumulativeBytesLoaded /
-              //               loadingProgress.expectedTotalBytes!
-              //           : null,
-              //     ),
-              //   );
-              // },
             ),
           ),
         ),
@@ -139,7 +120,7 @@ class _VideoCardState extends State<VideoCard> {
                 // if (widget.withToLyrics) {
                 setState(() {
                   isFavorite = !isFavorite;
-                  log.i(widget.resources.title + " " + isFavorite.toString());
+                  // log.i(widget.resources.title + " " + isFavorite.toString());
                 });
                 // }
               },
@@ -156,5 +137,21 @@ class _VideoCardState extends State<VideoCard> {
         )
       ],
     );
+  }
+}
+
+String getVideoId(String link) {
+  //if you use Youtube_player or youtube iFrame player
+  if (link.isNotEmpty && link.contains('yout')) {
+    try {
+      return YoutubePlayerController.convertUrlToId(link) ?? '';
+    } on Exception catch (e) {
+      showSnackbar('Error'.tr, 'Can not play video'.tr);
+      print(e);
+      return '';
+    }
+  } else {
+    return link;
+    // log.v(videoId);
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import '../../index.dart';
+import '../../../index.dart';
 
 class AddSongFromPlaylist extends StatelessWidget {
   AddSongFromPlaylist(this.playlist);

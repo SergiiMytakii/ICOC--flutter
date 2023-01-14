@@ -6,11 +6,19 @@ class AboutAppScreen extends StatefulWidget {
 }
 
 class _AboutAppScreenState extends State<AboutAppScreen> {
-  Future launchEmail() async {
-    final url = 'mailto:$email?';
+  // Future launchEmail() async {
+  //   final url = 'mailto:$email?';
 
-    if (await canLaunch(url)) {
-      await launch(url);
+  //   if (await canLaunch(url)) {
+  //     await launch(url);
+  //   } else
+  //     showSnackbar('Error'.tr, 'Can\'t open Email app'.tr);
+  // }
+  Future launchEmail() async {
+    final uri = Uri(scheme: 'mailto', path: email, query: 'subject=ICOC app');
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else
       showSnackbar('Error'.tr, 'Can\'t open Email app'.tr);
   }

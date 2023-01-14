@@ -1,7 +1,5 @@
-import 'package:icoc/app/screens/share_app_screen.dart';
+import 'package:icoc/app/screens/terms_of_use_screen.dart';
 import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
-import 'package:icoc/song_book/logic/controllers/video_player_controller.dart';
-import 'package:icoc/song_book/screens/video_player_screen.dart';
 
 import '../../index.dart';
 
@@ -36,8 +34,26 @@ class Pages {
         transitionDuration: Duration(milliseconds: 250),
       ),
       GetPage(
-        name: Routes.NEWS,
-        page: () => NewsScreen(),
+        name: Routes.ICOC_RU_NEWS,
+        page: () => IcocNewsRuScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      // GetPage(
+      //   name: Routes.KYIV_INSTA_NEWS,
+      //   page: () => KyivInstaNewsScreen(),
+      //   transition: Transition.native,
+      //   transitionDuration: Duration(milliseconds: 250),
+      // ),
+      GetPage(
+        name: Routes.PLAYLISTS_PLAYER,
+        page: () => YotubePlaylistPlayerScreen(),
+        transition: Transition.native,
+        transitionDuration: Duration(milliseconds: 250),
+      ),
+      GetPage(
+        name: Routes.MAIN_NEWS,
+        page: () => MainNewsScreen(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
       ),
@@ -90,14 +106,10 @@ class Pages {
         transitionDuration: Duration(milliseconds: 250),
       ),
       GetPage(
-        name: Routes.VIDEO_PLAYER_SCREEN,
-        page: () => VideoPlayerScreen(),
+        name: Routes.TERMS_OF_USE,
+        page: () => TermsOfUseAndPolicy(),
         transition: Transition.native,
         transitionDuration: Duration(milliseconds: 250),
-        binding: BindingsBuilder(() {
-          Get.lazyPut<GetxVideoPlayerController>(
-              () => GetxVideoPlayerController());
-        }),
       ),
     ];
   }

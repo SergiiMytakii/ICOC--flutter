@@ -58,7 +58,7 @@ class SongCard extends StatelessWidget {
             ),
             trailing: song.resources != null
                 ? Icon(
-                    Icons.library_music_outlined,
+                    Icons.play_circle,
                     color: screensColors['songBook'],
                   )
                 : Container(

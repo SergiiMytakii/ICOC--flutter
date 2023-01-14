@@ -5,6 +5,7 @@ class Messages extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en_US': {
           "app_bar_title": "Song book",
+          "add_song": "Send text of the song and it will be here soon! ",
           "icon_button_actions_app_bar_filter":
               "Song languages and priority of their display",
           "hint_search_field_in_app_bar": "Search song",
@@ -12,6 +13,7 @@ class Messages extends Translations {
           "drawer_news": "News",
           "drawer_first_principles": "Bible study",
           "drawer_q_and_a": "Q&A",
+          "icon_button_actions_app_bar_add_song": "Add song",
           "drawer_song_book": "Song book",
           "drawer_in_development": "In the pipeline",
           "drawer_settings": "Settings",
@@ -52,8 +54,8 @@ class Messages extends Translations {
           'Loading songs': 'Loading songs',
           'Сannot load data ... Check your internet connection and click to refresh the page':
               'Сannot load data ... Check your internet connection and click to refresh the page',
-          'Push to refresh the page': 'Нажмите, чтобы \nобновить страницу',
-          'Error': 'Ошибка',
+          'Push to refresh the page': 'Push to refresh the page',
+          'Error': 'Error',
           'Can\'t open Email app': 'Can\'t open Email app',
           'About this app': 'About this app',
           'Church of Christ': 'Church of Christ',
@@ -86,10 +88,56 @@ class Messages extends Translations {
           'By number': 'Number',
           'By tittle': 'Title',
           'Favorite video': 'Favorite videos',
-          'Video': 'Video'
+          'Video': 'Video',
+          'use vpn if something not works':
+              'In some countries data could not be loaded. Use vpn if something not works',
+          'Go to all songs and add some videos from there':
+              'Go to all songs and add some videos from there',
+          'Q&A with Andy Fleming': 'Q&A with Andy Fleming',
+          'Bible school': 'Bible school',
+          'Terms of Use': 'Terms of Use and Privacy Policy',
+          'terms of use part1': '''Thank you for using the ICOC app!
+The fact of installing and using the application means that you agree to these terms of use.
+
+The developer is not responsible for the quality of the content posted in this application, since he is not directly its author.
+All media resources are taken from publicly available sources.
+
+If you are the copyright holder of the content hosted in the application, and you did not give permission to publish it, please contact the developer (see section "About this application").
+
+Video content in the app is provided by YouTubeAPI Services.
+If you view video content in the application, this means that you have read the ''',
+          'terms of use part2': 'Terms of Use ',
+          'terms of use part3': 'of this service and agree to them.',
+          'Privacy policy1': 'Privacy policy.\n',
+          'Privacy policy2':
+              '''The application does not collect any personal information about the user. While browsing media content, Google services may collect some information about you. You can read more about Google's ''',
+          'Privacy policy3': 'Privacy Policy here. (follow link) ',
+          'Privacy policy4': '''
+
+
+If you have any additional questions - you can contact the developer (see section "About this application").''',
+          'Add title': 'Add title',
+          'Title': 'Title',
+          'Add here title of the song': 'Add here title of the song',
+          'Description': 'Description',
+          'Add here information like author, church etc...':
+              'Add here information like author, church etc...',
+          'Add text': 'Add text',
+          'Text and chords': 'Text and chords',
+          'Add here text of the song, chords':
+              'Add here text of the song, chords',
+          'Link': 'Link',
+          'Add here link':
+              'Add here link to the video if you have one. (Only Youtube supported)',
+          'Email has been sent': 'Email has been sent',
+          'New song': 'New song',
+          'Send': 'Send',
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
+          'Send': 'Отправить',
+          "add_song": "Пришлите текст песни и вскоре вы ее тут увидите! ",
+          "icon_button_actions_app_bar_add_song": "Добавить песню",
           "icon_button_actions_app_bar_filter":
               "Языки песен и приоритет их показа",
           "hint_search_field_in_app_bar": "Поиск песни",
@@ -177,10 +225,54 @@ class Messages extends Translations {
           'By number': 'Номеру',
           'By tittle': 'Названию',
           'Favorite video': 'Любимые видео',
-          'Video': 'Видео'
+          'Video': 'Видео',
+          'use vpn if something not works':
+              'В некоторых странах может не работать.  Если не загружается - используйте VPN',
+          'Go to all songs and add some videos from there':
+              'Перейдите в раздел с песнями и добавьте оттуда несколько видео любимых песен',
+          'Q&A with Andy Fleming': "Вопросы и ответы с Энди Флеминг",
+          'Bible school': 'Библейская школа',
+          'Related videos': 'Подобные видео на этом канале',
+          'Terms of Use': 'Условия использования и политика конфидициальности',
+          'terms of use part1': '''Спасибо, что используете приложение ICOC! 
+Факт  установки и использования приложения подразумевает то, что вы согласны с данными условиями его использования. 
+
+Разработчик не несет ответствености за качество контента, размещенного в данном приложении, так как не является непосредственно его автором.
+Все медиаресурсы взяты из публичных общедоступных источников.
+
+Если вы являетесь правообладателем контента, размещенного в приложении, и вы не давали разрешения на его публикацию - свяжитесь, пожалуйста с разработчиком (см. в разделе "Об этом приложении").
+
+Видеоконтент в приложении предоставлен сервисом YouTubeAPI Services.
+Если вы просматриваете видеоконтент в приложении, это означает, что вы ознакомлены с ''',
+          'terms of use part2': 'условиями использования ',
+          'terms of use part3': 'данного сервиса и согласны с ними.',
+          'Privacy policy1': 'Политика конфидициальности\n',
+          'Privacy policy2':
+              'Приложение не собирает никакой личной информации о пользователе.  Просматривая медиаконтент сервисы Google могут собирать некоторую информацию о вас.  Подробнее  о политике конфидициальности Google можно прочитать ',
+          'Privacy policy3': 'здесь. (переход по ссылке)',
+          'Privacy policy4': '''
+
+
+Если у вас возникли дополнительные вопросы -  вы можете связаться с разработчиком (см. в разделе "Об этом приложении").''',
+          'Add title': 'Внесите название песни',
+          'Title': 'Название',
+          'Add here title of the song': 'Внесите сюда название песни',
+          'Description': 'Описание',
+          'Add here information like author, church etc...':
+              'Добавьте информацию об авторе, церкви и проч...',
+          'Add text': 'Внесите текст песни и аккорды',
+          'Text and chords': 'Текст и аккорды',
+          'Add here text of the song, chords': 'Внесите текст песни',
+          'Link': 'Ссылка',
+          'Add here link':
+              'Добавьте ссылку на видео (поддерживается только Youtube)',
+          'Email has been sent': 'Email отправлен!',
+          'New song': 'Добавление песни'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
+          "add_song": "Пришліть текст пісні та невдовзі ви ії тут побачите! ",
+          "icon_button_actions_app_bar_add_song": "Додати пісню",
           "icon_button_actions_app_bar_filter":
               "Мови пісень і пріоритет їх показу",
           "hint_search_field_in_app_bar": "Пошук пісні",
@@ -268,7 +360,50 @@ class Messages extends Translations {
           'By number': 'Номером',
           'By tittle': 'Назвою',
           'Favorite video': 'Улюблені відео',
-          'Video': 'Відео'
+          'Video': 'Відео',
+          'use vpn if something not works':
+              'Може не працювати у деяких країнах. Якщо щось не завантажується - використовуйте VPN',
+          'Go to all songs and add some videos from there':
+              'Перейдіть до розділу з піснями та додайте звідти кілька відео улюблених пісень',
+          'Q&A with Andy Fleming': "Питання та відповіді з Енді Флемінг",
+          'Bible school': 'Біблейська школа',
+          'Related videos': 'Схожі відео на цьому каналі',
+          'Terms of Use': 'Умови використання та політика конфединціності',
+          'terms of use part1': '''Дякую, що використовуєте додаток ICOC!
+Факт встановлення та використання додатку передбачає те, що ви погоджуєтесь з цими умовами його використання.
+
+Розробник не несе відповідальності за якість контенту, розміщеного в цьому додатку, оскільки не є його автором.
+Усі медіаресурси взято з публічних загальнодоступних джерел.
+
+Якщо ви є правовласником контенту, розміщеного в додатку, і ви не давали дозволу на його публікацію, будь ласка, зв'яжіться з розробником (див. розділ "Про цю програму").
+
+Відеоконтент у програмі наданий сервісом YouTubeAPI Services.
+Якщо ви переглядаєте відеоконтент у програмі, це означає, що ви ознайомлені з 
+''',
+          'terms of use part2': 'умовами використання ',
+          'terms of use part3': 'даного сервісу та погоджуєтеся з ними.',
+          'Privacy policy1': 'Політика конфединційності.\n',
+          'Privacy policy2':
+              'Додаток не збирає жодної особистої інформації про користувача. Переглядаючи медіаконтент, сервіси Google можуть збирати деяку інформацію про вас. Докладніше про політику конфідиційності Google можна прочитати ',
+          'Privacy policy3': 'тут. (перехід за посиланням)',
+          'Privacy policy4': '''
+
+
+Якщо у вас виникли додаткові питання - ви можете зв'язатися з розробником (див. розділ "Про цю програму").''',
+          'Add title': 'Внесіть назву пісні',
+          'Title': 'Назва',
+          'Add here title of the song': 'Внесіть сюди назву пісні',
+          'Description': 'Опис',
+          'Add here information like author, church etc...':
+              'Додайте інформацію про автора пісні, чи з якої церкви, на ін...',
+          'Add text': 'Внесіть текст пісні та акорди',
+          'Text and chords': 'Текст пісні та акорди',
+          'Add here text of the song, chords': 'Внесіть текст пісні',
+          'Link': 'Посилання',
+          'Add here link': 'Додайте посилання на відео (тільки Youtube)',
+          'Email has been sent': 'Email відправлені!',
+          'New song': 'Додавання пісні',
+          'Send': 'Відправити',
         }
       };
 }

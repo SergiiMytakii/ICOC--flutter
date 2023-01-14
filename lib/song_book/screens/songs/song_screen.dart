@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/screens/video_player_screen.dart';
+import 'package:icoc/song_book/screens/videoplayer/iframe_player.dart/video_iframe_player_screen.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../index.dart';
+import '../../../index.dart';
 
 class SongScreen extends StatefulWidget {
   final SongDetail song;
@@ -101,15 +101,18 @@ class _SongScreenState extends State<SongScreen> {
                 autofocus: true,
                 tooltip: 'Video & audio'.tr,
                 icon: Icon(
-                  Icons.library_music_outlined,
+                  Icons.play_circle,
                 ),
                 onPressed: () async {
                   await Navigator.push(context, CupertinoPageRoute(
                     builder: (context) {
-                      return VideoPlayerScreen(
+                      // return VideoPlayerScreen(
+                      //   song: song,
+                      //   withControlPanel: false,
+                      //   playNextOn: false,
+                      // );
+                      return VideoIframePlayerScreen(
                         song: song,
-                        withControlPanel: false,
-                        playNextOn: false,
                       );
                     },
                   )).then((value) {
@@ -166,6 +169,8 @@ class _SongScreenState extends State<SongScreen> {
   }
 
   Stack _miniPlayerBuilder() {
+    final controller = YoutubePlayerController();
+    controller.cueVideoById(videoId: videoId);
     return Stack(children: [
       Miniplayer(
           controller: miniplayerController,
@@ -175,10 +180,8 @@ class _SongScreenState extends State<SongScreen> {
           builder: (height, percentage) {
             //print(videoId);
 
-            return YoutubePlayerIFrame(
-              controller: YoutubePlayerController(
-                initialVideoId: videoId,
-              ),
+            return YoutubePlayer(
+              controller: controller,
             );
           }),
       Positioned(

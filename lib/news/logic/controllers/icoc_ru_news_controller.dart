@@ -14,7 +14,7 @@ class NewsController extends GetxController {
 
   @override
   void onInit() async {
-    allNews.value = await newsService.getNews();
+    allNews.value = await newsService.getNews() ?? [];
     loadFontSize();
     allCategories.value = getCategories();
     news.value = List.from(allNews);

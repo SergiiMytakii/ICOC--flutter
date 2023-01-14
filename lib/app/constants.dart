@@ -32,3 +32,12 @@ const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
 enum SlideActions { AllSongs, Favorites, Playlists }
 
 const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';
+
+// const String INSTAGRAM_CLIENT_ID = '663715198237865';
+// const String INSTAGRAM_APP_SECRET = '6d31745de196c6c54a5d7f9ef9852519';
+// const String INSTAGRAM_REDIRECT_URI = 'https://kievchurch.org/';
+const String Q_AND_A_ANDY_FLEMING_PLAYLIST_ID =
+    'PLGORKDMRdh2y8lVoDMjF59vv4z4-O-Lhm';
+const String BIBLE_SCHOOL_PLAYLIST_ID = 'PLGORKDMRdh2wkVRHzkClQrjFJA8sClTvY';
+const String YOUTUBE_TERMS_OF_SERVISES = 'https://www.youtube.com/t/terms';
+const String YOUTUBE_PRIVACY_POLICIES = 'https://policies.google.com/privacy';

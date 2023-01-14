@@ -665,9 +665,10 @@ class DatabaseHelperFTS4 {
 
   deleteVideoFromFavorites(Resources video) async {
     final Database database = (await db)!;
+
     int result = await database.delete(TABLE_RESOURCES,
         where: '$VIDEO_ID = ?', whereArgs: [video.link]);
 
-    // log.w(result.toString() + video.link);
+    //log.w(result.toString() + " " + video.link);
   }
 }
