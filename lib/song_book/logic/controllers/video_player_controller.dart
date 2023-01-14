@@ -1,4 +1,5 @@
 import 'package:icoc/index.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class GetxVideoPlayerController extends GetxController {
   YoutubeService youtubeService = YoutubeService();
@@ -11,12 +12,8 @@ class GetxVideoPlayerController extends GetxController {
   final Rx<Resources> selectedVideo =
       Resources(lang: '', title: '', link: '').obs;
   final MiniplayerController miniplayerController = MiniplayerController();
-  RxList<Resources> waitingList = <Resources>[].obs;
-  YoutubePlayerController youtubePlayerController =
-      YoutubePlayerController(initialVideoId: '');
-  //for ext_player
-  VideoPlayerController myVideoExtPlayerController =
-      VideoPlayerController.network('');
+
+  YoutubePlayerController youtubePlayerController = YoutubePlayerController();
 
   RxBool end = false.obs;
   RxString title = ''.obs;
@@ -24,12 +21,22 @@ class GetxVideoPlayerController extends GetxController {
   @override
   void onClose() {
     miniplayerController.dispose();
+    youtubePlayerController.close();
     super.onClose();
   }
 
   @override
   void onInit() {
     fetchFavoritesVideos();
+    youtubePlayerController = YoutubePlayerController(
+      params: YoutubePlayerParams(
+          strictRelatedVideos: true,
+          loop: true,
+          mute: false,
+          showControls: true,
+          showFullscreenButton: false,
+          enableCaption: false),
+    );
 
     super.onInit();
   }
@@ -37,7 +44,6 @@ class GetxVideoPlayerController extends GetxController {
   Future fetchFavoritesVideos() async {
     favoritesVideos.value = await databaseHelperFTS4.fetchFavoritesVideos();
     getPlaylist();
-    waitingList = favoritesVideos;
   }
 
   void getPlaylist() {
@@ -77,60 +83,10 @@ class GetxVideoPlayerController extends GetxController {
     ));
   }
 
-//for ext_player
-  void shiftWaitingList({Resources? selectedV}) {
-    bool shift = true;
-    favoritesVideos.forEach((element) {
-      if (selectedV != null && !element.link.contains(selectedV.link)) {
-        shift = false;
-      }
-    });
-    //log.e(shift);
-    if (shift) {
-      if (selectedV != null) {
-        waitingList.removeWhere((element) => element.link == selectedV.link);
-        waitingList.insert(waitingList.length, selectedV);
-      } else {
-        var temp = waitingList.removeAt(0);
-        waitingList.insert(waitingList.length, temp);
-      }
-      waitingList.forEach((element) {
-        print(element.title);
-      });
-    }
-  }
-
-  void fetchRelatedVideos(String videoId) async {
+  Future<void> fetchRelatedVideos(String videoId) async {
     relatedVideos.value = await YoutubeService().fetchRelatedVideos(videoId);
 
     //log.i(videoId + ' ' + relatedVideos.length.toString());
-  }
-
-//for ext_player
-  void playNext() async {
-    shiftWaitingList();
-    selectedVideo.value = Resources(lang: '', title: '', link: '');
-    Get.appUpdate();
-    await Future.delayed(Duration(milliseconds: 300));
-    selectedVideo.value = waitingList.first;
-    log.e(myVideoExtPlayerController.dataSource + ' ' + 'playnext done');
-    //myVideoExtPlayerController.play();
-  }
-
-//for ext_player
-  void playPrevios() async {
-    shiftWaitingListBack();
-
-    selectedVideo.value = Resources(lang: '', title: '', link: '');
-    Get.appUpdate();
-    await Future.delayed(Duration(milliseconds: 300));
-    selectedVideo.value = waitingList.first;
-  }
-
-//for ext_player
-  void shiftWaitingListBack() {
-    var temp = waitingList.removeLast();
-    waitingList.insert(0, temp);
   }
 
   Future fetchVideosFromPlaylist(String playlistId) async {

@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>423282730331-2tm0nuu0evg054gbkgot10epervh2a3n.apps.googleusercontent.com</string>
+	<string>423282730331-5d1r23tp68fpitvjnb04i9a78jh44sd1.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.423282730331-2tm0nuu0evg054gbkgot10epervh2a3n</string>
+	<string>com.googleusercontent.apps.423282730331-5d1r23tp68fpitvjnb04i9a78jh44sd1</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>423282730331-hrlbtbcbslunsga9uvrrg8g5e9d1b9o2.apps.googleusercontent.com</string>
+	<string>423282730331-3btuoc3hg8ovklvk84fkp36744eo07c6.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDTEZbeeZ3mPWaH1J39iVuOI6wxWsonfWw</string>
+	<string>AIzaSyDp77YITl5X6jJDGtEyKlEQudR_VxL68J4</string>
 	<key>GCM_SENDER_ID</key>
 	<string>423282730331</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>ru.icoc.Projects</string>
+	<string>com.icoc.projects</string>
 	<key>PROJECT_ID</key>
 	<string>icoc-8f075</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:423282730331:ios:a9b2728b1b94245d1ce67e</string>
+	<string>1:423282730331:ios:39a8b51e8b8fc33a1ce67e</string>
 	<key>DATABASE_URL</key>
 	<string>https://icoc-8f075.firebaseio.com</string>
 </dict>

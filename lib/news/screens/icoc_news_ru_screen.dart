@@ -79,7 +79,7 @@ class IcocNewsRuScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          html.Html(
+                          html.SelectableHtml(
                               data: newsController.news[index].title,
                               style: {
                                 // tables will have the below background color

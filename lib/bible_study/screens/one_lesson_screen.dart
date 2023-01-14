@@ -9,6 +9,11 @@ class OneLessonScreen extends StatelessWidget {
   final BibleStudyController bibleStudyController =
       Get.find<BibleStudyController>();
 
+  String parseHtml(String text) {
+    var document = parse(text);
+    return parse(document.body!.text).documentElement!.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     var fontSozeAdjust = FontSizeAdjustBottomSheet(
@@ -22,10 +27,23 @@ class OneLessonScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             bibleStudyController.topics[indexTopic].lessons[indexLesson].title,
+            style: TextStyle(fontSize: 14),
           ),
           backgroundColor: screensColors['firstPrinciples']!.withOpacity(0.8),
           centerTitle: true,
           actions: [
+            IconButton(
+              tooltip: 'Share'.tr,
+              icon: Icon(
+                Icons.share,
+              ),
+              onPressed: () {
+                Share.share(parseHtml(
+                  bibleStudyController
+                      .topics[indexTopic].lessons[indexLesson].text,
+                ));
+              },
+            ),
             IconButton(
                 icon: Icon(
                   Icons.text_fields_outlined,
@@ -36,7 +54,7 @@ class OneLessonScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: html.Html(
+            child: html.SelectableHtml(
                 data: bibleStudyController
                     .topics[indexTopic].lessons[indexLesson].text,
                 style: {

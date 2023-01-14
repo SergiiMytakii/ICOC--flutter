@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:intl/intl.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../../../../index.dart';
 
 class YotubePlaylistPlayerScreen extends StatefulWidget {
@@ -133,8 +134,10 @@ class _YotubePlaylistPlayerScreenState
 
   Widget currentVideoInfo(BuildContext context) {
     var formatter = new DateFormat('dd MMMM yyyy');
-    String formattedDate = formatter
-        .format(DateTime.parse(controller.selectedVideo.value.publishedAt!));
+    String? formattedDate = controller.selectedVideo.value.publishedAt != null
+        ? formatter
+            .format(DateTime.parse(controller.selectedVideo.value.publishedAt!))
+        : null;
     return Expanded(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -154,7 +157,7 @@ class _YotubePlaylistPlayerScreenState
               height: 16,
             ),
             if (controller.selectedVideo.value.publishedAt != null)
-              Text(formattedDate,
+              Text(formattedDate ?? '',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText1!),
@@ -187,14 +190,12 @@ class _YotubePlaylistPlayerScreenState
                       ? Icons.pause
                       : Icons.play_arrow,
                   color: widget.color),
-              onPressed: value.isReady
-                  ? () {
-                      value.playerState == PlayerState.playing
-                          ? context.ytController.pause()
-                          : context.ytController.play();
-                      runAnimation();
-                    }
-                  : null,
+              onPressed: () {
+                value.playerState == PlayerState.playing
+                    ? context.ytController.pauseVideo()
+                    : context.ytController.playVideo();
+                runAnimation();
+              },
             );
           },
         ),
@@ -212,7 +213,7 @@ class _YotubePlaylistPlayerScreenState
 
   Future<void> runAnimation() async {
     controller.miniplayerController.animateToHeight(
-      height: minHeight + 10,
+      height: minHeight + 5,
     );
     await Future.delayed(Duration(milliseconds: 100));
     controller.miniplayerController.animateToHeight(

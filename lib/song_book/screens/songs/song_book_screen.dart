@@ -22,7 +22,7 @@ class SongBookScreen extends StatelessWidget {
                 //in case its android platform
                 : AndroidAppBar(),
             Obx(
-              () => controller.query.value == ''
+              () => controller.query.value.length < 3
                   ? SongList()
                   : dataSearch.searchResults(controller.query.value),
             ),

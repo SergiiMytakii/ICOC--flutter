@@ -1,3 +1,5 @@
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../../../../index.dart';
 
 class VideoCardTeaching extends StatefulWidget {
@@ -57,6 +59,8 @@ class _VideoCardTeachingState extends State<VideoCardTeaching> {
                   }
 
                   controller.selectedVideo.value = widget.resources;
+                  controller.youtubePlayerController
+                      .loadVideoById(videoId: videoId);
                 },
                 child: Container(
                   width: double.maxFinite,

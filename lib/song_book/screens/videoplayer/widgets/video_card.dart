@@ -1,3 +1,5 @@
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../../../../index.dart';
 
 class VideoCard extends StatefulWidget {
@@ -36,18 +38,23 @@ class _VideoCardState extends State<VideoCard> {
               controller.miniplayerController.animateToHeight(
                   state: PanelState.MAX, duration: Duration(milliseconds: 700));
             } else {
-              controller.youtubePlayerController.reset();
-              controller.selectedVideo.value =
-                  Resources(lang: '', title: '', link: '');
-              Get.appUpdate();
-              await Future.delayed(Duration(milliseconds: 300));
+              controller.youtubePlayerController.stopVideo();
+              // controller.youtubePlayerController
+              //     .update(playerState: PlayerState.ended);
+              // controller.selectedVideo.value =
+              //     Resources(lang: '', title: '', link: '');
+              // Get.appUpdate();
+              // await Future.delayed(Duration(milliseconds: 500));
             }
             controller.selectedVideo.value = widget.resources;
-            controller.fetchRelatedVideos(videoId);
-            controller.playlist
-                .insert(0, getVideoId(controller.selectedVideo.value.link));
-
-            log.e(controller.playlist);
+            await controller.fetchRelatedVideos(videoId);
+            controller.youtubePlayerController.loadVideoById(videoId: videoId);
+            //  controller.playlist.insert(0, getVideoId(widget.resources.link));
+            // log.e(controller.playlist);
+            // controller.youtubePlayerController
+            //     // ignore: invalid_use_of_protected_member
+            //     .loadPlaylist(list: controller.playlist.value);
+            // controller.youtubePlayerController.playVideo();
           },
           child: Container(
             width: double.maxFinite,

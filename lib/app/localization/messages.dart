@@ -5,6 +5,7 @@ class Messages extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en_US': {
           "app_bar_title": "Song book",
+          "add_song": "Send text of the song and it will be here soon! ",
           "icon_button_actions_app_bar_filter":
               "Song languages and priority of their display",
           "hint_search_field_in_app_bar": "Search song",
@@ -12,6 +13,7 @@ class Messages extends Translations {
           "drawer_news": "News",
           "drawer_first_principles": "Bible study",
           "drawer_q_and_a": "Q&A",
+          "icon_button_actions_app_bar_add_song": "Add song",
           "drawer_song_book": "Song book",
           "drawer_in_development": "In the pipeline",
           "drawer_settings": "Settings",
@@ -52,8 +54,8 @@ class Messages extends Translations {
           'Loading songs': 'Loading songs',
           'Сannot load data ... Check your internet connection and click to refresh the page':
               'Сannot load data ... Check your internet connection and click to refresh the page',
-          'Push to refresh the page': 'Нажмите, чтобы \nобновить страницу',
-          'Error': 'Ошибка',
+          'Push to refresh the page': 'Push to refresh the page',
+          'Error': 'Error',
           'Can\'t open Email app': 'Can\'t open Email app',
           'About this app': 'About this app',
           'Church of Christ': 'Church of Christ',
@@ -114,9 +116,28 @@ If you view video content in the application, this means that you have read the 
 
 
 If you have any additional questions - you can contact the developer (see section "About this application").''',
+          'Add title': 'Add title',
+          'Title': 'Title',
+          'Add here title of the song': 'Add here title of the song',
+          'Description': 'Description',
+          'Add here information like author, church etc...':
+              'Add here information like author, church etc...',
+          'Add text': 'Add text',
+          'Text and chords': 'Text and chords',
+          'Add here text of the song, chords':
+              'Add here text of the song, chords',
+          'Link': 'Link',
+          'Add here link':
+              'Add here link to the video if you have one. (Only Youtube supported)',
+          'Email has been sent': 'Email has been sent',
+          'New song': 'New song',
+          'Send': 'Send',
         },
         'ru_RU': {
           "app_bar_title": "Песенник",
+          'Send': 'Отправить',
+          "add_song": "Пришлите текст песни и вскоре вы ее тут увидите! ",
+          "icon_button_actions_app_bar_add_song": "Добавить песню",
           "icon_button_actions_app_bar_filter":
               "Языки песен и приоритет их показа",
           "hint_search_field_in_app_bar": "Поиск песни",
@@ -233,9 +254,25 @@ If you have any additional questions - you can contact the developer (see sectio
 
 
 Если у вас возникли дополнительные вопросы -  вы можете связаться с разработчиком (см. в разделе "Об этом приложении").''',
+          'Add title': 'Внесите название песни',
+          'Title': 'Название',
+          'Add here title of the song': 'Внесите сюда название песни',
+          'Description': 'Описание',
+          'Add here information like author, church etc...':
+              'Добавьте информацию об авторе, церкви и проч...',
+          'Add text': 'Внесите текст песни и аккорды',
+          'Text and chords': 'Текст и аккорды',
+          'Add here text of the song, chords': 'Внесите текст песни',
+          'Link': 'Ссылка',
+          'Add here link':
+              'Добавьте ссылку на видео (поддерживается только Youtube)',
+          'Email has been sent': 'Email отправлен!',
+          'New song': 'Добавление песни'
         },
         'uk_UK': {
           "app_bar_title": "Пісенник",
+          "add_song": "Пришліть текст пісні та невдовзі ви ії тут побачите! ",
+          "icon_button_actions_app_bar_add_song": "Додати пісню",
           "icon_button_actions_app_bar_filter":
               "Мови пісень і пріоритет їх показу",
           "hint_search_field_in_app_bar": "Пошук пісні",
@@ -353,6 +390,20 @@ If you have any additional questions - you can contact the developer (see sectio
 
 
 Якщо у вас виникли додаткові питання - ви можете зв'язатися з розробником (див. розділ "Про цю програму").''',
+          'Add title': 'Внесіть назву пісні',
+          'Title': 'Назва',
+          'Add here title of the song': 'Внесіть сюди назву пісні',
+          'Description': 'Опис',
+          'Add here information like author, church etc...':
+              'Додайте інформацію про автора пісні, чи з якої церкви, на ін...',
+          'Add text': 'Внесіть текст пісні та акорди',
+          'Text and chords': 'Текст пісні та акорди',
+          'Add here text of the song, chords': 'Внесіть текст пісні',
+          'Link': 'Посилання',
+          'Add here link': 'Додайте посилання на відео (тільки Youtube)',
+          'Email has been sent': 'Email відправлені!',
+          'New song': 'Додавання пісні',
+          'Send': 'Відправити',
         }
       };
 }
