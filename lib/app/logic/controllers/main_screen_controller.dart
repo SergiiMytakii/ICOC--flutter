@@ -18,7 +18,8 @@ class MainScreenController extends GetxController {
   void onInit() async {
     // await checkItsFirstRun();
     await getNotifications();
-    url.value = await FirebaseImagesService.getUrl(path, randomInt);
+    FirebaseImagesService.getUrl(path, randomInt)
+        .then((value) => url.value = value);
     countNotifications();
     songsController.fetchDataFromFirebase();
     //box.erase(); // to clean cach
@@ -42,7 +43,7 @@ class MainScreenController extends GetxController {
 
   int get randomInt {
     //total amount  photos in firebase
-    final int totalAmount = 93;
+    final int totalAmount = 113;
     var day = DateTime.now().day;
     final Random random = new Random();
     final int randomNumber = random.nextInt(2) + 1;

@@ -1,9 +1,21 @@
 import 'dart:io';
 import '/index.dart';
 
-class SongBookScreen extends StatelessWidget {
+class SongBookScreen extends StatefulWidget {
+  @override
+  State<SongBookScreen> createState() => _SongBookScreenState();
+}
+
+class _SongBookScreenState extends State<SongBookScreen> {
   final SongsController controller = Get.find();
+
   final DataSearch dataSearch = DataSearch();
+  @override
+  void dispose() {
+    controller.query.value = '';
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     //DatabaseHelper().deleteSong(187);

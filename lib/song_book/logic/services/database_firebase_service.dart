@@ -3,10 +3,15 @@ import '/index.dart';
 class DatabaseServiceFirebase {
   var log = Logger();
   final SongLangController songLangController = Get.find();
+  final db = FirebaseFirestore.instance;
+  late CollectionReference songCollection;
 
-  //get access to database
-  final CollectionReference songCollection =
-      FirebaseFirestore.instance.collection('Songs');
+  DatabaseServiceFirebase() {
+    db.settings = const Settings(persistenceEnabled: true);
+
+    songCollection = db.collection('Songs');
+    //print(songCollection.get().);
+  }
 
   //function to add songs to firebase from json file
   Future insertSongsToFirebase() async {
@@ -59,7 +64,7 @@ class DatabaseServiceFirebase {
     List<SongDetail> songs = snapshot.docs.map((doc) {
       List resourses = [];
       Map data = doc.data() as Map;
-
+      // print("snapshot.metadata.isFromCache}  ${snapshot.metadata.isFromCache}");
       if (data['resources'] != null && data['resources'] is Iterable<dynamic>) {
         resourses = List.from(doc.get('resources'));
       }
