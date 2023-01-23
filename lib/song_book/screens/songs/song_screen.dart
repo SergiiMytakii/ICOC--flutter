@@ -52,7 +52,7 @@ class _SongScreenState extends State<SongScreen> {
                       (BuildContext context, double height, Widget? child) {
                     // log.w(showVideos);
                     double? appBarHeight = Scaffold.of(context).appBarMaxHeight;
-                    double iosPadding = Platform.isIOS ? 34 : 0;
+                    double tabBarPadding = 34;
                     // log.w(Get.size.height);
 
                     return SizedBox(
@@ -60,7 +60,7 @@ class _SongScreenState extends State<SongScreen> {
                           appBarHeight! -
                           (showVideos ? playerExpandProgress.value : 0) -
                           50 -
-                          iosPadding,
+                          tabBarPadding,
                       child: child,
                     );
                   },
