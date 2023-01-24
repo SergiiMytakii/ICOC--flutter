@@ -7,110 +7,97 @@ import '../../index.dart';
 
 class MainScreen extends StatelessWidget {
   final controller = Get.put(MainScreenController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text('ICOC'),
-        centerTitle: true,
-        leading: Builder(
-          builder: (context) => IconButton(
-              icon: Platform.isIOS
-                  ? Icon(CupertinoIcons.ellipsis)
-                  : Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer()),
-        ),
-        actions: [
-          _buildNotificationsIcon(),
-          SizedBox(
-            width: 15,
-          )
-        ],
-        elevation: 0,
-      ),
+      body: CustomScrollView(physics: BouncingScrollPhysics(), slivers: [
+        sliverAppBar(context),
+        buildBody(context),
+      ]),
       drawer: Drawer(
         child: MyDrawer(),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 8,
-              ),
-              VerseOfTheDay(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Table(
-                  //defaultColumnWidth: FixedColumnWidth(sizeOfCell),
-                  children: [
-                    TableRow(
-                      children: [
-                        tableItem(
-                            context,
-                            'drawer_song_book'.tr,
-                            screensColors['songBook']!,
-                            Icons.music_note,
-                            Routes.SONGBOOK),
-                        tableItem(
-                            context,
-                            'drawer_first_principles'.tr,
-                            screensColors['firstPrinciples']!,
-                            Icons.import_contacts,
-                            Routes.FIRST_PRINCIPLES),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        tableItem(
-                            context,
-                            'drawer_q_and_a'.tr,
-                            screensColors['Q&A']!,
-                            Icons.question_answer,
-                            Routes.Q_AND_ANSVERS),
-                        tableItem(
-                            context,
-                            'Q&A with Andy Fleming'.tr,
-                            screensColors['news']!,
-                            Icons.question_answer,
-                            Routes.PLAYLISTS_PLAYER,
-                            trailing: Trailing(''),
-                            arguments: [
-                              Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
-                              'Q&A with Andy Fleming'.tr,
-                              screensColors['news']!
-                            ]),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        tableItem(
-                            context,
-                            'Bible school'.tr,
-                            screensColors['general']!,
-                            Icons.video_collection,
-                            Routes.PLAYLISTS_PLAYER,
-                            trailing: Trailing(''),
-                            arguments: [
-                              BIBLE_SCHOOL_PLAYLIST_ID,
-                              'Bible school'.tr,
-                              screensColors['general']!,
-                            ]),
-                        tableItem(
-                            context,
-                            'drawer_news'.tr,
-                            screensColors['news']!,
-                            Icons.language,
-                            Routes.MAIN_NEWS),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+    );
+  }
+
+  Widget buildBody(BuildContext context) {
+    final List<Widget> items = [
+      tableItem(context, 'drawer_song_book'.tr, screensColors['songBook']!,
+          Icons.music_note, Routes.SONGBOOK),
+      tableItem(
+          context,
+          'drawer_first_principles'.tr,
+          screensColors['firstPrinciples']!,
+          Icons.import_contacts,
+          Routes.FIRST_PRINCIPLES),
+      tableItem(context, 'drawer_q_and_a'.tr, screensColors['Q&A']!,
+          Icons.question_answer, Routes.Q_AND_ANSVERS),
+      tableItem(context, 'Q&A with Andy Fleming'.tr, screensColors['news']!,
+          Icons.question_answer, Routes.PLAYLISTS_PLAYER,
+          trailing: Trailing(''),
+          arguments: [
+            Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
+            'Q&A with Andy Fleming'.tr,
+            screensColors['news']!
+          ]),
+      tableItem(context, 'Bible school'.tr, screensColors['general']!,
+          Icons.video_collection, Routes.PLAYLISTS_PLAYER,
+          trailing: Trailing(''),
+          arguments: [
+            BIBLE_SCHOOL_PLAYLIST_ID,
+            'Bible school'.tr,
+            screensColors['general']!,
+          ]),
+      tableItem(context, 'drawer_news'.tr, screensColors['news']!,
+          Icons.language, Routes.MAIN_NEWS),
+      Container(),
+      Container(),
+    ];
+
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 0,
+        crossAxisSpacing: 0,
+        childAspectRatio: 1.0,
+      ),
+      delegate: SliverChildBuilderDelegate((context, index) {
+        return items[index];
+      }, childCount: 8),
+    );
+  }
+
+  Widget sliverAppBar(BuildContext context) {
+    return SliverAppBar(
+      automaticallyImplyLeading: true,
+      title: Text('ICOC'),
+      centerTitle: true,
+      leading: Builder(
+        builder: (context) => IconButton(
+            icon: Platform.isIOS
+                ? Icon(CupertinoIcons.ellipsis)
+                : Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer()),
+      ),
+      actions: [
+        _buildNotificationsIcon(),
+        SizedBox(
+          width: 15,
+        )
+      ],
+      elevation: 0,
+      pinned: false,
+      expandedHeight: Get.size.height / 2.2,
+      floating: true,
+      stretch: true,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+              color: Theme.of(context).backgroundColor,
+              height: Get.size.height / 2.55,
+              child: VerseOfTheDay()),
         ),
       ),
     );
@@ -136,14 +123,11 @@ class MainScreen extends StatelessWidget {
         ]));
   }
 
-  tableItem(BuildContext context, String title, Color color, IconData icon,
-      String routeName,
+  Widget tableItem(BuildContext context, String title, Color color,
+      IconData icon, String routeName,
       {List? arguments, Widget? trailing}) {
-    double sizeOfCell = (MediaQuery.of(context).size.width) / 2;
-    return Container(
-      height: sizeOfCell,
-      width: sizeOfCell,
-      padding: const EdgeInsets.all(8),
+    return Padding(
+      padding: const EdgeInsets.all(16),
       child: InkWell(
         onTap: () => Get.toNamed(routeName, arguments: arguments),
         splashColor: Theme.of(context).colorScheme.secondary,
@@ -217,65 +201,62 @@ class VerseOfTheDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => controller.url.isNotEmpty
-          ? Container(
-              height: Get.size.height / 2.2,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                elevation: 0,
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () => showBigPicture(context),
-                      child: Hero(
-                        tag: 'verse',
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15),
-                          ),
-                          child: Image.network(
-                            controller.url.value,
-                            height: Get.size.height / 2.2,
-                            width: Get.size.width - 32,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
+          ? Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              elevation: 0,
+              margin: EdgeInsets.only(top: 16, left: 16, right: 16),
+              child: Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () => showBigPicture(context),
+                    child: Hero(
+                      tag: 'verse',
                       child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
                         ),
-                        child: Container(
-                          color: Colors.black12.withOpacity(0.3),
-                          width: Get.size.width - 32,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Verse of the day'.tr,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  shareImage(controller.url.value);
-                                },
-                                child: Icon(Icons.share_outlined,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          ),
+                        child: Image.network(
+                          controller.url.value,
+                          height: Get.size.height / 2.2,
+                          width: Get.size.width,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15),
+                      ),
+                      child: Container(
+                        color: Colors.black12.withOpacity(0.3),
+                        width: Get.size.width - 32,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Verse of the day'.tr,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                shareImage(controller.url.value);
+                              },
+                              child: Icon(Icons.share_outlined,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )
           : Container(
