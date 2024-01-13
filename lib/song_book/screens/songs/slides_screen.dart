@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '/index.dart';
+import '../../../index.dart';
 
 class SlidesScreen extends StatefulWidget {
   @override

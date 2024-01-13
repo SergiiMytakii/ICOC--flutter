@@ -1,4 +1,4 @@
-import 'package:icoc/news/logic/services/insta_public_api/models/basic_model.dart';
+import 'models/basic_model.dart';
 
 import '../../../../index.dart';
 import 'package:http/http.dart' as http;

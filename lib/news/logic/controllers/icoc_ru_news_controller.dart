@@ -1,6 +1,6 @@
-import 'package:icoc/index.dart';
-import 'package:icoc/news/logic/services/news_service.dart';
-import 'package:icoc/news/models/news_model.dart';
+import '../../../index.dart';
+import '../services/news_service.dart';
+import '../../models/news_model.dart';
 
 class NewsController extends GetxController {
   final NewsService newsService = NewsService();

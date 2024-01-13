@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import '/index.dart';
+import '../../../../index.dart';
 
 class DatabaseHelperFTS4 {
   static Database? _db;

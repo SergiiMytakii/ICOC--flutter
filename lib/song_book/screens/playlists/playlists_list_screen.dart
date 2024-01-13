@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '/index.dart';
+import '../../../index.dart';
 
 class PlaylistsListScreen extends StatefulWidget {
   @override

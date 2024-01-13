@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
-import 'package:icoc/app/screens/notifications_screen.dart';
+import 'notifications_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../index.dart';
 
@@ -129,6 +129,7 @@ class MainScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: InkWell(
+        // use animations package
         onTap: () => Get.toNamed(routeName, arguments: arguments),
         splashColor: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(15),

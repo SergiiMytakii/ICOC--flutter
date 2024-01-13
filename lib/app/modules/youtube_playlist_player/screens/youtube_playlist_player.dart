@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:intl/intl.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import '../../../../../../index.dart';
+import '../../../../index.dart';
 
 class YotubePlaylistPlayerScreen extends StatefulWidget {
   YotubePlaylistPlayerScreen({

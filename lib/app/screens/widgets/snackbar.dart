@@ -1,7 +1,7 @@
-import '/index.dart';
+import '../../../index.dart';
+
 showSnackbar(String title, String message) {
   Get.snackbar(
-
     '',
     '',
     backgroundColor: Colors.grey.withOpacity(0.6),

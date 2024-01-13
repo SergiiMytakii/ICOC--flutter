@@ -93,7 +93,7 @@ class _VideoCardState extends State<VideoCard> {
                           'To lyrics'.tr,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(color: screensColors['songBook']),
                         ),
                         SizedBox(
@@ -109,7 +109,7 @@ class _VideoCardState extends State<VideoCard> {
               child: Text(widget.resources.title,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1!),
+                  style: Theme.of(context).textTheme.bodyLarge!),
             ),
             IconButton(
               onPressed: () async {

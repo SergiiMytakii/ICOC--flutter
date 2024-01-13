@@ -1,6 +1,6 @@
-import 'package:icoc/song_book/screens/songs/add_song_screen.dart';
+import '../songs/add_song_screen.dart';
 
-import '/index.dart';
+import '../../../index.dart';
 import 'package:flutter/cupertino.dart';
 
 Widget iosAppbar(

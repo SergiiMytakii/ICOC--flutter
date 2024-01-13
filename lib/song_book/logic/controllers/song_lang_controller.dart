@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class SongLangController extends GetxController {
   GetStorage box = GetStorage();

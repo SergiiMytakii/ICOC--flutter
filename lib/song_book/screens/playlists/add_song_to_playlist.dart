@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class AddSongToPlaylistsScreen extends GetView<PlaylistsController> {
   final int id;

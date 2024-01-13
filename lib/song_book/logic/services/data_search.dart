@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
-import '/index.dart';
+import '../../../index.dart';
 
 class DataSearch extends SearchDelegate {
   final songsController = Get.put(SongsController());
@@ -134,13 +134,14 @@ class DataSearch extends SearchDelegate {
     //print(textFromSnapshot);
     var document = parse(textFromSnapshot);
     String parsedString = parse(document.body!.text).documentElement!.text;
+
     final List<String> text = parsedString.split(' ');
     // print(text);
     return text.map((word) {
       return word.contains('[')
           ? TextSpan(
               text: trimText(word),
-              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: screensColors['songBook'],
                   fontWeight: FontWeight.w900))
           : TextSpan(

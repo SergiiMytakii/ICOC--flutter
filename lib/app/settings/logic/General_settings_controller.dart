@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class GeneralSettingsController extends GetxController {
   RxBool isDarkMode = false.obs;

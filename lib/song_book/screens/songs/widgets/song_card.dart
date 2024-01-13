@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '/index.dart';
+import '../../../../index.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;

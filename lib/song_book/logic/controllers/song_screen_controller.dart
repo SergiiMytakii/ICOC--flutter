@@ -1,6 +1,6 @@
-import 'package:icoc/song_book/models/resources.dart';
+import '../../models/resources.dart';
 
-import '/index.dart';
+import '../../../index.dart';
 
 class SongScreenController extends GetxController {
   GetStorage box = GetStorage();

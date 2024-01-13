@@ -1,4 +1,4 @@
-import 'package:icoc/index.dart';
+import '../../../index.dart';
 
 class NavigationController extends GetxController {
   Map<int, BuildContext> contexts = {};

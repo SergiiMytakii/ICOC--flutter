@@ -1,5 +1,5 @@
-import 'package:icoc/app/screens/terms_of_use_screen.dart';
-import 'package:icoc/q_and_a/screens/one_q_and_ansver_screen.dart';
+import '../screens/terms_of_use_screen.dart';
+import '../../q_and_a/screens/one_q_and_ansver_screen.dart';
 
 import '../../index.dart';
 

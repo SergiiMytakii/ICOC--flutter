@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class DataSearchFromPlaylists extends DataSearch {
   final PlaylistsController playlistsController = Get.find();

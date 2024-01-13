@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class PlaylistsController extends GetxController {
   RxString query = ''.obs;

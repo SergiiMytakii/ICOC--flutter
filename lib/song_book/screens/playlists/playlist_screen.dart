@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class PlaylistScreen extends StatefulWidget {
   final Map playlist;

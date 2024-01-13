@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:icoc/app/logic/services/firebase_images_service.dart';
-import 'package:icoc/app/logic/services/firebase_notifications_service.dart';
-import 'package:icoc/app/models/notifications_model.dart';
+import '../services/firebase_images_service.dart';
+import '../services/firebase_notifications_service.dart';
+import '../../models/notifications_model.dart';
 
-import '/index.dart';
+import '../../../index.dart';
 
 class MainScreenController extends GetxController {
   final songsController = Get.put(SongsController());

@@ -52,25 +52,27 @@ class OneLessonScreen extends StatelessWidget {
           ],
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: html.SelectableHtml(
-                data: bibleStudyController
-                    .topics[indexTopic].lessons[indexLesson].text,
-                style: {
-                  "body": html.Style(
-                    fontSize:
-                        html.FontSize(bibleStudyController.fontSize.value),
-                  ),
-                  "h5": html.Style(
-                    fontSize:
-                        html.FontSize(bibleStudyController.fontSize.value),
-                  ),
-                  "p": html.Style(
-                    fontSize:
-                        html.FontSize(bibleStudyController.fontSize.value),
-                  ),
-                }),
+          child: SelectionArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: html.Html(
+                  data: bibleStudyController
+                      .topics[indexTopic].lessons[indexLesson].text,
+                  style: {
+                    "body": html.Style(
+                      fontSize:
+                          html.FontSize(bibleStudyController.fontSize.value),
+                    ),
+                    "h5": html.Style(
+                      fontSize:
+                          html.FontSize(bibleStudyController.fontSize.value),
+                    ),
+                    "p": html.Style(
+                      fontSize:
+                          html.FontSize(bibleStudyController.fontSize.value),
+                    ),
+                  }),
+            ),
           ),
         ),
       ),

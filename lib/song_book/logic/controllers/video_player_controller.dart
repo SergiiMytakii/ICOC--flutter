@@ -1,4 +1,4 @@
-import 'package:icoc/index.dart';
+import '../../../index.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class GetxVideoPlayerController extends GetxController {

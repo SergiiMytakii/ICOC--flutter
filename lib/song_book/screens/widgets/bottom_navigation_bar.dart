@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:icoc/song_book/screens/videoplayer/iframe_player.dart/video_iframe_player_screen.dart';
-import '/index.dart';
+import '../videoplayer/iframe_player.dart/video_iframe_player_screen.dart';
+import '../../../index.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override

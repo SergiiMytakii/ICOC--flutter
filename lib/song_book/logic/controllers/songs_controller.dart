@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class SongsController extends GetxController {
   var songsInLocalDB = 0;

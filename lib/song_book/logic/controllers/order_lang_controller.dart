@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../index.dart';
 
 class OrderLangController extends GetxController {
   List<String> orderLang = ['ru', 'uk', 'en'];

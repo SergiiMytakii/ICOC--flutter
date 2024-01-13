@@ -49,10 +49,12 @@ class OneQandAScreen extends StatelessWidget {
                   SizedBox(
                     height: 16,
                   ),
-                  Obx(() => Text(
-                        qandAController.ansvers[index].text,
-                        style:
-                            TextStyle(fontSize: qandAController.fontSize.value),
+                  Obx(() => SelectionArea(
+                        child: Text(
+                          qandAController.ansvers[index].text,
+                          style: TextStyle(
+                              fontSize: qandAController.fontSize.value),
+                        ),
                       )),
                 ],
               )

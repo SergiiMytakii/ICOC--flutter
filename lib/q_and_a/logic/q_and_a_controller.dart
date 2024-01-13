@@ -1,4 +1,4 @@
-import 'package:icoc/index.dart';
+import '../../index.dart';
 
 class QandAController extends GetxController {
   RxList<QandAModel> ansvers = <QandAModel>[].obs;

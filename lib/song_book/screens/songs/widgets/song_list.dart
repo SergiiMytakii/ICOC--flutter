@@ -1,4 +1,4 @@
-import '/index.dart';
+import '../../../../index.dart';
 
 class SongList extends StatelessWidget {
   final SongsController controller = Get.find();

@@ -128,7 +128,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
           padding: EdgeInsets.all(8),
           curve: Curves.fastOutSlowIn,
           child: Center(
-            child: QrImage(
+            child: QrImageView(
               backgroundColor: Colors.white,
               data: link,
               version: QrVersions.auto,

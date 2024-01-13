@@ -33,7 +33,7 @@ class OneNewsScreen extends StatelessWidget {
           child: Column(
             children: [
               Obx(
-                () => html.SelectableHtml(
+                () => html.Html(
                   data: newsController.news[index].title,
                   style: {
                     "body": html.Style(

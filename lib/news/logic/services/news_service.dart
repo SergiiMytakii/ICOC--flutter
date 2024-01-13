@@ -1,5 +1,7 @@
-import 'package:icoc/news/logic/services/network_service.dart';
-import 'package:icoc/news/models/news_model.dart';
+import 'dart:convert';
+
+import 'network_service.dart';
+import '../../models/news_model.dart';
 
 import '../../../index.dart';
 

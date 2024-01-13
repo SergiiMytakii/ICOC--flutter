@@ -1,4 +1,4 @@
-import 'package:icoc/index.dart';
+import '../../index.dart';
 
 class Resources {
   final String lang;

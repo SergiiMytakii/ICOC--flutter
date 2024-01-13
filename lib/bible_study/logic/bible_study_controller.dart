@@ -1,6 +1,6 @@
-import 'package:icoc/bible_study/logic/bible_study_firebase_service.dart';
-import 'package:icoc/bible_study/models/bible_study.dart';
-import 'package:icoc/index.dart';
+import 'bible_study_firebase_service.dart';
+import '../models/bible_study.dart';
+import '../../index.dart';
 
 class BibleStudyController extends GetxController {
   QuerySnapshot? bibleStudies;

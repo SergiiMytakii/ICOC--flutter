@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '/index.dart';
+import '../../../index.dart';
 
 class FavoritesScreen extends StatelessWidget {
   final FavoritesController controller = Get.put(FavoritesController());
