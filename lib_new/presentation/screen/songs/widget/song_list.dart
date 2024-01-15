@@ -47,7 +47,6 @@ class SongList extends StatelessWidget {
                 } else {
                   i = 0;
                 }
-
                 return SongCard(
                   song: state.songs[index],
                   dividerColor: dividerColors[i],

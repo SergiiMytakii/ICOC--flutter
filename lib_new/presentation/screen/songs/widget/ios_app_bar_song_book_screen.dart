@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
 import '../../../widget/modal_bottom_sheet.dart';
-import '../../home_screen.dart';
 import '../../routes/app_routes.dart';
-import '../add_song_screen.dart';
 import 'bottom_sheet_filter.dart';
 
 class IosAppbar extends StatelessWidget {
@@ -70,8 +68,7 @@ IconButton buildAddSongButton(BuildContext context) {
     ),
     tooltip: 'icon_button_actions_app_bar_add_song'.tr(),
     onPressed: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AddSongScreen()));
+      Navigator.pushNamed(context, Routes.ADD_SONG_SCREEN);
     },
   );
 }

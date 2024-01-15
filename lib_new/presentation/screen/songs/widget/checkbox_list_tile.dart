@@ -33,7 +33,7 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
           key: widget.key,
           controlAffinity: ListTileControlAffinity.leading,
           title: Text(
-            widget.label.tr(),
+            fullNameLanguage(widget.label.tr()),
             style: Theme.of(context).textTheme.titleLarge,
           ),
           value: widget.activeLanguages.contains(widget.label),
@@ -60,10 +60,18 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
               }
             }
             SharedPreferencesHelper.saveList(
-                    'orderLanguages', widget.activeLanguages)
+                    SharedPreferencesKeys.orderLanguages,
+                    widget.activeLanguages)
                 .then(
                     (value) => context.read<SongsBloc>().add(SongsRequested()));
           }),
     );
+  }
+
+  String fullNameLanguage(String transcription) {
+    if (transcription.length == 2) {
+      return languagesCodes[transcription] ?? transcription;
+    } else
+      return transcription;
   }
 }

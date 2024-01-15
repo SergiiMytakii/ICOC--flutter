@@ -6,20 +6,17 @@ import 'package:html/parser.dart';
 import '../../../../constants.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../routes/app_routes.dart';
-import '../one_song_screen.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;
   final List<Widget>? slideActions;
   final Color dividerColor;
-  final int? playlistId;
-  // final OrderLangController controller = Get.find();
 
-  SongCard(
-      {required this.song,
-      required this.dividerColor,
-      this.slideActions,
-      this.playlistId});
+  SongCard({
+    required this.song,
+    required this.dividerColor,
+    this.slideActions,
+  });
 
   @override
   Widget build(BuildContext context) {

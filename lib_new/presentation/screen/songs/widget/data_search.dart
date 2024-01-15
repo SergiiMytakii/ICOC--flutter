@@ -10,16 +10,26 @@ import '../../../../core/model/song_detail.dart';
 import '../../../widget/loading.dart';
 import '../one_song_screen.dart';
 
-class DataSearchResults extends StatelessWidget {
+class DataSearchResults extends StatefulWidget {
   DataSearchResults(this.query);
   final String query;
+
+  @override
+  State<DataSearchResults> createState() => _DataSearchResultsState();
+}
+
+class _DataSearchResultsState extends State<DataSearchResults> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final log = Logger();
 
   @override
   Widget build(BuildContext context) {
+    context.read<SongsBloc>().add(SearchSongRequested(widget.query));
     int i = 0;
-    print(query);
-    context.read<SongsBloc>().add(SearchSongRequested(query));
     return BlocBuilder<SongsBloc, SongsState>(
       builder: (context, state) {
         if (state is SongsLoadingState) {
@@ -35,8 +45,7 @@ class DataSearchResults extends StatelessWidget {
                   i = 0;
                 }
                 return buildSongCardWithHighliting(
-                  state.songs,
-                  index,
+                  state.songs[index],
                   context,
                   i,
                 );
@@ -52,10 +61,8 @@ class DataSearchResults extends StatelessWidget {
   }
 
   // returns TextSpan with hihglited words for title
-  List<TextSpan> title(
-      List<SongDetail> songs, int index, BuildContext context) {
-    String rawText = songs[index].text.values.first;
-
+  List<TextSpan> title(SongDetail song, BuildContext context) {
+    String rawText = song.searchTitle ?? '';
     final List<String> title = rawText.split(' ');
     //print(title);
     return title.map((word) {
@@ -72,9 +79,9 @@ class DataSearchResults extends StatelessWidget {
   }
 
   // returns TextSpan with hihglited words for text
-  List<TextSpan> text(List<SongDetail> songs, int index, BuildContext context) {
-    String rawText = songs[index].text.values.first;
-    print(rawText);
+  List<TextSpan> text(SongDetail song, BuildContext context) {
+    String rawText = song.searchText ?? '';
+    // print(rawText);
 
     //remove html tags and parts of html tags
     var document = parse(rawText);
@@ -115,27 +122,26 @@ class DataSearchResults extends StatelessWidget {
   }
 
   Widget buildSongCardWithHighliting(
-      List<SongDetail> songs, int index, BuildContext context, int i) {
-    int id = songs[index].id;
+      SongDetail song, BuildContext context, int i) {
+    int id = song.id;
     return Column(
       children: [
         ListTile(
-          onTap: () => onTapHandler(
-              context, songs[index], songs[index].title.keys.first),
+          onTap: () => onTapHandler(context, song),
           horizontalTitleGap: 12,
           leading: Text(id.toString(),
               style: Theme.of(context).textTheme.titleSmall),
           title: RichText(
             text: TextSpan(
                 style: Theme.of(context).textTheme.titleLarge,
-                children: title(songs, index, context)),
+                children: title(song, context)),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           subtitle: RichText(
             text: TextSpan(
                 style: Theme.of(context).textTheme.bodyMedium,
-                children: text(songs, index, context)),
+                children: text(song, context)),
             overflow: TextOverflow.ellipsis,
             maxLines: 4,
           ),
@@ -149,15 +155,21 @@ class DataSearchResults extends StatelessWidget {
     );
   }
 
-  onTapHandler(BuildContext context, SongDetail songFromSearch, String lang) {
-    log.e(lang);
+  onTapHandler(BuildContext context, SongDetail fullSong) async {
+    // we need to put language from searchResult to the firs place in the maps title, text, descr
+    SongDetail? orderedLangSong;
+    if (fullSong.searchLang != null) {
+      orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
+    }
+
     Navigator.push(context, CupertinoPageRoute(
       builder: (context) {
         return OneSongScreen(
-          songFromSearch,
+          orderedLangSong ?? fullSong,
         );
       },
     ));
+
     //Get.toNamed(Routes.SONG_SCREEN, arguments: [song, lang]);
   }
 }

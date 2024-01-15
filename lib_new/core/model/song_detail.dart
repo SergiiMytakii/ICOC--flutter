@@ -9,15 +9,20 @@ class SongDetail {
   final Map text;
   final List<Resources>? resources;
   final Map? chords;
+  String? searchTitle;
+  String? searchText;
+  String? searchLang;
 
-  SongDetail({
-    required this.id,
-    required this.title,
-    this.description,
-    required this.text,
-    this.chords,
-    this.resources,
-  });
+  SongDetail(
+      {required this.id,
+      required this.title,
+      this.description,
+      required this.text,
+      this.chords,
+      this.resources,
+      this.searchLang,
+      this.searchText,
+      this.searchTitle});
 
   factory SongDetail.fromJson(Map<String, dynamic> parsedJson) {
     // log.d(parsedJson);
@@ -32,7 +37,7 @@ class SongDetail {
   }
 
 //provide list with all languages
-  List<String> getAllKeys() {
+  List<String> getAllTitleKeys() {
     Set<String> allKeys = {};
 
     void collectKeys(Map? map) {
@@ -47,10 +52,23 @@ class SongDetail {
 
     collectKeys(this.title);
     // collectKeys(this.description);
-    // collectKeys(this.text);
     //collectKeys(this.chords);
 //todo replace in db all keys in shords to 'ru1', 'uk1' and so on Than uncomment line above to filter chords as well.  And than filter resourses as well
+    return allKeys.toList();
+  }
 
+  List<String> getAllTextKeys() {
+    Set<String> allKeys = {};
+
+    void collectKeys(Map? map) {
+      if (map != null) {
+        map.keys.forEach((key) {
+          allKeys.add(key);
+        });
+      }
+    }
+
+    collectKeys(this.text);
     return allKeys.toList();
   }
 
@@ -108,47 +126,5 @@ class SongDetail {
     return sortedMap;
   }
 
-  Map<String, Object?> toMapTitle() {
-    return {
-      'id_song': id,
-      'ru': title['ru'],
-      'uk': title['uk'],
-      'en': title['en'],
-    };
-  }
-
-  Map<String, Object?> toMapText() {
-    return {
-      'id': id,
-      'ru1': text['ru1'],
-      'ru2': text['ru2'],
-      'uk1': text['uk1'],
-      'uk2': text['uk2'],
-      'en1': text['en1'],
-      'en2': text['en2'],
-    };
-  }
-
-  Map<String, Object?>? toMapDescription() {
-    if (description != null)
-      return {
-        'id_song': id,
-        'ru': description!['ru'],
-        'uk': description!['uk'],
-        'en': description!['en'],
-      };
-    return null;
-  }
-
-  Map<String, Object?>? toMapChords() {
-    if (chords != null)
-      return {
-        'id_song': id,
-        'v1': chords!['v1'],
-        'v2': chords!['v2'],
-        'v3': chords!['v3'],
-        'v4': chords!['v4'],
-      };
-    return null;
-  }
+  static defaultSong() {}
 }

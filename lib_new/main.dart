@@ -5,11 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
+import 'constants.dart';
 import 'core/bloc/bloc/songs_bloc.dart';
 import 'core/helpers/shared_preferences_helper.dart';
 import 'presentation/screen/home/about_app_screen.dart';
 import 'presentation/screen/home_screen.dart';
 import 'presentation/screen/routes/app_routes.dart';
+import 'presentation/screen/songs/add_song_screen.dart';
 import 'presentation/screen/songs/one_song_screen.dart';
 import 'presentation/screen/songs/widget/bottom_navigation_bar.dart';
 import 'presentation/widget/fade_page_route.dart';
@@ -22,7 +24,8 @@ void main() async {
   await Firebase.initializeApp();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
-  String? appLocale = await SharedPreferencesHelper.getString('locale');
+  String? appLocale =
+      await SharedPreferencesHelper.getString(SharedPreferencesKeys.locale);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -30,11 +33,9 @@ void main() async {
   ));
 
   runApp(EasyLocalization(
-      supportedLocales: [
-        Locale('en', 'US'),
-        Locale('uk', 'UA'),
-        Locale('ru', 'RU')
-      ],
+      supportedLocales: languagesCodes.keys
+          .map((languageCode) => Locale(languageCode))
+          .toList(),
       path: 'assets/translations',
       // startLocale: appLocale != null
       //     ? languagesLocales[appLocale]
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
             routes: {
               Routes.HOME: (context) => HomeScreen(),
               Routes.ABOUT_APP_SCREEN: (context) => AboutAppScreen(),
+              Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
               // Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
               // Routes.SONGBOOK: (context) => MyBottomNavigationBar()
             },

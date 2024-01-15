@@ -53,7 +53,9 @@ class _SongBookScreenState extends State<SongBookScreen> {
       if (query == '') {
         getSongs(context);
       }
-      if (query.length < 3) {
+      if (query.length > 1 && query.contains(RegExp(r'[0-9]'))) {
+        showSearchResults = true;
+      } else if (query.length < 3) {
         showSearchResults = false;
       } else {
         showSearchResults = true;

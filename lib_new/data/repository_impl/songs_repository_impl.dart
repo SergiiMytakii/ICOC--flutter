@@ -18,21 +18,9 @@ class SongsRepositoryImpl implements SongsRepository {
   }
 
   @override
-  Future<List<SongDetail>> getListSongs() async {
+  Future<List<SongDetail>> getSearchResult(
+      String query, List<String> orderLang) async {
     DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
-    return await databaseHelperFTS4.getListSongs();
-  }
-
-  @override
-  Future<List<SongDetail>> getSearchResult(String query) async {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
-    return databaseHelperFTS4
-        .getSearchResult(query, ['ru', 'uk']); //todo send real orderlangToShow
-  }
-
-  @override
-  Future<List<SongDetail>> getSearchResultByNumber(String query) async {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
-    return databaseHelperFTS4.getSearchResultByNumber(query);
+    return databaseHelperFTS4.getSearchResult(query, orderLang);
   }
 }

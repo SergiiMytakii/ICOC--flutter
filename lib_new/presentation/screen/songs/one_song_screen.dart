@@ -36,8 +36,6 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
 
-  // final MiniplayerController miniplayerController = MiniplayerController();
-
   @override
   void initState() {
     _controller = AnimationController(
@@ -47,23 +45,16 @@ class _OneSongScreenState extends State<OneSongScreen>
 
     // Create a curved animation
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-    // _controller.value = 0.4;
 
     _controller.addListener(() {
-      print(_animation.value);
-
       setState(() {}); // Trigger a rebuild on each animation frame
     });
-
-    // favoritesController.getFavoriteStatus(widget.song.id);
     super.initState();
   }
 
   @override
   void dispose() {
-    youtubePlayerController.close();
     _controller.dispose();
-    // miniplayerController.dispose();
     super.dispose();
   }
 
@@ -75,8 +66,6 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   @override
   Widget build(BuildContext context) {
-    // songScreenController.getData(widget.song, widget.prefferedLangFromSearch);
-
     return DefaultTabController(
       length: countTabs(widget.song),
       child: Scaffold(
@@ -145,7 +134,6 @@ class _OneSongScreenState extends State<OneSongScreen>
   }
 
   void _startPlayVideo(Resources resources, String videoId) async {
-    // youtubePlayerController.update();
     youtubePlayerController = YoutubePlayerController();
     youtubePlayerController.loadVideoById(videoId: videoId);
     setState(() {
@@ -195,7 +183,6 @@ class _OneSongScreenState extends State<OneSongScreen>
       AnimatedContainer(
         duration: Duration(seconds: 1),
         child: Container(
-          // valueNotifier: playerExpandProgress,
           width: double.maxFinite,
           height: _animation.value * screenSize.width / 16 * 9,
           child: YoutubePlayer(

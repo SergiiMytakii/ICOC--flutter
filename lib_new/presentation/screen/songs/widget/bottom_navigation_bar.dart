@@ -27,7 +27,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    // kTabBarHeight = 50;
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -64,9 +63,6 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
                     // navigatorKey: GlobalKey<NavigatorState>(),
                     onGenerateRoute: (settings) {
                       if (settings.name == Routes.ONE_SONG_SCREEN) {
-                        // Extract the arguments from settings.arguments
-                        // final SongDetail songDetail = settings.arguments as SongDetail;
-
                         return CupertinoPageRoute(
                           builder: (context) =>
                               OneSongScreen(settings.arguments as SongDetail),

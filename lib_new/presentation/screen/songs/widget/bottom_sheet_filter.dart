@@ -18,17 +18,20 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
   List<String> orderLang = [];
   @override
   void initState() {
-    SharedPreferencesHelper.getList('orderLanguages').then((value) {
+    SharedPreferencesHelper.getList(SharedPreferencesKeys.orderLanguages)
+        .then((value) {
       setState(() {
         orderLang = value ?? [];
         print(orderLang);
       });
     });
-    SharedPreferencesHelper.getBool('orderByTitle').then((value) {
+    SharedPreferencesHelper.getBool(SharedPreferencesKeys.orderByTitle)
+        .then((value) {
       orderByTitle = value ?? true;
       setState(() {});
     });
-    SharedPreferencesHelper.getList('allLanguages').then((value) {
+    SharedPreferencesHelper.getList(SharedPreferencesKeys.allSongsTitleKeys)
+        .then((value) {
       allLanguages = value ?? [];
       setState(() {});
     });
@@ -46,7 +49,6 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
       final String item = allLanguages.removeAt(oldIndex);
       allLanguages.insert(newIndex, item);
       //writing new order of lang-s to preferences
-      print(allLanguages);
       setOrderLang();
     }
 
@@ -132,18 +134,20 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
   }
 
   void _orderSongs(bool orderByTitle) async {
-    await SharedPreferencesHelper.saveBool('orderByTitle', orderByTitle);
+    await SharedPreferencesHelper.saveBool(
+        SharedPreferencesKeys.orderByTitle, orderByTitle);
     context.read<SongsBloc>().add(SongsRequested());
   }
 
   void setOrderLang() async {
     //save reordered list
-    await SharedPreferencesHelper.saveList('allLanguages', allLanguages);
+    await SharedPreferencesHelper.saveList(
+        SharedPreferencesKeys.allSongsTitleKeys, allLanguages);
     //save the same order in filtered languages
     final List<String> reorderedLanguages = List.from(allLanguages);
     reorderedLanguages.removeWhere((item) => !orderLang.contains(item));
     await SharedPreferencesHelper.saveList(
-        'orderLanguages', reorderedLanguages);
+        SharedPreferencesKeys.orderLanguages, reorderedLanguages);
     context.read<SongsBloc>().add(SongsRequested());
     setState(() {});
   }

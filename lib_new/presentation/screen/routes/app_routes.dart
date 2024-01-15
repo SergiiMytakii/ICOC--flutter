@@ -2,6 +2,7 @@ class Routes {
   static const HOME = '/';
   static const SONGBOOK = '/bottom_navigation_bar';
   static const Q_AND_ANSVERS = '/q_and_a';
+  static const ADD_SONG_SCREEN = '/add_song_screen';
   static const ICOC_RU_NEWS = '/news';
   static const FIRST_PRINCIPLES = '/first_principles';
   static const SETTINGS = '/general_settings';
