@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screen/home_screen.dart';
+import '../screen/home/home_screen.dart';
 
 class MenuItemCard extends StatelessWidget {
   MenuItemCard(this.item);

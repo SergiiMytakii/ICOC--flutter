@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../constants.dart';
-import '../widget/menu_item_card.dart';
-import 'home/notifications_screen.dart';
-import 'routes/app_routes.dart';
+import '../../../constants.dart';
+import '../../widget/menu_item_card.dart';
+import 'my_drawer.dart';
+import 'notifications_screen.dart';
+import '../routes/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final CarouselController carouselController;
+  late AnimationController animationController;
   late MenuItem currentItem;
   double _angle = 0;
 
@@ -48,18 +52,31 @@ class _HomeScreenState extends State<HomeScreen>
     MenuItem('drawer_news'.tr(), screensColors['news']!, Icons.language,
         Routes.MAIN_NEWS),
   ];
+  bool isDrawerOpen = false;
+
+  void toggleDrawer() async {
+    if (isDrawerOpen) {
+      await animationController.reverse();
+    }
+    setState(() {
+      isDrawerOpen = !isDrawerOpen;
+    });
+  }
 
   @override
   void initState() {
     carouselController = CarouselController();
     currentItem = items[0];
-
+    animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: buildBody(context));
+    return Scaffold(
+      body: buildBody(context),
+    );
   }
 
   Widget buildBody(BuildContext context) {
@@ -71,6 +88,18 @@ class _HomeScreenState extends State<HomeScreen>
           'assets/images/sky.jpeg',
           height: screenSize.height,
           fit: BoxFit.fitHeight,
+        ),
+        Positioned(
+          top: 70,
+          left: 20,
+          child: Builder(builder: (BuildContext scaffoldContext) {
+            return GestureDetector(
+                child: Text(
+                  'Menu',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => toggleDrawer());
+          }),
         ),
         Positioned(
           left: screenSize.height * 0.06,
@@ -139,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
         ),
+        if (isDrawerOpen) Positioned(child: MyDrawer(animationController)),
       ],
     );
   }

@@ -9,7 +9,10 @@ import 'constants.dart';
 import 'core/bloc/bloc/songs_bloc.dart';
 import 'core/helpers/shared_preferences_helper.dart';
 import 'presentation/screen/home/about_app_screen.dart';
-import 'presentation/screen/home_screen.dart';
+import 'presentation/screen/home/general_settings_screen.dart';
+import 'presentation/screen/home/home_screen.dart';
+import 'presentation/screen/home/share_app_screen.dart';
+import 'presentation/screen/home/terms_of_use_screen.dart';
 import 'presentation/screen/routes/app_routes.dart';
 import 'presentation/screen/songs/add_song_screen.dart';
 import 'presentation/screen/songs/one_song_screen.dart';
@@ -33,6 +36,7 @@ void main() async {
   ));
 
   runApp(EasyLocalization(
+      useOnlyLangCode: true,
       supportedLocales: languagesCodes.keys
           .map((languageCode) => Locale(languageCode))
           .toList(),
@@ -71,20 +75,47 @@ class MyApp extends StatelessWidget {
             title: 'ICOC',
             routes: {
               Routes.HOME: (context) => HomeScreen(),
-              Routes.ABOUT_APP_SCREEN: (context) => AboutAppScreen(),
+              // Routes.ABOUT_APP_SCREEN: (context) => AboutAppScreen(),
               Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
-              // Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
-              // Routes.SONGBOOK: (context) => MyBottomNavigationBar()
+              // Routes.SETTINGS: (context) => GeneralSettingsScreen(),
+              // Routes.SHARE_APP_SCREEN: (context) => ShareAppScreen(),
+              // Routes.TERMS_OF_USE: (context) => TermsOfUseAndPolicy(),
             },
             onGenerateRoute: (settings) {
-              if (settings.name == Routes.SONGBOOK) {
-                return FadePageRoute(
-                  builder: (context) {
-                    return MyBottomNavigationBar();
-                  },
-                );
+              switch (settings.name) {
+                case Routes.SONGBOOK:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return MyBottomNavigationBar();
+                    },
+                  );
+                case Routes.SHARE_APP_SCREEN:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return ShareAppScreen();
+                    },
+                  );
+                case Routes.SETTINGS:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return GeneralSettingsScreen();
+                    },
+                  );
+                case Routes.TERMS_OF_USE:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return TermsOfUseAndPolicy();
+                    },
+                  );
+                case Routes.ABOUT_APP_SCREEN:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return AboutAppScreen();
+                    },
+                  );
+                default:
+                  return MaterialPageRoute(builder: (context) => HomeScreen());
               }
-              return MaterialPageRoute(builder: (context) => HomeScreen());
             },
           ),
         ),
