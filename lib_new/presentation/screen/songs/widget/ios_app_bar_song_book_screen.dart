@@ -1,8 +1,8 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../constants.dart';
 import '../../../widget/modal_bottom_sheet.dart';
 import '../../routes/app_routes.dart';
 import 'bottom_sheet_filter.dart';
@@ -22,26 +22,27 @@ class IosAppbar extends StatelessWidget {
     return SliverAppBar(
       primary: true,
       title: Text(title),
-      backgroundColor: screensColors['songBook'],
       centerTitle: true,
       automaticallyImplyLeading: true,
       leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios_new,
+            Icons.arrow_back_ios_new, //todo for android
           ),
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pop();
           }),
       actions: [buildFilterButton(context), buildAddSongButton(context)],
       pinned: true,
-      expandedHeight: 90.0,
+      expandedHeight: 95.0,
+      backgroundColor: MaterialStateColor.resolveWith((states) =>
+          AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor!),
       floating: true,
       stretch: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            height: 40,
+            height: 45,
             padding: EdgeInsets.only(
               left: 10,
               right: 10,
@@ -51,8 +52,8 @@ class IosAppbar extends StatelessWidget {
               onChanged: (val) {
                 callback(val);
               },
-              //onSuffixTap: () => controller.query.value = '',
-              backgroundColor: Colors.white.withOpacity(0.2),
+              style: AdaptiveTheme.of(context).theme.textTheme.bodySmall,
+              backgroundColor: AdaptiveTheme.of(context).theme.focusColor,
             ),
           ),
         ),

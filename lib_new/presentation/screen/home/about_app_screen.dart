@@ -1,3 +1,5 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +43,6 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         title: Text(
           'About this app'.tr(),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -49,11 +50,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             Text(
               'ICOC',
-              style: Theme.of(context).textTheme.headline4!.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: screensColors['general'], fontWeight: FontWeight.w700),
             ),
             SizedBox(
@@ -61,23 +62,23 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             ),
             Text(
               'Church of Christ'.tr(),
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             SizedBox(
               height: 20,
             ),
             Text(
               'Version $versionApp'.tr(),
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             Text(
               'Created by:'.tr(),
               style: Theme.of(context)
                   .textTheme
-                  .bodyText1!
+                  .bodyLarge!
                   .copyWith(fontWeight: FontWeight.w900),
             ),
             SizedBox(
@@ -85,27 +86,27 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             ),
             Text(
               'Sergii Mytakii'.tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               'Sergii Gaponov'.tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               'Antonina Glajevskaya'.tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               'Oksana Strelchenya'.tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
               'Loginova Irina'.tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
 
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             // Padding(
             //   padding: const EdgeInsets.all(16.0),
@@ -113,11 +114,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             //       'Ищем контент менеджера для добавления аудио и видео к песням. \n Если Бог положил вам такое на сердце - напишите нам об этом!'),
             // ),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             Text(
               'Wishes and suggestions: '.tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +132,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                     '$email'.tr(),
                     style: Theme.of(context)
                         .textTheme
-                        .bodyText2!
+                        .bodyMedium!
                         .copyWith(color: Colors.blueAccent),
                   ),
                   onPressed: () => launchEmail(context),
@@ -139,13 +140,9 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               ],
             ),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             supportProjectBlock(context),
-            Container(
-              height: 10,
-              key: dataKey,
-            )
           ],
         ),
       ),
@@ -165,25 +162,24 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
           child: Text(
               'If you like this app and want it to be constantly improved and developed - you can support the project!'
                   .tr(),
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: CustomButton(
-              onPressed: () async {
-                setState(() {
-                  isOpened = !isOpened;
+            onPressed: () async {
+              setState(() {
+                isOpened = !isOpened;
 
-                  _opacity = !_opacity;
-                });
-                if (isOpened) {
-                  await Future.delayed(Duration(milliseconds: 500));
-                  Scrollable.ensureVisible(dataKey.currentContext!);
-                }
-              },
-              child: Text('Support ptoject'.tr()),
-              color: screensColors['general']!),
+                _opacity = !_opacity;
+              });
+            },
+            child: Text(
+              'Support ptoject'.tr(),
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ),
         AnimatedContainer(
           duration: Duration(milliseconds: 800),
@@ -193,16 +189,18 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
           padding: EdgeInsets.all(8),
           curve: Curves.fastOutSlowIn,
           child: Column(children: [
-            Flexible(child: Text('In Ukraine:'.tr())),
+            Flexible(
+                child: Text(
+              'In Ukraine:'.tr(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Text(
-                        'MonoBank card:'.tr(),
-                      ),
+                    Text(
+                      'MonoBank card:'.tr(),
                     ),
                     SizedBox(
                       width: 12,
@@ -210,6 +208,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                     Text(
                       monoBankCard,
                     ),
+                    Expanded(child: SizedBox()),
                     AnimatedOpacity(
                       opacity: _opacity ? 0 : 1,
                       duration: Duration(milliseconds: 800),
@@ -218,14 +217,21 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                           _copyToClipboard(monoBankCard);
                         },
                         icon: Icon(Icons.copy_outlined),
-                        color: Theme.of(context).primaryIconTheme.color,
+                        color: AdaptiveTheme.of(context)
+                            .theme
+                            .primaryIconTheme
+                            .color,
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            Flexible(child: Text('Out from Ukraine:'.tr())),
+            Flexible(
+                child: Text(
+              'Out from Ukraine:'.tr(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )),
             Flexible(
               child: Row(
                 children: [
@@ -248,7 +254,52 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                         },
                         icon: Icon(
                           Icons.copy_outlined,
-                          color: Theme.of(context).primaryIconTheme.color,
+                          color: AdaptiveTheme.of(context)
+                              .theme
+                              .primaryIconTheme
+                              .color,
+                        )),
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+                child: Text(
+              'From everywhere:'.tr(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )),
+            Flexible(
+              child: Row(
+                children: [
+                  Text('USDT wallet:'.tr()),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: AutoSizeText(
+                      usdtWallet,
+                      minFontSize: 8,
+                      maxFontSize: 12,
+                      maxLines: 2,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  AnimatedOpacity(
+                    opacity: _opacity ? 0 : 1,
+                    duration: Duration(milliseconds: 800),
+                    child: IconButton(
+                        onPressed: () {
+                          _copyToClipboard(usdtWallet);
+                        },
+                        icon: Icon(
+                          Icons.copy_outlined,
+                          color: AdaptiveTheme.of(context)
+                              .theme
+                              .primaryIconTheme
+                              .color,
                         )),
                   ),
                 ],

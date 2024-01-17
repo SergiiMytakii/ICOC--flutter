@@ -23,7 +23,8 @@ const Map<String, Color> screensColors = {
 
 const String email = 'serjmitaki@gmail.com';
 const String payPalAccount = 'serjmitaki@gmail.com';
-const String monoBankCard = '4441 1144 5075 7396';
+const String usdtWallet = 'TF9irV2F7CoGVpZFvDxvV7hzmT9esWanjf';
+const String monoBankCard = '5375 4141 1210 8369';
 const String versionApp = '5.0.1';
 const appUrlPlayMarket =
     'https://play.google.com/store/apps/details?id=ru.icoc.app';
@@ -82,8 +83,8 @@ Map<String, String> languagesCodes = {
   'ro': 'Romanian',
   'ru': 'Russian',
   // 'sr': 'Serbian',
-  // 'sk': 'Slovak',
-  // 'sl': 'Slovenian',
+  'sk': 'Slovak',
+  'sl': 'Slovenian',
   'es': 'Spanish',
   'sv': 'Swedish',
   'uk': 'Ukrainian',

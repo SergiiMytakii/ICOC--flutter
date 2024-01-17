@@ -1,13 +1,13 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'constants.dart';
-import 'core/bloc/bloc/songs_bloc.dart';
+import 'core/bloc/songs_bloc/songs_bloc.dart';
 import 'core/helpers/shared_preferences_helper.dart';
+import 'core/model/song_detail.dart';
 import 'presentation/screen/home/about_app_screen.dart';
 import 'presentation/screen/home/general_settings_screen.dart';
 import 'presentation/screen/home/home_screen.dart';
@@ -41,9 +41,6 @@ void main() async {
           .map((languageCode) => Locale(languageCode))
           .toList(),
       path: 'assets/translations',
-      // startLocale: appLocale != null
-      //     ? languagesLocales[appLocale]
-      //     : Localizations.localeOf(context),
       fallbackLocale: Locale('en', 'US'),
       child: MyApp(appLocale: appLocale, savedThemeMode: savedThemeMode)));
 }
@@ -55,7 +52,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
-      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: myLightTheme,
       dark: myDarkTheme,
       builder: (light, dark) => OKToast(
@@ -75,7 +72,7 @@ class MyApp extends StatelessWidget {
             title: 'ICOC',
             routes: {
               Routes.HOME: (context) => HomeScreen(),
-              // Routes.ABOUT_APP_SCREEN: (context) => AboutAppScreen(),
+              Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
               Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
               // Routes.SETTINGS: (context) => GeneralSettingsScreen(),
               // Routes.SHARE_APP_SCREEN: (context) => ShareAppScreen(),

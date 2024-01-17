@@ -7,14 +7,11 @@ import 'modal_bottom_sheet.dart';
 class FontSizeAdjustBottomSheet {
   final BuildContext context;
   final String color;
-  var controller;
-  bool needForce;
 
-  FontSizeAdjustBottomSheet(
-      {required this.context,
-      this.controller,
-      required this.color,
-      this.needForce = false});
+  FontSizeAdjustBottomSheet({
+    required this.context,
+    required this.color,
+  });
 
   bottomSheet() {
     showModalBottomSheet(
@@ -31,7 +28,7 @@ class FontSizeAdjustBottomSheet {
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   'Font size'.tr(),
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               Container(
@@ -57,14 +54,12 @@ class FontSizeAdjustBottomSheet {
                         child: Slider.adaptive(
                           activeColor: screensColors[color],
                           inactiveColor: screensColors[color],
-                          label: 'Font size',
+                          label: 'Font size'.tr(),
                           value: controller!.fontSize.value,
                           min: 14,
                           max: 48,
                           divisions: 34,
-                          onChanged: (val) => needForce
-                              ? controller!.altFontSizeForce(val)
-                              : controller!.altFontSize(val),
+                          onChanged: (val) {},
                         ),
                       ),
                     ],

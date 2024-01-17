@@ -20,11 +20,6 @@ class SongTextOnSongScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (textVersion.startsWith('<')) {
-      var document = parse(textVersion, generateSpans: true);
-      //log.v(document.body!.text);
-    }
-
     double _fontSize = 14; //todo add bloc
     return SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -35,27 +30,20 @@ class SongTextOnSongScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
-                  .headline5!
-                  .copyWith(fontSize: _fontSize + 4),
+                  .headlineMedium!
+                  .copyWith(fontSize: _fontSize + 10),
             ),
             Container(
               alignment: Alignment.topRight,
               margin: EdgeInsets.symmetric(vertical: 7),
               child: Text(
                 description,
-                style: Theme.of(context).textTheme.headline6!,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .copyWith(fontSize: _fontSize + 6),
               ),
             ),
-            // resources != null
-            //     ? Container(
-            //         alignment: Alignment.topRight,
-            //         margin: EdgeInsets.symmetric(vertical: 7),
-            //         child: Text(
-            //           resources!['en1'],
-            //           style: Theme.of(context).textTheme.headline6!,
-            //         ),
-            //       )
-            //     : Container(),
             SizedBox(height: 10),
             SelectionArea(
               child: textVersion.startsWith('<')
@@ -70,7 +58,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText2!
+                          .bodyMedium!
                           .copyWith(fontSize: _fontSize),
                     ),
             )

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/bloc/bloc/songs_bloc.dart';
+import '../../../core/bloc/songs_bloc/songs_bloc.dart';
 import 'widget/data_search.dart';
 import 'widget/ios_app_bar_song_book_screen.dart';
 import 'widget/song_list.dart';

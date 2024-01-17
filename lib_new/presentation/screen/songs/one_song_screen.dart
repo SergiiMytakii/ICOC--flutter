@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -13,10 +14,10 @@ import 'widget/song_text_on_song_screen.dart';
 import 'widget/video_card.dart';
 
 class OneSongScreen extends StatefulWidget {
-  OneSongScreen(this.song) {
+  OneSongScreen() {
     Wakelock.enable();
   }
-  final SongDetail song;
+  // final SongDetail song;
 
   // final String? prefferedLangFromSearch;
 
@@ -66,18 +67,19 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   @override
   Widget build(BuildContext context) {
+    final SongDetail song =
+        ModalRoute.of(context)!.settings.arguments as SongDetail;
     return DefaultTabController(
-      length: countTabs(widget.song),
+      length: countTabs(song),
       child: Scaffold(
-        appBar: appBar(context, widget.song),
+        appBar: appBar(context, song),
         body: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [
             //adjust size text screen and player dynamicly
-            _tabBarBuilder(),
-            if (widget.song.resources != null &&
-                widget.song.resources!.isNotEmpty)
-              _buldVideoPreview(),
+            _tabBarBuilder(song),
+            if (song.resources != null && song.resources!.isNotEmpty)
+              _buldVideoPreview(song),
             if (videoIsPlaying) _miniPlayerBuilder(),
           ],
         ),
@@ -92,7 +94,6 @@ class _OneSongScreenState extends State<OneSongScreen>
     var fontSizeAdjust =
         FontSizeAdjustBottomSheet(context: context, color: 'songBook');
     return AppBar(
-      backgroundColor: screensColors['songBook'],
       bottom: TabBar(
         isScrollable: true,
         tabs: [
@@ -193,41 +194,43 @@ class _OneSongScreenState extends State<OneSongScreen>
     ]);
   }
 
-  TabBarView _tabBarBuilder() {
+  TabBarView _tabBarBuilder(SongDetail song) {
+    print(song.text.keys);
+    (song.text.removeWhere((key, value) => key == 'id_song'));
     return TabBarView(
       children: [
-        for (final item in widget.song.text.keys)
+        for (final item in song.text.keys)
           SongTextOnSongScreen(
-            title: widget.song.title[item.substring(0, 2)] ?? '',
-            textVersion: widget.song.text[item] ?? '',
-            description: widget.song.description != null
-                ? widget.song.description![item.substring(0, 2)] ?? ''
+            title: song.title[item.substring(0, 2)] ?? '',
+            textVersion: song.text[item] ?? '',
+            description: song.description != null
+                ? song.description![item.substring(0, 2)] ?? ''
                 : '',
           ),
-        if (widget.song.chords != null)
-          for (final item in widget.song.chords!.keys)
+        if (song.chords != null)
+          for (final item in song.chords!.keys)
             SongTextOnSongScreen(
               title: '',
               description: '',
-              textVersion: widget.song.chords![item] ?? '',
+              textVersion: song.chords![item] ?? '',
             ),
       ],
     );
   }
 
-  Widget _buldVideoPreview() {
+  Widget _buldVideoPreview(SongDetail song) {
     return Stack(
       children: [
         Container(
           height: 80,
           width: double.maxFinite,
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: AdaptiveTheme.of(context).theme.colorScheme.background,
         ),
         Container(
             height: 80,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: widget.song.resources!
+              children: song.resources!
                   .map((resource) =>
                       VideoCard(resource: resource, onTap: _startPlayVideo))
                   .toList(),

@@ -126,5 +126,8 @@ class SongDetail {
     return sortedMap;
   }
 
-  static defaultSong() {}
+  static defaultSong() {
+    return SongDetail(
+        id: 0, title: {'ru': 'default'}, text: {'ru1': 'default'});
+  }
 }

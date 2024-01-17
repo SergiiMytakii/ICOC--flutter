@@ -85,9 +85,9 @@
           "Favorite video": "Favorite videos",
           "Video": "Video",
           "use vpn if something not works":
-              "In some countries data could not be loaded. Use vpn if something not works",
+          "In some countries data could not be loaded. Use vpn if something not works",
           "Go to all songs and add some videos from there":
-              "Go to all songs and add some videos from there",
+          "Go to all songs and add some videos from there",
           "Q&A with Andy Fleming": "Q&A with Andy Fleming",
           "Bible school": "Bible school",
           "Terms of Use": "Terms of Use and Privacy Policy",
@@ -96,7 +96,7 @@
           "terms of use part3": "of this service and agree to them.",
           "Privacy policy1": "Privacy policy.\n",
           "Privacy policy2":
-              "The application does not collect any personal information about the user. While browsing media content, Google services may collect some information about you. You can read more about Google ",
+          "The application does not collect any personal information about the user. While browsing media content, Google services may collect some information about you. You can read more about Google ",
           "Privacy policy3": "Privacy Policy here. (follow link) ",
           "Privacy policy4": "If you have any additional questions - you can contact the developer (see section 'About this application').",
           "Add title": "Add title",
@@ -104,15 +104,20 @@
           "Add here title of the song": "Add here title of the song",
           "Description": "Description",
           "Add here information like author, church etc...":
-              "Add here information like author, church etc...",
+          "Add here information like author, church etc...",
           "Add text": "Add text",
           "Text and chords": "Text and chords",
           "Add here text of the song, chords":
-              "Add here text of the song, chords",
+          "Add here text of the song, chords",
           "Link": "Link",
           "Add here link":
-              "Add here link to the video if you have one. (Only Youtube supported)",
+          "Add here link to the video if you have one. (Only Youtube supported)",
           "Email has been sent": "Email has been sent",
           "New song": "New song",
-          "Send": "Send"
+          "Send": "Send",
+    
+          "From everywhere:": "From everywhere:",
+          "Menu": "Menu",
+          "App language": "App language"
+        
         }

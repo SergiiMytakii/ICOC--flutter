@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
+import '../../../../constants.dart';
 import '../../../../core/model/resources.dart';
 import '../../../../theme.dart';
 import '../../../widget/snackbar.dart';
@@ -33,23 +34,37 @@ class _VideoCardState extends State<VideoCard> {
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () => widget.onTap(widget.resource, videoId),
-        child: Image.network(
-          widget.resource.thumbnail ??
-              YoutubePlayerController.getThumbnail(
-                videoId: videoId,
+      child: Container(
+        decoration: BoxDecoration(border: Border.all(color: Colors.white)),
+        child: GestureDetector(
+          onTap: () => widget.onTap(widget.resource, videoId),
+          child: Stack(
+            children: [
+              Image.network(
+                widget.resource.thumbnail ??
+                    YoutubePlayerController.getThumbnail(
+                      videoId: videoId,
+                    ),
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: myDarkTheme.scaffoldBackgroundColor,
+                    child: Image.asset('assets/images/logo_icoc_drawer.png',
+                        fit: BoxFit.fitWidth),
+                  );
+                },
+                height: 76,
+                width: 76 * 16 / 9,
+                fit: BoxFit.fitWidth,
               ),
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: myDarkTheme.scaffoldBackgroundColor,
-              child: Image.asset('assets/images/logo_icoc_drawer.png',
-                  fit: BoxFit.fitWidth),
-            );
-          },
-          height: 76,
-          width: 76 * 16 / 9,
-          fit: BoxFit.fitWidth,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  widget.resource.lang,
+                  style: TextStyle(color: screensColors['songBook']!),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

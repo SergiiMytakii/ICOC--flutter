@@ -1,5 +1,5 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
@@ -27,69 +27,33 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          currentIndex: _selectedPageIndex,
-          activeColor: screensColors['songBook']!.withOpacity(0.8),
-          // backgroundColor: Colors.transparent,
-
-          onTap: (index) {
-            _selectPage(index);
-          },
-          items: [
-            BottomNavigationBarItem(
-              label: 'bottom_navigation_bar_list'.tr(),
-              icon: Icon(Icons.queue_music),
-            ),
-            BottomNavigationBarItem(
-              label: 'bottom_navigation_bar_favorites'.tr(),
-              icon: Icon(Icons.favorite),
-            ),
-            BottomNavigationBarItem(
-              label: 'Video'.tr(),
-              icon: Icon(
-                Icons.play_circle,
-              ),
-            ),
-          ],
-        ),
-        tabBuilder: (context, int) {
-          switch (int) {
-            case 0:
-              {
-                return CupertinoTabView(
-                    builder: (context) => SongBookScreen(),
-                    // navigatorKey: GlobalKey<NavigatorState>(),
-                    onGenerateRoute: (settings) {
-                      if (settings.name == Routes.ONE_SONG_SCREEN) {
-                        return CupertinoPageRoute(
-                          builder: (context) =>
-                              OneSongScreen(settings.arguments as SongDetail),
-                        );
-                      }
-                      return null;
-                    });
-              }
-            // case 1:
-            //   {
-            //     return CupertinoTabView(
-            //         builder: (context) => FavoritesScreen());
-            //   }
-
-            // case 2:
-            //   {
-            //     return CupertinoTabView(
-            //         builder: (context) => VideoIframePlayerScreen());
-            //     // VideoPlayerScreen(
-            //     //   playNextOn: true,
-            //     // ));
-            //   }
-            default:
-              {
-                return CupertinoTabView(builder: (context) => SongBookScreen());
-              }
-          }
-        });
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedPageIndex,
+        children: [
+          SongBookScreen(),
+          FavoritesScreen(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor:
+            AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor,
+        currentIndex: _selectedPageIndex,
+        selectedItemColor: screensColors['songBook']!.withOpacity(0.8),
+        onTap: (index) {
+          _selectPage(index);
+        },
+        items: [
+          BottomNavigationBarItem(
+            label: 'bottom_navigation_bar_list'.tr(),
+            icon: Icon(Icons.queue_music),
+          ),
+          BottomNavigationBarItem(
+            label: 'bottom_navigation_bar_favorites'.tr(),
+            icon: Icon(Icons.favorite),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -42,7 +42,7 @@ class AnimatedDrawerItem extends StatelessWidget {
 
 class MyDrawer extends StatefulWidget {
   MyDrawer(this.animationController);
-  AnimationController animationController;
+  final AnimationController animationController;
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
@@ -55,15 +55,8 @@ class _MyDrawerState extends State<MyDrawer> {
   static const double itemDelayFactor = 0.2;
   @override
   void initState() {
-    animation = Tween<Offset>(
-      begin: Offset(-1.0, 0.0),
-      end: Offset(0.0, 0.0),
-    ).animate(CurvedAnimation(
-      parent: widget.animationController,
-      curve: Curves.easeInOut,
-    ));
     itemAnimations = List.generate(
-      drawerItems.length,
+      4,
       (index) => Tween<Offset>(
         begin: Offset(-1.0, 0.0),
         end: Offset(0.0, 0.0),
@@ -83,43 +76,46 @@ class _MyDrawerState extends State<MyDrawer> {
     super.initState();
   }
 
-  final List<Map<String, dynamic>> drawerItems = [
-    {
-      'icon': Icons.info,
-      'title': 'Terms of Use'.tr(),
-      'route': Routes.TERMS_OF_USE,
-    },
-    {
-      'icon': Icons.share,
-      'title': 'drawer_share_app'.tr(),
-      'route': Routes.SHARE_APP_SCREEN,
-    },
-    {
-      'icon': Icons.info,
-      'title': 'drawer_about_app'.tr(),
-      'route': Routes.ABOUT_APP_SCREEN,
-    },
-    {
-      'icon': Icons.settings,
-      'title': 'drawer_settings'.tr(),
-      'route': Routes.SETTINGS,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        itemCount: drawerItems.length,
-        itemBuilder: (BuildContext context, int index) {
-          return AnimatedDrawerItem(
-              icon: drawerItems[index]['icon'] as IconData,
-              title: drawerItems[index]['title'].toString(),
-              route: drawerItems[index]['route'].toString(),
-              animation: itemAnimations[index]);
-        },
+    final List<Map<String, dynamic>> drawerItems = [
+      {
+        'icon': Icons.info,
+        'title': 'Terms of Use'.tr(context: context),
+        'route': Routes.TERMS_OF_USE,
+      },
+      {
+        'icon': Icons.share,
+        'title': 'drawer_share_app'.tr(context: context),
+        'route': Routes.SHARE_APP_SCREEN,
+      },
+      {
+        'icon': Icons.info,
+        'title': 'drawer_about_app'.tr(context: context),
+        'route': Routes.ABOUT_APP_SCREEN,
+      },
+      {
+        'icon': Icons.settings,
+        'title': 'drawer_settings'.tr(context: context),
+        'route': Routes.SETTINGS,
+      },
+    ];
+
+    return SizedBox(
+      height: 400,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          itemCount: drawerItems.length,
+          itemBuilder: (BuildContext context, int index) {
+            return AnimatedDrawerItem(
+                icon: drawerItems[index]['icon'] as IconData,
+                title: drawerItems[index]['title'].toString(),
+                route: drawerItems[index]['route'].toString(),
+                animation: itemAnimations[index]);
+          },
+        ),
       ),
     );
   }

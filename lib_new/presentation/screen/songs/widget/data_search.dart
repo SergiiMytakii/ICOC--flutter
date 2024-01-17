@@ -5,9 +5,10 @@ import 'package:html/parser.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/bloc/bloc/songs_bloc.dart';
+import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../../widget/loading.dart';
+import '../../routes/app_routes.dart';
 import '../one_song_screen.dart';
 
 class DataSearchResults extends StatefulWidget {
@@ -162,13 +163,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
       orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
     }
 
-    Navigator.push(context, CupertinoPageRoute(
-      builder: (context) {
-        return OneSongScreen(
-          orderedLangSong ?? fullSong,
-        );
-      },
-    ));
+    Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
+        arguments: orderedLangSong ?? fullSong);
 
     //Get.toNamed(Routes.SONG_SCREEN, arguments: [song, lang]);
   }

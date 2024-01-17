@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../constants.dart';
-import '../../../../core/bloc/bloc/songs_bloc.dart';
+import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../widget/loading.dart';
 import 'slide_actions.dart';
 import 'song_card.dart';
@@ -21,7 +21,7 @@ class SongList extends StatelessWidget {
                 color: screensColors['songBook'],
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {}, //todo refresh
                 child: AnimatedDefaultTextStyle(
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -59,6 +59,7 @@ class SongList extends StatelessWidget {
             ),
           );
         } else {
+          context.read<SongsBloc>().add(SongsRequested());
           return SliverToBoxAdapter();
         }
       },

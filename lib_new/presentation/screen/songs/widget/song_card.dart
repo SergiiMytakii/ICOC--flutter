@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 import '../../../../constants.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../routes/app_routes.dart';
+import '../one_song_screen.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;
@@ -38,6 +39,8 @@ class SongCard extends StatelessWidget {
             onTap: (() {
               Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
                   arguments: song);
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => OneSongScreen(song)));
             }),
             horizontalTitleGap: 12,
             leading: Text(song.id.toString(),

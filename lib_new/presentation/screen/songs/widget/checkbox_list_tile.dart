@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/bloc/bloc/songs_bloc.dart';
+import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/helpers/shared_preferences_helper.dart';
 import '../../../widget/snackbar.dart';
 

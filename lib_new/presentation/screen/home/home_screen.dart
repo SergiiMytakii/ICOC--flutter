@@ -1,16 +1,12 @@
-import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants.dart';
 import '../../widget/menu_item_card.dart';
 import 'my_drawer.dart';
 import 'notifications_screen.dart';
-import '../routes/app_routes.dart';
+import 'widget/menu_items.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,34 +20,6 @@ class _HomeScreenState extends State<HomeScreen>
   late MenuItem currentItem;
   double _angle = 0;
 
-  final List<MenuItem> items = [
-    MenuItem('drawer_song_book'.tr(), screensColors['songBook']!,
-        Icons.music_note, Routes.SONGBOOK),
-    MenuItem('drawer_first_principles'.tr(), screensColors['firstPrinciples']!,
-        Icons.import_contacts, Routes.FIRST_PRINCIPLES),
-    MenuItem('drawer_q_and_a'.tr(), screensColors['Q&A']!,
-        Icons.question_answer, Routes.Q_AND_ANSVERS),
-    MenuItem(
-      'Q&A with Andy Fleming'.tr(), screensColors['news']!,
-      Icons.question_answer, Routes.PLAYLISTS_PLAYER,
-      // arguments: [
-      //   Q_AND_A_ANDY_FLEMING_PLAYLIST_ID,
-      //   'Q&A with Andy Fleming'.tr,
-      //   screensColors['news']!
-      // ]
-    ),
-    MenuItem(
-      'Bible school'.tr(), screensColors['general']!,
-      Icons.video_collection, Routes.PLAYLISTS_PLAYER,
-      // arguments: [
-      //   BIBLE_SCHOOL_PLAYLIST_ID,
-      //   'Bible school'.tr,
-      //   screensColors['general']!,
-      // ]
-    ),
-    MenuItem('drawer_news'.tr(), screensColors['news']!, Icons.language,
-        Routes.MAIN_NEWS),
-  ];
   bool isDrawerOpen = false;
 
   void toggleDrawer() async {
@@ -63,10 +31,24 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
+  void hideDrawer() async {
+    if (isDrawerOpen) {
+      await animationController.reverse();
+    }
+    setState(() {
+      isDrawerOpen = false;
+    });
+  }
+
+  List<MenuItem> items = [];
   @override
   void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      setState(() {});
+    });
+
     carouselController = CarouselController();
-    currentItem = items[0];
+
     animationController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 1000));
     super.initState();
@@ -74,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    items = HomeScreenMenuItems.items(context);
     return Scaffold(
       body: buildBody(context),
     );
@@ -82,22 +65,31 @@ class _HomeScreenState extends State<HomeScreen>
   Widget buildBody(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
+    currentItem = items[0];
     return Stack(
       children: [
-        Image.asset(
-          'assets/images/sky.jpeg',
-          height: screenSize.height,
-          fit: BoxFit.fitHeight,
+        GestureDetector(
+          onTap: hideDrawer,
+          child: Image.asset(
+            'assets/images/sky.jpeg',
+            height: screenSize.height,
+            fit: BoxFit.fitHeight,
+          ),
         ),
         Positioned(
           top: 70,
           left: 20,
           child: Builder(builder: (BuildContext scaffoldContext) {
             return GestureDetector(
-                child: Text(
-                  'Menu',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: isDrawerOpen
+                    ? Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      )
+                    : Text(
+                        'Menu'.tr(context: context),
+                        style: TextStyle(color: Colors.white),
+                      ),
                 onTap: () => toggleDrawer());
           }),
         ),
@@ -204,17 +196,4 @@ class VerseOfTheDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text('Some Verse From Bible');
   }
-}
-
-class MenuItem {
-  final String title;
-  final Color color;
-  final IconData icon;
-  final String routeName;
-  MenuItem(
-    this.title,
-    this.color,
-    this.icon,
-    this.routeName,
-  );
 }
