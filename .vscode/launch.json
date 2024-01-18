@@ -16,7 +16,7 @@
             "name": "icoc-flutter",
             "request": "launch",
             "type": "dart",
-            "program": "lib_new/main.dart"
+            "program": "lib/main.dart"
         }
     ]
 }
