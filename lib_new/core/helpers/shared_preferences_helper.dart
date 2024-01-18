@@ -8,6 +8,17 @@ class SharedPreferencesHelper {
   }
 
   // Get a string value from SharedPreferences
+  static Future<double?> getDouble(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(key);
+  }
+
+  static Future<void> saveDouble(String key, double value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setDouble(key, value);
+  }
+
+  // Get a string value from SharedPreferences
   static Future<String?> getString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);

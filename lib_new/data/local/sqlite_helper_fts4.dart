@@ -82,7 +82,7 @@ class DatabaseHelperFTS4 {
         map,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      Map<String, Object?>? map2 = song.text.cast();
+      Map<String, Object?>? map2 = Map.from(song.text);
       map2[ID_SONG] = song.id;
       await database.insert(
         TABLE_TEXT,

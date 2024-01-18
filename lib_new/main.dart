@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 import 'constants.dart';
+import 'core/bloc/font_size_bloc/font_size_bloc.dart';
 import 'core/bloc/songs_bloc/songs_bloc.dart';
 import 'core/helpers/shared_preferences_helper.dart';
 import 'core/model/song_detail.dart';
@@ -59,8 +60,13 @@ class MyApp extends StatelessWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider<SongsBloc>(
-                create: (BuildContext context) =>
-                    SongsBloc()..add(SongsRequested())),
+              create: (BuildContext context) =>
+                  SongsBloc()..add(SongsRequested()), //todo do we need it?
+            ),
+            BlocProvider<FontSizeBloc>(
+              create: (BuildContext context) =>
+                  FontSizeBloc()..add(FontSizeRequested()),
+            ),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

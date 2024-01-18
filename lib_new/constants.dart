@@ -49,6 +49,7 @@ class SharedPreferencesKeys {
   static const String allSongsTitleKeys = 'allSongsTitleKeys';
   static const String allSongsTextKeys = 'allSongsTextKeys';
   static const String locale = 'locale';
+  static const String fontSize = 'fontSize';
   // Add more keys as needed
 }
 
