@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import '../../../../constants.dart';
 import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../widget/loading.dart';
@@ -21,7 +22,9 @@ class SongList extends StatelessWidget {
                 color: screensColors['songBook'],
               ),
               TextButton(
-                onPressed: () {}, //todo refresh
+                onPressed: () {
+                  getSongs(context);
+                },
                 child: AnimatedDefaultTextStyle(
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -58,11 +61,21 @@ class SongList extends StatelessWidget {
               childCount: state.songs.length,
             ),
           );
+        } else if (state is SongsErrorState) {
+          getSongs(context);
+
+          return SliverToBoxAdapter(
+            child: ErrorTextOnScreen(),
+          );
         } else {
-          context.read<SongsBloc>().add(SongsRequested());
+          getSongs(context);
           return SliverToBoxAdapter();
         }
       },
     );
+  }
+
+  Future<void> getSongs(BuildContext context) async {
+    context.read<SongsBloc>().add(SongsRequested());
   }
 }

@@ -23,4 +23,25 @@ class SongsRepositoryImpl implements SongsRepository {
     DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
     return databaseHelperFTS4.getSearchResult(query, orderLang);
   }
+
+  @override
+  Future<List<int>> getFavoriteSongs() {
+    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
+    return databaseHelperFTS4.getListFavorites();
+  }
+
+  @override
+  Future<bool> setFavoriteSong(int id, bool isFavorite) {
+    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
+    if (isFavorite)
+      return databaseHelperFTS4.addToFavorites(id);
+    else
+      return databaseHelperFTS4.deleteFromFavorites(id);
+  }
+
+  @override
+  Future<bool> getFavoriteSongStatus(int id) {
+    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
+    return databaseHelperFTS4.getFavoriteStatus(id);
+  }
 }

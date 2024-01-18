@@ -35,7 +35,7 @@ class DatabaseHelperFTS4 {
 
   Future<Database> initDB() async {
     String path = join((await getDatabasesPath()), DB_NAME);
-    await deleteDatabase(path); // - if we need to clean database
+    // await deleteDatabase(path); // - if we need to clean database
     final List<String> allSongsTitleKeys =
         await SharedPreferencesHelper.getList(
                 SharedPreferencesKeys.allSongsTitleKeys) ??
@@ -71,8 +71,8 @@ class DatabaseHelperFTS4 {
 
     //clean tables before inserting new data
 //not sure we need to clean tables every time
-    // database.delete(TABLE_TITLE);
-    // database.delete(TABLE_TEXT);
+    database.delete(TABLE_TITLE);
+    database.delete(TABLE_TEXT);
 
     for (SongDetail song in songs) {
       Map<String, Object?>? map = song.title.cast();
@@ -112,23 +112,31 @@ class DatabaseHelperFTS4 {
 
   /* functions for favorites*/
 
-  Future<void> addToFavorites(int id) async {
+  Future<bool> addToFavorites(int id) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    await database.insert(
+    final int status = await database.insert(
       TABLE_FAVORITES,
       {ID_SONG: id, FAVORITE_STATUS: 1},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    if (status > 0) {
+      return true;
+    } else
+      return false;
   }
 
-  Future<void> deleteFromFavorites(int id) async {
+  Future<bool> deleteFromFavorites(int id) async {
     // Get a reference to the database.
     final Database database = (await db)!;
 
-    await database
+    final int status = await database
         .delete(TABLE_FAVORITES, where: '$ID_SONG = ?', whereArgs: [id]);
+    if (status > 0) {
+      return true;
+    } else
+      return false;
   }
 
   Future<bool> getFavoriteStatus(int id) async {
@@ -141,14 +149,14 @@ class DatabaseHelperFTS4 {
       return false;
   }
 
-  Stream<List<int>> getListFavorites() async* {
+  Future<List<int>> getListFavorites() async {
     final Database? database = await db;
 
     final List<Map<String, dynamic>> items =
         await database!.query(TABLE_FAVORITES, columns: [ID_SONG]);
     List<int> songsIds = items.map((e) => e.values.first as int).toList();
 
-    yield songsIds;
+    return songsIds;
   }
 
 /* functions for full text search */

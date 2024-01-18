@@ -6,7 +6,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../../constants.dart';
 import '../../../../core/model/resources.dart';
 import '../../../../theme.dart';
-import '../../../widget/snackbar.dart';
+import '../../../widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({Key? key, required this.resource, required this.onTap})
@@ -79,7 +79,10 @@ class _VideoCardState extends State<VideoCard> {
       try {
         return YoutubePlayerController.convertUrlToId(link) ?? '';
       } on Exception catch (e) {
-        showSnackbar(context, 'Error'.tr(), 'Can not play video'.tr());
+        showToast(
+            context: context,
+            title: 'Error'.tr(),
+            message: 'Can not play video'.tr());
         log.e(e);
         return '';
       }

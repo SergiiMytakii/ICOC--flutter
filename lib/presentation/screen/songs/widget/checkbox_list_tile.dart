@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../constants.dart';
 import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/helpers/shared_preferences_helper.dart';
-import '../../../widget/snackbar.dart';
+import '../../../widget/toast.dart';
 
 class MyCheckboxListTile extends StatefulWidget {
   final ValueKey key;
@@ -51,8 +51,10 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
               });
             } else {
               if (widget.activeLanguages.length == 1) {
-                showSnackbar(context, '',
-                    'At list 1 label has to be selected'); //todo fix and translate
+                showToast(
+                    context: context,
+                    message:
+                        'At list 1 label has to be selected'); //todo fix and translate
               } else {
                 setState(() {
                   widget.activeLanguages.remove(widget.label);

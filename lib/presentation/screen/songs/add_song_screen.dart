@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants.dart';
-import '../../widget/snackbar.dart';
+import '../../widget/toast.dart';
 
 class AddSongScreen extends StatefulWidget {
   @override
@@ -185,11 +185,14 @@ class _AddSongScreenState extends State<AddSongScreen> {
     if (await canLaunchUrl(uri)) {
       final result = await launchUrl(uri);
       if (result) {
-        showSnackbar(context, '', 'Email has been sent'.tr());
+        showToast(context: context, message: 'Email has been sent'.tr());
         await Future.delayed(Duration(seconds: 1));
         Navigator.pop(context);
       }
     } else
-      showSnackbar(context, 'Error'.tr(), 'Can\'t open Email app'.tr());
+      showToast(
+          context: context,
+          title: 'Error'.tr(),
+          message: 'Can\'t open Email app'.tr());
   }
 }

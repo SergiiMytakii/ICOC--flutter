@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants.dart';
 import '../../widget/custom_button.dart';
-import '../../widget/snackbar.dart';
+import '../../widget/toast.dart';
 
 class AboutAppScreen extends StatefulWidget {
   @override
@@ -29,7 +29,10 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else
-      showSnackbar(context, 'Error'.tr(), 'Can\'t open Email app'.tr());
+      showToast(
+          context: context,
+          title: 'Error'.tr(),
+          message: 'Can\'t open Email app'.tr());
   }
 
   bool isOpened = false;
@@ -151,7 +154,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
   Future<void> _copyToClipboard(String text) async {
     await Clipboard.setData(ClipboardData(text: text));
-    showSnackbar(context, '', 'Copied to clipboard'.tr());
+    showToast(context: context, message: 'Copied to clipboard'.tr());
   }
 
   supportProjectBlock(BuildContext context) {

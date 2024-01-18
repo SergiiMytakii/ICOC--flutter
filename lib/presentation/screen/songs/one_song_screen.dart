@@ -1,6 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
@@ -50,6 +53,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     _controller.addListener(() {
       setState(() {}); // Trigger a rebuild on each animation frame
     });
+
     super.initState();
   }
 
@@ -69,6 +73,9 @@ class _OneSongScreenState extends State<OneSongScreen>
   Widget build(BuildContext context) {
     final SongDetail song =
         ModalRoute.of(context)!.settings.arguments as SongDetail;
+    context.read<FavoriteSongStatusBloc>().add(FavoriteSongStatusRequested(
+          id: song.id,
+        ));
     return DefaultTabController(
       length: countTabs(song),
       child: Scaffold(
@@ -114,14 +121,26 @@ class _OneSongScreenState extends State<OneSongScreen>
             Share.share(text); //todo finish this
           },
         ),
-        IconButton(
-          tooltip: "to favorite".tr(),
-          icon: Icon(
-            //todo
-            true ? Icons.favorite : Icons.favorite_border,
-          ),
-          onPressed: () {
-            //todo
+        BlocBuilder<FavoriteSongStatusBloc, FavoriteSongStatusState>(
+          builder: (context, state) {
+            if (state is GetFavoriteSongStatusSuccessState) {
+              return IconButton(
+                tooltip: "to favorite".tr(),
+                icon: Icon(
+                  state.isFavorite ? Icons.favorite : Icons.favorite_border,
+                ),
+                onPressed: () {
+                  context.read<FavoriteSongStatusBloc>().add(
+                      SetFavoriteSongStatusRequested(
+                          id: song.id, isFavorite: !state.isFavorite));
+                  context
+                      .read<FavoriteSongsListBloc>()
+                      .add(FavoriteSongsListRequested());
+                },
+              );
+            } else {
+              return Icon(Icons.favorite_border);
+            }
           },
         ),
         IconButton(
