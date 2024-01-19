@@ -18,15 +18,15 @@ class MenuItem {
 }
 
 class HomeScreenMenuItems {
-  static List<MenuItem> items(BuildContext context) {
+  static List<MenuItem> items(BuildContext? context) {
     return [
       MenuItem('drawer_song_book'.tr(context: context),
           screensColors['songBook']!, Icons.music_note, Routes.SONGBOOK),
       MenuItem(
           'drawer_first_principles'.tr(context: context),
-          screensColors['firstPrinciples']!,
+          screensColors['bibleStudy']!,
           Icons.import_contacts,
-          Routes.FIRST_PRINCIPLES),
+          Routes.BIBLE_STUDY),
       MenuItem('drawer_q_and_a'.tr(context: context), screensColors['Q&A']!,
           Icons.question_answer, Routes.Q_AND_ANSVERS),
       MenuItem(

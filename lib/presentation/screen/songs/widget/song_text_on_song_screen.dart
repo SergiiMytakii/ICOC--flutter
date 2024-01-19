@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:html/parser.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../core/bloc/font_size_bloc/font_size_bloc.dart';
@@ -36,7 +35,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headlineMedium!
-                        .copyWith(fontSize: state.fontSize ?? 14 + 10),
+                        .copyWith(fontSize: (state.fontSize ?? 14) + 10),
                   ),
                   Container(
                     alignment: Alignment.topRight,
@@ -46,7 +45,9 @@ class SongTextOnSongScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headlineSmall!
-                          .copyWith(fontSize: state.fontSize ?? 14 + 6),
+                          .copyWith(
+                              fontSize: (state.fontSize ?? 14),
+                              fontStyle: FontStyle.italic),
                     ),
                   ),
                   SizedBox(height: 10),

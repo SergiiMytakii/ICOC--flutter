@@ -3,8 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
+import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
+import 'package:icoc/presentation/screen/bible_study/one_topic_screen.dart';
+import 'package:icoc/presentation/screen/home/notifications_screen.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'constants.dart';
@@ -59,79 +64,91 @@ class MyApp extends StatelessWidget {
       initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: myLightTheme,
       dark: myDarkTheme,
-      builder: (light, dark) => OKToast(
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<SongsBloc>(
-              create: (BuildContext context) => SongsBloc(),
-            ),
-            BlocProvider<FontSizeBloc>(
-              create: (BuildContext context) =>
-                  FontSizeBloc()..add(FontSizeRequested()),
-            ),
-            BlocProvider<FavoriteSongsListBloc>(
-              create: (BuildContext context) => FavoriteSongsListBloc(),
-            ),
-            BlocProvider<FavoriteSongStatusBloc>(
-              create: (BuildContext context) => FavoriteSongStatusBloc(),
-            ),
-          ],
-          child: OverlaySupport.global(
-            toastTheme: ToastThemeData(textColor: Colors.white),
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              theme: light,
-              darkTheme: dark,
-              title: 'ICOC',
-              routes: {
-                Routes.HOME: (context) => HomeScreen(),
-                Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
-                Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
-                // Routes.SETTINGS: (context) => GeneralSettingsScreen(),
-                // Routes.SHARE_APP_SCREEN: (context) => ShareAppScreen(),
-                // Routes.TERMS_OF_USE: (context) => TermsOfUseAndPolicy(),
-              },
-              onGenerateRoute: (settings) {
-                switch (settings.name) {
-                  case Routes.SONGBOOK:
-                    return FadePageRoute(
-                      builder: (context) {
-                        return MyBottomNavigationBar();
-                      },
-                    );
-                  case Routes.SHARE_APP_SCREEN:
-                    return FadePageRoute(
-                      builder: (context) {
-                        return ShareAppScreen();
-                      },
-                    );
-                  case Routes.SETTINGS:
-                    return FadePageRoute(
-                      builder: (context) {
-                        return GeneralSettingsScreen();
-                      },
-                    );
-                  case Routes.TERMS_OF_USE:
-                    return FadePageRoute(
-                      builder: (context) {
-                        return TermsOfUseAndPolicy();
-                      },
-                    );
-                  case Routes.ABOUT_APP_SCREEN:
-                    return FadePageRoute(
-                      builder: (context) {
-                        return AboutAppScreen();
-                      },
-                    );
-                  default:
-                    return MaterialPageRoute(
-                        builder: (context) => HomeScreen());
-                }
-              },
-            ),
+      builder: (light, dark) => MultiBlocProvider(
+        providers: [
+          BlocProvider<SongsBloc>(
+            create: (BuildContext context) => SongsBloc(),
+          ),
+          BlocProvider<FontSizeBloc>(
+            create: (BuildContext context) =>
+                FontSizeBloc()..add(FontSizeRequested()),
+          ),
+          BlocProvider<FavoriteSongsListBloc>(
+            create: (BuildContext context) => FavoriteSongsListBloc(),
+          ),
+          BlocProvider<FavoriteSongStatusBloc>(
+            create: (BuildContext context) => FavoriteSongStatusBloc(),
+          ),
+          BlocProvider<BibleStudyBloc>(
+            create: (BuildContext context) => BibleStudyBloc(),
+          ),
+        ],
+        child: OverlaySupport.global(
+          toastTheme: ToastThemeData(textColor: Colors.white),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: light,
+            darkTheme: dark,
+            title: 'ICOC',
+            routes: {
+              Routes.HOME: (context) => HomeScreen(),
+              Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
+              Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
+              Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
+              Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
+              // Routes.SETTINGS: (context) => GeneralSettingsScreen(),
+              // Routes.SHARE_APP_SCREEN: (context) => ShareAppScreen(),
+              // Routes.TERMS_OF_USE: (context) => TermsOfUseAndPolicy(),
+            },
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case Routes.SONGBOOK:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return MyBottomNavigationBar();
+                    },
+                  );
+                case Routes.BIBLE_STUDY:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return BibleStudyScreen();
+                    },
+                  );
+                case Routes.SHARE_APP_SCREEN:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return ShareAppScreen();
+                    },
+                  );
+                case Routes.SETTINGS:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return GeneralSettingsScreen();
+                    },
+                  );
+                case Routes.TERMS_OF_USE:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return TermsOfUseAndPolicy();
+                    },
+                  );
+                case Routes.ABOUT_APP_SCREEN:
+                  return FadePageRoute(builder: (context) {
+                    return AboutAppScreen();
+                  });
+                case Routes.NOTIFICATIONS_SCREEN:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return NotificationsScreen();
+                    },
+                  );
+                default:
+                  return MaterialPageRoute(builder: (context) => HomeScreen());
+              }
+            },
           ),
         ),
       ),

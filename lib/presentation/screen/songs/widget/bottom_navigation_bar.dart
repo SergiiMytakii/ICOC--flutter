@@ -3,13 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/model/song_detail.dart';
-import '../../../widget/fade_page_route.dart';
-import '../../routes/app_routes.dart';
 import '../favorites_screen.dart';
-import '../one_song_screen.dart';
 import '../song_book_screen.dart';
-import '../video_iframe_player_screen.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   @override
@@ -36,6 +31,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        useLegacyColorScheme: false,
         backgroundColor:
             AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor,
         currentIndex: _selectedPageIndex,

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants.dart';
@@ -26,7 +27,6 @@ class _AddSongScreenState extends State<AddSongScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('New song'.tr()),
-        backgroundColor: screensColors['songBook'],
         centerTitle: true,
       ),
       body: Container(
@@ -138,17 +138,18 @@ class _AddSongScreenState extends State<AddSongScreen> {
             SizedBox(
               height: 16,
             ),
-            ElevatedButton(
+            CustomButton(
               onPressed: () => sendEmail(context),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Send'.tr()),
+                  Text(
+                    'Send'.tr(),
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ],
               ),
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(screensColors['songBook']!)),
+              color: screensColors['songBook']!,
             )
           ],
         ),

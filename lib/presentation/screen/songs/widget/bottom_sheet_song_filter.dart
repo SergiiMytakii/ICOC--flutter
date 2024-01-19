@@ -1,23 +1,28 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/helpers/shared_preferences_helper.dart';
-import 'checkbox_list_tile.dart';
 
-class BottomSheetFilter extends StatefulWidget {
+class BottomSheetSongsFilter extends StatefulWidget {
   @override
-  State<BottomSheetFilter> createState() => _BottomSheetFilterState();
+  State<BottomSheetSongsFilter> createState() => _BottomSheetSongsFilterState();
 }
 
-class _BottomSheetFilterState extends State<BottomSheetFilter> {
+class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   bool orderByTitle = false;
   List<String> allLanguages = [];
   List<String> orderLang = [];
   @override
   void initState() {
+    SharedPreferencesHelper.getList(SharedPreferencesKeys.allSongsTitleKeys)
+        .then((value) {
+      allLanguages = value ?? [];
+      setState(() {});
+    });
     SharedPreferencesHelper.getList(SharedPreferencesKeys.orderLanguages)
         .then((value) {
       setState(() {
@@ -28,11 +33,6 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
     SharedPreferencesHelper.getBool(SharedPreferencesKeys.orderByTitle)
         .then((value) {
       orderByTitle = value ?? true;
-      setState(() {});
-    });
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.allSongsTitleKeys)
-        .then((value) {
-      allLanguages = value ?? [];
       setState(() {});
     });
     super.initState();
@@ -54,7 +54,7 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      height: MediaQuery.of(context).size.height / 2.1,
+      height: MediaQuery.of(context).size.height / 1.5,
       child: Column(
         children: [
           Padding(
@@ -94,8 +94,23 @@ class _BottomSheetFilterState extends State<BottomSheetFilter> {
               scrollDirection: Axis.vertical,
               onReorder: _onReorder,
               children: List.generate(allLanguages.length, (index) {
-                return MyCheckboxListTile(allLanguages, orderLang,
-                    allLanguages[index], ValueKey('$index'));
+                return MyCheckboxListTile(
+                  allLanguages: allLanguages,
+                  activeLanguages: orderLang,
+                  trailingIcon: Icon(
+                    Icons.keyboard_double_arrow_up,
+                    color: screensColors['songBook'],
+                  ),
+                  color: screensColors['songBook']!,
+                  label: allLanguages[index],
+                  key: ValueKey('$index'),
+                  callback: (List<String> langsToSave) {
+                    SharedPreferencesHelper.saveList(
+                            SharedPreferencesKeys.orderLanguages, langsToSave)
+                        .then((value) =>
+                            context.read<SongsBloc>().add(SongsRequested()));
+                  },
+                );
               }),
             ),
           ),

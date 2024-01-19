@@ -2,10 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:icoc/presentation/screen/routes/app_routes.dart';
 
 import '../../widget/menu_item_card.dart';
 import 'my_drawer.dart';
-import 'notifications_screen.dart';
 import 'widget/menu_items.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final CarouselController carouselController;
   late AnimationController animationController;
-  late MenuItem currentItem;
+  MenuItem currentItem = HomeScreenMenuItems.items(null).first;
   double _angle = 0;
 
   bool isDrawerOpen = false;
@@ -44,7 +44,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      setState(() {});
+      setState(() {
+        items = HomeScreenMenuItems.items(context);
+      });
     });
 
     carouselController = CarouselController();
@@ -56,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    items = HomeScreenMenuItems.items(context);
     return Scaffold(
       body: buildBody(context),
     );
@@ -65,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen>
   Widget buildBody(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    currentItem = items[0];
     return Stack(
       children: [
         GestureDetector(
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         Positioned(
           top: 70,
-          left: 20,
+          left: 16,
           child: Builder(builder: (BuildContext scaffoldContext) {
             return GestureDetector(
                 child: isDrawerOpen
@@ -146,7 +146,9 @@ class _HomeScreenState extends State<HomeScreen>
                 autoPlayAnimationDuration: const Duration(milliseconds: 1200),
                 scrollDirection: Axis.vertical,
                 onPageChanged: (index, reason) {
-                  currentItem = items[index];
+                  setState(() {
+                    currentItem = items[index];
+                  });
                   HapticFeedback.heavyImpact();
                   Feedback.forLongPress(context);
                 },
@@ -161,6 +163,8 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         if (isDrawerOpen) Positioned(child: MyDrawer(animationController)),
+        Positioned(
+            bottom: 16, left: 16, child: _buildNotificationsIcon(context))
       ],
     );
   }
@@ -169,9 +173,13 @@ class _HomeScreenState extends State<HomeScreen>
     final int amountNotifications = 1;
     return Stack(children: [
       IconButton(
-        icon: Icon(Icons.notifications_none_outlined),
-        onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => NotificationsScreen())),
+        icon: Icon(
+          Icons.notifications_none_outlined,
+          color: Colors.white,
+          size: 26,
+        ),
+        onPressed: () =>
+            Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
       ),
       amountNotifications > 0
           ? Positioned(
@@ -187,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   navigateToScreen(BuildContext context) {
-    Navigator.pushNamed(context, currentItem.routeName);
+    Navigator.pushNamed(context, currentItem?.routeName ?? '');
   }
 }
 

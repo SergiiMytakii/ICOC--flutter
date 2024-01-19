@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../widget/modal_bottom_sheet.dart';
 import '../../routes/app_routes.dart';
-import 'bottom_sheet_filter.dart';
+import 'bottom_sheet_song_filter.dart';
 
 class IosAppbar extends StatelessWidget {
   IosAppbar(
@@ -82,13 +82,14 @@ IconButton buildFilterButton(BuildContext context) {
     tooltip: 'icon_button_actions_app_bar_filter'.tr(),
     onPressed: () {
       showModalBottomSheet(
+          scrollControlDisabledMaxHeightRatio: 2,
           context: context,
           backgroundColor: Colors.transparent,
           builder: (BuildContext context) {
             return ModalBottomSheet(
-                height: MediaQuery.of(context).size.height / 1.8,
+                height: MediaQuery.of(context).size.height / 1.4,
                 blurBackground: false,
-                child: BottomSheetFilter());
+                child: BottomSheetSongsFilter());
           });
     },
   );

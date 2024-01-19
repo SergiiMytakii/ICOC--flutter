@@ -12,7 +12,7 @@ const Map<String, Color> screensColors = {
   'general': Color(0xff6a4c93),
   'songBook': Color(0xffff595e),
   'news': Color(0xffffca3a),
-  'firstPrinciples': Color(0xff8ac926),
+  'bibleStudy': Color(0xff8ac926),
   'Q&A': Color(0xff1982c4)
 };
 // final Map<String, Locale> languagesLocales = {
@@ -50,6 +50,8 @@ class SharedPreferencesKeys {
   static const String allSongsTextKeys = 'allSongsTextKeys';
   static const String locale = 'locale';
   static const String fontSize = 'fontSize';
+  static const String bibleStudyLanguages = 'bibleStudyLanguages';
+  static const String bibleStudyAllLanguages = 'bibleStudyAllLanguages';
   // Add more keys as needed
 }
 

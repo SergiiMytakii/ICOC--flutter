@@ -4,7 +4,8 @@ class Routes {
   static const Q_AND_ANSVERS = '/q_and_a';
   static const ADD_SONG_SCREEN = '/add_song_screen';
   static const ICOC_RU_NEWS = '/news';
-  static const FIRST_PRINCIPLES = '/first_principles';
+  static const BIBLE_STUDY = '/bible_study_screen';
+  static const NOTIFICATIONS_SCREEN = '/notifications_screen';
   static const SETTINGS = '/general_settings';
   static const ONE_SONG_SCREEN = '/one_song_screen';
   static const ABOUT_APP_SCREEN = '/about_app_screen';

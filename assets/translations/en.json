@@ -119,6 +119,8 @@
           "From everywhere:": "From everywhere:",
           "Menu": "Menu",
           "App language": "App language",
-          "Oops.. something went wrong..": "Oops.. something went wrong.."
+          "Oops.. something went wrong..": "Oops.. something went wrong..",
+          "At list 1 label has to be selected": "At list 1 label has to be selected",
+          "Filter languages": "Filter languages"
         
         }
