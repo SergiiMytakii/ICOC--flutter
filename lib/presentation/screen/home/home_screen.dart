@@ -170,13 +170,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildNotificationsIcon(BuildContext context) {
-    final int amountNotifications = 1;
+    final int amountNotifications = 0;
     return Stack(children: [
       IconButton(
         icon: Icon(
           Icons.notifications_none_outlined,
           color: Colors.white,
-          size: 26,
+          size: 36,
         ),
         onPressed: () =>
             Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen>
               top: 10,
               child: CircleAvatar(
                 backgroundColor: Colors.red,
-                radius: 8,
+                radius: 10,
                 child: FittedBox(child: Text(amountNotifications.toString())),
               ))
           : Container()
@@ -195,13 +195,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   navigateToScreen(BuildContext context) {
-    Navigator.pushNamed(context, currentItem?.routeName ?? '');
-  }
-}
-
-class VerseOfTheDay extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text('Some Verse From Bible');
+    Navigator.pushNamed(context, currentItem.routeName);
   }
 }

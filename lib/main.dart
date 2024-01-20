@@ -6,10 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_topic_screen.dart';
 import 'package:icoc/presentation/screen/home/notifications_screen.dart';
+import 'package:icoc/presentation/screen/q&a/one_q&a_screen.dart';
+import 'package:icoc/presentation/screen/q&a/q&a_screen.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'constants.dart';
@@ -82,6 +85,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<BibleStudyBloc>(
             create: (BuildContext context) => BibleStudyBloc(),
           ),
+          BlocProvider<QandABloc>(
+            create: (BuildContext context) => QandABloc(),
+          ),
         ],
         child: OverlaySupport.global(
           toastTheme: ToastThemeData(textColor: Colors.white),
@@ -99,6 +105,7 @@ class MyApp extends StatelessWidget {
               Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
               Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
               Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
+              Routes.ONE_Q_AND_A_SCREEN: (context) => OneQandAScreen(),
               // Routes.SETTINGS: (context) => GeneralSettingsScreen(),
               // Routes.SHARE_APP_SCREEN: (context) => ShareAppScreen(),
               // Routes.TERMS_OF_USE: (context) => TermsOfUseAndPolicy(),
@@ -115,6 +122,12 @@ class MyApp extends StatelessWidget {
                   return FadePageRoute(
                     builder: (context) {
                       return BibleStudyScreen();
+                    },
+                  );
+                case Routes.Q_AND_ANSVERS:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return QuestionsAndAnwers();
                     },
                   );
                 case Routes.SHARE_APP_SCREEN:

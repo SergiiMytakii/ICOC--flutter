@@ -33,12 +33,11 @@ Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics) async {
       SharedPreferencesKeys.bibleStudyLanguages);
   //if this the first run we store languages
   // we need all languages  for filtering
+  Set<String> allKeys = {};
+  topics.forEach((topic) => allKeys.add(topic.lang));
+  SharedPreferencesHelper.saveList(
+      SharedPreferencesKeys.bibleStudyAllLanguages, allKeys.toList());
   if (storedLanguages == null) {
-    Set<String> allKeys = {};
-    topics.forEach((topic) => allKeys.add(topic.lang));
-
-    SharedPreferencesHelper.saveList(
-        SharedPreferencesKeys.bibleStudyAllLanguages, allKeys.toList());
     SharedPreferencesHelper.saveList(
         SharedPreferencesKeys.bibleStudyLanguages, allKeys.toList());
     return topics;

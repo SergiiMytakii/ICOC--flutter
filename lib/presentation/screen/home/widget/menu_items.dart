@@ -48,8 +48,8 @@ class HomeScreenMenuItems {
         //   screensColors['general']!,
         // ]
       ),
-      MenuItem('drawer_news'.tr(context: context), screensColors['news']!,
-          Icons.language, Routes.MAIN_NEWS),
+      MenuItem('Say Thank you!'.tr(context: context), screensColors['news']!,
+          Icons.thumb_up_alt, Routes.MAIN_NEWS),
     ];
   }
 }

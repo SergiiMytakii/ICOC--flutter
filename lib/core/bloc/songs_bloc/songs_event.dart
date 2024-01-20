@@ -54,7 +54,7 @@ class SearchSongRequested extends SongsEvent {
         filteredByNumber = await filterSongs(filteredByNumber);
         filteredByNumber.forEach((song) {
           song.searchText = song.text.values.first;
-          song.searchTitle = song.text.values.first;
+          song.searchTitle = song.title.values.first;
         });
         yield SearchSongsSuccessState(filteredByNumber);
       } else {
