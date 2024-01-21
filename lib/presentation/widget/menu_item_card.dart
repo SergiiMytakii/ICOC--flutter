@@ -1,11 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/home/widget/menu_items.dart';
-
 class MenuItemCard extends StatelessWidget {
-  MenuItemCard(this.item);
-  final MenuItem item;
+  MenuItemCard(
+    this.title,
+    this.color,
+    this.icon,
+    this.routeName,
+  );
+  final String title;
+  final Color color;
+  final IconData icon;
+  final String routeName;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +24,9 @@ class MenuItemCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(
-              item.icon,
+              icon,
               size: 50,
-              color: item.color,
+              color: color,
               shadows: [
                 BoxShadow(
                   color: Colors.white,
@@ -34,11 +41,11 @@ class MenuItemCard extends StatelessWidget {
             ),
             Expanded(
               child: AutoSizeText(
-                item.title,
+                title.tr(context: context),
                 maxLines: 3,
                 style: TextStyle(
                   fontSize: 32,
-                  color: item.color,
+                  color: color,
                   fontWeight: FontWeight.bold,
                   shadows: [
                     BoxShadow(

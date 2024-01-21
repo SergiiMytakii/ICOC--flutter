@@ -52,6 +52,7 @@ class SharedPreferencesKeys {
   static const String fontSize = 'fontSize';
   static const String bibleStudyLanguages = 'bibleStudyLanguages';
   static const String bibleStudyAllLanguages = 'bibleStudyAllLanguages';
+  static const String notifications = 'notifications';
   // Add more keys as needed
 }
 

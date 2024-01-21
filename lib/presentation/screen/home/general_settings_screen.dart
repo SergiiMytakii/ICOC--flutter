@@ -9,7 +9,12 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 import '../../widget/modal_bottom_sheet.dart';
 
-class GeneralSettingsScreen extends StatelessWidget {
+class GeneralSettingsScreen extends StatefulWidget {
+  @override
+  State<GeneralSettingsScreen> createState() => _GeneralSettingsScreenState();
+}
+
+class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     //  Localizations.localeOf(context);
@@ -84,9 +89,10 @@ class GeneralSettingsScreen extends StatelessWidget {
                               child: ListView(
                                 children: languages.map((language) {
                                   return ListTile(
-                                    onTap: () {
+                                    onTap: () async {
+                                      await context.setLocale(Locale(language));
+
                                       Navigator.pop(context);
-                                      context.setLocale(Locale(language));
                                     },
                                     title: Text(language),
                                     contentPadding:

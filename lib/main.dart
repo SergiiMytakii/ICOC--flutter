@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
@@ -87,6 +88,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<QandABloc>(
             create: (BuildContext context) => QandABloc(),
+          ),
+          BlocProvider<NotificationsBloc>(
+            create: (BuildContext context) => NotificationsBloc(),
           ),
         ],
         child: OverlaySupport.global(

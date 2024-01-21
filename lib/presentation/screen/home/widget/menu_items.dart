@@ -1,6 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../constants.dart';
 import '../../routes/app_routes.dart';
 
@@ -18,19 +16,16 @@ class MenuItem {
 }
 
 class HomeScreenMenuItems {
-  static List<MenuItem> items(BuildContext? context) {
+  static List<MenuItem> items() {
     return [
-      MenuItem('drawer_song_book'.tr(context: context),
-          screensColors['songBook']!, Icons.music_note, Routes.SONGBOOK),
+      MenuItem('drawer_song_book', screensColors['songBook']!, Icons.music_note,
+          Routes.SONGBOOK),
+      MenuItem('drawer_first_principles', screensColors['bibleStudy']!,
+          Icons.import_contacts, Routes.BIBLE_STUDY),
+      MenuItem('drawer_q_and_a', screensColors['Q&A']!, Icons.question_answer,
+          Routes.Q_AND_ANSVERS),
       MenuItem(
-          'drawer_first_principles'.tr(context: context),
-          screensColors['bibleStudy']!,
-          Icons.import_contacts,
-          Routes.BIBLE_STUDY),
-      MenuItem('drawer_q_and_a'.tr(context: context), screensColors['Q&A']!,
-          Icons.question_answer, Routes.Q_AND_ANSVERS),
-      MenuItem(
-        'Q&A with Andy Fleming'.tr(context: context),
+        'Q&A with Andy Fleming',
         screensColors['news']!,
         Icons.question_answer, Routes.PLAYLISTS_PLAYER,
         // arguments: [
@@ -40,7 +35,7 @@ class HomeScreenMenuItems {
         // ]
       ),
       MenuItem(
-        'Bible school'.tr(context: context), screensColors['general']!,
+        'Bible school', screensColors['general']!,
         Icons.video_collection, Routes.PLAYLISTS_PLAYER,
         // arguments: [
         //   BIBLE_SCHOOL_PLAYLIST_ID,
@@ -48,8 +43,8 @@ class HomeScreenMenuItems {
         //   screensColors['general']!,
         // ]
       ),
-      MenuItem('Say Thank you!'.tr(context: context), screensColors['news']!,
-          Icons.thumb_up_alt, Routes.MAIN_NEWS),
+      MenuItem('Say Thank you!', screensColors['news']!, Icons.thumb_up_alt,
+          Routes.MAIN_NEWS),
     ];
   }
 }

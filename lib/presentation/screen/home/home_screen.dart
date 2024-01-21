@@ -2,6 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
+import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/screen/routes/app_routes.dart';
 
 import '../../widget/menu_item_card.dart';
@@ -17,7 +20,8 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final CarouselController carouselController;
   late AnimationController animationController;
-  MenuItem currentItem = HomeScreenMenuItems.items(null).first;
+  List<MenuItem> items = HomeScreenMenuItems.items();
+  MenuItem currentItem = HomeScreenMenuItems.items().first;
   double _angle = 0;
 
   bool isDrawerOpen = false;
@@ -40,13 +44,12 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  List<MenuItem> items = [];
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      setState(() {
-        items = HomeScreenMenuItems.items(context);
-      });
+      context
+          .read<NotificationsBloc>()
+          .add(NotificationsListRequested(context.locale.languageCode));
     });
 
     carouselController = CarouselController();
@@ -158,7 +161,14 @@ class _HomeScreenState extends State<HomeScreen>
                   });
                 },
               ),
-              items: items.map((item) => MenuItemCard(item)).toList(),
+              items: items
+                  .map((item) => MenuItemCard(
+                        item.title,
+                        item.color,
+                        item.icon,
+                        item.routeName,
+                      ))
+                  .toList(),
             ),
           ),
         ),
@@ -170,31 +180,47 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildNotificationsIcon(BuildContext context) {
-    final int amountNotifications = 0;
-    return Stack(children: [
-      IconButton(
-        icon: Icon(
-          Icons.notifications_none_outlined,
-          color: Colors.white,
-          size: 36,
-        ),
-        onPressed: () =>
-            Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
-      ),
-      amountNotifications > 0
-          ? Positioned(
-              left: 10,
-              top: 10,
-              child: CircleAvatar(
-                backgroundColor: Colors.red,
-                radius: 10,
-                child: FittedBox(child: Text(amountNotifications.toString())),
-              ))
-          : Container()
-    ]);
+    return BlocBuilder<NotificationsBloc, NotificationsState>(
+      builder: (context, state) {
+        int unreadNotificationsCount = 0;
+        if (state is GetNotificationsListSuccessState) {
+          unreadNotificationsCount =
+              countUnreadNotifications(state.notifications);
+        }
+        return Stack(children: [
+          IconButton(
+            icon: Icon(
+              Icons.notifications_none_outlined,
+              color: Colors.white,
+              size: 36,
+            ),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
+          ),
+          state is GetNotificationsListSuccessState &&
+                  unreadNotificationsCount > 0
+              ? Positioned(
+                  left: 10,
+                  top: 10,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 10,
+                    child: FittedBox(
+                      child: Text(unreadNotificationsCount.toString()),
+                    ),
+                  ),
+                )
+              : Container()
+        ]);
+      },
+    );
   }
 
   navigateToScreen(BuildContext context) {
     Navigator.pushNamed(context, currentItem.routeName);
+  }
+
+  int countUnreadNotifications(List<NotificationsModel> notifications) {
+    return notifications.where((element) => element.isRead == false).length;
   }
 }
