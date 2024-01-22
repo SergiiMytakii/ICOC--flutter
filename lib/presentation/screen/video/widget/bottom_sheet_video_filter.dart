@@ -1,33 +1,30 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/helpers/shared_preferences_helper.dart';
 
-class BottomSheetBibleStudyFilter extends StatefulWidget {
+class BottomSheetVideoFilter extends StatefulWidget {
   @override
-  State<BottomSheetBibleStudyFilter> createState() =>
-      _BottomSheetBibleStudyFilterState();
+  State<BottomSheetVideoFilter> createState() => _BottomSheetVideoFilterState();
 }
 
-class _BottomSheetBibleStudyFilterState
-    extends State<BottomSheetBibleStudyFilter> {
+class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
   List<String> languages = [];
   List<String> allLanguages = [];
   @override
   void initState() {
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.bibleStudyLanguages)
+    SharedPreferencesHelper.getList(SharedPreferencesKeys.videosLanguages)
         .then((value) {
       setState(() {
         languages = value ?? [];
         print(languages);
       });
     });
-    SharedPreferencesHelper.getList(
-            SharedPreferencesKeys.bibleStudyAllLanguages)
+    SharedPreferencesHelper.getList(SharedPreferencesKeys.videosAllLanguages)
         .then((value) {
       setState(() {
         allLanguages = value ?? [];
@@ -60,15 +57,13 @@ class _BottomSheetBibleStudyFilterState
                 return MyCheckboxListTile(
                     allLanguages: allLanguages,
                     activeLanguages: languages,
-                    color: ScreenColors.bibleStudy,
+                    color: ScreenColors.video,
                     label: allLanguages[index],
                     callback: (List<String> activeLanguages) {
                       SharedPreferencesHelper.saveList(
-                          SharedPreferencesKeys.bibleStudyLanguages,
+                          SharedPreferencesKeys.videosLanguages,
                           activeLanguages);
-                      context
-                          .read<BibleStudyBloc>()
-                          .add(BibleStudyListRequested());
+                      context.read<VideoBloc>().add(VideoListRequested());
                     },
                     key: ValueKey('$index'));
               }),

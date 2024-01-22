@@ -58,7 +58,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             Text(
               'ICOC',
               style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: screensColors['general'], fontWeight: FontWeight.w700),
+                  color: ScreenColors.general, fontWeight: FontWeight.w700),
             ),
             SizedBox(
               height: 20,
@@ -274,7 +274,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             Flexible(
               child: Row(
                 children: [
-                  Text('USDT wallet:'.tr()),
+                  Text('USDT TRC20:'.tr()),
                   SizedBox(
                     width: 12,
                   ),

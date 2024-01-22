@@ -8,7 +8,7 @@ import '../../../../constants.dart';
 import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../../widget/loading.dart';
-import '../../routes/app_routes.dart';
+import '../../../routes/app_routes.dart';
 import '../one_song_screen.dart';
 
 class DataSearchResults extends StatefulWidget {
@@ -71,8 +71,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: screensColors['songBook'],
-                  fontWeight: FontWeight.w900))
+                  color: ScreenColors.songBook, fontWeight: FontWeight.w900))
           : TextSpan(
               text: '$word ',
             );
@@ -100,8 +99,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
           ? TextSpan(
               text: trimText(word),
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: screensColors['songBook'],
-                  fontWeight: FontWeight.w900))
+                  color: ScreenColors.songBook, fontWeight: FontWeight.w900))
           : TextSpan(
               text: '${trimText(word)} ',
             );

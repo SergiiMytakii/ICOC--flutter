@@ -23,8 +23,8 @@ class OneLessonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fontSozeAdjust =
-        FontSizeAdjustBottomSheet(context: context, color: 'firstPrinciples');
+    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+        context: context, color: ScreenColors.bibleStudy);
     final lesson = ModalRoute.of(context)!.settings.arguments as Lesson;
 
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(

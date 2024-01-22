@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
-import 'package:icoc/presentation/screen/routes/app_routes.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
 class QuestionsAndAnwers extends StatefulWidget {
@@ -72,7 +73,7 @@ class _QuestionsAndAnwersState extends State<QuestionsAndAnwers> {
             } else if (state is QandALoadingState) {
               return Loading();
             } else if (state is QandAErrorState) {
-              return ErrorWidget(state.message); //todo check
+              return ErrorTextOnScreen(message: state.message);
             } else {
               return Container();
             }

@@ -8,7 +8,7 @@ import 'modal_bottom_sheet.dart';
 
 class FontSizeAdjustBottomSheet {
   final BuildContext context;
-  final String color;
+  final Color color;
 
   FontSizeAdjustBottomSheet({
     required this.context,
@@ -56,8 +56,8 @@ class FontSizeAdjustBottomSheet {
                             Container(
                               width: MediaQuery.of(context).size.width - 200,
                               child: Slider.adaptive(
-                                activeColor: screensColors[color],
-                                inactiveColor: screensColors[color],
+                                activeColor: color,
+                                inactiveColor: color,
                                 label: 'Font size'.tr(),
                                 value: state.fontSize ?? 14,
                                 min: 14,

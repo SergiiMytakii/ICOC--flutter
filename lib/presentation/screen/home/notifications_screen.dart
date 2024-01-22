@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/model/notifications_model.dart';
+import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
 import '../../../constants.dart';
@@ -65,7 +66,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             child: CircleAvatar(
                               backgroundColor:
                                   !state.notifications[index].isRead
-                                      ? screensColors['songBook']
+                                      ? ScreenColors.songBook
                                       : Colors.transparent,
                               child: Container(
                                   decoration: BoxDecoration(
@@ -73,7 +74,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     border: Border.all(
                                         color: !state
                                                 .notifications[index].isRead
-                                            ? screensColors['songBook']!
+                                            ? ScreenColors.songBook
                                             : Theme.of(context).primaryColor),
                                   ),
                                   child: Center(child: Text('i'))),
@@ -99,7 +100,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             } else if (state is NotificationsLoadingState) {
               return Loading();
             } else if (state is NotificationsErrorState) {
-              return ErrorWidget(state.message);
+              return ErrorTextOnScreen(message: state.message);
             } else {
               return Container();
             }

@@ -107,7 +107,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                             ),
                           ),
                           onPressed: () => Share.share(link),
-                          color: screensColors['general']!),
+                          color: ScreenColors.general),
                       CustomButton(
                           onPressed: () => setState(() {
                                 if (store == 'google_play') {
@@ -121,7 +121,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                             'QR code'.tr(),
                             style: TextStyle(color: Colors.white),
                           ),
-                          color: screensColors['general']!),
+                          color: ScreenColors.general),
                     ],
                   ),
                 ),

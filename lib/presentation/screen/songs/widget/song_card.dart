@@ -5,7 +5,7 @@ import 'package:html/parser.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/model/song_detail.dart';
-import '../../routes/app_routes.dart';
+import '../../../routes/app_routes.dart';
 import '../one_song_screen.dart';
 
 class SongCard extends StatelessWidget {
@@ -60,7 +60,7 @@ class SongCard extends StatelessWidget {
             trailing: song.resources != null && song.resources!.isNotEmpty
                 ? Icon(
                     Icons.play_circle,
-                    color: screensColors['songBook'],
+                    color: ScreenColors.songBook,
                   )
                 : Container(
                     height: 1,

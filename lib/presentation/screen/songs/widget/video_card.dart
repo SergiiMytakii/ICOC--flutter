@@ -60,7 +60,7 @@ class _VideoCardState extends State<VideoCard> {
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   widget.resource.lang,
-                  style: TextStyle(color: screensColors['songBook']!),
+                  style: TextStyle(color: ScreenColors.songBook),
                 ),
               )
             ],

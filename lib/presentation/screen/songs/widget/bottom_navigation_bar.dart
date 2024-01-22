@@ -35,7 +35,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         backgroundColor:
             AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor,
         currentIndex: _selectedPageIndex,
-        selectedItemColor: screensColors['songBook']!.withOpacity(0.8),
+        selectedItemColor: ScreenColors.songBook.withOpacity(0.8),
         onTap: (index) {
           _selectPage(index);
         },

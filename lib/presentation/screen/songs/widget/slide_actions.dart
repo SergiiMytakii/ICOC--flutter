@@ -21,7 +21,7 @@ class DeleteFromFavorites extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlidableAction(
         label: 'delete from favorites'.tr(),
-        backgroundColor: screensColors['songBook']!,
+        backgroundColor: ScreenColors.songBook,
         icon: Icons.favorite_border,
         onPressed: (context) {
           context.read<FavoriteSongStatusBloc>().add(
@@ -46,7 +46,7 @@ class AddToFavorites extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlidableAction(
         label: 'to favorite'.tr(),
-        backgroundColor: screensColors['songBook']!,
+        backgroundColor: ScreenColors.songBook,
         icon: Icons.favorite_border,
         onPressed: (context) {
           context.read<FavoriteSongStatusBloc>().add(

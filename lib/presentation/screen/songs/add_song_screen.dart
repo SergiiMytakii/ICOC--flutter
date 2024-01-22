@@ -57,7 +57,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: screensColors['songBook']!)),
+                    borderSide: BorderSide(color: ScreenColors.songBook)),
                 disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 enabledBorder: OutlineInputBorder(
@@ -80,7 +80,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: screensColors['songBook']!)),
+                    borderSide: BorderSide(color: ScreenColors.songBook)),
                 disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 enabledBorder: OutlineInputBorder(
@@ -105,7 +105,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black87)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: screensColors['songBook']!)),
+                    borderSide: BorderSide(color: ScreenColors.songBook)),
                 disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 enabledBorder: OutlineInputBorder(
@@ -128,7 +128,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: screensColors['songBook']!)),
+                    borderSide: BorderSide(color: ScreenColors.songBook)),
                 disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
                 enabledBorder: OutlineInputBorder(
@@ -149,7 +149,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                   ),
                 ],
               ),
-              color: screensColors['songBook']!,
+              color: ScreenColors.songBook,
             )
           ],
         ),

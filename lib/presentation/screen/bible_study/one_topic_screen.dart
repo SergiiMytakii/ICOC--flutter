@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/model/bible_study.dart';
-import 'package:icoc/presentation/screen/routes/app_routes.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 
 class OneTopicScreen extends StatelessWidget {
   OneTopicScreen({Key? key}) : super(key: key);

@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
-import 'package:icoc/presentation/screen/routes/app_routes.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
@@ -80,7 +81,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
             } else if (state is BibleStudyLoadingState) {
               return Loading();
             } else if (state is BibleStudyErrorState) {
-              return ErrorWidget(state.message);
+              return ErrorTextOnScreen(message: state.message);
             } else {
               return Container();
             }

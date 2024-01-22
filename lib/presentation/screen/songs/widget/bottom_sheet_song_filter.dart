@@ -85,7 +85,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
             style: Theme.of(context)
                 .textTheme
                 .titleLarge!
-                .copyWith(color: screensColors['songBook']),
+                .copyWith(color: ScreenColors.songBook),
             textAlign: TextAlign.center,
           )),
           Expanded(
@@ -99,9 +99,9 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                   activeLanguages: orderLang,
                   trailingIcon: Icon(
                     Icons.keyboard_double_arrow_up,
-                    color: screensColors['songBook'],
+                    color: ScreenColors.songBook,
                   ),
-                  color: screensColors['songBook']!,
+                  color: ScreenColors.songBook,
                   label: allLanguages[index],
                   key: ValueKey('$index'),
                   callback: (List<String> langsToSave) {
@@ -120,7 +120,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   _sortButton(BuildContext context, String title, bool active) {
-    Color activeColor = screensColors['songBook']!;
+    Color activeColor = ScreenColors.songBook;
     Color unActive = Theme.of(context).canvasColor;
     return InkWell(
       onTap: () {

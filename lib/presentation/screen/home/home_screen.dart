@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/model/notifications_model.dart';
-import 'package:icoc/presentation/screen/routes/app_routes.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 
 import '../../widget/menu_item_card.dart';
 import 'my_drawer.dart';
@@ -91,7 +91,8 @@ class _HomeScreenState extends State<HomeScreen>
                       )
                     : Text(
                         'Menu'.tr(context: context),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                 onTap: () => toggleDrawer());
           }),
@@ -108,11 +109,11 @@ class _HomeScreenState extends State<HomeScreen>
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    Colors.white, // Adjust the color for the shining effect
+                    Colors.white,
                     Colors.transparent,
                   ],
                   stops: [0.85, 1],
-                  center: Alignment(0, 0), // Adjust the position of the shine
+                  center: Alignment(0, 0),
                   focal: Alignment(0, 0),
                   focalRadius: 0.15,
                 ),
@@ -129,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
         Positioned(
-          left: screenSize.height * 0.08,
+          left: screenSize.height * 0.09,
           width: screenSize.width,
           top: screenSize.height * 0.18,
           child: GestureDetector(
@@ -161,14 +162,7 @@ class _HomeScreenState extends State<HomeScreen>
                   });
                 },
               ),
-              items: items
-                  .map((item) => MenuItemCard(
-                        item.title,
-                        item.color,
-                        item.icon,
-                        item.routeName,
-                      ))
-                  .toList(),
+              items: items.map((item) => MenuItemCard(item)).toList(),
             ),
           ),
         ),
@@ -187,30 +181,31 @@ class _HomeScreenState extends State<HomeScreen>
           unreadNotificationsCount =
               countUnreadNotifications(state.notifications);
         }
-        return Stack(children: [
+        return Stack(alignment: AlignmentDirectional.center, children: [
+          state is GetNotificationsListSuccessState &&
+                  unreadNotificationsCount > 0
+              ? Positioned(
+                  left: 13,
+                  bottom: 20,
+                  width: 26,
+                  height: 20,
+                  child: Container(
+                    color: Colors.red,
+                    child: FittedBox(
+                      child: Text(unreadNotificationsCount.toString()),
+                    ),
+                  ),
+                )
+              : Container(),
           IconButton(
             icon: Icon(
-              Icons.notifications_none_outlined,
+              Icons.messenger_outline,
               color: Colors.white,
               size: 36,
             ),
             onPressed: () =>
                 Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
           ),
-          state is GetNotificationsListSuccessState &&
-                  unreadNotificationsCount > 0
-              ? Positioned(
-                  left: 10,
-                  top: 10,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 10,
-                    child: FittedBox(
-                      child: Text(unreadNotificationsCount.toString()),
-                    ),
-                  ),
-                )
-              : Container()
         ]);
       },
     );

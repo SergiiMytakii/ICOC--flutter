@@ -67,7 +67,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             } else if (state is FavoriteSongsLoadingState) {
               return Center(
                 child: Loading(
-                  color: screensColors['songBook'],
+                  color: ScreenColors.songBook,
                 ),
               );
             } else if (state is FavoriteSongsErrorState) {

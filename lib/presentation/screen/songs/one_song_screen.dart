@@ -38,8 +38,6 @@ class _OneSongScreenState extends State<OneSongScreen>
   bool videoIsPlaying = false;
   late YoutubePlayerController youtubePlayerController;
 
-  final ValueNotifier<double> playerExpandProgress = ValueNotifier(80);
-
   @override
   void initState() {
     _controller = AnimationController(
@@ -98,8 +96,8 @@ class _OneSongScreenState extends State<OneSongScreen>
     BuildContext context,
     SongDetail song,
   ) {
-    var fontSizeAdjust =
-        FontSizeAdjustBottomSheet(context: context, color: 'songBook');
+    var fontSizeAdjust = FontSizeAdjustBottomSheet(
+        context: context, color: ScreenColors.songBook);
     return AppBar(
       bottom: TabBar(
         isScrollable: true,
@@ -170,7 +168,7 @@ class _OneSongScreenState extends State<OneSongScreen>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            color: screensColors['songBook'],
+            color: ScreenColors.songBook,
             onPressed: () {
               if (miniPlayerOpened) {
                 _controller.reverse();
@@ -188,7 +186,7 @@ class _OneSongScreenState extends State<OneSongScreen>
                 miniPlayerOpened ? Icons.arrow_downward : Icons.arrow_upward),
           ),
           IconButton(
-              color: screensColors['songBook'],
+              color: ScreenColors.songBook,
               onPressed: () {
                 youtubePlayerController.stopVideo();
                 youtubePlayerController.close();

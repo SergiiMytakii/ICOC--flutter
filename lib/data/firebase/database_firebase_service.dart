@@ -9,6 +9,7 @@ class DatabaseServiceFirebase {
   late final CollectionReference songCollection;
   late final CollectionReference bibleStudyCollection;
   late final CollectionReference notificationsCollection;
+  late final CollectionReference videoCollection;
 
   DatabaseServiceFirebase() {
     db.settings = const Settings(persistenceEnabled: true);
@@ -16,6 +17,7 @@ class DatabaseServiceFirebase {
     songCollection = db.collection('Songs');
     bibleStudyCollection = db.collection('BibleStudy');
     notificationsCollection = db.collection('Notifications');
+    videoCollection = db.collection('Video');
     //print(songCollection.get().);
   }
 
@@ -35,6 +37,11 @@ class DatabaseServiceFirebase {
 
   Future getNotifications() async {
     final QuerySnapshot snapshot = await notificationsCollection.get();
+    return snapshot;
+  }
+
+  Future getVideos() async {
+    final QuerySnapshot snapshot = await videoCollection.get();
     return snapshot;
   }
 }

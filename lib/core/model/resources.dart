@@ -24,6 +24,10 @@ class Resources {
         thumbnail: json['thumbnail'],
         artist: json['artist']);
   }
+  static defaultResource() {
+    return Resources(lang: '', title: '', link: '', thumbnail: '', artist: '');
+  }
+
   factory Resources.fromJsonYoutobePlaylists(Map json) {
     //log.w(json);
     return Resources(

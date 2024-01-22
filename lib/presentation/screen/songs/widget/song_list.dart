@@ -19,7 +19,7 @@ class SongList extends StatelessWidget {
               child: Column(
             children: [
               Loading(
-                color: screensColors['songBook'],
+                color: ScreenColors.songBook,
               ),
               TextButton(
                 onPressed: () {
@@ -28,7 +28,7 @@ class SongList extends StatelessWidget {
                 child: AnimatedDefaultTextStyle(
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: screensColors['songBook'],
+                    color: ScreenColors.songBook,
                     fontWeight: FontWeight.bold,
                   ),
                   duration: Duration(seconds: 2),

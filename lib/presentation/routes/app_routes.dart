@@ -15,7 +15,7 @@ class Routes {
   static const ONE_Q_AND_A_SCREEN = '/one_q_and_a_screen';
   static const SHARE_APP_SCREEN = '/share_app_screen';
   static const VIDEO_PLAYER_SCREEN = '/video_player_screen';
-  static const MAIN_NEWS = '/main_news_screen';
-  static const PLAYLISTS_PLAYER = '/youtube_playlist_player';
+  static const FEEDBACK_SCREEN = '/feedback_screen';
+  static const VIDEO = '/video_titles_screen';
   static const TERMS_OF_USE = '/terms_of_use_screen';
 }

@@ -8,12 +8,16 @@ import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dar
 import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
+import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_topic_screen.dart';
 import 'package:icoc/presentation/screen/home/notifications_screen.dart';
 import 'package:icoc/presentation/screen/q&a/one_q&a_screen.dart';
 import 'package:icoc/presentation/screen/q&a/q&a_screen.dart';
+import 'package:icoc/presentation/screen/thank_you/feedback_screen.dart';
+import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
+import 'package:icoc/presentation/screen/video/list_topics_screen.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'constants.dart';
@@ -26,7 +30,7 @@ import 'presentation/screen/home/general_settings_screen.dart';
 import 'presentation/screen/home/home_screen.dart';
 import 'presentation/screen/home/share_app_screen.dart';
 import 'presentation/screen/home/terms_of_use_screen.dart';
-import 'presentation/screen/routes/app_routes.dart';
+import 'presentation/routes/app_routes.dart';
 import 'presentation/screen/songs/add_song_screen.dart';
 import 'presentation/screen/songs/one_song_screen.dart';
 import 'presentation/screen/songs/widget/bottom_navigation_bar.dart';
@@ -92,6 +96,9 @@ class MyApp extends StatelessWidget {
           BlocProvider<NotificationsBloc>(
             create: (BuildContext context) => NotificationsBloc(),
           ),
+          BlocProvider<VideoBloc>(
+            create: (BuildContext context) => VideoBloc(),
+          ),
         ],
         child: OverlaySupport.global(
           toastTheme: ToastThemeData(textColor: Colors.white),
@@ -110,7 +117,7 @@ class MyApp extends StatelessWidget {
               Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
               Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
               Routes.ONE_Q_AND_A_SCREEN: (context) => OneQandAScreen(),
-              // Routes.SETTINGS: (context) => GeneralSettingsScreen(),
+              // Routes.VIDEO_PLAYER_SCREEN: (context) => VideoPlayerScreen(),
               // Routes.SHARE_APP_SCREEN: (context) => ShareAppScreen(),
               // Routes.TERMS_OF_USE: (context) => TermsOfUseAndPolicy(),
             },
@@ -134,6 +141,12 @@ class MyApp extends StatelessWidget {
                       return QuestionsAndAnwers();
                     },
                   );
+                case Routes.VIDEO:
+                  return FadePageRoute(
+                    builder: (context) {
+                      return ListTopicsScreen();
+                    },
+                  );
                 case Routes.SHARE_APP_SCREEN:
                   return FadePageRoute(
                     builder: (context) {
@@ -155,6 +168,10 @@ class MyApp extends StatelessWidget {
                 case Routes.ABOUT_APP_SCREEN:
                   return FadePageRoute(builder: (context) {
                     return AboutAppScreen();
+                  });
+                case Routes.FEEDBACK_SCREEN:
+                  return FadePageRoute(builder: (context) {
+                    return FeedbackScreen();
                   });
                 case Routes.NOTIFICATIONS_SCREEN:
                   return FadePageRoute(
