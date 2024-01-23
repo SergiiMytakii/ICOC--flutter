@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icoc/core/model/notifications_model.dart';
 import 'package:logger/logger.dart';
 
 class DatabaseServiceFirebase {
@@ -10,6 +9,7 @@ class DatabaseServiceFirebase {
   late final CollectionReference bibleStudyCollection;
   late final CollectionReference notificationsCollection;
   late final CollectionReference videoCollection;
+  late final CollectionReference feedbackCollection;
 
   DatabaseServiceFirebase() {
     db.settings = const Settings(persistenceEnabled: true);
@@ -18,6 +18,7 @@ class DatabaseServiceFirebase {
     bibleStudyCollection = db.collection('BibleStudy');
     notificationsCollection = db.collection('Notifications');
     videoCollection = db.collection('Video');
+    feedbackCollection = db.collection('Feedback');
     //print(songCollection.get().);
   }
 
@@ -42,6 +43,18 @@ class DatabaseServiceFirebase {
 
   Future getVideos() async {
     final QuerySnapshot snapshot = await videoCollection.get();
+    return snapshot;
+  }
+
+  Future getFeedbackList() async {
+    final QuerySnapshot snapshot = await feedbackCollection.get();
+    return snapshot;
+  }
+
+  Future insertFeedback(String name, String feedback, String date) async {
+    DocumentReference documentRef = feedbackCollection.doc(date);
+    await documentRef.set({'name': name, 'text': feedback});
+    final QuerySnapshot snapshot = await feedbackCollection.get();
     return snapshot;
   }
 }
