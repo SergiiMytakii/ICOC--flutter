@@ -6,7 +6,6 @@ import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:wakelock/wakelock.dart';
 
 //use with iframe_player
@@ -26,7 +25,6 @@ class ListVideosScreen extends StatefulWidget {
 
 class _ListVideosState extends State<ListVideosScreen> {
   double minHeight = 60;
-  final MiniplayerController miniplayerController = MiniplayerController();
   double controlsPanelHeight = 0;
 
   Resources selectedVideo = Resources.defaultResource();

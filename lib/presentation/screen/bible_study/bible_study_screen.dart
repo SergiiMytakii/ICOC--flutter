@@ -49,6 +49,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                   return Column(
                     children: [
                       ListTile(
+                        contentPadding: EdgeInsets.zero,
                         leading: Container(
                           width: 40,
                         ),
@@ -56,7 +57,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                           state.topics[index].topic,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
                           state.topics[index].subtopic,

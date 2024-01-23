@@ -54,7 +54,10 @@ class _QuestionsAndAnwersState extends State<QuestionsAndAnwers> {
                           state.articles[index].title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
                         ),
                         trailing: Icon(Icons.arrow_forward_ios),
                         onTap: () => Navigator.of(context).pushNamed(
