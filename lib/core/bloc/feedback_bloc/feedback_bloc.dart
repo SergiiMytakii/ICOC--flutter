@@ -1,11 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/feedback.dart';
 import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/video.dart';
 import 'package:icoc/data/repository_impl/feedback_repository_impl.dart';
-import 'package:icoc/data/repository_impl/video_repository_impl.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
