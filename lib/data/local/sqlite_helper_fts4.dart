@@ -22,14 +22,14 @@ class DatabaseHelperFTS4 {
   var log = Logger();
 
 /* get refetence to the DB and initialasing DB */
-  Future<Database?> get db async {
+  Future<Database> db() async {
     if (_db != null) {
       //log.i('db already exist!');
-      return _db;
+      return _db!;
     } else {
       _db = await initDB();
       //log.i('initializing db');
-      return _db;
+      return _db!;
     }
   }
 
@@ -50,6 +50,7 @@ class DatabaseHelperFTS4 {
         allSongsTextKeys.map((key) => '$key TEXT').join(', ');
     print(columnTitleDefinitions);
     print(columnTextDefinitions);
+
     return await openDatabase(path, version: 5,
         onCreate: (Database db, int version) async {
       await db.execute(
@@ -67,13 +68,28 @@ class DatabaseHelperFTS4 {
 
   Future<void> insertAllSongs(List<SongDetail> songs) async {
     // Get a reference to the database.
-    final Database database = (await db)!;
+    final Database database = await db();
 
     //clean tables before inserting new data
-//not sure we need to clean tables every time
     database.delete(TABLE_TITLE);
     database.delete(TABLE_TEXT);
 
+    try {
+      await insertTitlesAndTexts(songs, database);
+    } on Exception catch (e) {
+      log.e(e);
+      //on error we delete db and make a second try
+      String path = join((await getDatabasesPath()), DB_NAME);
+      await deleteDatabase(path);
+      _db = null;
+      final Database database = await db();
+      insertTitlesAndTexts(songs, database);
+    }
+    // printSongsDBHead();
+  }
+
+  Future<void> insertTitlesAndTexts(
+      List<SongDetail> songs, Database database) async {
     for (SongDetail song in songs) {
       Map<String, Object?>? map = song.title.cast();
       map[ID_SONG] = song.id;
@@ -91,18 +107,17 @@ class DatabaseHelperFTS4 {
       );
     }
     log.i('HAS BEEN INSERTED SONGS:  ${await songsInLocalDB}');
-    printSongsDBHead();
   }
 
   Future<int> get songsInLocalDB async {
-    final Database? database = await db;
+    final Database database = await db();
     final List<Map<String, dynamic>> songs =
-        await database!.query(TABLE_TITLE, columns: [ID_SONG]);
+        await database.query(TABLE_TITLE, columns: [ID_SONG]);
     return songs.length;
   }
 
   Future<void> printSongsDBHead() async {
-    final Database? database = await db;
+    final Database? database = await db();
     final List<Map<String, dynamic>> songs = await database!.query(TABLE_TITLE);
 
     for (int i = 0; i < 5; i++) {
@@ -114,7 +129,7 @@ class DatabaseHelperFTS4 {
 
   Future<bool> addToFavorites(int id) async {
     // Get a reference to the database.
-    final Database database = (await db)!;
+    final Database database = await db();
 
     final int status = await database.insert(
       TABLE_FAVORITES,
@@ -129,7 +144,7 @@ class DatabaseHelperFTS4 {
 
   Future<bool> deleteFromFavorites(int id) async {
     // Get a reference to the database.
-    final Database database = (await db)!;
+    final Database database = await db();
 
     final int status = await database
         .delete(TABLE_FAVORITES, where: '$ID_SONG = ?', whereArgs: [id]);
@@ -140,8 +155,8 @@ class DatabaseHelperFTS4 {
   }
 
   Future<bool> getFavoriteStatus(int id) async {
-    final database = await db;
-    var status = await database!.query(TABLE_FAVORITES,
+    final database = await db();
+    var status = await database.query(TABLE_FAVORITES,
         columns: ['$FAVORITE_STATUS'], where: '$ID_SONG = ?', whereArgs: [id]);
     if (status.isNotEmpty) {
       return true;
@@ -150,10 +165,10 @@ class DatabaseHelperFTS4 {
   }
 
   Future<List<int>> getListFavorites() async {
-    final Database? database = await db;
+    final Database database = await db();
 
     final List<Map<String, dynamic>> items =
-        await database!.query(TABLE_FAVORITES, columns: [ID_SONG]);
+        await database.query(TABLE_FAVORITES, columns: [ID_SONG]);
     List<int> songsIds = items.map((e) => e.values.first as int).toList();
 
     return songsIds;
@@ -163,7 +178,7 @@ class DatabaseHelperFTS4 {
 
   Future<List<SongDetail>> getSearchResult(
       String query, List<String> languagesToShow) async {
-    final Database? database = await db;
+    final Database database = await db();
 
     List<SongDetail> songs = [];
     // log.i('query' + query);
@@ -172,7 +187,7 @@ class DatabaseHelperFTS4 {
     try {
       for (final lang in languagesToShow) {
         final List<Map<String, dynamic>> searchInTitles =
-            await database!.rawQuery('''
+            await database.rawQuery('''
                   SELECT $TABLE_TITLE.$ID_SONG,
                   snippet($TABLE_TITLE, '[', ' ', '...') as title,
                   $TABLE_TEXT.${lang}1 AS text

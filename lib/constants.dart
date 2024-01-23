@@ -44,6 +44,7 @@ class SharedPreferencesKeys {
   static const String notifications = 'notifications';
   static const String videosLanguages = 'videosLanguages';
   static const String videosAllLanguages = 'videosAllLanguages';
+  static const String firstAppRunDate = 'firstAppRunDate';
   // Add more keys as needed
 }
 

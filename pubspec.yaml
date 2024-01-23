@@ -49,7 +49,7 @@ dependencies:
   country_flags: ^2.2.0
   auto_size_text: ^3.0.0
   overlay_support: ^2.1.0
-  in_app_review: ^2.0.8
+  rate_my_app: ^2.0.0
   qr_flutter: ^4.0.0
   share_plus: ^6.3.0
   

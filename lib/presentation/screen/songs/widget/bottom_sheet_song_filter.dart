@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
@@ -93,6 +94,12 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
             child: ReorderableListView(
               scrollDirection: Axis.vertical,
               onReorder: _onReorder,
+              onReorderStart: (index) {
+                Feedback.forLongPress(context);
+              },
+              onReorderEnd: (index) {
+                Feedback.forLongPress(context);
+              },
               children: List.generate(allLanguages.length, (index) {
                 return MyCheckboxListTile(
                   allLanguages: allLanguages,

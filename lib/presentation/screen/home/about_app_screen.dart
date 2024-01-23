@@ -53,29 +53,29 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 30,
+              height: 10,
             ),
             Text(
               'ICOC',
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: ScreenColors.general, fontWeight: FontWeight.w700),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Text(
               'Church of Christ'.tr(),
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Text(
               'Version $versionApp'.tr(),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             SizedBox(
-              height: 30,
+              height: 10,
             ),
             Text(
               'Created by:'.tr(),
@@ -109,19 +109,17 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             ),
 
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             // Padding(
             //   padding: const EdgeInsets.all(16.0),
             //   child: Text(
             //       'Ищем контент менеджера для добавления аудио и видео к песням. \n Если Бог положил вам такое на сердце - напишите нам об этом!'),
             // ),
-            SizedBox(
-              height: 30,
-            ),
+
             Text(
               'Wishes and suggestions: '.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -142,9 +140,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 30,
-            ),
+
             supportProjectBlock(context),
           ],
         ),
@@ -186,9 +182,9 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         ),
         AnimatedContainer(
           duration: Duration(milliseconds: 800),
-          height: isOpened ? 250 : 0,
+          height: isOpened ? 300 : 0,
           width: double.maxFinite,
-          margin: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           padding: EdgeInsets.all(8),
           curve: Curves.fastOutSlowIn,
           child: Column(children: [
@@ -206,26 +202,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                       'MonoBank card:'.tr(),
                     ),
                     SizedBox(
-                      width: 12,
+                      width: 6,
                     ),
-                    Text(
-                      monoBankCard,
-                    ),
+                    _buildCredentialsField(context, monoBankCard),
                     Expanded(child: SizedBox()),
-                    AnimatedOpacity(
-                      opacity: _opacity ? 0 : 1,
-                      duration: Duration(milliseconds: 800),
-                      child: IconButton(
-                        onPressed: () {
-                          _copyToClipboard(monoBankCard);
-                        },
-                        icon: Icon(Icons.copy_outlined),
-                        color: AdaptiveTheme.of(context)
-                            .theme
-                            .primaryIconTheme
-                            .color,
-                      ),
-                    ),
+                    _buildCopyButton(context, monoBankCard),
                   ],
                 ),
               ),
@@ -240,29 +221,13 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 children: [
                   Text('PayPal:'.tr()),
                   SizedBox(
-                    width: 12,
+                    width: 6,
                   ),
-                  Text(
-                    payPalAccount,
-                  ),
+                  _buildCredentialsField(context, payPalAccount),
                   Expanded(
                     child: Container(),
                   ),
-                  AnimatedOpacity(
-                    opacity: _opacity ? 0 : 1,
-                    duration: Duration(milliseconds: 800),
-                    child: IconButton(
-                        onPressed: () {
-                          _copyToClipboard(payPalAccount);
-                        },
-                        icon: Icon(
-                          Icons.copy_outlined,
-                          color: AdaptiveTheme.of(context)
-                              .theme
-                              .primaryIconTheme
-                              .color,
-                        )),
-                  ),
+                  _buildCopyButton(context, payPalAccount),
                 ],
               ),
             ),
@@ -276,41 +241,47 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 children: [
                   Text('USDT TRC20:'.tr()),
                   SizedBox(
-                    width: 12,
+                    width: 6,
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: AutoSizeText(
-                      usdtWallet,
-                      minFontSize: 8,
-                      maxFontSize: 12,
-                      maxLines: 2,
-                    ),
-                  ),
+                  _buildCredentialsField(context, usdtWallet),
                   Expanded(
                     child: Container(),
                   ),
-                  AnimatedOpacity(
-                    opacity: _opacity ? 0 : 1,
-                    duration: Duration(milliseconds: 800),
-                    child: IconButton(
-                        onPressed: () {
-                          _copyToClipboard(usdtWallet);
-                        },
-                        icon: Icon(
-                          Icons.copy_outlined,
-                          color: AdaptiveTheme.of(context)
-                              .theme
-                              .primaryIconTheme
-                              .color,
-                        )),
-                  ),
+                  _buildCopyButton(context, usdtWallet),
                 ],
               ),
             ),
           ]),
         ),
       ],
+    );
+  }
+
+  SizedBox _buildCredentialsField(BuildContext context, String credentials) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 2.5,
+      child: AutoSizeText(
+        credentials,
+        minFontSize: 8,
+        maxFontSize: 12,
+        maxLines: 2,
+      ),
+    );
+  }
+
+  AnimatedOpacity _buildCopyButton(BuildContext context, String value) {
+    return AnimatedOpacity(
+      opacity: _opacity ? 0 : 1,
+      duration: Duration(milliseconds: 800),
+      child: IconButton(
+          onPressed: () {
+            _copyToClipboard(value);
+          },
+          icon: Icon(
+            Icons.copy_outlined,
+            size: 16,
+            color: AdaptiveTheme.of(context).theme.primaryIconTheme.color,
+          )),
     );
   }
 }

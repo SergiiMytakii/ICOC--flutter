@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
+import 'package:icoc/core/helpers/in_app_review_helper.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 
@@ -50,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen>
       context
           .read<NotificationsBloc>()
           .add(NotificationsListRequested(context.locale.languageCode));
+      rateApp(context);
     });
 
     carouselController = CarouselController();
@@ -61,8 +63,10 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: buildBody(context),
+    return SafeArea(
+      child: Scaffold(
+        body: buildBody(context),
+      ),
     );
   }
 
@@ -154,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen>
                     currentItem = items[index];
                   });
                   HapticFeedback.heavyImpact();
-                  Feedback.forLongPress(context);
+                  // Feedback.forLongPress(context);
                 },
                 onScrolled: (scrollPosition) {
                   setState(() {

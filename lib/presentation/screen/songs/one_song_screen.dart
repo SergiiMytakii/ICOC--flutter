@@ -74,19 +74,21 @@ class _OneSongScreenState extends State<OneSongScreen>
     context.read<FavoriteSongStatusBloc>().add(FavoriteSongStatusRequested(
           id: song.id,
         ));
-    return DefaultTabController(
-      length: countTabs(song),
-      child: Scaffold(
-        appBar: appBar(context, song),
-        body: Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          children: [
-            //adjust size text screen and player dynamicly
-            _tabBarBuilder(song),
-            if (song.resources != null && song.resources!.isNotEmpty)
-              _buldVideoPreview(song),
-            if (videoIsPlaying) _miniPlayerBuilder(),
-          ],
+    return SafeArea(
+      child: DefaultTabController(
+        length: countTabs(song),
+        child: Scaffold(
+          appBar: appBar(context, song),
+          body: Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              //adjust size text screen and player dynamicly
+              _tabBarBuilder(song),
+              if (song.resources != null && song.resources!.isNotEmpty)
+                _buldVideoPreview(song),
+              if (videoIsPlaying) _miniPlayerBuilder(),
+            ],
+          ),
         ),
       ),
     );

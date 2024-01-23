@@ -22,12 +22,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     super.initState();
   }
 
-// placeholders
-
-  bool checkIsRead(String text) {
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     int i = 0;
@@ -111,8 +105,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   _markAsRead(String title, List<NotificationsModel> notifications) async {
-    context
-        .read<NotificationsBloc>()
-        .add(NotificationMarkAsReadRequested(title, notifications));
+    if (mounted) {
+      context
+          .read<NotificationsBloc>()
+          .add(NotificationMarkAsReadRequested(title, notifications));
+    }
   }
 }
