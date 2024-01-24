@@ -8,7 +8,6 @@ import 'package:icoc/core/model/video.dart';
 import 'package:icoc/core/repository/video_repository.dart';
 import 'package:icoc/data/api/http_service.dart';
 import 'package:icoc/data/firebase/database_firebase_service.dart';
-import 'package:logger/logger.dart';
 
 class VideoRepositoryImpl extends VideoRepository {
   @override
@@ -21,7 +20,6 @@ class VideoRepositoryImpl extends VideoRepository {
 
   @override
   Future<List<Resources>?> fetchVideosFromPlaylist(String playlistId) async {
-    final log = Logger();
     final httpClient = HttpService.client;
     Map<String, String> headers = {
       "Content-Type": 'application/json',
@@ -47,7 +45,10 @@ class VideoRepositoryImpl extends VideoRepository {
         );
         return videos;
       } else {
-        log.e(json.decode(response.body)['error']['message']);
+        logError(
+            json.decode(response.body)['error']['message'] ??
+                'youtube api error',
+            null);
         return [];
       }
     } on Exception catch (e, stackTrace) {

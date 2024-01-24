@@ -25,7 +25,8 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      child: RefreshIndicator(
+      child: RefreshIndicator.adaptive(
+        edgeOffset: 130,
         onRefresh: () => getSongs(context),
         child: CustomScrollView(
           physics: BouncingScrollPhysics(),

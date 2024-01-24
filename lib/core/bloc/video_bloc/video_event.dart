@@ -46,15 +46,16 @@ class GetVideosFromPlaylist extends VideoEvent {
 }
 
 Future<List<Video>> filterByLanguages(List<Video> videos) async {
-  final List<String>? storedLanguages = await SharedPreferencesHelper.getList(
-      SharedPreferencesKeys.videosLanguages);
+  final List<String> storedLanguages = await SharedPreferencesHelper.getList(
+          SharedPreferencesKeys.videosLanguages) ??
+      [];
   //if this the first run we store languages
   // we need all languages  for filtering
   Set<String> allKeys = {};
   videos.forEach((video) => allKeys.add(video.lang));
   SharedPreferencesHelper.saveList(
       SharedPreferencesKeys.videosAllLanguages, allKeys.toList());
-  if (storedLanguages == null) {
+  if (storedLanguages.isEmpty) {
     SharedPreferencesHelper.saveList(
         SharedPreferencesKeys.videosLanguages, allKeys.toList());
     return videos;

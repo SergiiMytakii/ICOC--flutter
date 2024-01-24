@@ -4,6 +4,7 @@ import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
+import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:wakelock/wakelock.dart';
@@ -30,10 +31,14 @@ class _ListVideosState extends State<ListVideosScreen> {
   Resources selectedVideo = Resources.defaultResource();
   @override
   void initState() {
+    _getVideosList();
+    super.initState();
+  }
+
+  Future<void> _getVideosList() async {
     Future.delayed(Duration.zero).then((value) => context
         .read<VideoBloc>()
         .add(GetVideosFromPlaylist(widget.video.playlistId)));
-    super.initState();
   }
 
   @override
@@ -54,14 +59,19 @@ class _ListVideosState extends State<ListVideosScreen> {
           BlocBuilder<VideoBloc, VideoState>(
             builder: (context, state) {
               if (state is GetVideosFromPlaylistSuccessState) {
-                return ListView.builder(
-                  itemBuilder: (context, index) => VideoCard(
-                    resources: state.resources[index],
+                return RefreshIndicator.adaptive(
+                  onRefresh: () => _getVideosList(),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => state.resources.isNotEmpty
+                        ? VideoCard(
+                            resources: state.resources[index],
+                          )
+                        : Container(height: 200),
+                    itemCount: state.resources.length,
                   ),
-                  itemCount: state.resources.length,
                 );
               } else if (state is VideoLoadingState) {
-                return Loading();
+                return CustomRefreshIndicator(() => _getVideosList());
               } else if (state is VideoErrorState) {
                 return ErrorTextOnScreen(message: state.message);
               } else {

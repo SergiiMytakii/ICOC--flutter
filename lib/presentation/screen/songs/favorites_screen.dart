@@ -39,7 +39,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: RefreshIndicator(
+      body: RefreshIndicator.adaptive(
         onRefresh: () => getFavoriteSongs(context),
         child: BlocBuilder<FavoriteSongsListBloc, FavoriteSongsState>(
           builder: (context, state) {
@@ -54,7 +54,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   } else {
                     i = 0;
                   }
-
                   return SongCard(
                     song: state.songs[index],
                     dividerColor: dividerColors[i],

@@ -7,6 +7,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:icoc/core/bloc/multibloc_provider.dart';
+import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'constants.dart';
 import 'core/helpers/shared_preferences_helper.dart';
@@ -67,11 +68,14 @@ class MyApp extends StatelessWidget {
 }
 
 _activateCrashlitics() {
+  final logger = Logger();
   FlutterError.onError = (errorDetails) {
+    logger.e(errorDetails);
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
+    logger.e(error);
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };

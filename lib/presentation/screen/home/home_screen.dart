@@ -174,13 +174,6 @@ class _HomeScreenState extends State<HomeScreen>
         if (isDrawerOpen) Positioned(child: MyDrawer(animationController)),
         Positioned(
             bottom: 16, left: 16, child: _buildNotificationsIcon(context)),
-        Positioned(
-          bottom: 100,
-          child: TextButton(
-            onPressed: () => throw Exception(),
-            child: const Text("Throw Test Exception"),
-          ),
-        ),
       ],
     );
   }
