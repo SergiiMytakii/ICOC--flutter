@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../../constants.dart';
@@ -20,7 +20,6 @@ class VideoCard extends StatefulWidget {
 }
 
 class _VideoCardState extends State<VideoCard> {
-  final log = Logger();
   late bool isFavorite;
   String videoId = '';
   @override
@@ -52,15 +51,18 @@ class _VideoCardState extends State<VideoCard> {
                         fit: BoxFit.fitWidth),
                   );
                 },
-                height: 76,
-                width: 76 * 16 / 9,
+                height: 96,
+                width: 96 * 16 / 9,
                 fit: BoxFit.fitWidth,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Text(
                   widget.resource.lang,
-                  style: TextStyle(color: ScreenColors.songBook),
+                  style: TextStyle(
+                      color: ScreenColors.songBook,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
               )
             ],
@@ -78,12 +80,12 @@ class _VideoCardState extends State<VideoCard> {
     if (link.isNotEmpty && link.contains('yout')) {
       try {
         return YoutubePlayerController.convertUrlToId(link) ?? '';
-      } on Exception catch (e) {
+      } on Exception catch (e, stackTrace) {
+        logError(e, stackTrace);
         showToast(
             context: context,
             title: 'Error'.tr(),
             message: 'Can not play video'.tr());
-        log.e(e);
         return '';
       }
     } else {

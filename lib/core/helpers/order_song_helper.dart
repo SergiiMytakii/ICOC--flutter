@@ -13,7 +13,7 @@ Future<List<SongDetail>> orderSongs(List<SongDetail> songs) async {
       final String b1 = b.title.entries.first.value;
       if (a1.toLowerCase().startsWith('і') &&
           !b1.toLowerCase().startsWith('і')) {
-        //todo trying to handle ukranian i... needs to be improved
+        //todo trying to handle ukranian 'i'... needs to be improved
         return 1;
       } else if (!a1.toLowerCase().startsWith('і') &&
           b1.toLowerCase().startsWith('і')) {

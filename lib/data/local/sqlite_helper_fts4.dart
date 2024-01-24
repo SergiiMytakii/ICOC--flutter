@@ -1,3 +1,4 @@
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -76,8 +77,8 @@ class DatabaseHelperFTS4 {
 
     try {
       await insertTitlesAndTexts(songs, database);
-    } on Exception catch (e) {
-      log.e(e);
+    } on Exception catch (e, stackTrace) {
+      logError(e, stackTrace);
       //on error we delete db and make a second try
       String path = join((await getDatabasesPath()), DB_NAME);
       await deleteDatabase(path);
@@ -231,8 +232,8 @@ class DatabaseHelperFTS4 {
         }
       }
       return songs;
-    } catch (e) {
-      log.e('Error in getSearchResult: $e');
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
       return [];
     }
   }

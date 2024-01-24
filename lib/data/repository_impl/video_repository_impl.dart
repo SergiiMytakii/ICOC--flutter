@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/core/repository/video_repository.dart';
@@ -19,7 +20,7 @@ class VideoRepositoryImpl extends VideoRepository {
   }
 
   @override
-  Future<List<Resources>> fetchVideosFromPlaylist(String playlistId) async {
+  Future<List<Resources>?> fetchVideosFromPlaylist(String playlistId) async {
     final log = Logger();
     final httpClient = HttpService.client;
     Map<String, String> headers = {
@@ -28,28 +29,31 @@ class VideoRepositoryImpl extends VideoRepository {
     final url = Uri.parse(
         "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=$playlistId&key=$YOUTUBE_API_KEY&maxResults=40");
     // Get Playlist Videos
-    var response = await httpClient.get(
-      url,
-      headers: headers,
-    );
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-
-      List<dynamic> videosJson = data['items'];
-      //log.d(videosJson);
-
-      // Fetch first eight videos from uploads playlist
-      List<Resources> videos = [];
-      videosJson.forEach(
-        (json) => videos.add(
-          Resources.fromJsonYoutobePlaylists(json['snippet']),
-        ),
+    try {
+      var response = await httpClient.get(
+        url,
+        headers: headers,
       );
-      return videos;
-    } else {
-      log.e(json.decode(response.body)['error']['message']);
-      return [];
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        List<dynamic> videosJson = data['items'];
+
+        // Fetch first eight videos from uploads playlist
+        List<Resources> videos = [];
+        videosJson.forEach(
+          (json) => videos.add(
+            Resources.fromJsonYoutobePlaylists(json['snippet']),
+          ),
+        );
+        return videos;
+      } else {
+        log.e(json.decode(response.body)['error']['message']);
+        return [];
+      }
+    } on Exception catch (e, stackTrace) {
+      logError(e, stackTrace);
     }
+    return null;
   }
 }
 

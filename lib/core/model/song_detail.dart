@@ -99,8 +99,24 @@ class SongDetail {
       description: _orderByLanguageInMap(this.description, orderLanguages),
       text: _orderByLanguageInMap(this.text, orderLanguages),
       chords: _orderByLanguageInMap(this.chords, orderLanguages),
-      resources: this.resources,
+      resources: this.resources != null
+          ? _sortResources(this.resources!, orderLanguages)
+          : null,
     );
+  }
+
+  _sortResources(List<Resources> resources, List<String> orderLanguages) {
+    resources.sort((a, b) {
+      int indexA = orderLanguages.indexOf(a.lang);
+      int indexB = orderLanguages.indexOf(b.lang);
+
+      // If either language is not in orderLanguages, move it to the end
+      if (indexA == -1) return 1;
+      if (indexB == -1) return -1;
+
+      return indexA.compareTo(indexB);
+    });
+    return resources;
   }
 
   _orderByLanguageInMap(Map? map, List<String> orderLanguages) {

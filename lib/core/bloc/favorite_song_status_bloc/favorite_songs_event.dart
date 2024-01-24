@@ -15,14 +15,13 @@ class FavoriteSongStatusRequested extends FavoriteSongStatusEvent {
   Stream<FavoriteSongStatusState> applyAsync(
       {FavoriteSongStatusState? currentState,
       FavoriteSongStatusBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield FavoriteSongStatusLoadingState();
       final bool isFavorite =
           await songsRepositoryImpl.getFavoriteSongStatus(id);
       yield GetFavoriteSongStatusSuccessState(isFavorite);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield FavoriteSongStatusErrorState(_.toString());
     }
   }
@@ -38,7 +37,6 @@ class SetFavoriteSongStatusRequested extends FavoriteSongStatusEvent {
   Stream<FavoriteSongStatusState> applyAsync(
       {FavoriteSongStatusState? currentState,
       FavoriteSongStatusBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield FavoriteSongStatusLoadingState();
       final bool result =
@@ -49,7 +47,7 @@ class SetFavoriteSongStatusRequested extends FavoriteSongStatusEvent {
         yield FavoriteSongStatusErrorState("Error".tr());
       }
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield FavoriteSongStatusErrorState(_.toString());
     }
   }

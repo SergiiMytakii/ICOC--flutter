@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 import 'package:icoc/presentation/widget/toast.dart';
@@ -31,12 +32,12 @@ class _VideoCardState extends State<VideoCard> {
       try {
         videoId =
             YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
-      } on Exception catch (e) {
+      } on Exception catch (e, stackTrace) {
         showToast(
             context: context,
             title: 'Error'.tr(),
             message: 'Can not play video'.tr());
-        print(e);
+        logError(e, stackTrace);
       }
     } else {
       videoId = widget.resources.link;

@@ -25,7 +25,6 @@ class DatabaseServiceFirebase {
   //get songs
   Future<QuerySnapshot> getSongs() async {
     final QuerySnapshot snapshot = await songCollection.get();
-
     return snapshot;
   }
 

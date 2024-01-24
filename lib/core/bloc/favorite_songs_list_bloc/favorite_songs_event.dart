@@ -11,7 +11,6 @@ class FavoriteSongsListRequested extends FavoriteSongsListEvent {
   @override
   Stream<FavoriteSongsState> applyAsync(
       {FavoriteSongsState? currentState, FavoriteSongsListBloc? bloc}) async* {
-    final log = Logger();
     List<SongDetail> favoriteSongs = [];
     try {
       yield FavoriteSongsLoadingState();
@@ -27,7 +26,7 @@ class FavoriteSongsListRequested extends FavoriteSongsListEvent {
       }
       yield GetFavoriteSongsListSuccessState(favoriteSongs);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield FavoriteSongsErrorState(_.toString());
     }
   }

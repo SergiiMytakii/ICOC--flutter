@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 import 'package:icoc/data/repository_impl/songs_repository_impl.dart';
-import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 
 import '../../model/song_detail.dart';
@@ -15,13 +15,12 @@ part 'favorite_songs_state.dart';
 class FavoriteSongsListBloc
     extends Bloc<FavoriteSongsListEvent, FavoriteSongsState> {
   FavoriteSongsListBloc() : super(FavoriteSongsInitial()) {
-    final log = Logger();
     on<FavoriteSongsListEvent>((event, emit) {
       return emit.forEach<FavoriteSongsState>(
         event.applyAsync(currentState: state, bloc: this),
         onData: (state) => state,
         onError: (error, stackTrace) {
-          log.e('$error', error: error, stackTrace: stackTrace);
+          logError(error, stackTrace);
           return FavoriteSongsErrorState(error.toString());
         },
       );

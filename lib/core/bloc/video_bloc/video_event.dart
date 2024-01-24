@@ -10,7 +10,6 @@ class VideoListRequested extends VideoEvent {
   @override
   Stream<VideoState> applyAsync(
       {VideoState? currentState, VideoBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield VideoLoadingState();
       final List<Video> videos = await videoRepositoryImpl.getVideoList();
@@ -19,7 +18,7 @@ class VideoListRequested extends VideoEvent {
       final List<Video> filteredVideos = await filterByLanguages(videos);
       yield GetVideoListSuccessState(filteredVideos);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield VideoErrorState(_.toString());
     }
   }
@@ -33,15 +32,14 @@ class GetVideosFromPlaylist extends VideoEvent {
   @override
   Stream<VideoState> applyAsync(
       {VideoState? currentState, VideoBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield VideoLoadingState();
-      final List<Resources> resources =
+      final List<Resources>? resources =
           await videoRepositoryImpl.fetchVideosFromPlaylist(playlistId);
 
-      yield GetVideosFromPlaylistSuccessState(resources);
+      yield GetVideosFromPlaylistSuccessState(resources ?? []);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield VideoErrorState(_.toString());
     }
   }

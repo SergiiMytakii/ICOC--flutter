@@ -27,32 +27,32 @@ class SongTextOnSongScreen extends StatelessWidget {
         if (state is FontSizeSuccess) {
           return SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium!
-                        .copyWith(fontSize: (state.fontSize ?? 14) + 10),
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.symmetric(vertical: 7),
-                    child: Text(
-                      description,
+              child: SelectionArea(
+                child: Column(
+                  children: [
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
-                          .headlineSmall!
-                          .copyWith(
-                              fontSize: (state.fontSize ?? 14),
-                              fontStyle: FontStyle.italic),
+                          .headlineMedium!
+                          .copyWith(fontSize: (state.fontSize ?? 14) + 10),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  SelectionArea(
-                    child: textVersion.startsWith('<')
+                    Container(
+                      alignment: Alignment.topRight,
+                      margin: EdgeInsets.symmetric(vertical: 7),
+                      child: Text(
+                        description,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                                fontSize: (state.fontSize ?? 14),
+                                fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    textVersion.startsWith('<')
                         ? html.Html(
                             data: textVersion,
                             style: {
@@ -68,9 +68,9 @@ class SongTextOnSongScreen extends StatelessWidget {
                                 .textTheme
                                 .bodyMedium!
                                 .copyWith(fontSize: state.fontSize ?? 14),
-                          ),
-                  )
-                ],
+                          )
+                  ],
+                ),
               ));
         } else {
           return Container();

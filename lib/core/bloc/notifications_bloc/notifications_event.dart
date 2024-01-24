@@ -16,7 +16,6 @@ class NotificationsListRequested extends NotificationsEvent {
   @override
   Stream<NotificationsState> applyAsync(
       {NotificationsState? currentState, NotificationsBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield NotificationsLoadingState();
       final List<Map<String, NotificationsModel>> notifications =
@@ -27,7 +26,7 @@ class NotificationsListRequested extends NotificationsEvent {
           await checkAndMarkWhatIsRead(filteredNotifications);
       yield GetNotificationsListSuccessState(markedNotifications);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield NotificationsErrorState(_.toString());
     }
   }
@@ -41,7 +40,6 @@ class NotificationMarkAsReadRequested extends NotificationsEvent {
   @override
   Stream<NotificationsState> applyAsync(
       {NotificationsState? currentState, NotificationsBloc? bloc}) async* {
-    final log = Logger();
     try {
       final List<String> isRead = await SharedPreferencesHelper.getList(
               SharedPreferencesKeys.notifications) ??
@@ -57,7 +55,7 @@ class NotificationMarkAsReadRequested extends NotificationsEvent {
       });
       yield GetNotificationsListSuccessState(notifications);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield NotificationsErrorState(_.toString());
     }
   }

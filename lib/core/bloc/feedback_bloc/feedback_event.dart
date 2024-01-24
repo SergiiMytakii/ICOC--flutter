@@ -12,7 +12,6 @@ class FeedbackListRequested extends FeedbackEvent {
   @override
   Stream<FeedbackState> applyAsync(
       {FeedbackState? currentState, FeedbackBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield FeedbackLoadingState();
       final List<Feedback> feedbacks =
@@ -21,7 +20,7 @@ class FeedbackListRequested extends FeedbackEvent {
 
       yield GetFeedbackListSuccessState(feedbacks);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield FeedbackErrorState(_.toString());
     }
   }
@@ -37,7 +36,6 @@ class InsertFeedbackRequested extends FeedbackEvent {
   @override
   Stream<FeedbackState> applyAsync(
       {FeedbackState? currentState, FeedbackBloc? bloc}) async* {
-    final log = Logger();
     try {
       final List<Feedback> feedbacks =
           await feedbackRepositoryImpl.insertFeedback(name, feedback);
@@ -45,7 +43,7 @@ class InsertFeedbackRequested extends FeedbackEvent {
 
       yield GetFeedbackListSuccessState(feedbacks);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield FeedbackErrorState(_.toString());
     }
   }

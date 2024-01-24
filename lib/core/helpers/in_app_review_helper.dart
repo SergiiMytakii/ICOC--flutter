@@ -31,9 +31,9 @@ class InAppReviewHelper {
 }
 
 RateMyApp rateMyApp = RateMyApp(
-  minDays: 0,
-  minLaunches: 0,
-  remindDays: 0,
+  minDays: 3,
+  minLaunches: 3,
+  remindDays: 7,
   remindLaunches: 15,
   googlePlayIdentifier: 'ru.icoc.app',
   appStoreIdentifier: '1585486521',

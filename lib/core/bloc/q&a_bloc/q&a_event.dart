@@ -10,7 +10,6 @@ class QandARequested extends QandAEvent {
   @override
   Stream<QandAState> applyAsync(
       {QandAState? currentState, QandABloc? bloc}) async* {
-    final log = Logger();
     try {
       yield QandALoadingState();
       final List<QandAModel> articles = await qAndARepositoryImpl.getArticles();
@@ -18,7 +17,7 @@ class QandARequested extends QandAEvent {
 
       yield GetQandASuccessState(articles);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield QandAErrorState(_.toString());
     }
   }

@@ -64,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
         body: buildBody(context),
       ),
@@ -172,7 +173,14 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         if (isDrawerOpen) Positioned(child: MyDrawer(animationController)),
         Positioned(
-            bottom: 16, left: 16, child: _buildNotificationsIcon(context))
+            bottom: 16, left: 16, child: _buildNotificationsIcon(context)),
+        Positioned(
+          bottom: 100,
+          child: TextButton(
+            onPressed: () => throw Exception(),
+            child: const Text("Throw Test Exception"),
+          ),
+        ),
       ],
     );
   }

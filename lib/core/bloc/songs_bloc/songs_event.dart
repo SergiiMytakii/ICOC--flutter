@@ -10,7 +10,6 @@ class SongsRequested extends SongsEvent {
   @override
   Stream<SongsState> applyAsync(
       {SongsState? currentState, SongsBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield SongsLoadingState();
       List<SongDetail> songs = await songsRepositoryImpl.getSongs();
@@ -19,7 +18,7 @@ class SongsRequested extends SongsEvent {
       songs = await orderSongs(songs);
       yield GetSongsSuccessState(songs);
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield SongsErrorState(_.toString());
     }
   }
@@ -29,7 +28,6 @@ class SearchSongRequested extends SongsEvent {
   SearchSongRequested(this.query);
   final String query;
   final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
-  final log = Logger();
   //trim query and delete dots, comas, ets.
   @override
   Stream<SongsState> applyAsync(
@@ -86,7 +84,7 @@ class SearchSongRequested extends SongsEvent {
         yield SearchSongsSuccessState(filteredSongs);
       }
     } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
+      logError(_, stackTrace);
       yield SongsErrorState(_.toString());
     }
   }

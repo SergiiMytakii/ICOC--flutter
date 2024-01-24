@@ -12,7 +12,6 @@ class BibleStudyListRequested extends BibleStudyEvent {
   @override
   Stream<BibleStudyState> applyAsync(
       {BibleStudyState? currentState, BibleStudyBloc? bloc}) async* {
-    final log = Logger();
     try {
       yield BibleStudyLoadingState();
       final List<BibleStudy> topics =
@@ -21,9 +20,9 @@ class BibleStudyListRequested extends BibleStudyEvent {
 
       final List<BibleStudy> filteredTopics = await filterByLanguages(topics);
       yield GetBibleStudyListSuccessState(filteredTopics);
-    } catch (_, stackTrace) {
-      log.e('$_', error: _, stackTrace: stackTrace);
-      yield BibleStudyErrorState(_.toString());
+    } catch (error, stackTrace) {
+      logError(error, stackTrace);
+      yield BibleStudyErrorState(error.toString());
     }
   }
 }

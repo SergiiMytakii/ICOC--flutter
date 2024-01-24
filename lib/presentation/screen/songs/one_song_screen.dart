@@ -41,7 +41,8 @@ class _OneSongScreenState extends State<OneSongScreen>
   @override
   void initState() {
     _controller = AnimationController(
-        duration: Duration(seconds: 1), // Set the duration of the animation
+        duration:
+            Duration(milliseconds: 500), // Set the duration of the animation
         vsync: this,
         lowerBound: 0.4);
 
@@ -106,21 +107,17 @@ class _OneSongScreenState extends State<OneSongScreen>
         tabs: [
           for (final item in song.text.keys) Tab(text: item),
           if (song.chords != null && song.chords!.isNotEmpty)
-            for (final item in song.chords!.keys) Tab(text: item),
+            for (final item in song.chords!.keys)
+              Tab(
+                  text: item == 'v1'
+                      ? 'chords_1'
+                      : item == 'v2'
+                          ? 'chords_2'
+                          : item),
         ],
       ),
       elevation: 0,
       actions: [
-        IconButton(
-          tooltip: 'Share'.tr(),
-          icon: Icon(
-            Icons.share,
-          ),
-          onPressed: () {
-            final text = "text on the current tab";
-            Share.share(text); //todo finish this
-          },
-        ),
         BlocBuilder<FavoriteSongStatusBloc, FavoriteSongStatusState>(
           builder: (context, state) {
             if (state is GetFavoriteSongStatusSuccessState) {
@@ -214,7 +211,6 @@ class _OneSongScreenState extends State<OneSongScreen>
   }
 
   TabBarView _tabBarBuilder(SongDetail song) {
-    print(song.text.keys);
     (song.text.removeWhere((key, value) => key == 'id_song'));
     return TabBarView(
       children: [
@@ -246,7 +242,7 @@ class _OneSongScreenState extends State<OneSongScreen>
           color: AdaptiveTheme.of(context).theme.colorScheme.background,
         ),
         Container(
-            height: 80,
+            height: 100,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: song.resources!
