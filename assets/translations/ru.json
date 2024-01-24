@@ -120,5 +120,18 @@
           "Add here link":
               "Добавьте ссылку на видео (поддерживается только Youtube)",
           "Email has been sent": "Email отправлен!",
-          "New song": "Добавление песни"
+          "New song": "Добавление песни",
+          "From everywhere:": "Отовсюду:",
+  "Menu": "Меню",
+  "App language": "Язык приложения",
+  "Oops.. something went wrong..": "Упс.. что-то пошло не так..",
+  "At least 1 label has to be selected": "Должна быть выбрана хотя бы 1 метка",
+  "Filter languages": "Фильтровать языки",
+  "USDT TRC20:": "USDT TRC20:",
+  "We would love to hear your feedbacks and suggestions!": "Мы бы хотели услышать ваши отзывы и предложения!",
+  "Write your feedback here...": "Напишите свой отзыв здесь...",
+  "Submit Feedback": "Отправить отзыв",
+  "Your name": "Ваше имя",
+  "Say Thank you!": "Сказать Спасибо!"
+          
         }
