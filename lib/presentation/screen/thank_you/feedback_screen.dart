@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
@@ -17,6 +18,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   TextEditingController nameController = TextEditingController();
   @override
   void initState() {
+    FirebaseAnalytics.instance.logScreenView(screenName: 'Feedback');
     Future.delayed(Duration.zero).then(
         (value) => context.read<FeedbackBloc>().add(FeedbackListRequested()));
     super.initState();

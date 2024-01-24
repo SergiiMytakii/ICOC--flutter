@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
-import '../../../../constants.dart';
-
 class MyCheckboxListTile extends StatefulWidget {
   final ValueKey key;
   final String label;
@@ -33,12 +31,15 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+      widget.label.tr(),
+    );
     return CheckboxListTile(
         activeColor: widget.color,
         key: widget.key,
         controlAffinity: ListTileControlAffinity.leading,
         title: Text(
-          fullNameLanguage(widget.label.tr()),
+          widget.label.tr(),
           style: Theme.of(context).textTheme.titleLarge,
         ),
         value: widget.activeLanguages.contains(widget.label),
@@ -65,12 +66,5 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
             }
           }
         });
-  }
-
-  String fullNameLanguage(String transcription) {
-    if (transcription.length == 2) {
-      return languagesCodes[transcription] ?? transcription;
-    } else
-      return transcription;
   }
 }

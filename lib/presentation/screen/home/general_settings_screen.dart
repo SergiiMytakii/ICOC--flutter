@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,14 @@ class GeneralSettingsScreen extends StatefulWidget {
 
 class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
   @override
+  void initState() {
+    FirebaseAnalytics.instance
+        .logScreenView(screenName: 'General setings screen');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //  Localizations.localeOf(context);
     final List<String> languages = languagesCodes.keys.toList();
     final locale = Localizations.localeOf(context);
 
@@ -70,7 +77,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                         height: 15),
                     SizedBox(width: 10.0),
                     Text(
-                      locale.languageCode,
+                      locale.languageCode.tr(),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     SizedBox(
@@ -91,10 +98,12 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                   return ListTile(
                                     onTap: () async {
                                       await context.setLocale(Locale(language));
-
+                                      FirebaseAnalytics.instance.logEvent(
+                                          name: 'change language',
+                                          parameters: {'language': language});
                                       Navigator.pop(context);
                                     },
-                                    title: Text(language),
+                                    title: Text(language.tr()),
                                     contentPadding:
                                         EdgeInsets.symmetric(horizontal: 16),
                                     leading: CountryFlag.fromCountryCode(

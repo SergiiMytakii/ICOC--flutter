@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ void main() async {
   await Firebase.initializeApp();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   _activateCrashlitics();
+  FirebaseAnalytics.instance
+      .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
   String? appLocale =
       await SharedPreferencesHelper.getString(SharedPreferencesKeys.locale);
 

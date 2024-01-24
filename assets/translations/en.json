@@ -20,9 +20,6 @@
           "dropdown_menu_lang_app_russian": "App language - Russian",
           "dropdown_menu_lang_app_english": "App language - English",
           "dropdown_menu_lang_app_ukrainian": "App language - Ukrainian",
-          "ru": "Russian",
-          "en": "English",
-          "uk": "Ukrainian",
           "to favorite": "Favorites",
           "to playlist": "Playlist",
           "delete from favorites": "Delete",
@@ -127,6 +124,21 @@
           "Write your feedback here...": "Write your feedback here...",
           "Submit Feedback": "Submit Feedback",
           "Your name": "Your name",
-          "Say Thank you!": "Say thank you!"
+          "Say Thank you!": "Say thank you!",
+          "en": "English",
+          "et": "Estonian",
+          "fr": "French",
+          "de": "German",
+          "bg": "Bulgarian",
+          "it": "Italian",
+          "lv": "Latvian",
+          "lt": "Lithuanian",
+          "no": "Norwegian",
+          "pl": "Polish",
+          "ro": "Romanian",
+          "ru": "Russian",
+          "es": "Spanish",
+          "sv": "Swedish",
+          "uk": "Ukrainian"
         
         }

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,12 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
+    super.initState();
   }
 
   @override

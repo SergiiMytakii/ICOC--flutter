@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
@@ -7,7 +8,6 @@ import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_s
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
-import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
 class BibleStudyScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   @override
   void initState() {
     _getBibleStudyList();
+    FirebaseAnalytics.instance.logScreenView(screenName: 'Bible Study');
     super.initState();
   }
 

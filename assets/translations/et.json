@@ -22,6 +22,21 @@
     "ru": "Vene",
     "en": "Inglise",
     "uk": "Ukraina",
+
+    "et": "Eesti",
+    "fr": "Prantsuse",
+    "de": "Saksa",
+    "bg": "Bulgaaria",
+    "it": "Itaalia",
+    "lv": "Läti",
+    "lt": "Leedu",
+    "no": "Norra",
+    "pl": "Poola",
+    "ro": "Rumeenia",
+   
+    "es": "Hispaania",
+    "sv": "Rootsi",
+    
     "to favorite": "Lemmikusse",
     "to playlist": "Mängu loendisse",
     "delete from favorites": "Kustuta",

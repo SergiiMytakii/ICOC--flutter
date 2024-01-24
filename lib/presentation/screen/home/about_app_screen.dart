@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,14 +16,12 @@ class AboutAppScreen extends StatefulWidget {
 }
 
 class _AboutAppScreenState extends State<AboutAppScreen> {
-  // Future launchEmail() async {
-  //   final url = 'mailto:$email?';
+  @override
+  void initState() {
+    FirebaseAnalytics.instance.logScreenView(screenName: 'About App Screen');
+    super.initState();
+  }
 
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else
-  //     showSnackbar('Error'.tr, 'Can\'t open Email app'.tr);
-  // }
   Future launchEmail(BuildContext context) async {
     final uri = Uri(scheme: 'mailto', path: email, query: 'subject=ICOC app');
 
@@ -169,6 +168,8 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
           child: CustomButton(
             onPressed: () async {
               setState(() {
+                FirebaseAnalytics.instance
+                    .logPurchase(currency: 'support project clicked');
                 isOpened = !isOpened;
 
                 _opacity = !_opacity;

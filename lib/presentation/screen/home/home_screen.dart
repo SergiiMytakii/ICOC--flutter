@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/helpers/in_app_review_helper.dart';
@@ -185,6 +186,11 @@ class _HomeScreenState extends State<HomeScreen>
         if (state is GetNotificationsListSuccessState) {
           unreadNotificationsCount =
               countUnreadNotifications(state.notifications);
+          if (unreadNotificationsCount > 0) {
+            FlutterAppBadger.updateBadgeCount(unreadNotificationsCount);
+          } else {
+            FlutterAppBadger.removeBadge();
+          }
         }
         return Stack(alignment: AlignmentDirectional.center, children: [
           state is GetNotificationsListSuccessState &&
