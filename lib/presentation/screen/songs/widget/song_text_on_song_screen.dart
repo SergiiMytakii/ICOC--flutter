@@ -36,7 +36,9 @@ class SongTextOnSongScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium!
-                          .copyWith(fontSize: (state.fontSize ?? 14) + 10),
+                          .copyWith(
+                              fontSize: (state.fontSize ?? 14) + 5,
+                              fontWeight: FontWeight.bold),
                     ),
                     Container(
                       alignment: Alignment.topRight,
@@ -57,6 +59,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                             data: textVersion,
                             style: {
                               "body": html.Style(
+                                  alignment: Alignment.center,
                                   fontSize:
                                       html.FontSize(state.fontSize ?? 14)),
                             },
@@ -68,7 +71,10 @@ class SongTextOnSongScreen extends StatelessWidget {
                                 .textTheme
                                 .bodyMedium!
                                 .copyWith(fontSize: state.fontSize ?? 14),
-                          )
+                          ),
+                    SizedBox(
+                      height: 100,
+                    )
                   ],
                 ),
               ));

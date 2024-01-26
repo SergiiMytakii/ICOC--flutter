@@ -27,9 +27,9 @@ void main() async {
       await SharedPreferencesHelper.getString(SharedPreferencesKeys.locale);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light));
 
   runApp(EasyLocalization(
       useOnlyLangCode: true,

@@ -5,6 +5,8 @@ sealed class SongsEvent {
   Stream<SongsState> applyAsync({SongsState currentState, SongsBloc bloc});
 }
 
+bool sqliteBDisUpdated = false;
+
 class SongsRequested extends SongsEvent {
   final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
   @override
@@ -13,7 +15,10 @@ class SongsRequested extends SongsEvent {
     try {
       yield SongsLoadingState();
       List<SongDetail> songs = await songsRepositoryImpl.getSongs();
-      songsRepositoryImpl.insertAllSongsToLocalTable(songs);
+      if (!sqliteBDisUpdated) {
+        await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
+        sqliteBDisUpdated = true;
+      }
       songs = await filterSongs(songs);
       songs = await orderSongs(songs);
       yield GetSongsSuccessState(songs);

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -46,12 +45,14 @@ class _VideoPlayerState extends State<VideoPlayer> {
     return PopScope(
       canPop: true,
       onPopInvoked: (didPop) async {
-        Navigator.of(context).pop();
+        Future.delayed(Duration.zero)
+            .then((value) => Navigator.of(context).pop());
       },
       child: YoutubePlayerScaffold(
           controller: youtubePlayerController,
           builder: (BuildContext context, Widget player) {
             return SafeArea(
+                top: false,
                 child: Scaffold(
                     appBar: AppBar(
                       centerTitle: true,
@@ -67,9 +68,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
                       //           : Icons.arrow_back,
                       //     ),
                       //     onPressed: () {
-                      //       youtubePlayerController.stopVideo();
-
-                      //       // Navigator.of(context).pop;
+                      //       Navigator.of(context).pop;
                       //     }),
                     ),
                     body: Column(

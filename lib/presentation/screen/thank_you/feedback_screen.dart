@@ -28,6 +28,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   Widget build(BuildContext context) {
     int i = 0;
     return SafeArea(
+      top: false,
       child: Scaffold(
         appBar: AppBar(
           title: Text(

@@ -9,7 +9,6 @@ import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../../widget/loading.dart';
 import '../../../routes/app_routes.dart';
-import '../one_song_screen.dart';
 
 class DataSearchResults extends StatefulWidget {
   DataSearchResults(this.query);

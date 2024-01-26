@@ -32,26 +32,6 @@ class OneQandAScreen extends StatelessWidget {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              Image.network(
-                article.photo,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return Center(
-                    child: CircularProgressIndicator.adaptive(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 16,
-              ),
               BlocBuilder<FontSizeBloc, FontSizeState>(
                 builder: (context, state) {
                   if (state is FontSizeSuccess) {

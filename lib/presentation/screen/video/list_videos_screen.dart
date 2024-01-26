@@ -51,6 +51,7 @@ class _ListVideosState extends State<ListVideosScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

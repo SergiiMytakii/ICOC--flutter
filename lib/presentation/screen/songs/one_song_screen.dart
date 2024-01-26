@@ -76,6 +76,7 @@ class _OneSongScreenState extends State<OneSongScreen>
           id: song.id,
         ));
     return SafeArea(
+      top: false,
       child: DefaultTabController(
         length: countTabs(song),
         child: Scaffold(
