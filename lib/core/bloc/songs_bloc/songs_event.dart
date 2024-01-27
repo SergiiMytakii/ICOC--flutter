@@ -6,22 +6,33 @@ sealed class SongsEvent {
 }
 
 bool sqliteBDisUpdated = false;
+List<SongDetail> cache = [];
 
 class SongsRequested extends SongsEvent {
   final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
   @override
   Stream<SongsState> applyAsync(
       {SongsState? currentState, SongsBloc? bloc}) async* {
+    List<SongDetail> songs = [];
     try {
       yield SongsLoadingState();
-      List<SongDetail> songs = await songsRepositoryImpl.getSongs();
+      if (cache.isEmpty) {
+        songs = await songsRepositoryImpl.getSongs();
+        cache = songs;
+      } else {
+        songs = cache;
+      }
       if (!sqliteBDisUpdated) {
+        //save all keys of text (ru1, ru2, en1 ets..).  We need them to store data in SQL table
+        List<String> allTextKeys = findAllTextKeys(songs);
+        await SharedPreferencesHelper.saveList(
+            SharedPreferencesKeys.allSongsTextKeys, allTextKeys);
         await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
         sqliteBDisUpdated = true;
       }
-      songs = await filterSongs(songs);
-      songs = await orderSongs(songs);
-      yield GetSongsSuccessState(songs);
+      final filteredSongs = await filterSongs(songs);
+      final orderedSongs = await orderSongs(filteredSongs);
+      yield GetSongsSuccessState(orderedSongs);
     } catch (_, stackTrace) {
       logError(_, stackTrace);
       yield SongsErrorState(_.toString());
@@ -99,23 +110,18 @@ Future<List<SongDetail>> filterSongs(List<SongDetail> songs) async {
   //keys represent languages
   //suppose all languages of songs are list of keys if titles
   List<String> allTitleKeys = findAllTitleKeys(songs);
-  SharedPreferencesHelper.saveList(
+  await SharedPreferencesHelper.saveList(
       SharedPreferencesKeys.allSongsTitleKeys, allTitleKeys);
 
-  //save all keys of text (ru1, ru2, en1 ets..).  We will need them to store data in SQL table
-  List<String> allTextKeys = findAllTextKeys(songs);
-  SharedPreferencesHelper.saveList(
-      SharedPreferencesKeys.allSongsTextKeys, allTextKeys);
   // SharedPreferencesHelper.removeValue('orderLanguages');
 
   //orderLanguages store languages what user has chosen to show and their order
   final List<String> orderLanguages = await SharedPreferencesHelper.getList(
           SharedPreferencesKeys.orderLanguages) ??
       [];
-  if (orderLanguages
-      .isEmpty) //if this a first run we not filter and save all languages to the sharedPrefs
-  {
-    SharedPreferencesHelper.saveList(
+  //if this a first run we not filter and save all languages to the sharedPrefs
+  if (orderLanguages.isEmpty) {
+    await SharedPreferencesHelper.saveList(
         SharedPreferencesKeys.orderLanguages, allTitleKeys);
     return songs;
   }
@@ -124,8 +130,9 @@ Future<List<SongDetail>> filterSongs(List<SongDetail> songs) async {
       .difference(Set<String>.from(orderLanguages))
       .toList();
 
-  songs.map((song) => song.removeKeys(keysToRemove)).toList();
-  List<SongDetail> filteredSongs = songs
+  List<SongDetail> filteredSongs =
+      songs.map((song) => song.removeKeys(keysToRemove)).toList();
+  filteredSongs = filteredSongs
       .where((song) => song.title.isNotEmpty && song.text.isNotEmpty)
       .toList();
   //put in first place preffered user language

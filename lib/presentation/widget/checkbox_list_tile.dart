@@ -31,9 +31,8 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-      widget.label.tr(),
-    );
+    print('allLanguages ${widget.allLanguages}');
+    print('activeLanguages ${widget.activeLanguages}');
     return CheckboxListTile(
         activeColor: widget.color,
         key: widget.key,

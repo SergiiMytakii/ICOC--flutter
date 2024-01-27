@@ -43,9 +43,13 @@ class SongDetail {
     void collectKeys(Map? map) {
       if (map != null) {
         map.keys.forEach((key) {
+          if (key != 'id_song')
           // Remove numbers and duplicates
-          String cleanKey = key.replaceAll(RegExp(r'[0-9]'), '');
-          allKeys.add(cleanKey);
+          {
+            String cleanKey = key.replaceAll(RegExp(r'[0-9]'), '');
+
+            allKeys.add(cleanKey);
+          }
         });
       }
     }

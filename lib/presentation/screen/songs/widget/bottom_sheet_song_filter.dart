@@ -27,7 +27,6 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
         .then((value) {
       setState(() {
         orderLang = value ?? [];
-        print(orderLang);
       });
     });
     SharedPreferencesHelper.getBool(SharedPreferencesKeys.orderByTitle)
@@ -38,20 +37,20 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    void _onReorder(int oldIndex, int newIndex) {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-
-      //move item to the new position
-      final String item = allLanguages.removeAt(oldIndex);
-      allLanguages.insert(newIndex, item);
-      //writing new order of lang-s to preferences
-      setOrderLang();
+  void _onReorder(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
     }
 
+    //move item to the new position
+    final String item = allLanguages.removeAt(oldIndex);
+    allLanguages.insert(newIndex, item);
+    //writing new order of lang-s to preferences
+    setOrderLang();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       height: MediaQuery.of(context).size.height / 1.5,
@@ -111,6 +110,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                   label: allLanguages[index],
                   key: ValueKey('$index'),
                   callback: (List<String> langsToSave) {
+                    print(langsToSave);
                     SharedPreferencesHelper.saveList(
                             SharedPreferencesKeys.orderLanguages, langsToSave)
                         .then((value) =>

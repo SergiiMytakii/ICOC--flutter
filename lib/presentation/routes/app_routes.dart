@@ -13,7 +13,7 @@ import 'package:icoc/presentation/screen/q&a/q&a_screen.dart';
 import 'package:icoc/presentation/screen/songs/add_song_screen.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:icoc/presentation/screen/songs/widget/bottom_navigation_bar.dart';
-import 'package:icoc/presentation/screen/thank_you/feedback_screen.dart';
+import 'package:icoc/presentation/screen/feedback/feedback_screen.dart';
 import 'package:icoc/presentation/screen/video/list_topics_screen.dart';
 import 'package:icoc/presentation/widget/fade_page_route.dart';
 
