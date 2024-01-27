@@ -21,7 +21,7 @@ class FavoriteSongsListRequested extends FavoriteSongsListEvent {
 
         favoriteSongs =
             songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
-        favoriteSongs = await filterFavoriteSongs(favoriteSongs);
+        favoriteSongs = await filterSongs(favoriteSongs);
         favoriteSongs = await orderSongs(favoriteSongs);
       }
       yield GetFavoriteSongsListSuccessState(favoriteSongs);
@@ -30,17 +30,4 @@ class FavoriteSongsListRequested extends FavoriteSongsListEvent {
       yield FavoriteSongsErrorState(_.toString());
     }
   }
-}
-
-Future<List<SongDetail>> filterFavoriteSongs(List<SongDetail> songs) async {
-  //orderLanguages store languages what user has chosen to show and their order
-  final List<String> orderLanguages =
-      await SharedPreferencesHelper.getList(StorageKeys.orderLanguages) ?? [];
-  List<SongDetail> filteredAndOrderedSongs = songs
-      .map((song) => song.filterAndOrderLanguages(orderLanguages))
-      .toList();
-  final result = filteredAndOrderedSongs
-      .where((song) => song.title.isNotEmpty && song.text.isNotEmpty)
-      .toList();
-  return result;
 }

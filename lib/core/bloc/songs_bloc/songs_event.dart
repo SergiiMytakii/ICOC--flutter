@@ -21,6 +21,7 @@ class SongsRequested extends SongsEvent {
       yield SongsLoadingState();
       if (cache.isEmpty || useCache == true) {
         songs = await songsRepositoryImpl.getSongs();
+        await updateStoredLanguages(songs);
         cache = songs;
       } else {
         songs = cache;
@@ -51,8 +52,12 @@ class SearchSongRequested extends SongsEvent {
   @override
   Stream<SongsState> applyAsync(
       {SongsState? currentState, SongsBloc? bloc}) async* {
-    final List<String> orderLang =
-        await SharedPreferencesHelper.getList(StorageKeys.orderLanguages) ?? [];
+    final allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+    final Map<String, dynamic> map = Map.from(allLanguages);
+    map.removeWhere((key, value) => value == false);
+
+    final List<String> orderLang = map.keys.toList();
     //delete all specific symbols
     final String trimmedQuery =
         query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яёієї0-9]+"), ' ');
@@ -108,48 +113,21 @@ class SearchSongRequested extends SongsEvent {
   }
 }
 
-Future<List<SongDetail>> filterSongs(List<SongDetail> songs) async {
-  //keys represent languages
-  //suppose all languages of songs are list of keys if titles
-  List<String> allLangugas = await updateStoredListLanguages(songs);
-
-  // SharedPreferencesHelper.removeValue('orderLanguages');
-
-  //orderLanguages store languages what user has chosen to show and their order
-  final List<String> orderLanguages =
-      await SharedPreferencesHelper.getList(StorageKeys.orderLanguages) ?? [];
-  //if this a first run we not filter and save all languages to the sharedPrefs
-  if (orderLanguages.isEmpty) {
-    await SharedPreferencesHelper.saveList(
-        StorageKeys.orderLanguages, allLangugas);
-    return songs;
-  }
-
-  List<SongDetail> filteredAndOrderedSongs = songs
-      .map((song) => song.filterAndOrderLanguages(orderLanguages))
-      .toList();
-  final result = filteredAndOrderedSongs
-      .where((song) => song.title.isNotEmpty && song.text.isNotEmpty)
-      .toList();
-  return result;
-}
-
-Future<List<String>> updateStoredListLanguages(List<SongDetail> songs) async {
+Future<void> updateStoredLanguages(List<SongDetail> songs) async {
   List<String> allTitleKeys = findAllTitleKeys(songs);
   //get stored all languages (ordered)
-  final orderedAllLanguages =
-      await SharedPreferencesHelper.getList(StorageKeys.allSongsTitleKeys) ??
-          [];
-  //in case some new languages were added
-  if (allTitleKeys.length > orderedAllLanguages.length) {
-    List<String> resultLanguages = List.from(orderedAllLanguages)
-      ..addAll(
-          allTitleKeys.where((lang) => !orderedAllLanguages.contains(lang)));
-    await SharedPreferencesHelper.saveList(
-        StorageKeys.allSongsTitleKeys, resultLanguages);
-    return resultLanguages;
-  } else
-    return orderedAllLanguages;
+  final Map<String, dynamic> orderedAllLanguages =
+      SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+
+  //iterate languages from Firebase songs and add them to the Map
+  allTitleKeys.forEach((String lang) {
+    if (!orderedAllLanguages.containsKey(lang)) {
+      print('insert $lang');
+      orderedAllLanguages[lang] = true;
+    }
+  });
+  await SharedPreferencesHelper.saveMap(
+      StorageKeys.allSongsLanguages, orderedAllLanguages);
 }
 
 List<String> findAllTitleKeys(List<SongDetail> songs) {

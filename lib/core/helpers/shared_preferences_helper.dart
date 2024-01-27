@@ -1,52 +1,52 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SharedPreferencesHelper {
   // Save a string value to SharedPreferences
   static Future<void> saveString(String key, String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
+    await GetStorage().write(key, value);
   }
 
   // Get a string value from SharedPreferences
-  static Future<double?> getDouble(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble(key);
+  static String? getString(String key) {
+    return GetStorage().read<String>(key);
+  }
+
+  static Future<void> saveMap(String key, Map<String, dynamic> value) async {
+    await GetStorage().write(key, value);
+  }
+
+  // Get a string value from SharedPreferences
+  static Map<String, dynamic>? getMap(String key) {
+    return GetStorage().read<Map<String, dynamic>>(key);
+  }
+
+  // Get a string value from SharedPreferences
+  static double? getDouble(String key) {
+    return GetStorage().read<double>(key);
   }
 
   static Future<void> saveDouble(String key, double value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble(key, value);
-  }
-
-  // Get a string value from SharedPreferences
-  static Future<String?> getString(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key);
+    await GetStorage().write(key, value);
   }
 
   static Future<void> saveList(String key, List<String> value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(key, value);
+    await GetStorage().write(key, value);
   }
 
-  static Future<List<String>?> getList(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(key);
+  static List<String>? getList(String key) {
+    return GetStorage().read<List<String>>(key);
   }
 
-  static Future<bool?> saveBool(String key, bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.setBool(key, value);
+  static Future<void> saveBool(String key, bool value) async {
+    await GetStorage().write(key, value);
   }
 
-  static Future<bool?> getBool(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key);
+  static bool? getBool(String key) {
+    return GetStorage().read<bool>(key);
   }
 
   // Remove a value from SharedPreferences
   static Future<void> removeValue(String key) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(key);
+    await GetStorage().remove(key);
   }
 }

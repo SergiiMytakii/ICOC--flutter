@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,38 +16,26 @@ class BottomSheetSongsFilter extends StatefulWidget {
 
 class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   bool orderByTitle = false;
-  List<String> allLanguages = [];
-  List<String> orderLang = [];
+  Map<String, dynamic> allLanguages = {};
   @override
   void initState() {
-    SharedPreferencesHelper.getList(StorageKeys.allSongsTitleKeys)
-        .then((value) {
-      allLanguages = value ?? [];
-      setState(() {});
-    });
-    SharedPreferencesHelper.getList(StorageKeys.orderLanguages).then((value) {
-      setState(() {
-        orderLang = value ?? [];
-      });
-    });
-    SharedPreferencesHelper.getBool(StorageKeys.orderByTitle).then((value) {
-      orderByTitle = value ?? true;
-      setState(() {});
-    });
+    allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+
     super.initState();
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
+  // void _onReorder(int oldIndex, int newIndex) {
+  //   if (oldIndex < newIndex) {
+  //     newIndex -= 1;
+  //   }
 
-    //move item to the new position
-    final String item = allLanguages.removeAt(oldIndex);
-    allLanguages.insert(newIndex, item);
-    //writing new order of lang-s to preferences
-    setOrderLang();
-  }
+  //   //move item to the new position
+  //   final String item = allLanguages.removeAt(oldIndex);
+  //   allLanguages.insert(newIndex, item);
+  //   //writing new order of lang-s to preferences
+  //   setOrderLang();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -92,24 +82,74 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                 itemBuilder: (context, index) {
                   return MyCheckboxListTile(
                     allLanguages: allLanguages,
-                    activeLanguages: orderLang,
-                    trailingIcon: Icon(
-                      Icons.keyboard_double_arrow_up,
-                      color: ScreenColors.songBook,
-                    ),
+                    trailingIcon: _orderSongsLangugagesButtons(
+                        allLanguages.keys.toList()[index]),
                     color: ScreenColors.songBook,
-                    label: allLanguages[index],
+                    label: allLanguages.keys.toList()[index],
                     key: ValueKey('$index'),
-                    callback: (List<String> langsToSave) {
-                      SharedPreferencesHelper.saveList(
-                              StorageKeys.orderLanguages, langsToSave)
+                    callback: (Map<String, dynamic> langsToSave) {
+                      SharedPreferencesHelper.saveMap(
+                              StorageKeys.allSongsLanguages, langsToSave)
                           .then((value) =>
                               context.read<SongsBloc>().add(SongsRequested()));
-                      setState(() {});
                     },
                   );
                 }),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _orderSongsLangugagesButtons(String label) {
+    return SizedBox(
+      height: 40,
+      width: 100,
+      child: Row(
+        children: [
+          IconButton(
+              style: ButtonStyle(
+                  enableFeedback: true,
+                  elevation: MaterialStateProperty.all(15),
+                  padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                  backgroundColor:
+                      MaterialStateProperty.all(ScreenColors.songBook)),
+              onPressed: () async {
+                List<MapEntry<String, dynamic>> list =
+                    allLanguages.entries.toList();
+                final index = allLanguages.keys.toList().indexOf(label);
+                if (index == 0) return;
+                final newIndex = index - 1;
+                final value = list.removeAt(index);
+                list.insert(newIndex, value);
+                setState(() {
+                  allLanguages = Map.fromEntries(list);
+                });
+                await SharedPreferencesHelper.saveMap(
+                    StorageKeys.allSongsLanguages, allLanguages);
+                context.read<SongsBloc>().add(SongsRequested());
+              },
+              icon: Icon(Icons.arrow_upward)),
+          IconButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(ScreenColors.songBook)),
+              onPressed: () async {
+                List<MapEntry<String, dynamic>> list =
+                    allLanguages.entries.toList();
+                final index = allLanguages.keys.toList().indexOf(label);
+                if (index == list.length - 1) return;
+                final newIndex = index + 1;
+                final value = list.removeAt(index);
+                list.insert(newIndex, value);
+                setState(() {
+                  allLanguages = Map.fromEntries(list);
+                });
+                await SharedPreferencesHelper.saveMap(
+                    StorageKeys.allSongsLanguages, allLanguages);
+                context.read<SongsBloc>().add(SongsRequested());
+              },
+              icon: Icon(Icons.arrow_downward))
         ],
       ),
     );
@@ -150,16 +190,16 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     context.read<SongsBloc>().add(SongsRequested());
   }
 
-  void setOrderLang() async {
-    //save reordered list
-    await SharedPreferencesHelper.saveList(
-        StorageKeys.allSongsTitleKeys, allLanguages);
-    //save the same order in filtered languages
-    final List<String> reorderedLanguages = List.from(allLanguages);
-    reorderedLanguages.removeWhere((item) => !orderLang.contains(item));
-    await SharedPreferencesHelper.saveList(
-        StorageKeys.orderLanguages, reorderedLanguages);
-    context.read<SongsBloc>().add(SongsRequested());
-    setState(() {});
-  }
+  // void setOrderLang() async {
+  //   //save reordered list
+  //   await SharedPreferencesHelper.saveList(
+  //       StorageKeys.allSongsLanguages, allLanguages);
+  //   //save the same order in filtered languages
+  //   final List<String> reorderedLanguages = List.from(allLanguages);
+  //   reorderedLanguages.removeWhere((item) => !orderLang.contains(item));
+  //   await SharedPreferencesHelper.saveList(
+  //       StorageKeys.orderLanguages, reorderedLanguages);
+  //   context.read<SongsBloc>().add(SongsRequested());
+  //   setState(() {});
+  // }
 }

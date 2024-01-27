@@ -28,22 +28,22 @@ class BibleStudyListRequested extends BibleStudyEvent {
 }
 
 Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics) async {
-  final List<String> storedLanguages =
-      await SharedPreferencesHelper.getList(StorageKeys.bibleStudyLanguages) ??
-          [];
-  //if this the first run we store languages
-  // we need all languages  for filtering
+  final Map<String, dynamic> storedLanguages =
+      SharedPreferencesHelper.getMap(StorageKeys.bibleStudyLanguages) ?? {};
+  //set keeps only unique values
   Set<String> allKeys = {};
   topics.forEach((topic) => allKeys.add(topic.lang));
-  SharedPreferencesHelper.saveList(
-      StorageKeys.bibleStudyAllLanguages, allKeys.toList());
-  if (storedLanguages.isEmpty) {
-    SharedPreferencesHelper.saveList(
-        StorageKeys.bibleStudyLanguages, allKeys.toList());
-    return topics;
-  } else {
-    return topics
-        .where((topic) => storedLanguages.contains(topic.lang))
-        .toList();
-  }
+
+  allKeys.forEach((String lang) {
+    if (!storedLanguages.containsKey(lang)) {
+      storedLanguages[lang] = true;
+    }
+  });
+  SharedPreferencesHelper.saveMap(
+      StorageKeys.bibleStudyLanguages, storedLanguages);
+
+  return topics.where((topic) {
+    return storedLanguages.entries
+        .any((element) => element.value == true && element.key == topic.lang);
+  }).toList();
 }

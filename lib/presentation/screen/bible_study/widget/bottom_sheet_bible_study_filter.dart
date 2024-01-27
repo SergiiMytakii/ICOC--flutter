@@ -15,24 +15,12 @@ class BottomSheetBibleStudyFilter extends StatefulWidget {
 
 class _BottomSheetBibleStudyFilterState
     extends State<BottomSheetBibleStudyFilter> {
-  List<String> languages = [];
-  List<String> allLanguages = [];
+  Map<String, dynamic> allLanguages = {};
   @override
   void initState() {
-    SharedPreferencesHelper.getList(StorageKeys.bibleStudyLanguages)
-        .then((value) {
-      setState(() {
-        languages = value ?? [];
-        print(languages);
-      });
-    });
-    SharedPreferencesHelper.getList(StorageKeys.bibleStudyAllLanguages)
-        .then((value) {
-      setState(() {
-        allLanguages = value ?? [];
-        print(allLanguages);
-      });
-    });
+    allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.bibleStudyLanguages) ?? {};
+
     super.initState();
   }
 
@@ -58,11 +46,10 @@ class _BottomSheetBibleStudyFilterState
               children: List.generate(allLanguages.length, (index) {
                 return MyCheckboxListTile(
                     allLanguages: allLanguages,
-                    activeLanguages: languages,
                     color: ScreenColors.bibleStudy,
-                    label: allLanguages[index],
-                    callback: (List<String> activeLanguages) {
-                      SharedPreferencesHelper.saveList(
+                    label: allLanguages.keys.toList()[index],
+                    callback: (Map<String, dynamic> activeLanguages) {
+                      SharedPreferencesHelper.saveMap(
                           StorageKeys.bibleStudyLanguages, activeLanguages);
                       context
                           .read<BibleStudyBloc>()

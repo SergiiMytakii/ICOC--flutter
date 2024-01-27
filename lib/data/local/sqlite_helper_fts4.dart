@@ -37,15 +37,16 @@ class DatabaseHelperFTS4 {
   Future<Database?> initDB() async {
     String path = join((await getDatabasesPath()), DB_NAME);
     // await deleteDatabase(path); // - if we need to clean database
-    final List<String> allSongsTitleKeys =
-        await SharedPreferencesHelper.getList(StorageKeys.allSongsTitleKeys) ??
-            [];
+    final Map<String, dynamic> allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+    allLanguages.removeWhere((key, value) => value == false);
+
+    final List<String> allSongsTitleKeys = allLanguages.keys.toList();
     String columnTitleDefinitions =
         allSongsTitleKeys.map((key) => '$key TEXT').join(', ');
 
     final List<String> allSongsTextKeys =
-        await SharedPreferencesHelper.getList(StorageKeys.allSongsTextKeys) ??
-            [];
+        SharedPreferencesHelper.getList(StorageKeys.allSongsTextKeys) ?? [];
     String columnTextDefinitions =
         allSongsTextKeys.map((key) => '$key TEXT').join(', ');
     print(columnTitleDefinitions);

@@ -33,16 +33,13 @@ const String YOUTUBE_TERMS_OF_SERVISES = 'https://www.youtube.com/t/terms';
 const String YOUTUBE_PRIVACY_POLICIES = 'https://policies.google.com/privacy';
 
 class StorageKeys {
-  static const String orderLanguages = 'orderLanguages';
   static const String orderByTitle = 'orderByTitle';
-  static const String allSongsTitleKeys = 'allSongsTitleKeys';
+  static const String allSongsLanguages = 'allSongsLanguages';
   static const String allSongsTextKeys = 'allSongsTextKeys';
   static const String locale = 'locale';
   static const String fontSize = 'fontSize';
   static const String bibleStudyLanguages = 'bibleStudyLanguages';
-  static const String bibleStudyAllLanguages = 'bibleStudyAllLanguages';
   static const String notifications = 'notifications';
-  static const String videosLanguages = 'videosLanguages';
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
   // Add more keys as needed

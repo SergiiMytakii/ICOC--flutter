@@ -13,23 +13,12 @@ class BottomSheetVideoFilter extends StatefulWidget {
 }
 
 class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
-  List<String> languages = [];
-  List<String> allLanguages = [];
+  Map<String, dynamic> allLanguages = {};
   @override
   void initState() {
-    SharedPreferencesHelper.getList(StorageKeys.videosLanguages).then((value) {
-      setState(() {
-        languages = value ?? [];
-        print(languages);
-      });
-    });
-    SharedPreferencesHelper.getList(StorageKeys.videosAllLanguages)
-        .then((value) {
-      setState(() {
-        allLanguages = value ?? [];
-        print(allLanguages);
-      });
-    });
+    allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.videosAllLanguages) ?? {};
+
     super.initState();
   }
 
@@ -55,12 +44,11 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
               children: List.generate(allLanguages.length, (index) {
                 return MyCheckboxListTile(
                     allLanguages: allLanguages,
-                    activeLanguages: languages,
                     color: ScreenColors.video,
-                    label: allLanguages[index],
-                    callback: (List<String> activeLanguages) {
-                      SharedPreferencesHelper.saveList(
-                          StorageKeys.videosLanguages, activeLanguages);
+                    label: allLanguages.keys.toList()[index],
+                    callback: (Map<String, dynamic> activeLanguages) {
+                      SharedPreferencesHelper.saveMap(
+                          StorageKeys.videosAllLanguages, activeLanguages);
                       context.read<VideoBloc>().add(VideoListRequested());
                     },
                     key: ValueKey('$index'));
