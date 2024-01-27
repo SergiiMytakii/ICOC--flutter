@@ -14,12 +14,11 @@ class FontSizeRequested extends FontSizeEvent {
   Stream<FontSizeState> applyAsync(
       {FontSizeState? currentState, FontSizeBloc? bloc}) async* {
     if (fontSize == null) {
-      final double? fontSize = await SharedPreferencesHelper.getDouble(
-          SharedPreferencesKeys.fontSize);
+      final double? fontSize =
+          await SharedPreferencesHelper.getDouble(StorageKeys.fontSize);
       yield FontSizeSuccess(fontSize: fontSize);
     } else {
-      SharedPreferencesHelper.saveDouble(
-          SharedPreferencesKeys.fontSize, fontSize!);
+      SharedPreferencesHelper.saveDouble(StorageKeys.fontSize, fontSize!);
       yield FontSizeSuccess(fontSize: fontSize);
     }
   }

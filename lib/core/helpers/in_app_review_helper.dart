@@ -6,12 +6,12 @@ import 'package:rate_my_app/rate_my_app.dart';
 
 class InAppReviewHelper {
   Future<bool> checkAndSaveFirstRunDate() async {
-    final String? firstAppRunDate = await SharedPreferencesHelper.getString(
-        SharedPreferencesKeys.firstAppRunDate);
+    final String? firstAppRunDate =
+        await SharedPreferencesHelper.getString(StorageKeys.firstAppRunDate);
     final now = DateTime.now();
     if (firstAppRunDate == null) {
       SharedPreferencesHelper.saveString(
-          SharedPreferencesKeys.firstAppRunDate, now.toUtc().toString());
+          StorageKeys.firstAppRunDate, now.toUtc().toString());
       return false;
     } else if (DateTime.parse(firstAppRunDate)
         .isBefore(now.add(Duration(days: 2)))) {

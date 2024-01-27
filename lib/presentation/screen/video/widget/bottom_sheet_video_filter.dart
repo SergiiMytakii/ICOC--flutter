@@ -17,14 +17,13 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
   List<String> allLanguages = [];
   @override
   void initState() {
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.videosLanguages)
-        .then((value) {
+    SharedPreferencesHelper.getList(StorageKeys.videosLanguages).then((value) {
       setState(() {
         languages = value ?? [];
         print(languages);
       });
     });
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.videosAllLanguages)
+    SharedPreferencesHelper.getList(StorageKeys.videosAllLanguages)
         .then((value) {
       setState(() {
         allLanguages = value ?? [];
@@ -61,8 +60,7 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     label: allLanguages[index],
                     callback: (List<String> activeLanguages) {
                       SharedPreferencesHelper.saveList(
-                          SharedPreferencesKeys.videosLanguages,
-                          activeLanguages);
+                          StorageKeys.videosLanguages, activeLanguages);
                       context.read<VideoBloc>().add(VideoListRequested());
                     },
                     key: ValueKey('$index'));

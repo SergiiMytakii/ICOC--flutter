@@ -34,7 +34,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
     return CupertinoPageScaffold(
       child: RefreshIndicator.adaptive(
         edgeOffset: 130,
-        onRefresh: () => getSongs(context),
+        onRefresh: () => getSongs(context, useCache: true),
         child: CustomScrollView(
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
@@ -51,8 +51,8 @@ class _SongBookScreenState extends State<SongBookScreen> {
     );
   }
 
-  Future<void> getSongs(BuildContext context) async {
-    context.read<SongsBloc>().add(SongsRequested());
+  Future<void> getSongs(BuildContext context, {bool? useCache}) async {
+    context.read<SongsBloc>().add(SongsRequested(useCache: useCache));
   }
 
   _handleQuery(String val) {

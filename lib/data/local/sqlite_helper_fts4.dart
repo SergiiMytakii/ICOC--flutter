@@ -38,15 +38,14 @@ class DatabaseHelperFTS4 {
     String path = join((await getDatabasesPath()), DB_NAME);
     // await deleteDatabase(path); // - if we need to clean database
     final List<String> allSongsTitleKeys =
-        await SharedPreferencesHelper.getList(
-                SharedPreferencesKeys.allSongsTitleKeys) ??
+        await SharedPreferencesHelper.getList(StorageKeys.allSongsTitleKeys) ??
             [];
     String columnTitleDefinitions =
         allSongsTitleKeys.map((key) => '$key TEXT').join(', ');
 
-    final List<String> allSongsTextKeys = await SharedPreferencesHelper.getList(
-            SharedPreferencesKeys.allSongsTextKeys) ??
-        [];
+    final List<String> allSongsTextKeys =
+        await SharedPreferencesHelper.getList(StorageKeys.allSongsTextKeys) ??
+            [];
     String columnTextDefinitions =
         allSongsTextKeys.map((key) => '$key TEXT').join(', ');
     print(columnTitleDefinitions);

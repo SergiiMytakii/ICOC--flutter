@@ -49,9 +49,9 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
             setState(() {
               if (!widget.activeLanguages.contains(widget.label)) {
                 widget.activeLanguages.add(widget.label);
+                widget.callback(widget.activeLanguages);
               }
             });
-            widget.callback(widget.activeLanguages);
           } else {
             if (widget.activeLanguages.length == 1) {
               showToast(
@@ -60,8 +60,8 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
             } else {
               setState(() {
                 widget.activeLanguages.remove(widget.label);
+                widget.callback(widget.activeLanguages);
               });
-              widget.callback(widget.activeLanguages);
             }
           }
         });

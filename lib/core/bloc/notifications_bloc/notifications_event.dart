@@ -41,12 +41,11 @@ class NotificationMarkAsReadRequested extends NotificationsEvent {
   Stream<NotificationsState> applyAsync(
       {NotificationsState? currentState, NotificationsBloc? bloc}) async* {
     try {
-      final List<String> isRead = await SharedPreferencesHelper.getList(
-              SharedPreferencesKeys.notifications) ??
-          [];
+      final List<String> isRead =
+          await SharedPreferencesHelper.getList(StorageKeys.notifications) ??
+              [];
       isRead.add(title);
-      SharedPreferencesHelper.saveList(
-          SharedPreferencesKeys.notifications, isRead);
+      SharedPreferencesHelper.saveList(StorageKeys.notifications, isRead);
 
       notifications.forEach((notification) {
         if (notification.title == title) {
@@ -74,9 +73,8 @@ List<NotificationsModel> filterNotificationsByLang(
 
 Future<List<NotificationsModel>> checkAndMarkWhatIsRead(
     List<NotificationsModel> notifications) async {
-  final List<String> isRead = await SharedPreferencesHelper.getList(
-          SharedPreferencesKeys.notifications) ??
-      [];
+  final List<String> isRead =
+      await SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
   if (isRead.isNotEmpty) {
     notifications.forEach((notification) {
       if (isRead.contains(notification.title)) {

@@ -18,19 +18,17 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   List<String> orderLang = [];
   @override
   void initState() {
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.allSongsTitleKeys)
+    SharedPreferencesHelper.getList(StorageKeys.allSongsTitleKeys)
         .then((value) {
       allLanguages = value ?? [];
       setState(() {});
     });
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.orderLanguages)
-        .then((value) {
+    SharedPreferencesHelper.getList(StorageKeys.orderLanguages).then((value) {
       setState(() {
         orderLang = value ?? [];
       });
     });
-    SharedPreferencesHelper.getBool(SharedPreferencesKeys.orderByTitle)
-        .then((value) {
+    SharedPreferencesHelper.getBool(StorageKeys.orderByTitle).then((value) {
       orderByTitle = value ?? true;
       setState(() {});
     });
@@ -89,36 +87,28 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
           )),
           Expanded(
             // margin: EdgeInsets.only(top: 10),
-            child: ReorderableListView(
-              scrollDirection: Axis.vertical,
-              onReorder: _onReorder,
-              onReorderStart: (index) {
-                Feedback.forLongPress(context);
-              },
-              onReorderEnd: (index) {
-                Feedback.forLongPress(context);
-              },
-              children: List.generate(allLanguages.length, (index) {
-                return MyCheckboxListTile(
-                  allLanguages: allLanguages,
-                  activeLanguages: orderLang,
-                  trailingIcon: Icon(
-                    Icons.keyboard_double_arrow_up,
+            child: ListView.builder(
+                itemCount: allLanguages.length,
+                itemBuilder: (context, index) {
+                  return MyCheckboxListTile(
+                    allLanguages: allLanguages,
+                    activeLanguages: orderLang,
+                    trailingIcon: Icon(
+                      Icons.keyboard_double_arrow_up,
+                      color: ScreenColors.songBook,
+                    ),
                     color: ScreenColors.songBook,
-                  ),
-                  color: ScreenColors.songBook,
-                  label: allLanguages[index],
-                  key: ValueKey('$index'),
-                  callback: (List<String> langsToSave) {
-                    print(langsToSave);
-                    SharedPreferencesHelper.saveList(
-                            SharedPreferencesKeys.orderLanguages, langsToSave)
-                        .then((value) =>
-                            context.read<SongsBloc>().add(SongsRequested()));
-                  },
-                );
-              }),
-            ),
+                    label: allLanguages[index],
+                    key: ValueKey('$index'),
+                    callback: (List<String> langsToSave) {
+                      SharedPreferencesHelper.saveList(
+                              StorageKeys.orderLanguages, langsToSave)
+                          .then((value) =>
+                              context.read<SongsBloc>().add(SongsRequested()));
+                      setState(() {});
+                    },
+                  );
+                }),
           ),
         ],
       ),
@@ -156,19 +146,19 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
 
   void _orderSongs(bool orderByTitle) async {
     await SharedPreferencesHelper.saveBool(
-        SharedPreferencesKeys.orderByTitle, orderByTitle);
+        StorageKeys.orderByTitle, orderByTitle);
     context.read<SongsBloc>().add(SongsRequested());
   }
 
   void setOrderLang() async {
     //save reordered list
     await SharedPreferencesHelper.saveList(
-        SharedPreferencesKeys.allSongsTitleKeys, allLanguages);
+        StorageKeys.allSongsTitleKeys, allLanguages);
     //save the same order in filtered languages
     final List<String> reorderedLanguages = List.from(allLanguages);
     reorderedLanguages.removeWhere((item) => !orderLang.contains(item));
     await SharedPreferencesHelper.saveList(
-        SharedPreferencesKeys.orderLanguages, reorderedLanguages);
+        StorageKeys.orderLanguages, reorderedLanguages);
     context.read<SongsBloc>().add(SongsRequested());
     setState(() {});
   }

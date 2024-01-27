@@ -76,24 +76,34 @@ class SongDetail {
     return allKeys.toList();
   }
 
-  SongDetail removeKeys(List<String> keysToRemove) {
-    return SongDetail(
-      id: this.id,
-      title: _removeKeysFromMap(this.title, keysToRemove),
-      description: _removeKeysFromMap(this.description, keysToRemove),
-      text: _removeKeysFromMap(this.text, keysToRemove),
-      chords: _removeKeysFromMap(this.chords, keysToRemove),
-      resources: this.resources,
-    );
-  }
+  SongDetail filterAndOrderLanguages(List<String> orderLanguages) {
+    Map filteredTitle = Map.fromEntries(title.entries
+        .where((entry) => orderLanguages.contains(entry.key))
+        .toList()
+      ..sort((a, b) => orderLanguages
+          .indexOf(a.key)
+          .compareTo(orderLanguages.indexOf(b.key))));
 
-  Map _removeKeysFromMap(Map? map, List<String> keysToRemove) {
-    if (map == null) {
-      return {};
-    }
-    map.removeWhere((key, value) =>
-        keysToRemove.contains(key.replaceAll(RegExp(r'[0-9]'), '')));
-    return map;
+    Map filteredText = Map.fromEntries(text.entries
+        .where((entry) =>
+            orderLanguages.contains(entry.key.toString().substring(0, 2)))
+        .toList()
+      ..sort((a, b) => orderLanguages
+          .indexOf(a.key.toString().substring(0, 2))
+          .compareTo(
+              orderLanguages.indexOf(b.key.toString().substring(0, 2)))));
+
+    return SongDetail(
+      id: id,
+      title: filteredTitle,
+      description: description,
+      text: filteredText,
+      chords: chords,
+      resources: resources,
+      searchLang: searchLang,
+      searchText: searchText,
+      searchTitle: searchTitle,
+    );
   }
 
   SongDetail orderByLanguage(List<String> orderLanguages) {

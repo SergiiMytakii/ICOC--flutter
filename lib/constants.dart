@@ -32,7 +32,7 @@ const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';
 const String YOUTUBE_TERMS_OF_SERVISES = 'https://www.youtube.com/t/terms';
 const String YOUTUBE_PRIVACY_POLICIES = 'https://policies.google.com/privacy';
 
-class SharedPreferencesKeys {
+class StorageKeys {
   static const String orderLanguages = 'orderLanguages';
   static const String orderByTitle = 'orderByTitle';
   static const String allSongsTitleKeys = 'allSongsTitleKeys';

@@ -4,9 +4,8 @@ import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/song_detail.dart';
 
 Future<List<SongDetail>> orderSongs(List<SongDetail> songs) async {
-  final bool orderByTitle = await SharedPreferencesHelper.getBool(
-          SharedPreferencesKeys.orderByTitle) ??
-      false;
+  final bool orderByTitle =
+      await SharedPreferencesHelper.getBool(StorageKeys.orderByTitle) ?? false;
   if (orderByTitle) {
     songs.sort((a, b) {
       final String a1 = a.title.entries.first.value;

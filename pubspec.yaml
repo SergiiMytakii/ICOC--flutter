@@ -45,7 +45,6 @@ dependencies:
   youtube_player_iframe: ^5.0.0
   carousel_slider: ^4.2.1
   flutter_slidable: ^3.0.1
-  shared_preferences: ^2.0.13
   url_launcher: ^6.0.12
   wakelock: ^0.6.1+1
   country_flags: ^2.2.0
@@ -55,6 +54,7 @@ dependencies:
   qr_flutter: ^4.0.0
   share_plus: ^6.3.4
   flutter_app_badger: ^1.5.0
+  get_storage: ^2.1.1
   
 
 

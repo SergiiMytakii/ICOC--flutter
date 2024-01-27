@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:icoc/core/bloc/multibloc_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -23,8 +24,9 @@ void main() async {
   _activateCrashlitics();
   FirebaseAnalytics.instance
       .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
+  await GetStorage.init();
   String? appLocale =
-      await SharedPreferencesHelper.getString(SharedPreferencesKeys.locale);
+      await SharedPreferencesHelper.getString(StorageKeys.locale);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(

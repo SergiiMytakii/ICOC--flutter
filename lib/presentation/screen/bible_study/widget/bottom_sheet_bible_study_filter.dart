@@ -19,15 +19,14 @@ class _BottomSheetBibleStudyFilterState
   List<String> allLanguages = [];
   @override
   void initState() {
-    SharedPreferencesHelper.getList(SharedPreferencesKeys.bibleStudyLanguages)
+    SharedPreferencesHelper.getList(StorageKeys.bibleStudyLanguages)
         .then((value) {
       setState(() {
         languages = value ?? [];
         print(languages);
       });
     });
-    SharedPreferencesHelper.getList(
-            SharedPreferencesKeys.bibleStudyAllLanguages)
+    SharedPreferencesHelper.getList(StorageKeys.bibleStudyAllLanguages)
         .then((value) {
       setState(() {
         allLanguages = value ?? [];
@@ -64,8 +63,7 @@ class _BottomSheetBibleStudyFilterState
                     label: allLanguages[index],
                     callback: (List<String> activeLanguages) {
                       SharedPreferencesHelper.saveList(
-                          SharedPreferencesKeys.bibleStudyLanguages,
-                          activeLanguages);
+                          StorageKeys.bibleStudyLanguages, activeLanguages);
                       context
                           .read<BibleStudyBloc>()
                           .add(BibleStudyListRequested());

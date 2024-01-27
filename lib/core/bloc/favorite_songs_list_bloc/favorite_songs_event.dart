@@ -33,32 +33,14 @@ class FavoriteSongsListRequested extends FavoriteSongsListEvent {
 }
 
 Future<List<SongDetail>> filterFavoriteSongs(List<SongDetail> songs) async {
-  //keys represent languages
-  //suppose all languages of songs are list of keys if titles
-  List<String> allTitleKeys = await SharedPreferencesHelper.getList(
-          SharedPreferencesKeys.allSongsTitleKeys) ??
-      [];
-
   //orderLanguages store languages what user has chosen to show and their order
-  final List<String> orderLanguages = await SharedPreferencesHelper.getList(
-          SharedPreferencesKeys.orderLanguages) ??
-      [];
-
-  //remove languages what user does not want to show
-  List<String> keysToRemove = Set<String>.from(allTitleKeys)
-      .difference(Set<String>.from(orderLanguages))
+  final List<String> orderLanguages =
+      await SharedPreferencesHelper.getList(StorageKeys.orderLanguages) ?? [];
+  List<SongDetail> filteredAndOrderedSongs = songs
+      .map((song) => song.filterAndOrderLanguages(orderLanguages))
       .toList();
-
-  songs.map((song) => song.removeKeys(keysToRemove)).toList();
-  List<SongDetail> filteredSongs = songs
+  final result = filteredAndOrderedSongs
       .where((song) => song.title.isNotEmpty && song.text.isNotEmpty)
       .toList();
-  //put in first place preffered user language
-  if (orderLanguages.length > 1) {
-    List<SongDetail> orderdedSongs = filteredSongs
-        .map((song) => song.orderByLanguage(orderLanguages))
-        .toList();
-    return orderdedSongs;
-  }
-  return filteredSongs;
+  return result;
 }
