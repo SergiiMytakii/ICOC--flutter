@@ -73,7 +73,7 @@ class _VideoCardState extends State<VideoCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(widget.resources.title,
+                      child: Text(widget.resources.title ?? "",
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium!),

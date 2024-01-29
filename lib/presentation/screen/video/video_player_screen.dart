@@ -57,7 +57,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
                     appBar: AppBar(
                       centerTitle: true,
                       title: Text(
-                        widget.resource.title,
+                        widget.resource.title ?? '',
                         maxLines: 2,
                         style: TextStyle(fontSize: 12),
                       ),

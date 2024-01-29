@@ -1,6 +1,6 @@
 class Resources {
   final String lang;
-  final String title;
+  final String? title;
   final String link;
   final String? thumbnail;
   final String? artist;
@@ -18,9 +18,9 @@ class Resources {
 
   factory Resources.fromJson(Map json) {
     return Resources(
-        lang: json['lang'],
+        lang: json['lang'] ?? '',
         title: json['title'],
-        link: json['link'],
+        link: json['link'] ?? '',
         thumbnail: json['thumbnail'],
         artist: json['artist']);
   }
