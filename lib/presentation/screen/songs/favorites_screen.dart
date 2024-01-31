@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,15 +18,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     getFavoriteSongs(context);
-    // Future.delayed(Duration.zero).then((value) => getFavoriteSongs(context));
     super.initState();
   }
-
-  // @override
-  // void didUpdateWidget(covariant FavoritesScreen oldWidget) {
-  //   getFavoriteSongs(context);
-  //   super.didUpdateWidget(oldWidget);
-  // }
 
   @override
   Widget build(BuildContext context) {

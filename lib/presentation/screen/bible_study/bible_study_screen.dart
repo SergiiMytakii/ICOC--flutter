@@ -46,7 +46,8 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
             if (state is GetBibleStudyListSuccessState) {
               return _buildBody(state, i);
             } else if (state is BibleStudyLoadingState) {
-              return CustomRefreshIndicator(() => _getBibleStudyList());
+              return CustomRefreshIndicator(
+                  onRefresh: () => _getBibleStudyList());
             } else if (state is BibleStudyErrorState) {
               return ErrorTextOnScreen(message: state.message);
             } else {

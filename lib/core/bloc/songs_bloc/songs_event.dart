@@ -9,17 +9,17 @@ bool sqliteBDisUpdated = false;
 List<SongDetail> cache = [];
 
 class SongsRequested extends SongsEvent {
+  SongsRequested({this.useCache = true});
   final bool? useCache;
   final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
 
-  SongsRequested({this.useCache = false});
   @override
   Stream<SongsState> applyAsync(
       {SongsState? currentState, SongsBloc? bloc}) async* {
     List<SongDetail> songs = [];
     try {
       yield SongsLoadingState();
-      if (cache.isEmpty || useCache == true) {
+      if (cache.isEmpty || useCache == false) {
         songs = await songsRepositoryImpl.getSongs();
         await updateStoredLanguages(songs);
         cache = songs;
@@ -138,6 +138,18 @@ List<String> findAllTitleKeys(List<SongDetail> songs) {
 
 List<String> findAllTextKeys(List<SongDetail> songs) {
   Set<String> allTitleKeys = {};
-  songs.forEach((song) => allTitleKeys.addAll(song.getAllTextKeys()));
+  songs.forEach((song) {
+    //chek if some keys in text are corrupted i.e. without number in the end (we meed it for search)
+    final keys = song.text.keys;
+    keys.forEach((key) {
+      if (key.toString().substring(2).isEmpty) {
+        Logger().e("Wrong key in text, songId ${song.id}");
+        FirebaseAnalytics.instance
+            .logEvent(name: "Wrong key in text, songId ${song.id}");
+      }
+    });
+
+    allTitleKeys.addAll(song.getAllTextKeys());
+  });
   return allTitleKeys.toList();
 }

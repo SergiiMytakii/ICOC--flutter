@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
@@ -88,6 +89,8 @@ class DatabaseHelperFTS4 {
         //on error we delete db and make a second try
         String path = join((await getDatabasesPath()), DB_NAME);
         await deleteDatabase(path);
+        await FirebaseAnalytics.instance
+            .logEvent(name: "Deleting DB and make second try to insert");
         _db = null;
         final Database? database = await db();
         if (database != null) insertTitlesAndTexts(songs, database);

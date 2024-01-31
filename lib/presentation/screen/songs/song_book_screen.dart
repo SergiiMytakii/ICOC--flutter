@@ -26,6 +26,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
+
     super.initState();
   }
 
@@ -34,7 +35,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
     return CupertinoPageScaffold(
       child: RefreshIndicator.adaptive(
         edgeOffset: 130,
-        onRefresh: () => getSongs(context, useCache: true),
+        onRefresh: () => getSongs(context, useCache: false),
         child: CustomScrollView(
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[

@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,18 +22,6 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
 
     super.initState();
   }
-
-  // void _onReorder(int oldIndex, int newIndex) {
-  //   if (oldIndex < newIndex) {
-  //     newIndex -= 1;
-  //   }
-
-  //   //move item to the new position
-  //   final String item = allLanguages.removeAt(oldIndex);
-  //   allLanguages.insert(newIndex, item);
-  //   //writing new order of lang-s to preferences
-  //   setOrderLang();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -189,17 +175,4 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
         StorageKeys.orderByTitle, orderByTitle);
     context.read<SongsBloc>().add(SongsRequested());
   }
-
-  // void setOrderLang() async {
-  //   //save reordered list
-  //   await SharedPreferencesHelper.saveList(
-  //       StorageKeys.allSongsLanguages, allLanguages);
-  //   //save the same order in filtered languages
-  //   final List<String> reorderedLanguages = List.from(allLanguages);
-  //   reorderedLanguages.removeWhere((item) => !orderLang.contains(item));
-  //   await SharedPreferencesHelper.saveList(
-  //       StorageKeys.orderLanguages, reorderedLanguages);
-  //   context.read<SongsBloc>().add(SongsRequested());
-  //   setState(() {});
-  // }
 }

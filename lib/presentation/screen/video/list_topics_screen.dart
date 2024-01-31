@@ -46,7 +46,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
               cache = state.topics;
               return _buildBody(state.topics, i);
             } else if (state is VideoLoadingState) {
-              return CustomRefreshIndicator(() => _getTopicsList());
+              return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
             } else if (state is VideoErrorState) {
               return ErrorTextOnScreen(message: state.message);
             } else {

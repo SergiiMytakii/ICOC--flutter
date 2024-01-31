@@ -17,7 +17,11 @@ class SharedPreferencesHelper {
 
   // Get a string value from SharedPreferences
   static Map<String, dynamic>? getMap(String key) {
-    return GetStorage().read<Map<String, dynamic>>(key);
+    final value = GetStorage().read(key);
+    if (value is! Map) {
+      GetStorage().remove(key);
+    }
+    return value as Map<String, dynamic>?;
   }
 
   // Get a string value from SharedPreferences
@@ -34,7 +38,15 @@ class SharedPreferencesHelper {
   }
 
   static List<String>? getList(String key) {
-    return GetStorage().read<List<String>>(key);
+    final value = GetStorage().read(key);
+    List<String>? stringList;
+    if (value is Map) {
+      GetStorage().remove(key);
+    }
+    if (value is List) {
+      stringList = value.cast<String>().toList();
+    }
+    return stringList;
   }
 
   static Future<void> saveBool(String key, bool value) async {

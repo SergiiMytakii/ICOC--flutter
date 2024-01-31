@@ -3,7 +3,7 @@ import 'package:icoc/presentation/widget/loading.dart';
 
 class CustomRefreshIndicator extends StatefulWidget {
   final Function onRefresh;
-  const CustomRefreshIndicator(this.onRefresh);
+  const CustomRefreshIndicator({required this.onRefresh});
 
   @override
   State<CustomRefreshIndicator> createState() => _CustomRefreshIndicatorState();

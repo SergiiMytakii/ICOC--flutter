@@ -15,7 +15,8 @@ class SongList extends StatelessWidget {
       builder: (context, state) {
         if (state is SongsLoadingState) {
           return SliverToBoxAdapter(
-              child: CustomRefreshIndicator(() => getSongs(context)));
+              child:
+                  CustomRefreshIndicator(onRefresh: () => getSongs(context)));
         } else if (state is GetSongsSuccessState) {
           return SliverList(
             delegate: SliverChildBuilderDelegate(

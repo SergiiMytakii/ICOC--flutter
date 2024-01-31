@@ -70,7 +70,7 @@ List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
               ? List.from(doc.get('resources'))
               : [];
       final song = SongDetail(
-          id: data['id'] ?? 0,
+          id: int.parse(doc.id),
           description: data['description'] ?? {},
           text: data['text'] ?? {},
           title: data['title'] ?? {},

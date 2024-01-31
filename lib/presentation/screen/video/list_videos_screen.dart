@@ -74,7 +74,8 @@ class _ListVideosState extends State<ListVideosScreen> {
                   ),
                 );
               } else if (state is VideoLoadingState) {
-                return CustomRefreshIndicator(() => _getVideosList());
+                return CustomRefreshIndicator(
+                    onRefresh: () => _getVideosList());
               } else if (state is VideoErrorState) {
                 return ErrorTextOnScreen(message: state.message);
               } else {
