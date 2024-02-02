@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../constants.dart';
 import '../../core/bloc/font_size_bloc/font_size_bloc.dart';
 import 'modal_bottom_sheet.dart';
 

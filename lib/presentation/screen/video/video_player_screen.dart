@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:wakelock/wakelock.dart';
@@ -61,15 +59,6 @@ class _VideoPlayerState extends State<VideoPlayer> {
                         maxLines: 2,
                         style: TextStyle(fontSize: 12),
                       ),
-                      // leading: IconButton(
-                      //     icon: Icon(
-                      //       Platform.isIOS
-                      //           ? Icons.arrow_back_ios_new
-                      //           : Icons.arrow_back,
-                      //     ),
-                      //     onPressed: () {
-                      //       Navigator.of(context).pop;
-                      //     }),
                     ),
                     body: Column(
                       children: [player, currentVideoInfo()],

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
 import '../../../widget/modal_bottom_sheet.dart';
 import '../../../routes/app_routes.dart';
@@ -12,7 +16,6 @@ class IosAppbar extends StatelessWidget {
     this.title,
     this.callback,
   );
-
   final String title;
   final Function callback;
   @override
@@ -26,12 +29,27 @@ class IosAppbar extends StatelessWidget {
       automaticallyImplyLeading: true,
       leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_ios_new, //todo for android
+            Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
           ),
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pop();
           }),
-      actions: [buildFilterButton(context), buildAddSongButton(context)],
+      actions: [
+        AnimatedFilterIconButton(
+            shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
+            color: ScreenColors.songBook,
+            onTap: () => showModalBottomSheet(
+                scrollControlDisabledMaxHeightRatio: 2,
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return ModalBottomSheet(
+                      height: MediaQuery.of(context).size.height / 1.4,
+                      blurBackground: false,
+                      child: BottomSheetSongsFilter());
+                })),
+        buildAddSongButton(context)
+      ],
       pinned: true,
       expandedHeight: 95.0,
       backgroundColor: MaterialStateColor.resolveWith((states) =>
@@ -70,27 +88,6 @@ IconButton buildAddSongButton(BuildContext context) {
     tooltip: 'icon_button_actions_app_bar_add_song'.tr(),
     onPressed: () {
       Navigator.pushNamed(context, Routes.ADD_SONG_SCREEN);
-    },
-  );
-}
-
-IconButton buildFilterButton(BuildContext context) {
-  return IconButton(
-    icon: Icon(
-      Icons.filter_alt_outlined,
-    ),
-    tooltip: 'icon_button_actions_app_bar_filter'.tr(),
-    onPressed: () {
-      showModalBottomSheet(
-          scrollControlDisabledMaxHeightRatio: 2,
-          context: context,
-          backgroundColor: Colors.transparent,
-          builder: (BuildContext context) {
-            return ModalBottomSheet(
-                height: MediaQuery.of(context).size.height / 1.4,
-                blurBackground: false,
-                child: BottomSheetSongsFilter());
-          });
     },
   );
 }

@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
@@ -68,7 +72,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                 itemBuilder: (context, index) {
                   return MyCheckboxListTile(
                     allLanguages: allLanguages,
-                    trailingIcon: _orderSongsLangugagesButtons(
+                    trailingIcon: _orderSongsLanguagesButtons(
                         allLanguages.keys.toList()[index]),
                     color: ScreenColors.songBook,
                     label: allLanguages.keys.toList()[index],
@@ -87,58 +91,181 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     );
   }
 
-  Widget _orderSongsLangugagesButtons(String label) {
+  Widget _orderSongsLanguagesButtons(String label) {
     return SizedBox(
       height: 40,
-      width: 100,
+      width: 114,
       child: Row(
         children: [
-          IconButton(
-              style: ButtonStyle(
-                  enableFeedback: true,
-                  elevation: MaterialStateProperty.all(15),
-                  padding: MaterialStateProperty.all(EdgeInsets.all(0)),
-                  backgroundColor:
-                      MaterialStateProperty.all(ScreenColors.songBook)),
-              onPressed: () async {
-                List<MapEntry<String, dynamic>> list =
-                    allLanguages.entries.toList();
-                final index = allLanguages.keys.toList().indexOf(label);
-                if (index == 0) return;
-                final newIndex = index - 1;
-                final value = list.removeAt(index);
-                list.insert(newIndex, value);
-                setState(() {
-                  allLanguages = Map.fromEntries(list);
-                });
-                await SharedPreferencesHelper.saveMap(
-                    StorageKeys.allSongsLanguages, allLanguages);
-                context.read<SongsBloc>().add(SongsRequested());
-              },
-              icon: Icon(Icons.arrow_upward)),
-          IconButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(ScreenColors.songBook)),
-              onPressed: () async {
-                List<MapEntry<String, dynamic>> list =
-                    allLanguages.entries.toList();
-                final index = allLanguages.keys.toList().indexOf(label);
-                if (index == list.length - 1) return;
-                final newIndex = index + 1;
-                final value = list.removeAt(index);
-                list.insert(newIndex, value);
-                setState(() {
-                  allLanguages = Map.fromEntries(list);
-                });
-                await SharedPreferencesHelper.saveMap(
-                    StorageKeys.allSongsLanguages, allLanguages);
-                context.read<SongsBloc>().add(SongsRequested());
-              },
-              icon: Icon(Icons.arrow_downward))
+          SizedBox(
+            width: 32,
+            height: 32,
+            child: IconButton(
+                padding: EdgeInsets.zero,
+                color: Colors.white,
+                style: ButtonStyle(
+                    enableFeedback: true,
+                    padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                    backgroundColor:
+                        MaterialStateProperty.all(ScreenColors.songBook)),
+                onPressed: () async {
+                  _handleTapUpward(label);
+                },
+                icon: Icon(Icons.arrow_upward)),
+          ),
+          SizedBox(
+            width: 12,
+          ),
+          SizedBox(
+            width: 32,
+            height: 32,
+            child: IconButton(
+                padding: EdgeInsets.zero,
+                color: Colors.white,
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ScreenColors.songBook)),
+                onPressed: () async {
+                  _handleTapDownward(label);
+                },
+                icon: Icon(Icons.arrow_downward)),
+          ),
+          SizedBox(
+            width: 6,
+          ),
+          _buildPopUpMenuButton(label),
         ],
       ),
     );
+  }
+
+  SizedBox _buildPopUpMenuButton(String label) {
+    return SizedBox(
+      width: 32,
+      height: 32,
+      child: PopupMenuButton(
+        onSelected: (value) {
+          if (value == 'To the top') _moveToTop(label);
+          if (value == 'To the bottom') _moveToBottom(label);
+        },
+        color: AdaptiveTheme.of(context).theme.colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+              Platform.isIOS ? 10.0 : 0), // Rounded corners
+        ),
+        itemBuilder: (BuildContext context) {
+          return [
+            _buildPopupMenuItem('To the top'),
+            _buildPopupMenuItem('To the bottom'),
+            _buildHelp(),
+          ];
+        },
+        icon: Icon(
+          CupertinoIcons.ellipsis,
+        ),
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _buildPopupMenuItem(String value) {
+    return PopupMenuItem<String>(
+      padding: EdgeInsets.zero,
+      value: value,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              value.tr(),
+            ),
+          ),
+          Platform.isIOS
+              ? Divider(
+                  color: const Color.fromARGB(157, 158, 158, 158),
+                )
+              : SizedBox(),
+        ],
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _buildHelp() {
+    return PopupMenuItem<String>(
+      enabled: false,
+      padding: EdgeInsets.zero,
+      value: '?',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '*Language on the top'.tr(),
+              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
+            ),
+            Text(
+              'will be displayed first'.tr(),
+              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _moveToTop(String label) async {
+    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final index = allLanguages.keys.toList().indexOf(label);
+    final value = list.removeAt(index);
+    list.insert(0, value);
+    setState(() {
+      allLanguages = Map.fromEntries(list);
+    });
+    await _saveAndRefresh();
+  }
+
+  Future<void> _moveToBottom(String label) async {
+    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final index = allLanguages.keys.toList().indexOf(label);
+    final value = list.removeAt(index);
+    list.add(value);
+    setState(() {
+      allLanguages = Map.fromEntries(list);
+    });
+    await _saveAndRefresh();
+  }
+
+  Future<void> _handleTapUpward(String label) async {
+    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final index = allLanguages.keys.toList().indexOf(label);
+    if (index == 0) return;
+    final newIndex = index - 1;
+    final value = list.removeAt(index);
+    list.insert(newIndex, value);
+    setState(() {
+      allLanguages = Map.fromEntries(list);
+    });
+    await _saveAndRefresh();
+  }
+
+  Future<void> _handleTapDownward(String label) async {
+    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final index = allLanguages.keys.toList().indexOf(label);
+    if (index == list.length - 1) return;
+    final newIndex = index + 1;
+    final value = list.removeAt(index);
+    list.insert(newIndex, value);
+    setState(() {
+      allLanguages = Map.fromEntries(list);
+    });
+    await _saveAndRefresh();
+  }
+
+  Future<void> _saveAndRefresh() async {
+    await SharedPreferencesHelper.saveMap(
+        StorageKeys.allSongsLanguages, allLanguages);
+    context.read<SongsBloc>().add(SongsRequested());
   }
 
   _sortButton(BuildContext context, String title, bool active) {

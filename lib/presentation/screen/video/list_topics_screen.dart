@@ -6,6 +6,7 @@ import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
+import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
@@ -38,7 +39,21 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
             'Video'.tr(),
           ),
           centerTitle: true,
-          actions: [buildFilterButton(context)],
+          actions: [
+            AnimatedFilterIconButton(
+                shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
+                onTap: () => showModalBottomSheet(
+                    scrollControlDisabledMaxHeightRatio: 2,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (BuildContext context) {
+                      return ModalBottomSheet(
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          blurBackground: false,
+                          child: BottomSheetVideoFilter());
+                    }),
+                color: ScreenColors.video)
+          ],
         ),
         body: BlocBuilder<VideoBloc, VideoState>(
           builder: (context, state) {
@@ -99,27 +114,6 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
           );
         },
       ),
-    );
-  }
-
-  IconButton buildFilterButton(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        Icons.filter_alt_outlined,
-      ),
-      tooltip: 'icon_button_actions_app_bar_filter'.tr(),
-      onPressed: () {
-        showModalBottomSheet(
-            scrollControlDisabledMaxHeightRatio: 2,
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (BuildContext context) {
-              return ModalBottomSheet(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  blurBackground: false,
-                  child: BottomSheetVideoFilter());
-            });
-      },
     );
   }
 }

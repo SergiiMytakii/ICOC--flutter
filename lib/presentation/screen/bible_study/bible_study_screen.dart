@@ -6,6 +6,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -39,7 +40,21 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
             'drawer_first_principles'.tr(),
           ),
           centerTitle: true,
-          actions: [buildFilterButton(context)],
+          actions: [
+            AnimatedFilterIconButton(
+                shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+                onTap: () => showModalBottomSheet(
+                    scrollControlDisabledMaxHeightRatio: 2,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (BuildContext context) {
+                      return ModalBottomSheet(
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          blurBackground: false,
+                          child: BottomSheetBibleStudyFilter());
+                    }),
+                color: ScreenColors.bibleStudy)
+          ],
         ),
         body: BlocBuilder<BibleStudyBloc, BibleStudyState>(
           builder: (context, state) {
@@ -104,27 +119,6 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           );
         },
       ),
-    );
-  }
-
-  IconButton buildFilterButton(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        Icons.filter_alt_outlined,
-      ),
-      tooltip: 'icon_button_actions_app_bar_filter'.tr(),
-      onPressed: () {
-        showModalBottomSheet(
-            scrollControlDisabledMaxHeightRatio: 2,
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (BuildContext context) {
-              return ModalBottomSheet(
-                  height: MediaQuery.of(context).size.height / 1.5,
-                  blurBackground: false,
-                  child: BottomSheetBibleStudyFilter());
-            });
-      },
     );
   }
 }
