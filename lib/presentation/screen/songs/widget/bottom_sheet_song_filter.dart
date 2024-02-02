@@ -67,7 +67,10 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
           )),
           Expanded(
             // margin: EdgeInsets.only(top: 10),
-            child: ListView.builder(
+            child: ReorderableListView.builder(
+                onReorder: (int oldIndex, int newIndex) async {
+                  await _onReorder(oldIndex, newIndex);
+                },
                 itemCount: allLanguages.length,
                 itemBuilder: (context, index) {
                   return MyCheckboxListTile(
@@ -78,10 +81,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                     label: allLanguages.keys.toList()[index],
                     key: ValueKey('$index'),
                     callback: (Map<String, dynamic> langsToSave) {
-                      SharedPreferencesHelper.saveMap(
-                              StorageKeys.allSongsLanguages, langsToSave)
-                          .then((value) =>
-                              context.read<SongsBloc>().add(SongsRequested()));
+                      _saveAndRefresh(langsToSave);
                     },
                   );
                 }),
@@ -222,7 +222,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     setState(() {
       allLanguages = Map.fromEntries(list);
     });
-    await _saveAndRefresh();
+    await _saveAndRefresh(allLanguages);
   }
 
   Future<void> _moveToBottom(String label) async {
@@ -233,7 +233,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     setState(() {
       allLanguages = Map.fromEntries(list);
     });
-    await _saveAndRefresh();
+    await _saveAndRefresh(allLanguages);
   }
 
   Future<void> _handleTapUpward(String label) async {
@@ -246,7 +246,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     setState(() {
       allLanguages = Map.fromEntries(list);
     });
-    await _saveAndRefresh();
+    await _saveAndRefresh(allLanguages);
   }
 
   Future<void> _handleTapDownward(String label) async {
@@ -259,12 +259,12 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     setState(() {
       allLanguages = Map.fromEntries(list);
     });
-    await _saveAndRefresh();
+    await _saveAndRefresh(allLanguages);
   }
 
-  Future<void> _saveAndRefresh() async {
+  Future<void> _saveAndRefresh(Map<String, dynamic> langsToSave) async {
     await SharedPreferencesHelper.saveMap(
-        StorageKeys.allSongsLanguages, allLanguages);
+        StorageKeys.allSongsLanguages, langsToSave);
     context.read<SongsBloc>().add(SongsRequested());
   }
 
@@ -301,5 +301,18 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
     await SharedPreferencesHelper.saveBool(
         StorageKeys.orderByTitle, orderByTitle);
     context.read<SongsBloc>().add(SongsRequested());
+  }
+
+  _onReorder(int oldIndex, int newIndex) async {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final item = list.removeAt(oldIndex);
+    list.insert(newIndex, item);
+    setState(() {
+      allLanguages = Map.fromEntries(list);
+    });
+    await _saveAndRefresh(allLanguages);
   }
 }
