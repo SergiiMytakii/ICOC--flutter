@@ -2,7 +2,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/song_detail.dart';
 
-Future<List<SongDetail>> filterSongs(List<SongDetail> songs) async {
+Future<List<SongDetail>> filterSongsByLang(List<SongDetail> songs) async {
   //keys represent languages
   //values show should lang be displayed or not
   Map<String, dynamic> allLanguages =

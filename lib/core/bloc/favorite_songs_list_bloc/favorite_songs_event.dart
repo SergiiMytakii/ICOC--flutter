@@ -21,7 +21,7 @@ class FavoriteSongsListRequested extends FavoriteSongsListEvent {
 
         favoriteSongs =
             songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
-        favoriteSongs = await filterSongs(favoriteSongs);
+        favoriteSongs = await filterSongsByLang(favoriteSongs);
         favoriteSongs = await orderSongs(favoriteSongs);
       }
       yield GetFavoriteSongsListSuccessState(favoriteSongs);

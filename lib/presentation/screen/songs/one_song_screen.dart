@@ -238,7 +238,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     return Stack(
       children: [
         Container(
-          height: 80,
+          height: 110,
           width: double.maxFinite,
           color: AdaptiveTheme.of(context).theme.colorScheme.background,
         ),
