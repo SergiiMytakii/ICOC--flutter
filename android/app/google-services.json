@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "423282730331-3btuoc3hg8ovklvk84fkp36744eo07c6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.icoc.app",
+            "certificate_hash": "8d3b557cba2f3079476a444a611009b1d1b9aa12"
+          }
+        },
+        {
           "client_id": "423282730331-g98rm5248s8v5jocbcc586lbvuu923lv.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -45,9 +45,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "ru.icoc.app"
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 10
-        versionName "4.0.10"
+        targetSdkVersion 33
+        versionCode 13
+        versionName "5.0.4"
         multiDexEnabled true
     }
 
@@ -77,4 +77,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 

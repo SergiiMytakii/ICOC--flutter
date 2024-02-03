@@ -21,15 +21,15 @@
 	<key>STORAGE_BUCKET</key>
 	<string>icoc-8f075.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<true/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<false/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:423282730331:ios:39a8b51e8b8fc33a1ce67e</string>
 	<key>DATABASE_URL</key>
