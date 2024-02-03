@@ -128,6 +128,10 @@
   "Write your feedback here...": "Raksti savu atsauksmi šeit...",
   "Submit Feedback": "Iesniegt atsauksmes",
   "Your name": "Tavs vārds",
-  "Say Thank you!": "Pateiciet!"
+  "Say Thank you!": "Pateiciet!",
+  "To the top": "Pārvietot uz augšu sarakstā",
+    "To the bottom": "Pārvietot uz leju sarakstā",
+    "*Language on the top": "*Valoda augšā",
+    "will be displayed first": "tiks parādīts pirmais"
     }
   

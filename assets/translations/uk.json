@@ -144,5 +144,9 @@
           "Write your feedback here...": "Напишіть свої відгуки тут...",
           "Submit Feedback": "Надіслати відгук",
           "Your name": "Ваше ім'я",
-          "Say Thank you!": "Подякувати!"
+          "Say Thank you!": "Подякувати!",
+          "To the top": "Перемістити вгору у списку",
+    "To the bottom": "Перемістити вниз у списку",
+    "*Language on the top": "*Мова зверху",
+    "will be displayed first": "буде відображено першим"
         }

@@ -140,6 +140,10 @@
           "es": "Spanish",
           "sv": "Swedish",
           "uk": "Ukrainian",
-          "Notifications": "Notifications"
+          "Notifications": "Notifications",
+          "To the top": "Move to the top of the list",
+           "To the bottom": "Move to the bottom of the list",
+            "*Language on the top": "*Language on the top",
+          "will be displayed first": "will be displayed first"
         
         }

@@ -145,6 +145,10 @@
   "Write your feedback here...": "Напишите свой отзыв здесь...",
   "Submit Feedback": "Отправить отзыв",
   "Your name": "Ваше имя",
-  "Say Thank you!": "Сказать Спасибо!"
+  "Say Thank you!": "Сказать Спасибо!",
+  "To the top": "Поместить вверх списка",
+  "To the bottom": "Поместить вниз списка",
+  "*Language on the top": "*Язык сверху списка",
+  "will be displayed first": "будет отображаться первым"
           
         }

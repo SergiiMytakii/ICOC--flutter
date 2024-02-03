@@ -128,6 +128,10 @@
   "Write your feedback here...": "Skriv tilbakemeldingen din her...",
   "Submit Feedback": "Send inn tilbakemelding",
   "Your name": "Ditt navn",
-  "Say Thank you!": "Si Takk!"
+  "Say Thank you!": "Si Takk!",
+  "To the top": "Flytt til toppen av listen",
+    "To the bottom": "Flytt til bunnen av listen",
+    "*Language on the top": "*Språk på toppen",
+    "will be displayed first": "vil bli vist først"
   }
   
