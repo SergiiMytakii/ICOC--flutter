@@ -21,6 +21,13 @@ class SongsRequested extends SongsEvent {
       yield SongsLoadingState();
       if (cache == null || useCache == false) {
         songs = await songsRepositoryImpl.getSongs();
+        if (songs.isEmpty) {
+          await Future.delayed(Duration(seconds: 1));
+          yield SongsErrorState(
+              "Can't  load data... Please, check your internet connection and pull down to refresh!"
+                  .tr());
+          return;
+        }
         await updateStoredLanguages(songs);
         cache = songs;
       } else {

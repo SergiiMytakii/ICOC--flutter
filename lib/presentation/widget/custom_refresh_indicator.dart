@@ -3,7 +3,8 @@ import 'package:icoc/presentation/widget/loading.dart';
 
 class CustomRefreshIndicator extends StatefulWidget {
   final Function onRefresh;
-  const CustomRefreshIndicator({required this.onRefresh});
+  const CustomRefreshIndicator({required this.onRefresh, this.child});
+  final Widget? child;
 
   @override
   State<CustomRefreshIndicator> createState() => _CustomRefreshIndicatorState();
@@ -15,9 +16,12 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onVerticalDragDown: (details) {
-        setState(() {
-          opacity = 0;
-        });
+        if (mounted) {
+          setState(() {
+            opacity = 0;
+            print('drag');
+          });
+        }
       },
       child: Container(
         height: 700,
@@ -25,13 +29,18 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
           child: ListView(
             children: [
               Opacity(opacity: opacity, child: Loading()),
+              widget.child ?? Container(),
             ],
           ),
           onRefresh: () async {
-            Future.delayed(Duration(milliseconds: 500))
-                .then((value) => setState(() {
-                      opacity = 1;
-                    }));
+            print('onRefresh');
+            Future.delayed(Duration(milliseconds: 500)).then((value) {
+              if (mounted) {
+                setState(() {
+                  opacity = 1;
+                });
+              }
+            });
             return await widget.onRefresh();
           },
         ),

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';

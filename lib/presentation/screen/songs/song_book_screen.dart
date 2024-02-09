@@ -26,7 +26,8 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
-
+    Future.delayed(Duration.zero)
+        .then((value) => getSongs(context, useCache: true));
     super.initState();
   }
 

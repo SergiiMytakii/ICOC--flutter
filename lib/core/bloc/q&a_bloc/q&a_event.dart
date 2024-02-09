@@ -13,9 +13,10 @@ class QandARequested extends QandAEvent {
     try {
       yield QandALoadingState();
       final List<QandAModel> articles = await qAndARepositoryImpl.getArticles();
-      // we need all languages  for filtering
-
-      yield GetQandASuccessState(articles);
+      if (articles.isNotEmpty)
+        yield GetQandASuccessState(articles);
+      else
+        yield QandAErrorState('');
     } catch (_, stackTrace) {
       logError(_, stackTrace);
       yield QandAErrorState(_.toString());

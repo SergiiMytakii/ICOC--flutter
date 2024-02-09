@@ -61,10 +61,15 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
             if (state is GetBibleStudyListSuccessState) {
               return _buildBody(state, i);
             } else if (state is BibleStudyLoadingState) {
-              return CustomRefreshIndicator(
-                  onRefresh: () => _getBibleStudyList());
+              return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
             } else if (state is BibleStudyErrorState) {
-              return ErrorTextOnScreen(message: state.message);
+              return RefreshIndicator.adaptive(
+                  onRefresh: _getBibleStudyList,
+                  child: ListView(
+                    children: [
+                      ErrorTextOnScreen(message: state.message),
+                    ],
+                  ));
             } else {
               return Container();
             }
