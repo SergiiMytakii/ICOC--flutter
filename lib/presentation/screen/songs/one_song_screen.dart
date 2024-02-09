@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -59,6 +58,7 @@ class _OneSongScreenState extends State<OneSongScreen>
   @override
   void dispose() {
     _controller.dispose();
+    youtubePlayerController.close();
     super.dispose();
   }
 

@@ -27,12 +27,12 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
               Opacity(opacity: opacity, child: Loading()),
             ],
           ),
-          onRefresh: () {
+          onRefresh: () async {
             Future.delayed(Duration(milliseconds: 500))
                 .then((value) => setState(() {
                       opacity = 1;
                     }));
-            return widget.onRefresh();
+            return await widget.onRefresh();
           },
         ),
       ),

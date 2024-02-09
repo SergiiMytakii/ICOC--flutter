@@ -66,13 +66,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               'Church of Christ'.tr(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Version $versionApp'.tr(),
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+
             SizedBox(
               height: 10,
             ),

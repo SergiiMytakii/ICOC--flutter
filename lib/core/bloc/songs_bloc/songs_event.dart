@@ -119,12 +119,12 @@ class SearchSongRequested extends SongsEvent {
   }
 
   List<String> _getListOrderLangs() {
+    //convert map to a list with langs to show
     final allLanguages =
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
-    final Map<String, dynamic> map = Map.from(allLanguages);
-    map.removeWhere((key, value) => value == false);
-
-    final List<String> orderLang = map.keys.toList();
+    final filtered =
+        allLanguages.entries.where((element) => element.value == true);
+    final List<String> orderLang = filtered.map((e) => e.key).toList();
     return orderLang;
   }
 }
