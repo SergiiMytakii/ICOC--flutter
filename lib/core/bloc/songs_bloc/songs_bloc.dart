@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';

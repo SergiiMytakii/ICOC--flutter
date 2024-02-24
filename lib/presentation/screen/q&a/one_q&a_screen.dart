@@ -5,6 +5,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/model/q&a_model.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
+import 'package:icoc/presentation/widget/scale_text.dart';
 
 class OneQandAScreen extends StatelessWidget {
   OneQandAScreen({Key? key}) : super(key: key);
@@ -35,10 +36,13 @@ class OneQandAScreen extends StatelessWidget {
               BlocBuilder<FontSizeBloc, FontSizeState>(
                 builder: (context, state) {
                   if (state is FontSizeSuccess) {
-                    return SelectionArea(
-                      child: Text(
-                        article.text,
-                        style: TextStyle(fontSize: state.fontSize),
+                    return ScaleText(
+                      fontSize: state.fontSize ?? 14,
+                      child: SelectionArea(
+                        child: Text(
+                          article.text,
+                          style: TextStyle(fontSize: state.fontSize),
+                        ),
                       ),
                     );
                   } else {

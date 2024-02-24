@@ -16,10 +16,14 @@ class BibleStudyListRequested extends BibleStudyEvent {
       yield BibleStudyLoadingState();
       final List<BibleStudy> topics =
           await bibleStudyRepositoryImpl.getBibleStudyList();
-      // we need all languages  for filtering
-
-      final List<BibleStudy> filteredTopics = await filterByLanguages(topics);
-      yield GetBibleStudyListSuccessState(filteredTopics);
+      if (topics.isNotEmpty) {
+        final List<BibleStudy> filteredTopics = await filterByLanguages(topics);
+        yield GetBibleStudyListSuccessState(filteredTopics);
+      } else {
+        yield BibleStudyErrorState(
+            "Can't  load data... Please, check your internet connection and pull down to refresh!"
+                .tr());
+      }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       yield BibleStudyErrorState(error.toString());

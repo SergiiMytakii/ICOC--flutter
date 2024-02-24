@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get_storage/get_storage.dart';
 
 class SharedPreferencesHelper {
@@ -12,16 +14,19 @@ class SharedPreferencesHelper {
   }
 
   static Future<void> saveMap(String key, Map<String, dynamic> value) async {
-    await GetStorage().write(key, value);
+    final str = json.encode(value);
+    await GetStorage().write(key, str);
   }
 
   // Get a string value from SharedPreferences
   static Map<String, dynamic>? getMap(String key) {
     final value = GetStorage().read(key);
-    if (value is! Map) {
+    if (value is! String) {
       GetStorage().remove(key);
+      return null;
     }
-    return value as Map<String, dynamic>?;
+    final map = json.decode(value);
+    return map as Map<String, dynamic>?;
   }
 
   // Get a string value from SharedPreferences

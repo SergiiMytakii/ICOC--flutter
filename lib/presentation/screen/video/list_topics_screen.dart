@@ -9,7 +9,6 @@ import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
-import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
 class ListTopicsScreen extends StatefulWidget {
@@ -63,7 +62,13 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
             } else if (state is VideoLoadingState) {
               return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
             } else if (state is VideoErrorState) {
-              return ErrorTextOnScreen(message: state.message);
+              return RefreshIndicator.adaptive(
+                  onRefresh: _getTopicsList,
+                  child: ListView(
+                    children: [
+                      ErrorTextOnScreen(message: state.message),
+                    ],
+                  ));
             } else {
               return cache != null ? _buildBody(cache!, i) : Container();
             }

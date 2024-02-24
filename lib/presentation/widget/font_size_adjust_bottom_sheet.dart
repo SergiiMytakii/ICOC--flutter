@@ -58,8 +58,8 @@ class FontSizeAdjustBottomSheet {
                                 inactiveColor: color,
                                 label: 'Font size'.tr(),
                                 value: state.fontSize ?? 14,
-                                min: 14,
-                                max: 48,
+                                min: 12,
+                                max: 46,
                                 divisions: 34,
                                 onChanged: (val) {
                                   context

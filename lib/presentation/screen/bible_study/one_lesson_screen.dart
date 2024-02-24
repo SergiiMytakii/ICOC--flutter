@@ -1,24 +1,38 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:html/parser.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/bloc/font_size_bloc/font_size_bloc.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
+import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
 
-class OneLessonScreen extends StatelessWidget {
+class OneLessonScreen extends StatefulWidget {
   OneLessonScreen() {
     Wakelock.enable();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
   }
 
-  String parseHtml(String text) {
-    var document = parse(text);
-    return parse(document.body!.text).documentElement!.text;
+  @override
+  State<OneLessonScreen> createState() => _OneLessonScreenState();
+}
+
+class _OneLessonScreenState extends State<OneLessonScreen> {
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    super.dispose();
   }
 
   @override
@@ -43,7 +57,7 @@ class OneLessonScreen extends StatelessWidget {
                   Icons.share,
                 ),
                 onPressed: () {
-                  Share.share(parseHtml(
+                  Share.share(FormatTextHelper.extractFormattedText(
                     lesson.text,
                   ));
                 },
@@ -62,19 +76,25 @@ class OneLessonScreen extends StatelessWidget {
                 child: BlocBuilder<FontSizeBloc, FontSizeState>(
                     builder: (context, state) {
                   if (state is FontSizeSuccess) {
-                    return html.Html(
-                      data: lesson.text,
-                      style: {
-                        "body": html.Style(
-                          fontSize: html.FontSize(state.fontSize ?? 14),
-                        ),
-                        "h5": html.Style(
-                          fontSize: html.FontSize(state.fontSize ?? 14),
-                        ),
-                        "p": html.Style(
-                          fontSize: html.FontSize(state.fontSize ?? 14),
-                        ),
-                      },
+                    return ScaleText(
+                      fontSize: state.fontSize ?? 14,
+                      child: html.Html(
+                        data: lesson.text,
+                        onLinkTap: (url, __, ___) {
+                          launchUrl(Uri.parse(url ?? ''));
+                        },
+                        style: {
+                          "body": html.Style(
+                            fontSize: html.FontSize(state.fontSize ?? 14),
+                          ),
+                          "h5": html.Style(
+                            fontSize: html.FontSize(state.fontSize ?? 14),
+                          ),
+                          "p": html.Style(
+                            fontSize: html.FontSize(state.fontSize ?? 14),
+                          ),
+                        },
+                      ),
                     );
                   } else {
                     return Container();

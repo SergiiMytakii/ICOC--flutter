@@ -13,10 +13,14 @@ class VideoListRequested extends VideoEvent {
     try {
       yield VideoLoadingState();
       final List<Video> videos = await videoRepositoryImpl.getVideoList();
-      // we need all languages  for filtering
-
-      final List<Video> filteredVideos = await filterByLanguages(videos);
-      yield GetVideoListSuccessState(filteredVideos);
+      if (videos.isNotEmpty) {
+        final List<Video> filteredVideos = await filterByLanguages(videos);
+        yield GetVideoListSuccessState(filteredVideos);
+      } else {
+        yield VideoErrorState(
+            "Can't  load data... Please, check your internet connection and pull down to refresh!"
+                .tr());
+      }
     } catch (_, stackTrace) {
       logError(_, stackTrace);
       yield VideoErrorState(_.toString());
@@ -36,8 +40,12 @@ class GetVideosFromPlaylist extends VideoEvent {
       yield VideoLoadingState();
       final List<Resources>? resources =
           await videoRepositoryImpl.fetchVideosFromPlaylist(playlistId);
-
-      yield GetVideosFromPlaylistSuccessState(resources ?? []);
+      if (resources != null || resources!.isNotEmpty)
+        yield GetVideosFromPlaylistSuccessState(resources);
+      else
+        yield VideoErrorState(
+            "Can't  load data... Please, check your internet connection and pull down to refresh!"
+                .tr());
     } catch (_, stackTrace) {
       logError(_, stackTrace);
       yield VideoErrorState(_.toString());

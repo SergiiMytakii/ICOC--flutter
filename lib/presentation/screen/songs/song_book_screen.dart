@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/bloc/songs_bloc/songs_bloc.dart';
 import 'widget/data_search.dart';
-import 'widget/ios_app_bar_song_book_screen.dart';
+import 'widget/app_bar_song_book_screen.dart';
 import 'widget/song_list.dart';
 
 class SongBookScreen extends StatefulWidget {
@@ -26,7 +26,8 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
-
+    Future.delayed(Duration.zero)
+        .then((value) => getSongs(context, useCache: true));
     super.initState();
   }
 

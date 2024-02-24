@@ -85,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen>
           child: Image.asset(
             'assets/images/sky.jpeg',
             height: screenSize.height,
-            fit: BoxFit.fitHeight,
+            width: screenSize.width,
+            fit: BoxFit.cover,
           ),
         ),
         Positioned(

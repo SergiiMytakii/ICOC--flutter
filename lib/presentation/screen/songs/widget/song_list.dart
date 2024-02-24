@@ -39,12 +39,12 @@ class SongList extends StatelessWidget {
             ),
           );
         } else if (state is SongsErrorState) {
-          getSongs(context);
           return SliverToBoxAdapter(
-            child: ErrorTextOnScreen(),
+            child: ErrorTextOnScreen(
+              message: state.message,
+            ),
           );
         } else {
-          getSongs(context);
           return SliverToBoxAdapter();
         }
       },

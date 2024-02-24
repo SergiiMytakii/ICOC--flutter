@@ -21,6 +21,13 @@ class SongsRequested extends SongsEvent {
       yield SongsLoadingState();
       if (cache == null || useCache == false) {
         songs = await songsRepositoryImpl.getSongs();
+        if (songs.isEmpty) {
+          await Future.delayed(Duration(seconds: 1));
+          yield SongsErrorState(
+              "Can't  load data... Please, check your internet connection and pull down to refresh!"
+                  .tr());
+          return;
+        }
         await updateStoredLanguages(songs);
         cache = songs;
       } else {
@@ -119,12 +126,12 @@ class SearchSongRequested extends SongsEvent {
   }
 
   List<String> _getListOrderLangs() {
+    //convert map to a list with langs to show
     final allLanguages =
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
-    final Map<String, dynamic> map = Map.from(allLanguages);
-    map.removeWhere((key, value) => value == false);
-
-    final List<String> orderLang = map.keys.toList();
+    final filtered =
+        allLanguages.entries.where((element) => element.value == true);
+    final List<String> orderLang = filtered.map((e) => e.key).toList();
     return orderLang;
   }
 }

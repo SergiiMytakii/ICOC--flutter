@@ -31,7 +31,7 @@ class TermsOfUseAndPolicy extends StatelessWidget {
                     color: Colors.blue, decoration: TextDecoration.underline),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    launch(YOUTUBE_TERMS_OF_SERVISES);
+                    launchUrl(Uri.parse(YOUTUBE_TERMS_OF_SERVISES));
                   },
               ),
               TextSpan(
@@ -54,7 +54,7 @@ class TermsOfUseAndPolicy extends StatelessWidget {
                     color: Colors.blue, decoration: TextDecoration.underline),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    launch(YOUTUBE_PRIVACY_POLICIES);
+                    launchUrl(Uri.parse(YOUTUBE_PRIVACY_POLICIES));
                   },
               ),
               TextSpan(
