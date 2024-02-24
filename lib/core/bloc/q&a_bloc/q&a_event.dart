@@ -6,14 +6,22 @@ sealed class QandAEvent {
 }
 
 class QandARequested extends QandAEvent {
+  final String? query;
   final QandARepositoryImpl qAndARepositoryImpl = QandARepositoryImpl();
+
+  QandARequested({this.query});
   @override
   Stream<QandAState> applyAsync(
       {QandAState? currentState, QandABloc? bloc}) async* {
     try {
-      yield QandALoadingState();
+      if (query != null) yield QandALoadingState();
       final List<QandAModel> articles = await qAndARepositoryImpl.getArticles();
-      if (articles.isNotEmpty)
+      if (articles.isNotEmpty) if (query != null) {
+        final filteredArticles = articles
+            .where((element) => element.title.contains(query!))
+            .toList();
+        yield GetQandASuccessState(filteredArticles);
+      } else
         yield GetQandASuccessState(articles);
       else
         yield QandAErrorState('');

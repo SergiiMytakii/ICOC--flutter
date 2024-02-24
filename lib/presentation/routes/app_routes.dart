@@ -65,7 +65,7 @@ Route onGenerateRoute(RouteSettings settings) {
     case Routes.Q_AND_ANSVERS:
       return FadePageRoute(
         builder: (context) {
-          return QuestionsAndAnwers();
+          return QuestionsAndAnswers();
         },
       );
     case Routes.VIDEO:
