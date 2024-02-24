@@ -7,10 +7,8 @@ import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
-import 'package:icoc/presentation/widget/loading.dart';
 import 'package:wakelock/wakelock.dart';
 
-//use with iframe_player
 class ListVideosScreen extends StatefulWidget {
   final Video video;
 

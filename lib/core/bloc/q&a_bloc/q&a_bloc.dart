@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/q&a_model.dart';
 import 'package:icoc/data/repository_impl/q&a_repository_impl.dart';
