@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html/parser.dart';
+import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../../widget/loading.dart';
-import '../../../routes/app_routes.dart';
 
 class DataSearchResults extends StatefulWidget {
   DataSearchResults(this.query);
@@ -160,9 +159,12 @@ class _DataSearchResultsState extends State<DataSearchResults> {
       orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
     }
 
-    Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
-        arguments: orderedLangSong ?? fullSong);
+    // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
+    //     arguments: orderedLangSong ?? fullSong);
 
-    //Get.toNamed(Routes.SONG_SCREEN, arguments: [song, lang]);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OneSongScreen(orderedLangSong ?? fullSong)));
   }
 }

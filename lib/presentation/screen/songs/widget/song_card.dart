@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:html/parser.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/model/song_detail.dart';
-import '../../../routes/app_routes.dart';
+
 import '../one_song_screen.dart';
 
 class SongCard extends StatelessWidget {
@@ -37,10 +36,10 @@ class SongCard extends StatelessWidget {
           ),
           child: ListTile(
             onTap: (() {
-              Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
-                  arguments: song);
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => OneSongScreen(song)));
+              // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
+              //     arguments: song);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OneSongScreen(song)));
             }),
             horizontalTitleGap: 12,
             leading: Text(song.id.toString(),

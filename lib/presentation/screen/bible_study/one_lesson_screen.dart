@@ -7,6 +7,7 @@ import 'package:html/parser.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/bloc/font_size_bloc/font_size_bloc.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
@@ -34,11 +35,6 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     super.dispose();
   }
 
-  String parseHtml(String text) {
-    var document = parse(text);
-    return parse(document.body!.text).documentElement!.text;
-  }
-
   @override
   Widget build(BuildContext context) {
     var fontSozeAdjust = FontSizeAdjustBottomSheet(
@@ -61,7 +57,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                   Icons.share,
                 ),
                 onPressed: () {
-                  Share.share(parseHtml(
+                  Share.share(FormatTextHelper.extractFormattedText(
                     lesson.text,
                   ));
                 },

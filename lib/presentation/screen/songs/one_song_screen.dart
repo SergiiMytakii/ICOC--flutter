@@ -2,9 +2,12 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html/parser.dart';
 import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:logger/logger.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -16,26 +19,27 @@ import 'widget/song_text_on_song_screen.dart';
 import 'widget/video_card.dart';
 
 class OneSongScreen extends StatefulWidget {
-  OneSongScreen() {
+  OneSongScreen(this.song) {
     Wakelock.enable();
   }
-  // final SongDetail song;
-
-  // final String? prefferedLangFromSearch;
+  final SongDetail song;
 
   @override
   State<OneSongScreen> createState() => _OneSongScreenState();
 }
 
 class _OneSongScreenState extends State<OneSongScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   final log = Logger();
   bool showVideos = false;
   bool miniPlayerOpened = true;
   bool videoIsPlaying = false;
-  late YoutubePlayerController youtubePlayerController;
+  YoutubePlayerController? youtubePlayerController;
+  late final TabController tabController;
+  late final SongDetail song;
+  List<String> tabsKeys = [];
 
   @override
   void initState() {
@@ -43,22 +47,25 @@ class _OneSongScreenState extends State<OneSongScreen>
         duration:
             Duration(milliseconds: 500), // Set the duration of the animation
         vsync: this,
-        lowerBound: 0.4);
-
+        lowerBound: 0.48);
+    song = widget.song;
     // Create a curved animation
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
     _controller.addListener(() {
       setState(() {}); // Trigger a rebuild on each animation frame
     });
-
+    tabsKeys = getAllKeys();
+    print(tabsKeys.length);
+    tabController = TabController(length: tabsKeys.length, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    youtubePlayerController.close();
+
+    tabController.dispose();
     super.dispose();
   }
 
@@ -70,11 +77,6 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   @override
   Widget build(BuildContext context) {
-    final SongDetail song =
-        ModalRoute.of(context)!.settings.arguments as SongDetail;
-    context.read<FavoriteSongStatusBloc>().add(FavoriteSongStatusRequested(
-          id: song.id,
-        ));
     return SafeArea(
       top: false,
       child: DefaultTabController(
@@ -102,21 +104,13 @@ class _OneSongScreenState extends State<OneSongScreen>
   ) {
     var fontSizeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.songBook);
+
     return AppBar(
       bottom: TabBar(
-        isScrollable: true,
-        tabs: [
-          for (final item in song.text.keys) Tab(text: item),
-          if (song.chords != null && song.chords!.isNotEmpty)
-            for (final item in song.chords!.keys)
-              Tab(
-                  text: item == 'v1'
-                      ? 'chords_1'
-                      : item == 'v2'
-                          ? 'chords_2'
-                          : item),
-        ],
-      ),
+          isScrollable: true,
+          controller: tabController,
+          tabs: List.generate(
+              tabsKeys.length, (index) => Tab(text: tabsKeys[index]))),
       elevation: 0,
       actions: [
         BlocBuilder<FavoriteSongStatusBloc, FavoriteSongStatusState>(
@@ -142,6 +136,15 @@ class _OneSongScreenState extends State<OneSongScreen>
           },
         ),
         IconButton(
+          tooltip: 'Share'.tr(),
+          icon: Icon(
+            Icons.share,
+          ),
+          onPressed: () {
+            shareSong();
+          },
+        ),
+        IconButton(
             tooltip: 'Font size'.tr(),
             icon: Icon(
               Icons.text_fields_outlined,
@@ -153,11 +156,11 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   void _startPlayVideo(Resources resources, String videoId) async {
     youtubePlayerController = YoutubePlayerController();
-    youtubePlayerController.loadVideoById(videoId: videoId);
+    youtubePlayerController!.loadVideoById(videoId: videoId);
     setState(() {
       videoIsPlaying = true;
     });
-    youtubePlayerController.playVideo();
+    youtubePlayerController!.playVideo();
     _controller.forward();
   }
 
@@ -188,12 +191,12 @@ class _OneSongScreenState extends State<OneSongScreen>
           IconButton(
               color: ScreenColors.songBook,
               onPressed: () {
-                youtubePlayerController.stopVideo();
-                youtubePlayerController.close();
                 _controller.reverse().then((value) => setState(() {
                       videoIsPlaying = false;
                       miniPlayerOpened = true;
                     }));
+                youtubePlayerController!.stopVideo();
+                youtubePlayerController!.close();
               },
               icon: Icon(Icons.close_outlined)),
         ],
@@ -204,7 +207,7 @@ class _OneSongScreenState extends State<OneSongScreen>
           width: double.maxFinite,
           height: _animation.value * screenSize.width / 16 * 9,
           child: YoutubePlayer(
-            controller: youtubePlayerController,
+            controller: youtubePlayerController!,
           ),
         ),
       )
@@ -214,6 +217,7 @@ class _OneSongScreenState extends State<OneSongScreen>
   TabBarView _tabBarBuilder(SongDetail song) {
     (song.text.removeWhere((key, value) => key == 'id_song'));
     return TabBarView(
+      controller: tabController,
       children: [
         for (final item in song.text.keys)
           SongTextOnSongScreen(
@@ -253,5 +257,40 @@ class _OneSongScreenState extends State<OneSongScreen>
             )),
       ],
     );
+  }
+
+  String cleanKeys(String key) {
+    if (key == 'v1')
+      return 'shords';
+    else if (key.endsWith('1'))
+      return key.replaceFirst('1', '');
+    else if (key == 'v2')
+      return 'shords2';
+    else
+      return key;
+  }
+
+  List<String> getAllKeys() {
+    final songsKeys = song.text.keys.map((key) => cleanKeys(key)).toList();
+    List<String> chordsKeys = [];
+    if (song.chords != null && song.chords!.isNotEmpty) {
+      chordsKeys = song.chords!.keys.map((key) => cleanKeys(key)).toList();
+    }
+    return songsKeys + chordsKeys;
+  }
+
+  void shareSong() {
+    final index = tabController.index;
+    String text = '';
+    String title = '';
+    if (index < song.text.values.length) {
+      title = song.title.values.elementAt(index);
+      text = song.text.values.elementAt(index);
+      text = title + '\n\n' + text;
+    } else {
+      text = song.chords!.values.elementAt(index - song.text.values.length);
+    }
+    text = FormatTextHelper.extractFormattedText(text);
+    Share.share(text);
   }
 }

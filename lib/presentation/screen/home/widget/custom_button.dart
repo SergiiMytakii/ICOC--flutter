@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: color,
+              backgroundColor: color,
               textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: onPressed,
@@ -35,3 +35,4 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+ 

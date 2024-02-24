@@ -11,7 +11,7 @@ import 'package:icoc/presentation/screen/home/terms_of_use_screen.dart';
 import 'package:icoc/presentation/screen/q&a/one_q&a_screen.dart';
 import 'package:icoc/presentation/screen/q&a/q&a_screen.dart';
 import 'package:icoc/presentation/screen/songs/add_song_screen.dart';
-import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
+
 import 'package:icoc/presentation/screen/songs/widget/bottom_navigation_bar.dart';
 import 'package:icoc/presentation/screen/feedback/feedback_screen.dart';
 import 'package:icoc/presentation/screen/video/list_topics_screen.dart';
@@ -41,7 +41,7 @@ class Routes {
 
 final routes = {
   Routes.HOME: (context) => HomeScreen(),
-  Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
+  // Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
   Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
   Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
   Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
