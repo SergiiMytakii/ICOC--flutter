@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:easy_localization/easy_localization.dart';

@@ -7,12 +7,14 @@ class AnimatedFilterIconButton extends StatefulWidget {
   final Function onTap;
   final Color color;
   final String shouldAnimate;
+  final String? firstLanguage;
 
   const AnimatedFilterIconButton(
       {super.key,
       required this.onTap,
       required this.color,
-      required this.shouldAnimate});
+      required this.shouldAnimate,
+      this.firstLanguage});
 
   @override
   _AnimatedFilterIconButtonState createState() =>
@@ -23,6 +25,7 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late bool shouldAnimate;
+
   @override
   void initState() {
     super.initState();
@@ -47,16 +50,30 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
         return Transform.scale(
           scale: scaleFactor,
           child: IconButton(
-            icon: Icon(
-              Icons.filter_alt_outlined,
-              color: ColorTween(
-                      begin: AdaptiveTheme.of(context)
-                          .theme
-                          .colorScheme
-                          .onBackground,
-                      end: widget.color)
-                  .evaluate(_controller),
-            ),
+            icon: widget.firstLanguage != null
+                ? Text(
+                    widget.firstLanguage!,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: ColorTween(
+                              begin: AdaptiveTheme.of(context)
+                                  .theme
+                                  .colorScheme
+                                  .onBackground,
+                              end: widget.color)
+                          .evaluate(_controller),
+                    ),
+                  )
+                : Icon(
+                    Icons.filter_alt_outlined,
+                    color: ColorTween(
+                            begin: AdaptiveTheme.of(context)
+                                .theme
+                                .colorScheme
+                                .onBackground,
+                            end: widget.color)
+                        .evaluate(_controller),
+                  ),
             tooltip: 'icon_button_actions_app_bar_filter'.tr(),
             onPressed: () {
               _controller.animateBack(0);

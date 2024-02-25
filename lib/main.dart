@@ -25,8 +25,6 @@ void main() async {
   FirebaseAnalytics.instance
       .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
   await GetStorage.init();
-  String? appLocale =
-      await SharedPreferencesHelper.getString(StorageKeys.locale);
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
@@ -40,15 +38,18 @@ void main() async {
           .toList(),
       path: 'assets/translations',
       fallbackLocale: Locale('en', 'US'),
-      child: MyApp(appLocale: appLocale, savedThemeMode: savedThemeMode)));
+      child: MyApp(savedThemeMode: savedThemeMode)));
 }
 
 class MyApp extends StatelessWidget {
-  final String? appLocale;
   final AdaptiveThemeMode? savedThemeMode;
-  MyApp({Key? key, this.appLocale, this.savedThemeMode}) : super(key: key);
+  MyApp({Key? key, this.savedThemeMode}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    SharedPreferencesHelper.saveString(
+        StorageKeys.locale, context.locale.languageCode);
+    print(context.locale.languageCode);
     return AdaptiveTheme(
       initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: myLightTheme,

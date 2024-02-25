@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/data/repository_impl/bible_study_repository_impl.dart';

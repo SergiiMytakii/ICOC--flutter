@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
@@ -20,8 +21,11 @@ class ListTopicsScreen extends StatefulWidget {
 
 class _ListTopicsScreenState extends State<ListTopicsScreen> {
   List<Video>? cache;
+  final GlobalKey tooltipKey2 = GlobalKey();
+  bool _tooltipVisible = true;
   @override
   void initState() {
+    showTooltip();
     _getTopicsList();
     super.initState();
   }
@@ -39,19 +43,36 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
           ),
           centerTitle: true,
           actions: [
-            AnimatedFilterIconButton(
-                shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
-                onTap: () => showModalBottomSheet(
-                    scrollControlDisabledMaxHeightRatio: 2,
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (BuildContext context) {
-                      return ModalBottomSheet(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          blurBackground: false,
-                          child: BottomSheetVideoFilter());
-                    }),
-                color: ScreenColors.video)
+            Stack(
+              children: [
+                Visibility(
+                  visible: _tooltipVisible,
+                  child: Tooltip(
+                    message: 'Filter languages'.tr(),
+                    key: tooltipKey2,
+                    preferBelow: true,
+                    triggerMode: TooltipTriggerMode.manual,
+                    child: Container(
+                      height: 40,
+                      width: 30,
+                    ),
+                  ),
+                ),
+                AnimatedFilterIconButton(
+                    shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
+                    onTap: () => showModalBottomSheet(
+                        scrollControlDisabledMaxHeightRatio: 2,
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext context) {
+                          return ModalBottomSheet(
+                              height: MediaQuery.of(context).size.height / 1.5,
+                              blurBackground: false,
+                              child: BottomSheetVideoFilter());
+                        }),
+                    color: ScreenColors.video),
+              ],
+            )
           ],
         ),
         body: BlocBuilder<VideoBloc, VideoState>(
@@ -120,5 +141,22 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
         },
       ),
     );
+  }
+
+  void showTooltip() {
+    double tooltipShown =
+        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+    if (tooltipShown < 10.0) {
+      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+        (tooltipKey2.currentState as TooltipState).ensureTooltipVisible();
+        Future.delayed(Duration(seconds: 6), () {
+          setState(() {
+            _tooltipVisible = false;
+          });
+        });
+      });
+      SharedPreferencesHelper.saveDouble(
+          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+    }
   }
 }

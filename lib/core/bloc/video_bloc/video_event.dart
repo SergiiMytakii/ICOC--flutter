@@ -54,20 +54,38 @@ class GetVideosFromPlaylist extends VideoEvent {
 }
 
 Future<List<Video>> filterByLanguages(List<Video> videos) async {
+  final locale = SharedPreferencesHelper.getString(
+        StorageKeys.locale,
+      ) ??
+      'en';
   final Map<String, dynamic> storedLanguages =
       SharedPreferencesHelper.getMap(StorageKeys.videosAllLanguages) ?? {};
 //set keeps only unique values
   Set<String> allKeys = {};
   videos.forEach((video) => allKeys.add(video.lang));
+
+  putDeviceLangToFirstPlace(allKeys.toList(), locale);
+
   allKeys.forEach((String lang) {
     if (!storedLanguages.containsKey(lang)) {
-      storedLanguages[lang] = true;
+      storedLanguages[lang] = lang == locale;
     }
   });
   SharedPreferencesHelper.saveMap(
       StorageKeys.videosAllLanguages, storedLanguages);
-  return videos.where((topic) {
+  final filteredVideos = videos.where((topic) {
     return storedLanguages.entries
         .any((element) => element.value == true && element.key == topic.lang);
   }).toList();
+
+  filteredVideos.sort((a, b) {
+    if (a.lang == locale && b.lang != locale) {
+      return -1; // 'en' should come before any other lang
+    } else if (a.lang != locale && b.lang == locale) {
+      return 1; // Any other lang should come after 'en'
+    } else {
+      return a.lang.compareTo(b.lang); // Sort other langs alphabetically
+    }
+  });
+  return filteredVideos;
 }

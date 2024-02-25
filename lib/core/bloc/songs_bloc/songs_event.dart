@@ -137,7 +137,14 @@ class SearchSongRequested extends SongsEvent {
 }
 
 Future<void> updateStoredLanguages(List<SongDetail> songs) async {
+  final locale = SharedPreferencesHelper.getString(
+        StorageKeys.locale,
+      ) ??
+      'en';
   List<String> allTitleKeys = findAllTitleKeys(songs);
+
+  putDeviceLangToFirstPlace(allTitleKeys, locale);
+
   //get stored all languages (ordered)
   final Map<String, dynamic> orderedAllLanguages =
       SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
@@ -145,8 +152,8 @@ Future<void> updateStoredLanguages(List<SongDetail> songs) async {
   //iterate languages from Firebase songs and add them to the Map
   allTitleKeys.forEach((String lang) {
     if (!orderedAllLanguages.containsKey(lang)) {
-      print('insert $lang');
-      orderedAllLanguages[lang] = true;
+      // print('insert $lang');
+      orderedAllLanguages[lang] = lang == locale;
     }
   });
   await SharedPreferencesHelper.saveMap(

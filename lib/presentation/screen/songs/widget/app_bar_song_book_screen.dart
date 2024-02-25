@@ -4,27 +4,80 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
 import '../../../widget/modal_bottom_sheet.dart';
 import '../../../routes/app_routes.dart';
 import 'bottom_sheet_song_filter.dart';
 
-class IosAppbar extends StatelessWidget {
+class IosAppbar extends StatefulWidget {
   IosAppbar(
     this.title,
     this.callback,
   );
   final String title;
   final Function callback;
+
+  @override
+  State<IosAppbar> createState() => _IosAppbarState();
+}
+
+class _IosAppbarState extends State<IosAppbar> {
+  Map<String, dynamic> allLanguages = {};
+  String firstLang = '';
+  final GlobalKey tooltipKey = GlobalKey();
+  bool _tooltipVisible = true;
+
+  @override
+  void initState() {
+    setFirstLang();
+    showTooltip();
+
+    super.initState();
+  }
+
+  void showTooltip() {
+    double tooltipShown =
+        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+    if (tooltipShown < 10.0) {
+      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+        (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
+        Future.delayed(Duration(seconds: 6), () {
+          setState(() {
+            _tooltipVisible = false;
+          });
+        });
+      });
+      SharedPreferencesHelper.saveDouble(
+          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+    }
+  }
+
+  void setFirstLang() {
+    //this needed to display primary language
+    final locale = SharedPreferencesHelper.getString(
+          StorageKeys.locale,
+        ) ??
+        'en';
+    allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ??
+            {locale: true};
+    allLanguages.removeWhere((key, value) => value == false);
+    setState(() {
+      firstLang = allLanguages.keys.first;
+    });
+  }
+
   @override
   Widget build(
     BuildContext context,
   ) {
     return SliverAppBar(
       primary: true,
-      title: Text(title),
+      title: Text(widget.title),
       centerTitle: true,
       automaticallyImplyLeading: true,
       leading: IconButton(
@@ -35,19 +88,42 @@ class IosAppbar extends StatelessWidget {
             Navigator.of(context, rootNavigator: true).pop();
           }),
       actions: [
-        AnimatedFilterIconButton(
-            shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
-            color: ScreenColors.songBook,
-            onTap: () => showModalBottomSheet(
-                scrollControlDisabledMaxHeightRatio: 2,
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (BuildContext context) {
-                  return ModalBottomSheet(
-                      height: MediaQuery.of(context).size.height / 1.4,
-                      blurBackground: false,
-                      child: BottomSheetSongsFilter());
-                })),
+        Stack(
+          children: [
+            Visibility(
+              visible: _tooltipVisible,
+              child: Tooltip(
+                message: 'Filter languages'.tr(),
+                key: tooltipKey,
+                preferBelow: true,
+                triggerMode: TooltipTriggerMode.manual,
+                child: Container(
+                  height: 40,
+                  width: 30,
+                ),
+              ),
+            ),
+            AnimatedFilterIconButton(
+              firstLanguage: firstLang,
+              shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
+              color: ScreenColors.songBook,
+              onTap: () => showModalBottomSheet(
+                  scrollControlDisabledMaxHeightRatio: 2,
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    return ModalBottomSheet(
+                        height: MediaQuery.of(context).size.height / 1.4,
+                        blurBackground: false,
+                        child: BottomSheetSongsFilter());
+                  }).then(
+                (value) => setState(() {
+                  setFirstLang();
+                }),
+              ),
+            ),
+          ],
+        ),
         buildAddSongButton(context)
       ],
       pinned: true,
@@ -68,7 +144,7 @@ class IosAppbar extends StatelessWidget {
             ),
             child: CupertinoSearchTextField(
               onChanged: (val) {
-                callback(val);
+                widget.callback(val);
               },
               style: AdaptiveTheme.of(context).theme.textTheme.bodySmall,
               backgroundColor: AdaptiveTheme.of(context).theme.focusColor,

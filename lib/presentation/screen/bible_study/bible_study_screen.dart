@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
@@ -19,9 +20,12 @@ class BibleStudyScreen extends StatefulWidget {
 }
 
 class _BibleStudyScreenState extends State<BibleStudyScreen> {
+  final GlobalKey tooltipKey1 = GlobalKey();
+  bool _tooltipVisible = true;
   @override
   void initState() {
     _getBibleStudyList();
+    showTooltip();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Bible Study');
     super.initState();
   }
@@ -41,19 +45,36 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           ),
           centerTitle: true,
           actions: [
-            AnimatedFilterIconButton(
-                shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-                onTap: () => showModalBottomSheet(
-                    scrollControlDisabledMaxHeightRatio: 2,
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (BuildContext context) {
-                      return ModalBottomSheet(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          blurBackground: false,
-                          child: BottomSheetBibleStudyFilter());
-                    }),
-                color: ScreenColors.bibleStudy)
+            Stack(
+              children: [
+                Visibility(
+                  visible: _tooltipVisible,
+                  child: Tooltip(
+                    message: 'Filter languages'.tr(),
+                    key: tooltipKey1,
+                    preferBelow: true,
+                    triggerMode: TooltipTriggerMode.manual,
+                    child: Container(
+                      height: 40,
+                      width: 30,
+                    ),
+                  ),
+                ),
+                AnimatedFilterIconButton(
+                    shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+                    onTap: () => showModalBottomSheet(
+                        scrollControlDisabledMaxHeightRatio: 2,
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext context) {
+                          return ModalBottomSheet(
+                              height: MediaQuery.of(context).size.height / 1.5,
+                              blurBackground: false,
+                              child: BottomSheetBibleStudyFilter());
+                        }),
+                    color: ScreenColors.bibleStudy),
+              ],
+            )
           ],
         ),
         body: BlocBuilder<BibleStudyBloc, BibleStudyState>(
@@ -125,5 +146,22 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
         },
       ),
     );
+  }
+
+  void showTooltip() {
+    double tooltipShown =
+        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+    if (tooltipShown < 10.0) {
+      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+        (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
+        Future.delayed(Duration(seconds: 6), () {
+          setState(() {
+            _tooltipVisible = false;
+          });
+        });
+      });
+      SharedPreferencesHelper.saveDouble(
+          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+    }
   }
 }

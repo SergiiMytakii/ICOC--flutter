@@ -32,13 +32,18 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
 
   @override
   Widget build(BuildContext context) {
+    final bool bold = widget.key.value == '0';
+    print(bold);
     return CheckboxListTile(
         activeColor: widget.color,
         key: widget.key,
         controlAffinity: ListTileControlAffinity.leading,
         title: Text(
           widget.label.tr(),
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: bold ? FontWeight.w900 : FontWeight.normal),
         ),
         value: widget.allLanguages[widget.label],
         contentPadding: EdgeInsets.symmetric(horizontal: 10),
