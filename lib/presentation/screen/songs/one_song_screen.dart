@@ -42,12 +42,15 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   @override
   void initState() {
+    song = widget.song;
+    Future.delayed(Duration.zero).then((value) => context
+        .read<FavoriteSongStatusBloc>()
+        .add(FavoriteSongStatusRequested(id: song.id)));
     _controller = AnimationController(
         duration:
             Duration(milliseconds: 500), // Set the duration of the animation
         vsync: this,
         lowerBound: 0.48);
-    song = widget.song;
     // Create a curved animation
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
@@ -55,7 +58,6 @@ class _OneSongScreenState extends State<OneSongScreen>
       setState(() {}); // Trigger a rebuild on each animation frame
     });
     tabsKeys = getAllKeys();
-    print(tabsKeys.length);
     tabController = TabController(length: tabsKeys.length, vsync: this);
     super.initState();
   }

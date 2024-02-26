@@ -46,8 +46,8 @@ android {
         applicationId "ru.icoc.app"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 17
-        versionName "5.0.8"
+        versionCode 18
+        versionName "5.0.9"
         multiDexEnabled true
     }
 

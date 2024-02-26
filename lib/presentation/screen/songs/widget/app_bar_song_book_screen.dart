@@ -42,7 +42,7 @@ class _IosAppbarState extends State<IosAppbar> {
   void showTooltip() {
     double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
-    if (tooltipShown < 10.0) {
+    if (tooltipShown < 4.0) {
       Future.delayed(Duration(milliseconds: 1500)).then((value) {
         (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
         Future.delayed(Duration(seconds: 6), () {

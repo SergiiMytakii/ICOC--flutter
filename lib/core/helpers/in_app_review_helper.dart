@@ -1,34 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-// import 'package:in_app_review/in_app_review.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-
-class InAppReviewHelper {
-  Future<bool> checkAndSaveFirstRunDate() async {
-    final String? firstAppRunDate =
-        await SharedPreferencesHelper.getString(StorageKeys.firstAppRunDate);
-    final now = DateTime.now();
-    if (firstAppRunDate == null) {
-      SharedPreferencesHelper.saveString(
-          StorageKeys.firstAppRunDate, now.toUtc().toString());
-      return false;
-    } else if (DateTime.parse(firstAppRunDate)
-        .isBefore(now.add(Duration(days: 2)))) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  // void submitReview() async {
-  //   final InAppReview inAppReview = InAppReview.instance;
-
-  //   if (await inAppReview.isAvailable()) {
-  //     inAppReview.requestReview();
-  //   }
-  // }
-}
 
 RateMyApp rateMyApp = RateMyApp(
   minDays: 3,
