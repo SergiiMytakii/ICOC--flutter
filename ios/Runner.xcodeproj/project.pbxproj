@@ -467,7 +467,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.icoc.projects;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -620,7 +620,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.icoc.projects;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -661,7 +661,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.icoc.projects;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

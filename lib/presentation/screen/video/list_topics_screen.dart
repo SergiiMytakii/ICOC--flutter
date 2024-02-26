@@ -150,9 +150,10 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
       Future.delayed(Duration(milliseconds: 1500)).then((value) {
         (tooltipKey2.currentState as TooltipState).ensureTooltipVisible();
         Future.delayed(Duration(seconds: 6), () {
-          setState(() {
-            _tooltipVisible = false;
-          });
+          if (mounted)
+            setState(() {
+              _tooltipVisible = false;
+            });
         });
       });
       SharedPreferencesHelper.saveDouble(

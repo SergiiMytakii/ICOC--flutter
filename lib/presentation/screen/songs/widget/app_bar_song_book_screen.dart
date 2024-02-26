@@ -46,9 +46,10 @@ class _IosAppbarState extends State<IosAppbar> {
       Future.delayed(Duration(milliseconds: 1500)).then((value) {
         (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
         Future.delayed(Duration(seconds: 6), () {
-          setState(() {
-            _tooltipVisible = false;
-          });
+          if (mounted)
+            setState(() {
+              _tooltipVisible = false;
+            });
         });
       });
       SharedPreferencesHelper.saveDouble(
