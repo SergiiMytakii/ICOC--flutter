@@ -33,14 +33,13 @@ class SongsRequested extends SongsEvent {
       } else {
         songs = cache!;
       }
-      if (!sqliteBDisUpdated) {
-        //save all keys of text (ru1, ru2, en1 ets..).  We need them to store data in SQL table
-        findAndSaveAllTextKeys(songs);
-        await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-        sqliteBDisUpdated = true;
-      }
+
+      //save all keys of text (ru1, ru2, en1 ets..).  We need them to store data in SQL table
+      await findAndSaveAllTextKeys(songs);
       final filteredSongs = await filterSongsByLang(songs);
       final orderedSongs = await orderSongs(filteredSongs);
+      await songsRepositoryImpl.insertAllSongsToLocalTable(orderedSongs);
+
       yield GetSongsSuccessState(orderedSongs);
     } catch (_, stackTrace) {
       logError(_, stackTrace);

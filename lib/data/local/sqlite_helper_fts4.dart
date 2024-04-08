@@ -26,11 +26,11 @@ class DatabaseHelperFTS4 {
 /* get refetence to the DB and initialasing DB */
   Future<Database?> db() async {
     if (_db != null) {
-      //log.i('db already exist!');
+      // log.i('db already exist!');
       return _db!;
     } else {
+      log.i('initializing db');
       _db = await initDB();
-      //log.i('initializing db');
       return _db;
     }
   }
@@ -40,8 +40,9 @@ class DatabaseHelperFTS4 {
     // await deleteDatabase(path); // - if we need to clean database
     final Map<String, dynamic> allLanguages =
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
-    allLanguages.removeWhere((key, value) => value == false);
-
+    if (allLanguages.isEmpty) {
+      return null;
+    }
     final List<String> allSongsTitleKeys = allLanguages.keys.toList();
     String columnTitleDefinitions =
         allSongsTitleKeys.map((key) => '$key TEXT').join(', ');
@@ -60,10 +61,9 @@ class DatabaseHelperFTS4 {
             'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $columnTitleDefinitions)');
         await db.execute(
             'CREATE VIRTUAL TABLE $TABLE_TEXT USING fts4 (tokenize = unicode61, $ID_SONG, $columnTextDefinitions)');
-
         await db.execute(
             'CREATE TABLE $TABLE_FAVORITES ($ID_SONG INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
-        log.i(' !!!!databases was created!!!!!');
+        log.i(' !!!!databases hac been opened!!!!!');
       });
     } on Exception catch (e, stackTrace) {
       logError(e, stackTrace);

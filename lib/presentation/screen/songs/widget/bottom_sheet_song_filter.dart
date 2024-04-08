@@ -17,7 +17,7 @@ class BottomSheetSongsFilter extends StatefulWidget {
 }
 
 class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
-  bool orderByTitle = false;
+  bool orderByTitle = true;
   Map<String, dynamic> allLanguages = {};
   @override
   void initState() {
