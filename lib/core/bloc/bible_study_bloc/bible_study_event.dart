@@ -7,8 +7,8 @@ sealed class BibleStudyEvent {
 }
 
 class BibleStudyListRequested extends BibleStudyEvent {
-  final BibleStudyRepositoryImpl bibleStudyRepositoryImpl =
-      BibleStudyRepositoryImpl();
+  final BibleStudyRepository bibleStudyRepositoryImpl =
+      RepositoryModule.bibleStudyRepository();
   @override
   Stream<BibleStudyState> applyAsync(
       {BibleStudyState? currentState, BibleStudyBloc? bloc}) async* {

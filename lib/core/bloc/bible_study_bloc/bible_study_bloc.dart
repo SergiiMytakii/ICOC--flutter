@@ -5,7 +5,8 @@ import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/bible_study.dart';
-import 'package:icoc/data/repository_impl/bible_study_repository_impl.dart';
+import 'package:icoc/core/repository/bible_study_repository.dart';
+import 'package:icoc/data/repository_module.dart';
 import 'package:meta/meta.dart';
 
 part 'bible_study_event.dart';

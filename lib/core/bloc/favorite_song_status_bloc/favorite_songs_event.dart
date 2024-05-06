@@ -8,7 +8,8 @@ sealed class FavoriteSongStatusEvent {
 
 class FavoriteSongStatusRequested extends FavoriteSongStatusEvent {
   final int id;
-  final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
+  final SongsRepository songsRepositoryImpl =
+      RepositoryModule.songsRepository();
 
   FavoriteSongStatusRequested({required this.id});
   @override

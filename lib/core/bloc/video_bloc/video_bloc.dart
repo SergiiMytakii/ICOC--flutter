@@ -6,7 +6,9 @@ import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/video.dart';
+import 'package:icoc/core/repository/video_repository.dart';
 import 'package:icoc/data/repository_impl/video_repository_impl.dart';
+import 'package:icoc/data/repository_module.dart';
 import 'package:meta/meta.dart';
 
 part 'video_event.dart';

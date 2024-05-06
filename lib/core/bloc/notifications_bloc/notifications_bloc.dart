@@ -3,7 +3,8 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/notifications_model.dart';
-import 'package:icoc/data/repository_impl/notifications_repository_impl.dart';
+import 'package:icoc/core/repository/notifications_repository.dart';
+import 'package:icoc/data/repository_module.dart';
 import 'package:meta/meta.dart';
 
 part 'notifications_event.dart';

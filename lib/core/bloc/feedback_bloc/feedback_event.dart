@@ -7,8 +7,8 @@ sealed class FeedbackEvent {
 }
 
 class FeedbackListRequested extends FeedbackEvent {
-  final FeedbackRepositoryImpl feedbackRepositoryImpl =
-      FeedbackRepositoryImpl();
+  final FeedbackRepository feedbackRepositoryImpl =
+      RepositoryModule.feedbackRepository();
   @override
   Stream<FeedbackState> applyAsync(
       {FeedbackState? currentState, FeedbackBloc? bloc}) async* {

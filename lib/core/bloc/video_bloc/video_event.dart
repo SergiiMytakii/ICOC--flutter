@@ -6,7 +6,8 @@ sealed class VideoEvent {
 }
 
 class VideoListRequested extends VideoEvent {
-  final VideoRepositoryImpl videoRepositoryImpl = VideoRepositoryImpl();
+  final VideoRepository videoRepositoryImpl =
+      RepositoryModule.videoRepository();
   @override
   Stream<VideoState> applyAsync(
       {VideoState? currentState, VideoBloc? bloc}) async* {

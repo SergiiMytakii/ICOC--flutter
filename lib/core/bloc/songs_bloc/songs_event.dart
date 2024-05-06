@@ -51,7 +51,8 @@ class SongsRequested extends SongsEvent {
 class SearchSongRequested extends SongsEvent {
   SearchSongRequested(this.query);
   final String query;
-  final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
+  final SongsRepository songsRepositoryImpl =
+      RepositoryModule.songsRepository();
   //trim query and delete dots, comas, ets.
   @override
   Stream<SongsState> applyAsync(

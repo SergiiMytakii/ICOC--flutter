@@ -7,7 +7,8 @@ sealed class QandAEvent {
 
 class QandARequested extends QandAEvent {
   final String? query;
-  final QandARepositoryImpl qAndARepositoryImpl = QandARepositoryImpl();
+  final QandARepository qAndARepositoryImpl =
+      RepositoryModule.qandARepository();
 
   QandARequested({this.query});
   @override
