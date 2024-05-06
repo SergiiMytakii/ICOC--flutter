@@ -8,6 +8,7 @@ import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -101,6 +102,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: () => _getTopicsList(),
       child: ListView.builder(
+        cacheExtent: 0,
         itemCount: topics.length,
         itemBuilder: (context, index) {
           if (i < 4) {
@@ -108,35 +110,37 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
           } else {
             i = 0;
           }
-          return Column(
-            children: [
-              ListTile(
-                leading: Container(
-                  width: 40,
+          return AnimationWrapper(
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Container(
+                    width: 40,
+                  ),
+                  title: Text(
+                    topics[index].id,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  subtitle: Text(
+                    topics[index].description,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          ListVideosScreen(video: topics[index]))),
                 ),
-                title: Text(
-                  topics[index].id,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.titleLarge,
+                Divider(
+                  indent: 50,
+                  color: dividerColors[i],
+                  thickness: 1.2,
                 ),
-                subtitle: Text(
-                  topics[index].description,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        ListVideosScreen(video: topics[index]))),
-              ),
-              Divider(
-                indent: 50,
-                color: dividerColors[i],
-                thickness: 1.2,
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/feedback_bloc/feedback_bloc.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
@@ -50,6 +51,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   builder: (context, state) {
                     if (state is GetFeedbackListSuccessState) {
                       return ListView.builder(
+                        cacheExtent: 0,
                         itemCount: state.feedbacks.length,
                         itemBuilder: (context, index) {
                           if (i < 4) {
@@ -57,43 +59,46 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           } else {
                             i = 0;
                           }
-                          return Column(
-                            children: [
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                titleTextStyle:
-                                    TextStyle(color: dividerColors[i]),
-                                title: Text(state.feedbacks[index].name ?? ''),
-                                subtitle: Text(state.feedbacks[index].text),
-                                leading: SizedBox(
-                                  width: 35,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // Display day and month on the first line
-                                        Text(
-                                          state.feedbacks[index].date
-                                              .split('\n')[0],
-                                        ),
-                                        // Display year on the second line
-                                        Text(
-                                          state.feedbacks[index].date
-                                              .split('\n')[1],
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
+                          return AnimationWrapper(
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  titleTextStyle:
+                                      TextStyle(color: dividerColors[i]),
+                                  title:
+                                      Text(state.feedbacks[index].name ?? ''),
+                                  subtitle: Text(state.feedbacks[index].text),
+                                  leading: SizedBox(
+                                    width: 35,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // Display day and month on the first line
+                                          Text(
+                                            state.feedbacks[index].date
+                                                .split('\n')[0],
+                                          ),
+                                          // Display year on the second line
+                                          Text(
+                                            state.feedbacks[index].date
+                                                .split('\n')[1],
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Divider(
-                                indent: 50,
-                                color: dividerColors[i],
-                                thickness: 1.2,
-                              ),
-                            ],
+                                Divider(
+                                  indent: 50,
+                                  color: dividerColors[i],
+                                  thickness: 1.2,
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );

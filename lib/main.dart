@@ -19,21 +19,21 @@ import 'presentation/routes/app_routes.dart';
 import 'theme.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp();
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  _activateCrashlitics();
-  FirebaseAnalytics.instance
-      .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
-  await GetStorage.init();
-
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light));
   runZonedGuarded(
-    () {
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await EasyLocalization.ensureInitialized();
+      await Firebase.initializeApp();
+      final savedThemeMode = await AdaptiveTheme.getThemeMode();
+      _activateCrashlitics();
+      FirebaseAnalytics.instance
+          .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
+      await GetStorage.init();
+
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light));
       runApp(
         EasyLocalization(
           useOnlyLangCode: true,

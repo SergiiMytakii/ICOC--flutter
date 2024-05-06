@@ -8,6 +8,7 @@ import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -102,6 +103,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
       child: ListView.builder(
+        cacheExtent: 0,
         itemCount: state.topics.length,
         itemBuilder: (context, index) {
           if (i < 4) {
@@ -109,39 +111,41 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           } else {
             i = 0;
           }
-          return Column(
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  width: 40,
+          return AnimationWrapper(
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Container(
+                    width: 40,
+                  ),
+                  title: Text(
+                    state.topics[index].topic,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    state.topics[index].subtopic,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () => Navigator.of(context).pushNamed(
+                      Routes.ONE_TOPIC_SCREEN,
+                      arguments: state.topics[index]),
                 ),
-                title: Text(
-                  state.topics[index].topic,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(fontWeight: FontWeight.bold),
+                Divider(
+                  indent: 50,
+                  color: dividerColors[i],
+                  thickness: 1.2,
                 ),
-                subtitle: Text(
-                  state.topics[index].subtopic,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => Navigator.of(context).pushNamed(
-                    Routes.ONE_TOPIC_SCREEN,
-                    arguments: state.topics[index]),
-              ),
-              Divider(
-                indent: 50,
-                color: dividerColors[i],
-                thickness: 1.2,
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
@@ -151,7 +155,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   void showTooltip() {
     double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
-    if (tooltipShown < 4.0) {
+    if (tooltipShown < 5.0) {
       Future.delayed(Duration(milliseconds: 1500)).then((value) {
         (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
         Future.delayed(Duration(seconds: 6), () {

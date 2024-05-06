@@ -6,6 +6,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/q&a/widget/q_and_a_app_bar.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/unfocus_keyboard.dart';
@@ -34,6 +35,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
     return Scaffold(
       body: UnfocusOnTapOutside(
         child: CustomScrollView(
+          cacheExtent: 0,
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
             QandAAppbar(
@@ -59,34 +61,36 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                         } else {
                           i = 0;
                         }
-                        return Column(
-                          children: [
-                            ListTile(
-                              leading: Text(
-                                state.articles[index].id.toString(),
-                                style: Theme.of(context).textTheme.titleLarge,
+                        return AnimationWrapper(
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: Text(
+                                  state.articles[index].id.toString(),
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                                title: Text(
+                                  state.articles[index].title,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                trailing: Icon(Icons.arrow_forward_ios),
+                                onTap: () => Navigator.of(context).pushNamed(
+                                  Routes.ONE_Q_AND_A_SCREEN,
+                                  arguments: state.articles[index],
+                                ),
                               ),
-                              title: Text(
-                                state.articles[index].title,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(fontWeight: FontWeight.bold),
+                              Divider(
+                                indent: 50,
+                                color: dividerColors[i],
+                                thickness: 1.2,
                               ),
-                              trailing: Icon(Icons.arrow_forward_ios),
-                              onTap: () => Navigator.of(context).pushNamed(
-                                Routes.ONE_Q_AND_A_SCREEN,
-                                arguments: state.articles[index],
-                              ),
-                            ),
-                            Divider(
-                              indent: 50,
-                              color: dividerColors[i],
-                              thickness: 1.2,
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       },
                       childCount: state.articles.length,

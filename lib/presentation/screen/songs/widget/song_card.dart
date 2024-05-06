@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:html/parser.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/model/song_detail.dart';
@@ -29,42 +30,46 @@ class SongCard extends StatelessWidget {
 
     return Column(
       children: [
-        Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: slideActions!,
-          ),
-          child: ListTile(
-            onTap: (() {
-              // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
-              //     arguments: song);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OneSongScreen(song)));
-            }),
-            horizontalTitleGap: 12,
-            leading: Text(song.id.toString(),
-                style: Theme.of(context).textTheme.titleSmall),
-            title: Text(
-              song.title.entries.first.value,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.titleLarge,
+        AnimationWrapper(
+          child: Slidable(
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: slideActions!,
             ),
-            subtitle: Text(
-              text,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              style: Theme.of(context).textTheme.bodyMedium,
+            child: ListTile(
+              onTap: (() {
+                // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
+                //     arguments: song);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OneSongScreen(song)));
+              }),
+              horizontalTitleGap: 12,
+              leading: Text(song.id.toString(),
+                  style: Theme.of(context).textTheme.titleSmall),
+              title: Text(
+                song.title.entries.first.value,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              subtitle: Text(
+                text,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              trailing: song.resources != null && song.resources!.isNotEmpty
+                  ? Icon(
+                      Icons.play_circle,
+                      color: ScreenColors.songBook,
+                    )
+                  : Container(
+                      height: 1,
+                      width: 1,
+                    ),
             ),
-            trailing: song.resources != null && song.resources!.isNotEmpty
-                ? Icon(
-                    Icons.play_circle,
-                    color: ScreenColors.songBook,
-                  )
-                : Container(
-                    height: 1,
-                    width: 1,
-                  ),
           ),
         ),
         Divider(
