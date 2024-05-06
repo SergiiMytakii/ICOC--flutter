@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -5,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
@@ -30,15 +32,29 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light));
-
-  runApp(EasyLocalization(
-      useOnlyLangCode: true,
-      supportedLocales: languagesCodes.keys
-          .map((languageCode) => Locale(languageCode))
-          .toList(),
-      path: 'assets/translations',
-      fallbackLocale: Locale('en', 'US'),
-      child: MyApp(savedThemeMode: savedThemeMode)));
+  runZonedGuarded(
+    () {
+      runApp(
+        EasyLocalization(
+          useOnlyLangCode: true,
+          supportedLocales: languagesCodes.keys
+              .map((languageCode) => Locale(languageCode))
+              .toList(),
+          path: 'assets/translations',
+          fallbackLocale: Locale('en', 'US'),
+          child: MyApp(savedThemeMode: savedThemeMode),
+        ),
+      );
+    },
+    (error, stackTrace) {
+      if (kDebugMode) {
+        print('Error: $error');
+        print('StackTrace: $stackTrace');
+      }
+      FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, printDetails: true);
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +66,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SharedPreferencesHelper.saveString(
         StorageKeys.locale, context.locale.languageCode);
-    print(context.locale.languageCode);
     return AdaptiveTheme(
       initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: myLightTheme,
