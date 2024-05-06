@@ -39,7 +39,6 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
             QandAAppbar(
               title: 'drawer_q_and_a'.tr(),
               callback: (String query) {
-                print(query);
                 if (query.length > 2) {
                   previousQuery = query;
                   context.read<QandABloc>().add(QandARequested(query: query));

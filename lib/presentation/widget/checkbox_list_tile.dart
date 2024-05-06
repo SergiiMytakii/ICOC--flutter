@@ -33,7 +33,6 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
   @override
   Widget build(BuildContext context) {
     final bool bold = widget.key.value == '0';
-    print(bold);
     return CheckboxListTile(
         activeColor: widget.color,
         key: widget.key,

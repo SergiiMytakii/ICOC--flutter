@@ -19,7 +19,6 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
         if (mounted) {
           setState(() {
             opacity = 0;
-            print('drag');
           });
         }
       },
@@ -33,7 +32,6 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
             ],
           ),
           onRefresh: () async {
-            print('onRefresh');
             Future.delayed(Duration(milliseconds: 500)).then((value) {
               if (mounted) {
                 setState(() {

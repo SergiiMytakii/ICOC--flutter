@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
@@ -51,8 +52,10 @@ class DatabaseHelperFTS4 {
         SharedPreferencesHelper.getList(StorageKeys.allSongsTextKeys) ?? [];
     String columnTextDefinitions =
         allSongsTextKeys.map((key) => '$key TEXT').join(', ');
-    print(columnTitleDefinitions);
-    print(columnTextDefinitions);
+    if (kDebugMode) {
+      print(columnTitleDefinitions);
+      print(columnTextDefinitions);
+    }
 
     try {
       return await openDatabase(path, version: 5,
