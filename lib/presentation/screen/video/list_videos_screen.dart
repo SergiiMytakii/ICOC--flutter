@@ -5,6 +5,7 @@ import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:wakelock/wakelock.dart';
@@ -63,9 +64,12 @@ class _ListVideosState extends State<ListVideosScreen> {
                 return RefreshIndicator.adaptive(
                   onRefresh: () => _getVideosList(),
                   child: ListView.builder(
+                    cacheExtent: 0,
                     itemBuilder: (context, index) => state.resources.isNotEmpty
-                        ? VideoCard(
-                            resources: state.resources[index],
+                        ? AnimationWrapper(
+                            child: VideoCard(
+                              resources: state.resources[index],
+                            ),
                           )
                         : Container(height: 200),
                     itemCount: state.resources.length,
