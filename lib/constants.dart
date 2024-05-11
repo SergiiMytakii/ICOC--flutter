@@ -42,6 +42,7 @@ class StorageKeys {
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
   static const String shouldVideoFilterAnimate = 'shouldVideoFilterAnimate';
+  static const String shouldShowTooltip = 'shouldShowTooltip';
   static const String shouldSongsFilterAnimate = 'shouldSongsFilterAnimate';
   static const String shouldBibleStudyFilterAnimate =
       'shouldBibleStudyFilterAnimate';

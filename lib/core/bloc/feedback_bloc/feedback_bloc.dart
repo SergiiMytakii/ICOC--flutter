@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/feedback.dart';
+import 'package:icoc/core/repository/feedback_repository.dart';
 import 'package:icoc/data/repository_impl/feedback_repository_impl.dart';
+import 'package:icoc/data/repository_module.dart';
 import 'package:meta/meta.dart';
 
 part 'feedback_event.dart';

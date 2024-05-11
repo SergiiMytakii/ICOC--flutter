@@ -10,8 +10,8 @@ class NotificationsListRequested extends NotificationsEvent {
   final String locale;
   NotificationsListRequested(this.locale);
 
-  final NotificationsRepositoryImpl notificationsRepositoryImpl =
-      NotificationsRepositoryImpl();
+  final NotificationsRepository notificationsRepositoryImpl =
+      RepositoryModule.notificationsRepository();
 
   @override
   Stream<NotificationsState> applyAsync(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -5,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,38 +19,53 @@ import 'presentation/routes/app_routes.dart';
 import 'theme.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp();
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  _activateCrashlitics();
-  FirebaseAnalytics.instance
-      .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
-  await GetStorage.init();
-  String? appLocale =
-      await SharedPreferencesHelper.getString(StorageKeys.locale);
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await EasyLocalization.ensureInitialized();
+      await Firebase.initializeApp();
+      final savedThemeMode = await AdaptiveTheme.getThemeMode();
+      _activateCrashlitics();
+      FirebaseAnalytics.instance
+          .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
+      await GetStorage.init();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light));
-
-  runApp(EasyLocalization(
-      useOnlyLangCode: true,
-      supportedLocales: languagesCodes.keys
-          .map((languageCode) => Locale(languageCode))
-          .toList(),
-      path: 'assets/translations',
-      fallbackLocale: Locale('en', 'US'),
-      child: MyApp(appLocale: appLocale, savedThemeMode: savedThemeMode)));
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light));
+      runApp(
+        EasyLocalization(
+          useOnlyLangCode: true,
+          supportedLocales: languagesCodes.keys
+              .map((languageCode) => Locale(languageCode))
+              .toList(),
+          path: 'assets/translations',
+          fallbackLocale: Locale('en', 'US'),
+          child: MyApp(savedThemeMode: savedThemeMode),
+        ),
+      );
+    },
+    (error, stackTrace) {
+      if (kDebugMode) {
+        print('Error: $error');
+        print('StackTrace: $stackTrace');
+      }
+      FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, printDetails: true);
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
-  final String? appLocale;
+  MyApp({Key? key, this.savedThemeMode}) : super(key: key);
+
   final AdaptiveThemeMode? savedThemeMode;
-  MyApp({Key? key, this.appLocale, this.savedThemeMode}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    SharedPreferencesHelper.saveString(
+        StorageKeys.locale, context.locale.languageCode);
     return AdaptiveTheme(
       initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: myLightTheme,

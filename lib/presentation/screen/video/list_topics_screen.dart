@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -20,8 +22,11 @@ class ListTopicsScreen extends StatefulWidget {
 
 class _ListTopicsScreenState extends State<ListTopicsScreen> {
   List<Video>? cache;
+  final GlobalKey tooltipKey2 = GlobalKey();
+  bool _tooltipVisible = true;
   @override
   void initState() {
+    showTooltip();
     _getTopicsList();
     super.initState();
   }
@@ -39,19 +44,36 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
           ),
           centerTitle: true,
           actions: [
-            AnimatedFilterIconButton(
-                shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
-                onTap: () => showModalBottomSheet(
-                    scrollControlDisabledMaxHeightRatio: 2,
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (BuildContext context) {
-                      return ModalBottomSheet(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          blurBackground: false,
-                          child: BottomSheetVideoFilter());
-                    }),
-                color: ScreenColors.video)
+            Stack(
+              children: [
+                Visibility(
+                  visible: _tooltipVisible,
+                  child: Tooltip(
+                    message: 'Filter languages'.tr(),
+                    key: tooltipKey2,
+                    preferBelow: true,
+                    triggerMode: TooltipTriggerMode.manual,
+                    child: Container(
+                      height: 40,
+                      width: 30,
+                    ),
+                  ),
+                ),
+                AnimatedFilterIconButton(
+                    shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
+                    onTap: () => showModalBottomSheet(
+                        scrollControlDisabledMaxHeightRatio: 2,
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext context) {
+                          return ModalBottomSheet(
+                              height: MediaQuery.of(context).size.height / 1.5,
+                              blurBackground: false,
+                              child: BottomSheetVideoFilter());
+                        }),
+                    color: ScreenColors.video),
+              ],
+            )
           ],
         ),
         body: BlocBuilder<VideoBloc, VideoState>(
@@ -80,6 +102,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: () => _getTopicsList(),
       child: ListView.builder(
+        cacheExtent: 0,
         itemCount: topics.length,
         itemBuilder: (context, index) {
           if (i < 4) {
@@ -87,38 +110,58 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
           } else {
             i = 0;
           }
-          return Column(
-            children: [
-              ListTile(
-                leading: Container(
-                  width: 40,
+          return AnimationWrapper(
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Container(
+                    width: 40,
+                  ),
+                  title: Text(
+                    topics[index].id,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  subtitle: Text(
+                    topics[index].description,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          ListVideosScreen(video: topics[index]))),
                 ),
-                title: Text(
-                  topics[index].id,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.titleLarge,
+                Divider(
+                  indent: 50,
+                  color: dividerColors[i],
+                  thickness: 1.2,
                 ),
-                subtitle: Text(
-                  topics[index].description,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        ListVideosScreen(video: topics[index]))),
-              ),
-              Divider(
-                indent: 50,
-                color: dividerColors[i],
-                thickness: 1.2,
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
     );
+  }
+
+  void showTooltip() {
+    double tooltipShown =
+        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+    if (tooltipShown < 4.0) {
+      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+        (tooltipKey2.currentState as TooltipState).ensureTooltipVisible();
+        Future.delayed(Duration(seconds: 6), () {
+          if (mounted)
+            setState(() {
+              _tooltipVisible = false;
+            });
+        });
+      });
+      SharedPreferencesHelper.saveDouble(
+          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+    }
   }
 }

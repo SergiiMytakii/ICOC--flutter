@@ -33,14 +33,13 @@ class SongsRequested extends SongsEvent {
       } else {
         songs = cache!;
       }
-      if (!sqliteBDisUpdated) {
-        //save all keys of text (ru1, ru2, en1 ets..).  We need them to store data in SQL table
-        findAndSaveAllTextKeys(songs);
-        await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-        sqliteBDisUpdated = true;
-      }
+
+      //save all keys of text (ru1, ru2, en1 ets..).  We need them to store data in SQL table
+      await findAndSaveAllTextKeys(songs);
       final filteredSongs = await filterSongsByLang(songs);
       final orderedSongs = await orderSongs(filteredSongs);
+      await songsRepositoryImpl.insertAllSongsToLocalTable(orderedSongs);
+
       yield GetSongsSuccessState(orderedSongs);
     } catch (_, stackTrace) {
       logError(_, stackTrace);
@@ -52,7 +51,8 @@ class SongsRequested extends SongsEvent {
 class SearchSongRequested extends SongsEvent {
   SearchSongRequested(this.query);
   final String query;
-  final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
+  final SongsRepository songsRepositoryImpl =
+      RepositoryModule.songsRepository();
   //trim query and delete dots, comas, ets.
   @override
   Stream<SongsState> applyAsync(
@@ -137,7 +137,14 @@ class SearchSongRequested extends SongsEvent {
 }
 
 Future<void> updateStoredLanguages(List<SongDetail> songs) async {
+  final locale = SharedPreferencesHelper.getString(
+        StorageKeys.locale,
+      ) ??
+      'en';
   List<String> allTitleKeys = findAllTitleKeys(songs);
+
+  putDeviceLangToFirstPlace(allTitleKeys, locale);
+
   //get stored all languages (ordered)
   final Map<String, dynamic> orderedAllLanguages =
       SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
@@ -145,8 +152,8 @@ Future<void> updateStoredLanguages(List<SongDetail> songs) async {
   //iterate languages from Firebase songs and add them to the Map
   allTitleKeys.forEach((String lang) {
     if (!orderedAllLanguages.containsKey(lang)) {
-      print('insert $lang');
-      orderedAllLanguages[lang] = true;
+      // print('insert $lang');
+      orderedAllLanguages[lang] = lang == locale;
     }
   });
   await SharedPreferencesHelper.saveMap(

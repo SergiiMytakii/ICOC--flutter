@@ -7,7 +7,9 @@ sealed class FavoriteSongsListEvent {
 }
 
 class FavoriteSongsListRequested extends FavoriteSongsListEvent {
-  final SongsRepositoryImpl songsRepositoryImpl = SongsRepositoryImpl();
+  final SongsRepository songsRepositoryImpl =
+      RepositoryModule.songsRepository();
+
   @override
   Stream<FavoriteSongsState> applyAsync(
       {FavoriteSongsState? currentState, FavoriteSongsListBloc? bloc}) async* {

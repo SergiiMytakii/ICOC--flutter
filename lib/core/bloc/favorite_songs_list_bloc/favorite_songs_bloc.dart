@@ -2,7 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
-import 'package:icoc/data/repository_impl/songs_repository_impl.dart';
+import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/data/repository_module.dart';
 import 'package:meta/meta.dart';
 
 import '../../model/song_detail.dart';

@@ -38,6 +38,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
         edgeOffset: 130,
         onRefresh: () => getSongs(context, useCache: false),
         child: CustomScrollView(
+          cacheExtent: 0,
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
             IosAppbar(

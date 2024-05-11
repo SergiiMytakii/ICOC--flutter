@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -19,9 +21,12 @@ class BibleStudyScreen extends StatefulWidget {
 }
 
 class _BibleStudyScreenState extends State<BibleStudyScreen> {
+  final GlobalKey tooltipKey1 = GlobalKey();
+  bool _tooltipVisible = true;
   @override
   void initState() {
     _getBibleStudyList();
+    showTooltip();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Bible Study');
     super.initState();
   }
@@ -41,19 +46,36 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           ),
           centerTitle: true,
           actions: [
-            AnimatedFilterIconButton(
-                shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-                onTap: () => showModalBottomSheet(
-                    scrollControlDisabledMaxHeightRatio: 2,
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (BuildContext context) {
-                      return ModalBottomSheet(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          blurBackground: false,
-                          child: BottomSheetBibleStudyFilter());
-                    }),
-                color: ScreenColors.bibleStudy)
+            Stack(
+              children: [
+                Visibility(
+                  visible: _tooltipVisible,
+                  child: Tooltip(
+                    message: 'Filter languages'.tr(),
+                    key: tooltipKey1,
+                    preferBelow: true,
+                    triggerMode: TooltipTriggerMode.manual,
+                    child: Container(
+                      height: 40,
+                      width: 30,
+                    ),
+                  ),
+                ),
+                AnimatedFilterIconButton(
+                    shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+                    onTap: () => showModalBottomSheet(
+                        scrollControlDisabledMaxHeightRatio: 2,
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        builder: (BuildContext context) {
+                          return ModalBottomSheet(
+                              height: MediaQuery.of(context).size.height / 1.5,
+                              blurBackground: false,
+                              child: BottomSheetBibleStudyFilter());
+                        }),
+                    color: ScreenColors.bibleStudy),
+              ],
+            )
           ],
         ),
         body: BlocBuilder<BibleStudyBloc, BibleStudyState>(
@@ -81,6 +103,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
       child: ListView.builder(
+        cacheExtent: 0,
         itemCount: state.topics.length,
         itemBuilder: (context, index) {
           if (i < 4) {
@@ -88,42 +111,62 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           } else {
             i = 0;
           }
-          return Column(
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  width: 40,
+          return AnimationWrapper(
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Container(
+                    width: 40,
+                  ),
+                  title: Text(
+                    state.topics[index].topic,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    state.topics[index].subtopic,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () => Navigator.of(context).pushNamed(
+                      Routes.ONE_TOPIC_SCREEN,
+                      arguments: state.topics[index]),
                 ),
-                title: Text(
-                  state.topics[index].topic,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(fontWeight: FontWeight.bold),
+                Divider(
+                  indent: 50,
+                  color: dividerColors[i],
+                  thickness: 1.2,
                 ),
-                subtitle: Text(
-                  state.topics[index].subtopic,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => Navigator.of(context).pushNamed(
-                    Routes.ONE_TOPIC_SCREEN,
-                    arguments: state.topics[index]),
-              ),
-              Divider(
-                indent: 50,
-                color: dividerColors[i],
-                thickness: 1.2,
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
     );
+  }
+
+  void showTooltip() {
+    double tooltipShown =
+        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+    if (tooltipShown < 5.0) {
+      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+        (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
+        Future.delayed(Duration(seconds: 6), () {
+          if (mounted)
+            setState(() {
+              _tooltipVisible = false;
+            });
+        });
+      });
+      SharedPreferencesHelper.saveDouble(
+          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+    }
   }
 }

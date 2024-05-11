@@ -10,35 +10,45 @@ import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/core/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
 
-Widget MyMultiblocProvider({required Widget child}) {
-  return MultiBlocProvider(providers: [
-    BlocProvider<SongsBloc>(
-      create: (BuildContext context) => SongsBloc(),
-    ),
-    BlocProvider<FontSizeBloc>(
-      create: (BuildContext context) =>
-          FontSizeBloc()..add(FontSizeRequested()),
-    ),
-    BlocProvider<FavoriteSongsListBloc>(
-      create: (BuildContext context) => FavoriteSongsListBloc(),
-    ),
-    BlocProvider<FavoriteSongStatusBloc>(
-      create: (BuildContext context) => FavoriteSongStatusBloc(),
-    ),
-    BlocProvider<BibleStudyBloc>(
-      create: (BuildContext context) => BibleStudyBloc(),
-    ),
-    BlocProvider<QandABloc>(
-      create: (BuildContext context) => QandABloc(),
-    ),
-    BlocProvider<NotificationsBloc>(
-      create: (BuildContext context) => NotificationsBloc(),
-    ),
-    BlocProvider<VideoBloc>(
-      create: (BuildContext context) => VideoBloc(),
-    ),
-    BlocProvider<FeedbackBloc>(
-      create: (BuildContext context) => FeedbackBloc(),
-    ),
-  ], child: child);
+class MyMultiblocProvider extends StatelessWidget {
+  final Widget child;
+
+  const MyMultiblocProvider({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SongsBloc>(
+          create: (BuildContext context) => SongsBloc(),
+        ),
+        BlocProvider<FontSizeBloc>(
+          create: (BuildContext context) =>
+              FontSizeBloc()..add(FontSizeRequested()),
+        ),
+        BlocProvider<FavoriteSongsListBloc>(
+          create: (BuildContext context) => FavoriteSongsListBloc(),
+        ),
+        BlocProvider<FavoriteSongStatusBloc>(
+          create: (BuildContext context) => FavoriteSongStatusBloc(),
+        ),
+        BlocProvider<BibleStudyBloc>(
+          create: (BuildContext context) => BibleStudyBloc(),
+        ),
+        BlocProvider<QandABloc>(
+          create: (BuildContext context) => QandABloc(),
+        ),
+        BlocProvider<NotificationsBloc>(
+          create: (BuildContext context) => NotificationsBloc(),
+        ),
+        BlocProvider<VideoBloc>(
+          create: (BuildContext context) => VideoBloc(),
+        ),
+        BlocProvider<FeedbackBloc>(
+          create: (BuildContext context) => FeedbackBloc(),
+        ),
+      ],
+      child: child,
+    );
+  }
 }

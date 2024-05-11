@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/model/notifications_model.dart';
+import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
@@ -38,6 +39,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           builder: (context, state) {
             if (state is GetNotificationsListSuccessState) {
               return ListView.builder(
+                  cacheExtent: 0,
                   itemCount: state.notifications.length,
                   itemBuilder: (BuildContext context, index) {
                     if (i < 4) {
@@ -49,49 +51,51 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         _markAsRead(state.notifications[index].title,
                             state.notifications));
 
-                    return Column(
-                      children: [
-                        ListTile(
-                          onTap: () => _markAsRead(
-                              state.notifications[index].title,
-                              state.notifications),
-                          contentPadding: EdgeInsets.all(8),
-                          leading: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 16,
+                    return AnimationWrapper(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            onTap: () => _markAsRead(
+                                state.notifications[index].title,
+                                state.notifications),
+                            contentPadding: EdgeInsets.all(8),
+                            leading: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                              ),
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    !state.notifications[index].isRead
+                                        ? ScreenColors.songBook
+                                        : Colors.transparent,
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: !state
+                                                  .notifications[index].isRead
+                                              ? ScreenColors.songBook
+                                              : Theme.of(context).primaryColor),
+                                    ),
+                                    child: Center(child: Text('i'))),
+                              ),
                             ),
-                            child: CircleAvatar(
-                              backgroundColor:
-                                  !state.notifications[index].isRead
-                                      ? ScreenColors.songBook
-                                      : Colors.transparent,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: !state
-                                                .notifications[index].isRead
-                                            ? ScreenColors.songBook
-                                            : Theme.of(context).primaryColor),
+                            title: Text(state.notifications[index].title),
+                            subtitle: state.notifications[index].text
+                                    .trim()
+                                    .startsWith('<')
+                                ? Html(data: state.notifications[index].text)
+                                : Text(
+                                    state.notifications[index].text,
                                   ),
-                                  child: Center(child: Text('i'))),
-                            ),
                           ),
-                          title: Text(state.notifications[index].title),
-                          subtitle: state.notifications[index].text
-                                  .trim()
-                                  .startsWith('<')
-                              ? Html(data: state.notifications[index].text)
-                              : Text(
-                                  state.notifications[index].text,
-                                ),
-                        ),
-                        Divider(
-                          indent: 50,
-                          color: dividerColors[i],
-                          thickness: 1.2,
-                        ),
-                      ],
+                          Divider(
+                            indent: 50,
+                            color: dividerColors[i],
+                            thickness: 1.2,
+                          ),
+                        ],
+                      ),
                     );
                   });
             } else if (state is NotificationsLoadingState) {

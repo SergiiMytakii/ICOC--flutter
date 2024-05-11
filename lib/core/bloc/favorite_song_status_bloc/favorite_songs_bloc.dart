@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:icoc/core/repository/songs_repository.dart';
 
 import 'package:icoc/data/repository_impl/songs_repository_impl.dart';
+import 'package:icoc/data/repository_module.dart';
 import 'package:meta/meta.dart';
 
 part 'favorite_songs_event.dart';
