@@ -26,26 +26,20 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController animationController;
   List<MenuItem> items = HomeScreenMenuItems.items();
   MenuItem currentItem = HomeScreenMenuItems.items().first;
-  double _angle = 0;
-
-  bool isDrawerOpen = false;
-
+  final isDrawerOpenNotifier = ValueNotifier<bool>(false);
+  final angleNotifier = ValueNotifier<double>(0.0);
   void toggleDrawer() async {
-    if (isDrawerOpen) {
+    if (isDrawerOpenNotifier.value) {
       await animationController.reverse();
     }
-    setState(() {
-      isDrawerOpen = !isDrawerOpen;
-    });
+    isDrawerOpenNotifier.value = !isDrawerOpenNotifier.value;
   }
 
   void hideDrawer() async {
-    if (isDrawerOpen) {
+    if (isDrawerOpenNotifier.value) {
       await animationController.reverse();
     }
-    setState(() {
-      isDrawerOpen = false;
-    });
+    isDrawerOpenNotifier.value;
   }
 
   @override
@@ -94,46 +88,52 @@ class _HomeScreenState extends State<HomeScreen>
           left: 16,
           child: Builder(builder: (BuildContext scaffoldContext) {
             return GestureDetector(
-                child: isDrawerOpen
-                    ? Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      )
-                    : Text(
-                        'Menu'.tr(context: context),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: isDrawerOpenNotifier,
+                  builder: (context, isDrawerOpen, _) => isDrawerOpen
+                      ? Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        )
+                      : Text(
+                          'Menu'.tr(context: context),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                ),
                 onTap: () => toggleDrawer());
           }),
         ),
         Positioned(
           left: screenSize.height * 0.06,
           top: screenSize.height * 0.1,
-          child: Transform.rotate(
-            angle: _angle,
-            child: Container(
-              width: screenSize.height * 0.8,
-              height: screenSize.height * 0.8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    Colors.white,
-                    Colors.transparent,
-                  ],
-                  stops: [0.85, 1],
-                  center: Alignment(0, 0),
-                  focal: Alignment(0, 0),
-                  focalRadius: 0.15,
+          child: ValueListenableBuilder<double>(
+            valueListenable: angleNotifier,
+            builder: (context, angle, _) => Transform.rotate(
+              angle: angle,
+              child: Container(
+                width: screenSize.height * 0.8,
+                height: screenSize.height * 0.8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.white,
+                      Colors.transparent,
+                    ],
+                    stops: [0.85, 1],
+                    center: Alignment(0, 0),
+                    focal: Alignment(0, 0),
+                    focalRadius: 0.15,
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(28.0),
-                child: Image.asset(
-                  'assets/images/globe1.png',
-                  width: screenSize.height * 0.70,
-                  height: screenSize.height * 0.70,
+                child: Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: Image.asset(
+                    'assets/images/globe1.png',
+                    width: screenSize.height * 0.70,
+                    height: screenSize.height * 0.70,
+                  ),
                 ),
               ),
             ),
@@ -160,23 +160,23 @@ class _HomeScreenState extends State<HomeScreen>
                 autoPlayAnimationDuration: const Duration(milliseconds: 1200),
                 scrollDirection: Axis.vertical,
                 onPageChanged: (index, reason) {
-                  setState(() {
-                    currentItem = items[index];
-                  });
+                  currentItem = items[index];
                   HapticFeedback.heavyImpact();
-                  // Feedback.forLongPress(context);
                 },
                 onScrolled: (scrollPosition) {
-                  setState(() {
-                    _angle = scrollPosition! - 10000;
-                  });
+                  angleNotifier.value = scrollPosition! - 10000;
                 },
               ),
               items: items.map((item) => MenuItemCard(item)).toList(),
             ),
           ),
         ),
-        if (isDrawerOpen) Positioned(child: MyDrawer(animationController)),
+        ValueListenableBuilder<bool>(
+          valueListenable: isDrawerOpenNotifier,
+          builder: (context, isDrawerOpen, _) => isDrawerOpen
+              ? Positioned(child: MyDrawer(animationController))
+              : SizedBox(),
+        ),
         Positioned(
             bottom: 16, left: 16, child: _buildNotificationsIcon(context)),
       ],
