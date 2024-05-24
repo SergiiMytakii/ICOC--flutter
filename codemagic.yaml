@@ -36,3 +36,41 @@ workflows:
       google_play:
         credentials: §GOOGLE_PLAY_SERVICE_ACCOUNT
         track: alpha
+  ios-workflow:
+    name: iOS Workflow
+    environment:
+      xcode: latest
+      cocoapods: default
+ # Specify architecture as ARM for M1 VM
+    scripts:
+      - name: Set up Ruby environment
+        script: |
+            brew install rbenv
+            rbenv init
+            eval "$(rbenv init -)"
+            rbenv install 2.7.4  # Choose a version compatible with your requirements
+            rbenv global 2.7.4
+            gem install bundler
+      - name: Install CocoaPods
+        script: |
+          sudo gem install cocoapods -v 1.15.2
+          pod repo update
+
+      - name: Run Flutter pub get
+        script: |
+          flutter pub get
+
+      - name: Update CocoaPods Repositories
+        script: |
+          cd ios
+          pod repo update
+
+      - name: Update Firebase/CoreOnly
+        script: |
+          cd ios
+          pod update Firebase/CoreOnly
+
+      - name: Install Pods
+        script: |
+          cd ios
+          pod install
