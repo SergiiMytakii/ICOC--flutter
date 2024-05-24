@@ -11,7 +11,7 @@
 
 # Files for the ART/Dalvik VM
 *.dex
-
+key.properties
 # Java class files
 *.class
 
