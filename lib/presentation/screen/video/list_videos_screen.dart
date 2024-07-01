@@ -15,9 +15,9 @@ class ListVideosScreen extends StatefulWidget {
   final Video video;
 
   ListVideosScreen({
-    Key? key,
+    super.key,
     required this.video,
-  }) : super(key: key) {
+  }) {
     Wakelock.enable();
   }
 

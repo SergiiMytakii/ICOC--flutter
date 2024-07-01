@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 class VerticalSlidePageRoute<T> extends PageRoute<T> {
   VerticalSlidePageRoute({
     required this.builder,
-    RouteSettings? settings,
-  }) : super(settings: settings);
+    super.settings,
+  });
 
   final WidgetBuilder builder;
 

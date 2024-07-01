@@ -61,7 +61,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key, this.savedThemeMode}) : super(key: key);
+  MyApp({super.key, this.savedThemeMode});
 
   final AdaptiveThemeMode? savedThemeMode;
 

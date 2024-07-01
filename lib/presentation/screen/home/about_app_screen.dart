@@ -125,7 +125,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 ),
                 TextButton(
                   child: Text(
-                    '$email'.tr(),
+                    email.tr(),
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium!

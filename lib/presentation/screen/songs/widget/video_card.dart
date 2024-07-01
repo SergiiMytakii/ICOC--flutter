@@ -9,8 +9,7 @@ import 'package:icoc/theme.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
-  const VideoCard({Key? key, required this.resource, required this.onTap})
-      : super(key: key);
+  const VideoCard({super.key, required this.resource, required this.onTap});
 
   final Resources resource;
   final Function onTap;

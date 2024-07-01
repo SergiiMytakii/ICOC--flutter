@@ -300,7 +300,7 @@ class _OneSongScreenState extends State<OneSongScreen>
       text = song.chords!.values.elementAt(index - song.text.values.length);
     }
     text = FormatTextHelper.extractFormattedText(text);
-    text = title + '\n\n' + description + '\n\n' + text;
+    text = '$title\n\n$description\n\n$text';
 
     print(text);
     Share.share(text);

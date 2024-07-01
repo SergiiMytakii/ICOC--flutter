@@ -14,7 +14,7 @@ import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/constants.dart';
 
 class NotificationsScreen extends StatefulWidget {
-  NotificationsScreen({Key? key}) : super(key: key);
+  NotificationsScreen({super.key});
 
   @override
   State<NotificationsScreen> createState() => _NotificationsScreenState();

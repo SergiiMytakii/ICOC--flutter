@@ -8,8 +8,8 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 class VideoPlayer extends StatefulWidget {
   VideoPlayer(
     this.resource, {
-    Key? key,
-  }) : super(key: key) {
+    super.key,
+  }) {
     Wakelock.enable();
   }
 

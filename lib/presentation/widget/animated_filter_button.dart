@@ -19,7 +19,7 @@ class AnimatedFilterIconButton extends StatefulWidget {
       this.firstLanguage});
 
   @override
-  _AnimatedFilterIconButtonState createState() =>
+  State<AnimatedFilterIconButton> createState() =>
       _AnimatedFilterIconButtonState();
 }
 

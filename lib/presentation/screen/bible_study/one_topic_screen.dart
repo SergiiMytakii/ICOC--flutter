@@ -5,7 +5,7 @@ import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
 class OneTopicScreen extends StatelessWidget {
-  OneTopicScreen({Key? key}) : super(key: key);
+  OneTopicScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

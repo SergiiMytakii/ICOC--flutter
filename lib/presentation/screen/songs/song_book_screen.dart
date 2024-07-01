@@ -48,7 +48,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
             )
             //in case its android platform
             ,
-            showSearchResults ? DataSearchResults(query) : SongList()
+            showSearchResults ? DataSearchResults(query) : const SongList()
           ],
         ),
       ),

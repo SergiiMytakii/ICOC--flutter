@@ -10,7 +10,7 @@ import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:icoc/constants.dart';
 
 class ShareAppScreen extends StatefulWidget {
-  const ShareAppScreen({Key? key}) : super(key: key);
+  const ShareAppScreen({super.key});
 
   @override
   State<ShareAppScreen> createState() => _ShareAppScreenState();

@@ -9,9 +9,9 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({
-    Key? key,
+    super.key,
     required this.resources,
-  }) : super(key: key);
+  });
 
   final Resources resources;
 

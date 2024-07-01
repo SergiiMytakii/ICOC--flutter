@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 class FadePageRoute<T> extends PageRoute<T> {
   FadePageRoute({
     required this.builder,
-    RouteSettings? settings,
-  }) : super(settings: settings);
+    super.settings,
+  });
 
   final WidgetBuilder builder;
 

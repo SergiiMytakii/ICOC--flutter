@@ -8,7 +8,7 @@ import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 
 class OneQandAScreen extends StatelessWidget {
-  OneQandAScreen({Key? key}) : super(key: key);
+  OneQandAScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

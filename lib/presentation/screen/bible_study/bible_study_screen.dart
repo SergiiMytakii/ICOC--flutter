@@ -17,7 +17,7 @@ import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/no_content_warning.dart';
 
 class BibleStudyScreen extends StatefulWidget {
-  BibleStudyScreen({Key? key}) : super(key: key);
+  BibleStudyScreen({super.key});
 
   @override
   State<BibleStudyScreen> createState() => _BibleStudyScreenState();

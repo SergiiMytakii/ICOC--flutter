@@ -10,7 +10,7 @@ class MyBottomNavigationBar extends StatefulWidget {
   const MyBottomNavigationBar({super.key});
 
   @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
+  State<MyBottomNavigationBar> createState() => _MyBottomNavigationBarState();
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {

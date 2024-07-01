@@ -20,7 +20,7 @@ class FontSizeBloc extends Bloc<FontSizeEvent, FontSizeState> {
   ) async {
     if (event.fontSize == null) {
       final double fontSize =
-          await SharedPreferencesHelper.getDouble(StorageKeys.fontSize) ?? 14;
+          SharedPreferencesHelper.getDouble(StorageKeys.fontSize) ?? 14;
       emit(FontSizeSuccess(fontSize: fontSize));
     } else {
       SharedPreferencesHelper.saveDouble(StorageKeys.fontSize, event.fontSize!);

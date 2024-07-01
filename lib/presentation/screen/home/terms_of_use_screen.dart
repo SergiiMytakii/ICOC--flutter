@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:icoc/constants.dart';
 
 class TermsOfUseAndPolicy extends StatelessWidget {
-  const TermsOfUseAndPolicy({Key? key}) : super(key: key);
+  const TermsOfUseAndPolicy({super.key});
 
   @override
   Widget build(BuildContext context) {

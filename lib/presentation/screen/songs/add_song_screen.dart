@@ -171,6 +171,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
     }
 
+    // ignore: prefer_interpolation_to_compose_strings
     final body = 'title:  ' +
         titleController.text +
         ' ________________________________________________ ' +

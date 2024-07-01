@@ -13,7 +13,7 @@ import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/unfocus_keyboard.dart';
 
 class QuestionsAndAnswers extends StatefulWidget {
-  QuestionsAndAnswers({Key? key}) : super(key: key);
+  QuestionsAndAnswers({super.key});
 
   @override
   State<QuestionsAndAnswers> createState() => _QuestionsAndAnswersState();

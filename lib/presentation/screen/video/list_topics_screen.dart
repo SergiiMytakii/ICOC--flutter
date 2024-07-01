@@ -17,7 +17,7 @@ import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/no_content_warning.dart';
 
 class ListTopicsScreen extends StatefulWidget {
-  ListTopicsScreen({Key? key}) : super(key: key);
+  ListTopicsScreen({super.key});
 
   @override
   State<ListTopicsScreen> createState() => _ListTopicsScreenState();

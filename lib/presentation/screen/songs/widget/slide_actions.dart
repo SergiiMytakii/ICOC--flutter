@@ -10,9 +10,9 @@ import 'package:icoc/constants.dart';
 
 class DeleteFromFavorites extends StatelessWidget {
   DeleteFromFavorites({
-    Key? key,
+    super.key,
     required this.songId,
-  }) : super(key: key);
+  });
 
   // final FavoritesController favoritesController = Get.find();
   final int songId;
@@ -34,9 +34,9 @@ class DeleteFromFavorites extends StatelessWidget {
 
 class AddToFavorites extends StatelessWidget {
   AddToFavorites({
-    Key? key,
+    super.key,
     required this.songId,
-  }) : super(key: key);
+  });
 
   final int songId;
 

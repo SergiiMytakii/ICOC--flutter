@@ -131,8 +131,9 @@ class DatabaseHelperFTS4 {
       final List<Map<String, dynamic>> songs =
           await database.query(TABLE_TITLE, columns: [ID_SONG]);
       return songs.length;
-    } else
+    } else {
       return 0;
+    }
   }
 
 //for testing
@@ -158,10 +159,12 @@ class DatabaseHelperFTS4 {
       );
       if (status > 0) {
         return true;
-      } else
+      } else {
         return false;
-    } else
+      }
+    } else {
       return false;
+    }
   }
 
   Future<bool> deleteFromFavorites(int id) async {
@@ -172,25 +175,27 @@ class DatabaseHelperFTS4 {
           .delete(TABLE_FAVORITES, where: '$ID_SONG = ?', whereArgs: [id]);
       if (status > 0) {
         return true;
-      } else
+      } else {
         return false;
-    } else
+      }
+    } else {
       return false;
+    }
   }
 
   Future<bool> getFavoriteStatus(int id) async {
     final Database? database = await db();
     if (database != null) {
       final status = await database.query(TABLE_FAVORITES,
-          columns: ['$FAVORITE_STATUS'],
-          where: '$ID_SONG = ?',
-          whereArgs: [id]);
+          columns: [FAVORITE_STATUS], where: '$ID_SONG = ?', whereArgs: [id]);
       if (status.isNotEmpty) {
         return true;
-      } else
+      } else {
         return false;
-    } else
+      }
+    } else {
       return false;
+    }
   }
 
   Future<List<int>> getListFavorites() async {
@@ -202,8 +207,9 @@ class DatabaseHelperFTS4 {
           items.map((e) => e.values.first as int).toList();
 
       return songsIds;
-    } else
+    } else {
       return [];
+    }
   }
 
 /* functions for full text search */
@@ -268,7 +274,8 @@ class DatabaseHelperFTS4 {
         logError(e, stackTrace);
         return [];
       }
-    } else
+    } else {
       return [];
+    }
   }
 }

@@ -45,8 +45,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   ) async {
     try {
       final List<String> isRead =
-          await SharedPreferencesHelper.getList(StorageKeys.notifications) ??
-              [];
+          SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
       isRead.add(event.title);
       SharedPreferencesHelper.saveList(StorageKeys.notifications, isRead);
 
@@ -77,7 +76,7 @@ List<NotificationsModel> filterNotificationsByLang(
 Future<List<NotificationsModel>> checkAndMarkWhatIsRead(
     List<NotificationsModel> notifications) async {
   final List<String> isRead =
-      await SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
+      SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
   if (isRead.isNotEmpty) {
     notifications.forEach((notification) {
       if (isRead.contains(notification.title)) {

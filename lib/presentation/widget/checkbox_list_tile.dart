@@ -1,3 +1,5 @@
+// ignore_for_file: overridden_fields
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/presentation/widget/toast.dart';

@@ -55,7 +55,12 @@ analyzer:
     missing_return: error
     # Treat using deprecated members as a warning
     deprecated_member_use: warning
-  exclude:
+    constant_identifier_names: ignore
+    file_names: ignore
+    avoid_function_literals_in_foreach_calls: ignore
+    depend_on_referenced_packages: ignore
+    curly_braces_in_flow_control_structures: ignore
+  exclude: ignore
     - "**/*.g.dart"
     - "**/*.freezed.dart"
   strong-mode:

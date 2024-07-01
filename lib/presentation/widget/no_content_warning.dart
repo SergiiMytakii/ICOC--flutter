@@ -17,9 +17,7 @@ class NoContentWarning extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8),
           child: Text(
-            "Unfortunately, there isn't any content here in".tr() +
-                ' ${languagesCodes[context.locale.languageCode]}. ' +
-                'Add more languages in the filter.'.tr(),
+            '${"Unfortunately, there isn't any content here in".tr()} ${languagesCodes[context.locale.languageCode]}. ${'Add more languages in the filter.'.tr()}',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 16),
           ),

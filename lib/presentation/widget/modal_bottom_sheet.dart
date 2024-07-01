@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet(
-      {Key? key, this.child, this.height, this.blurBackground = true})
-      : super(key: key);
+      {super.key, this.child, this.height, this.blurBackground = true});
 
   final Widget? child;
   final double? height;
