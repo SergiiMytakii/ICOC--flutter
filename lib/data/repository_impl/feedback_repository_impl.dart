@@ -11,17 +11,20 @@ import 'package:intl/intl.dart';
 class FeedbackRepositoryImpl extends FeedbackRepository {
   @override
   Future<List<Feedback>> getFeedbackList() async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
-    QuerySnapshot snapshot = await databaseServiceFirebase.getFeedbackList();
+    final DatabaseServiceFirebase databaseServiceFirebase =
+        DatabaseServiceFirebase();
+    final QuerySnapshot snapshot =
+        await databaseServiceFirebase.getFeedbackList();
     final List<Feedback> feedbacks = _listFromSnapshot(snapshot);
     return feedbacks.reversed.toList();
   }
 
   @override
   Future<List<Feedback>> insertFeedback(String name, String feedback) async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
+    final DatabaseServiceFirebase databaseServiceFirebase =
+        DatabaseServiceFirebase();
 
-    QuerySnapshot snapshot = await databaseServiceFirebase.insertFeedback(
+    final QuerySnapshot snapshot = await databaseServiceFirebase.insertFeedback(
       name,
       feedback,
       DateTime.now().toUtc().toString(),
@@ -32,9 +35,10 @@ class FeedbackRepositoryImpl extends FeedbackRepository {
 }
 
 List<Feedback> _listFromSnapshot(QuerySnapshot snapshot) {
-  List<Feedback> feedbacks = snapshot.docs.map((doc) {
-    DateTime parsedDateTime = DateTime.parse(doc.id);
-    String formattedDate = DateFormat('dd.MM\nyyyy').format(parsedDateTime);
+  final List<Feedback> feedbacks = snapshot.docs.map((doc) {
+    final DateTime parsedDateTime = DateTime.parse(doc.id);
+    final String formattedDate =
+        DateFormat('dd.MM\nyyyy').format(parsedDateTime);
     return Feedback(
       date: formattedDate,
       text: doc.get('text') ?? '',

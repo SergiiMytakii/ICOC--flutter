@@ -54,7 +54,6 @@ class _ListVideosState extends State<ListVideosScreen> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(widget.video.id),
-          automaticallyImplyLeading: true,
         ),
         body: Stack(children: [
           BlocBuilder<VideoBloc, VideoState>(

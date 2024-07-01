@@ -1,14 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetBibleStudyFilter extends StatefulWidget {
+  const BottomSheetBibleStudyFilter({super.key});
+
   @override
   State<BottomSheetBibleStudyFilter> createState() =>
       _BottomSheetBibleStudyFilterState();
@@ -28,7 +29,7 @@ class _BottomSheetBibleStudyFilterState
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       height: MediaQuery.of(context).size.height / 1.6,
       child: Column(
         children: [
@@ -43,7 +44,6 @@ class _BottomSheetBibleStudyFilterState
           ),
           Expanded(
             child: ListView(
-              scrollDirection: Axis.vertical,
               children: List.generate(allLanguages.length, (index) {
                 return MyCheckboxListTile(
                     allLanguages: allLanguages,

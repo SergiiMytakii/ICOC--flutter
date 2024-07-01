@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../constants.dart';
-import '../../../core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 part 'font_size_event.dart';
 part 'font_size_state.dart';

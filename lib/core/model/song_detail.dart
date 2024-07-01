@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'resources.dart';
+import 'package:icoc/core/model/resources.dart';
 
 class SongDetail {
   final int id;
@@ -38,7 +38,7 @@ class SongDetail {
 
 //provide list with all languages
   List<String> getAllTitleKeys() {
-    Set<String> allKeys = {};
+    final Set<String> allKeys = {};
 
     void collectKeys(Map? map) {
       if (map != null) {
@@ -46,7 +46,7 @@ class SongDetail {
           if (key != 'id_song')
           // Remove numbers and duplicates
           {
-            String cleanKey = key.replaceAll(RegExp(r'[0-9]'), '');
+            final String cleanKey = key.replaceAll(RegExp(r'[0-9]'), '');
 
             allKeys.add(cleanKey);
           }
@@ -54,7 +54,7 @@ class SongDetail {
       }
     }
 
-    collectKeys(this.title);
+    collectKeys(title);
     // collectKeys(this.description);
     //collectKeys(this.chords);
 //todo replace in db all keys in shords to 'ru1', 'uk1' and so on Than uncomment line above to filter chords as well.  And than filter resourses as well
@@ -62,7 +62,7 @@ class SongDetail {
   }
 
   List<String> getAllTextKeys() {
-    Set<String> allKeys = {};
+    final Set<String> allKeys = {};
 
     void collectKeys(Map? map) {
       if (map != null) {
@@ -72,19 +72,19 @@ class SongDetail {
       }
     }
 
-    collectKeys(this.text);
+    collectKeys(text);
     return allKeys.toList();
   }
 
   SongDetail filterAndOrderLanguages(List<String> orderLanguages) {
-    Map filteredTitle = Map.fromEntries(title.entries
+    final Map filteredTitle = Map.fromEntries(title.entries
         .where((entry) => orderLanguages.contains(entry.key))
         .toList()
       ..sort((a, b) => orderLanguages
           .indexOf(a.key)
           .compareTo(orderLanguages.indexOf(b.key))));
 
-    Map filteredText = Map.fromEntries(text.entries
+    final Map filteredText = Map.fromEntries(text.entries
         .where((entry) =>
             orderLanguages.contains(entry.key.toString().substring(0, 2)))
         .toList()
@@ -108,21 +108,21 @@ class SongDetail {
 
   SongDetail orderByLanguage(List<String> orderLanguages) {
     return SongDetail(
-      id: this.id,
-      title: _orderByLanguageInMap(this.title, orderLanguages),
-      description: _orderByLanguageInMap(this.description, orderLanguages),
-      text: _orderByLanguageInMap(this.text, orderLanguages),
-      chords: _orderByLanguageInMap(this.chords, orderLanguages),
-      resources: this.resources != null
-          ? _sortResources(this.resources!, orderLanguages)
-          : null,
+      id: id,
+      title: _orderByLanguageInMap(title, orderLanguages),
+      description: _orderByLanguageInMap(description, orderLanguages),
+      text: _orderByLanguageInMap(text, orderLanguages),
+      chords: _orderByLanguageInMap(chords, orderLanguages),
+      resources:
+          resources != null ? _sortResources(resources!, orderLanguages) : null,
     );
   }
 
-  _sortResources(List<Resources> resources, List<String> orderLanguages) {
+  List<Resources> _sortResources(
+      List<Resources> resources, List<String> orderLanguages) {
     resources.sort((a, b) {
-      int indexA = orderLanguages.indexOf(a.lang);
-      int indexB = orderLanguages.indexOf(b.lang);
+      final int indexA = orderLanguages.indexOf(a.lang);
+      final int indexB = orderLanguages.indexOf(b.lang);
 
       // If either language is not in orderLanguages, move it to the end
       if (indexA == -1) return 1;
@@ -133,7 +133,7 @@ class SongDetail {
     return resources;
   }
 
-  _orderByLanguageInMap(Map? map, List<String> orderLanguages) {
+  Map _orderByLanguageInMap(Map? map, List<String> orderLanguages) {
     if (map == null) {
       return {};
     }
@@ -141,7 +141,8 @@ class SongDetail {
       return map;
     }
     // Create a LinkedHashMap to maintain insertion order:
-    var sortedMap = LinkedHashMap();
+    // ignore: prefer_collection_literals
+    final sortedMap = LinkedHashMap();
 
     // Iterate through the desired language order:
     for (var language in orderLanguages) {
@@ -156,7 +157,7 @@ class SongDetail {
     return sortedMap;
   }
 
-  static defaultSong() {
+  static SongDetail defaultSong() {
     return SongDetail(
         id: 0, title: {'ru': 'default'}, text: {'ru1': 'default'});
   }

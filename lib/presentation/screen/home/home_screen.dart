@@ -12,11 +12,13 @@ import 'package:icoc/core/helpers/in_app_review_helper.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 
-import '../../widget/menu_item_card.dart';
-import 'my_drawer.dart';
-import 'widget/menu_items.dart';
+import 'package:icoc/presentation/widget/menu_item_card.dart';
+import 'package:icoc/presentation/screen/home/my_drawer.dart';
+import 'package:icoc/presentation/screen/home/widget/menu_items.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -28,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<MenuItem> items = HomeScreenMenuItems.items();
   MenuItem currentItem = HomeScreenMenuItems.items().first;
   final isDrawerOpenNotifier = ValueNotifier<bool>(false);
-  final angleNotifier = ValueNotifier<double>(0.0);
+  final angleNotifier = ValueNotifier<double>(0);
   void toggleDrawer() async {
     if (isDrawerOpenNotifier.value) {
       await animationController.reverse();
@@ -54,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
     carouselController = CarouselController();
 
     animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
+        vsync: this, duration: const Duration(milliseconds: 1000));
     super.initState();
   }
 
@@ -91,13 +93,13 @@ class _HomeScreenState extends State<HomeScreen>
                 child: ValueListenableBuilder<bool>(
                   valueListenable: isDrawerOpenNotifier,
                   builder: (context, isDrawerOpen, _) => isDrawerOpen
-                      ? Icon(
+                      ? const Icon(
                           Icons.close,
                           color: Colors.white,
                         )
                       : Text(
                           'Menu'.tr(context: context),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                 ),
@@ -114,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen>
               child: Container(
                 width: screenSize.height * 0.8,
                 height: screenSize.height * 0.8,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
@@ -122,13 +124,12 @@ class _HomeScreenState extends State<HomeScreen>
                       Colors.transparent,
                     ],
                     stops: [0.85, 1],
-                    center: Alignment(0, 0),
                     focal: Alignment(0, 0),
                     focalRadius: 0.15,
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(28.0),
+                  padding: const EdgeInsets.all(28),
                   child: Image.asset(
                     'assets/images/globe1.png',
                     width: screenSize.height * 0.70,
@@ -151,12 +152,10 @@ class _HomeScreenState extends State<HomeScreen>
                 height: screenSize.height * 0.65,
                 enlargeFactor: 0.55,
                 autoPlay: true,
-                initialPage: 0,
                 enlargeCenterPage: true,
                 autoPlayInterval: const Duration(seconds: 6),
                 viewportFraction: 0.3,
                 enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                enableInfiniteScroll: true,
                 autoPlayAnimationDuration: const Duration(milliseconds: 1200),
                 scrollDirection: Axis.vertical,
                 onPageChanged: (index, reason) {
@@ -175,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen>
           valueListenable: isDrawerOpenNotifier,
           builder: (context, isDrawerOpen, _) => isDrawerOpen
               ? Positioned(child: MyDrawer(animationController))
-              : SizedBox(),
+              : const SizedBox(),
         ),
         Positioned(
             bottom: 16, left: 16, child: _buildNotificationsIcon(context)),
@@ -213,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen>
                 )
               : Container(),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.messenger_outline,
               color: Colors.white,
               size: 36,
@@ -226,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  navigateToScreen(BuildContext context) {
+  void navigateToScreen(BuildContext context) {
     Navigator.pushNamed(context, currentItem.routeName);
   }
 

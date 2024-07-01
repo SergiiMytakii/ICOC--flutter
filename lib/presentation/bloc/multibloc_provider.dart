@@ -14,7 +14,7 @@ import 'package:icoc/injection.dart';
 class MyMultiblocProvider extends StatelessWidget {
   final Widget child;
 
-  const MyMultiblocProvider({required this.child});
+  const MyMultiblocProvider({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

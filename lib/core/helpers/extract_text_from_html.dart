@@ -4,13 +4,13 @@ import 'package:html/parser.dart';
 class FormatTextHelper {
   static String extractFormattedText(String htmlString) {
     final document = parse(htmlString);
+    // ignore: avoid_redundant_argument_values
     String result = document.body!.nodes.map(_processNode).join('').trim();
     RegExp exp = RegExp(
-        r"&nbsp;|&rdquo;|&shy;|&quot;|&amp;|&lt;|&gt;|&apos;|&copy;|&reg;|&laquo;|&raquo|&oacute;",
-        multiLine: true,
-        caseSensitive: true);
+        r'&nbsp;|&rdquo;|&shy;|&quot;|&amp;|&lt;|&gt;|&apos;|&copy;|&reg;|&laquo;|&raquo|&oacute;',
+        multiLine: true);
     result = result = result.replaceAll(exp, ' ');
-    exp = RegExp(r"&rsquo;", multiLine: true, caseSensitive: true);
+    exp = RegExp(r'&rsquo;', multiLine: true);
     result = result = result.replaceAll(exp, '\'');
     return result;
   }

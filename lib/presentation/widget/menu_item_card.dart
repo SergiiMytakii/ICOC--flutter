@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:icoc/presentation/screen/home/widget/menu_items.dart';
 
 class MenuItemCard extends StatelessWidget {
-  MenuItemCard(this.item);
+  MenuItemCard(this.item, {super.key});
   final MenuItem item;
 
   @override
@@ -14,22 +14,21 @@ class MenuItemCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(
               item.icon,
               size: 50,
               color: item.color,
               shadows: [
-                BoxShadow(
+                const BoxShadow(
                   color: Colors.white,
                   offset: Offset(-2, 1),
                   blurRadius: 1.5,
-                  spreadRadius: 2.0,
+                  spreadRadius: 2,
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
@@ -41,11 +40,11 @@ class MenuItemCard extends StatelessWidget {
                   color: item.color,
                   fontWeight: FontWeight.bold,
                   shadows: [
-                    BoxShadow(
+                    const BoxShadow(
                       color: Colors.white,
                       offset: Offset(-2, 1),
                       blurRadius: 1.5,
-                      spreadRadius: 2.0,
+                      spreadRadius: 2,
                     ),
                   ],
                 ),

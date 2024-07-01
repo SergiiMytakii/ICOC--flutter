@@ -7,7 +7,6 @@ import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/core/repository/video_repository.dart';
-import 'package:icoc/data/repository_impl/video_repository_impl.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -74,7 +73,7 @@ Future<List<Video>> filterByLanguages(List<Video> videos) async {
   final Map<String, dynamic> storedLanguages =
       SharedPreferencesHelper.getMap(StorageKeys.videosAllLanguages) ?? {};
 //set keeps only unique values
-  Set<String> allKeys = {};
+  final Set<String> allKeys = {};
   videos.forEach((video) => allKeys.add(video.lang));
 
   putDeviceLangToFirstPlace(allKeys.toList(), locale);

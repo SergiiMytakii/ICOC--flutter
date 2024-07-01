@@ -6,11 +6,13 @@ import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_b
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
-import '../../../constants.dart';
-import 'widget/slide_actions.dart';
-import 'widget/song_card.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/screen/songs/widget/slide_actions.dart';
+import 'package:icoc/presentation/screen/songs/widget/song_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({super.key});
+
   @override
   State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
@@ -37,7 +39,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           builder: (context, state) {
             if (state is GetFavoriteSongsListSuccessState) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: state.songs.length,
                 itemBuilder: (BuildContext context, int index) {
                   //change i to make different colors of divider
@@ -62,7 +64,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 ),
               );
             } else if (state is FavoriteSongsErrorState) {
-              return ErrorTextOnScreen();
+              return const ErrorTextOnScreen();
             } else {
               return Container();
             }
@@ -72,7 +74,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  getFavoriteSongs(BuildContext context) async {
+  Future<void> getFavoriteSongs(BuildContext context) async {
     getIt<FavoriteSongsListBloc>().add(FavoriteSongsListRequested());
   }
 }

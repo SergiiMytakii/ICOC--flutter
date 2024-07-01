@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton({
+    super.key,
     required this.onPressed,
     required this.child,
     this.color,
@@ -15,17 +16,18 @@ class CustomButton extends StatelessWidget {
     return SizedBox(
       height: 40,
       child: Container(
-        margin: EdgeInsets.all(4),
+        margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: color ?? Color(0xff6a4c93),
+          color: color ?? const Color(0xff6a4c93),
           borderRadius: BorderRadius.circular(4),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(2),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: color ?? Color(0xff6a4c93),
-              textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              backgroundColor: color ?? const Color(0xff6a4c93),
+              textStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             onPressed: onPressed,
             child: Center(child: child),

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/model/resources.dart';
-import '../../../../theme.dart';
-import '../../../widget/toast.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/theme.dart';
+import 'package:icoc/presentation/widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({Key? key, required this.resource, required this.onTap})
@@ -32,7 +32,7 @@ class _VideoCardState extends State<VideoCard> {
     videoId = getVideoId(context, widget.resource.link);
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.white)),
         child: GestureDetector(
@@ -59,7 +59,7 @@ class _VideoCardState extends State<VideoCard> {
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Text(
                   widget.resource.lang,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ScreenColors.songBook,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),

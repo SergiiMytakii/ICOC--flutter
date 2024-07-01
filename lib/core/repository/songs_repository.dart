@@ -1,4 +1,4 @@
-import '../model/song_detail.dart';
+import 'package:icoc/core/model/song_detail.dart';
 
 abstract class SongsRepository {
   Future<List<SongDetail>> getSongs();

@@ -46,7 +46,7 @@ class FavoriteSongStatusBloc
       if (result) {
         emit(GetFavoriteSongStatusSuccessState(event.isFavorite));
       } else {
-        emit(FavoriteSongStatusErrorState("Error".tr()));
+        emit(FavoriteSongStatusErrorState('Error'.tr()));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);

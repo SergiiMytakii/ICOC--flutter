@@ -11,15 +11,15 @@ import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../../constants.dart';
-import '../../../core/model/resources.dart';
-import '../../../core/model/song_detail.dart';
-import '../../widget/font_size_adjust_bottom_sheet.dart';
-import 'widget/song_text_on_song_screen.dart';
-import 'widget/video_card.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
+import 'package:icoc/presentation/screen/songs/widget/song_text_on_song_screen.dart';
+import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 
 class OneSongScreen extends StatefulWidget {
-  OneSongScreen(this.song) {
+  OneSongScreen(this.song, {super.key}) {
     Wakelock.enable();
   }
   final SongDetail song;
@@ -47,8 +47,8 @@ class _OneSongScreenState extends State<OneSongScreen>
     getIt<FavoriteSongStatusBloc>()
         .add(FavoriteSongStatusRequested(id: song.id));
     _controller = AnimationController(
-        duration:
-            Duration(milliseconds: 500), // Set the duration of the animation
+        duration: const Duration(
+            milliseconds: 500), // Set the duration of the animation
         vsync: this,
         lowerBound: 0.48);
     // Create a curved animation
@@ -70,7 +70,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     super.dispose();
   }
 
-  countTabs(SongDetail song) {
+  int countTabs(SongDetail song) {
     final tabs =
         song.text.length + (song.chords != null ? song.chords!.length : 0);
     return tabs;
@@ -105,7 +105,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     BuildContext context,
     SongDetail song,
   ) {
-    var fontSizeAdjust = FontSizeAdjustBottomSheet(
+    final fontSizeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.songBook);
 
     return AppBar(
@@ -120,7 +120,7 @@ class _OneSongScreenState extends State<OneSongScreen>
           builder: (context, state) {
             if (state is GetFavoriteSongStatusSuccessState) {
               return IconButton(
-                tooltip: "to favorite".tr(),
+                tooltip: 'to favorite'.tr(),
                 icon: Icon(
                   state.isFavorite ? Icons.favorite : Icons.favorite_border,
                 ),
@@ -133,13 +133,13 @@ class _OneSongScreenState extends State<OneSongScreen>
                 },
               );
             } else {
-              return Icon(Icons.favorite_border);
+              return const Icon(Icons.favorite_border);
             }
           },
         ),
         IconButton(
           tooltip: 'Share'.tr(),
-          icon: Icon(
+          icon: const Icon(
             Icons.share,
           ),
           onPressed: () {
@@ -148,7 +148,7 @@ class _OneSongScreenState extends State<OneSongScreen>
         ),
         IconButton(
             tooltip: 'Font size'.tr(),
-            icon: Icon(
+            icon: const Icon(
               Icons.text_fields_outlined,
             ),
             onPressed: () => fontSizeAdjust.bottomSheet()),
@@ -200,11 +200,11 @@ class _OneSongScreenState extends State<OneSongScreen>
                 youtubePlayerController!.stopVideo();
                 youtubePlayerController!.close();
               },
-              icon: Icon(Icons.close_outlined)),
+              icon: const Icon(Icons.close_outlined)),
         ],
       ),
       AnimatedContainer(
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
         child: Container(
           width: double.maxFinite,
           height: _animation.value * screenSize.width / 16 * 9,

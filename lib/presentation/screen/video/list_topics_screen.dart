@@ -39,7 +39,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
+    const int i = 0;
     return BlocBuilder<VideoBloc, VideoState>(
       builder: (context, state) {
         if (state is GetVideoListSuccessState) {
@@ -142,7 +142,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           maxLines: 3,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
@@ -158,17 +158,17 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                 );
               },
             )
-          : NoContentWarning(),
+          : const NoContentWarning(),
     );
   }
 
   void showTooltip() {
-    double tooltipShown =
+    final double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
     if (tooltipShown < 4.0) {
-      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey2.currentState as TooltipState).ensureTooltipVisible();
-        Future.delayed(Duration(seconds: 6), () {
+        Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {
               _tooltipVisible = false;

@@ -20,11 +20,11 @@ class FadePageRoute<T> extends PageRoute<T> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    var begin = 0.0;
-    var end = 1.0;
-    var curve = Curves.easeInOut;
+    const begin = 0.0;
+    const end = 1.0;
+    const curve = Curves.easeInOut;
 
-    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
     return FadeTransition(
       opacity: animation.drive(tween),

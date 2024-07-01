@@ -15,10 +15,10 @@ import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'constants.dart';
-import 'core/helpers/shared_preferences_helper.dart';
-import 'presentation/routes/app_routes.dart';
-import 'theme.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/theme.dart';
 
 void main() async {
   runZonedGuarded(
@@ -44,7 +44,7 @@ void main() async {
               .map((languageCode) => Locale(languageCode))
               .toList(),
           path: 'assets/translations',
-          fallbackLocale: Locale('en', 'US'),
+          fallbackLocale: const Locale('en', 'US'),
           child: MyApp(savedThemeMode: savedThemeMode),
         ),
       );
@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-_activateCrashlitics() {
+void _activateCrashlitics() {
   final logger = Logger();
   FlutterError.onError = (errorDetails) {
     logger.e(errorDetails);

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:html/parser.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../constants.dart';
-import '../../../bloc/songs_bloc/songs_bloc.dart';
-import '../../../../core/model/song_detail.dart';
-import '../../../widget/loading.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/presentation/widget/loading.dart';
 
 class DataSearchResults extends StatefulWidget {
-  DataSearchResults(this.query);
+  DataSearchResults(this.query, {super.key});
   final String query;
 
   @override
@@ -63,7 +62,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   // returns TextSpan with hihglited words for title
   List<TextSpan> title(SongDetail song, BuildContext context) {
-    String rawText = song.searchTitle ?? '';
+    final String rawText = song.searchTitle ?? '';
     final List<String> title = rawText.split(' ');
     //print(title);
     return title.map((word) {
@@ -80,13 +79,13 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   // returns TextSpan with hihglited words for text
   List<TextSpan> text(SongDetail song, BuildContext context) {
-    String rawText = song.searchText ?? '';
+    final String rawText = song.searchText ?? '';
     // print(rawText);
 
     //remove html tags and parts of html tags
 
     String parsedString = FormatTextHelper.extractFormattedText(rawText);
-    int indexOfGreaterThan = parsedString.indexOf(">");
+    final int indexOfGreaterThan = parsedString.indexOf('>');
     // Check if ">" is found
     if (indexOfGreaterThan != -1) {
       // Extract the substring starting from the index of ">"
@@ -107,7 +106,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   String trimText(String word) {
-    String word1 = word.replaceAll('[', '');
+    final String word1 = word.replaceAll('[', '');
     // word = word1.replaceAll('br', '<p>');
     // word = word1.replaceAll(
     //     RegExp(
@@ -122,7 +121,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   Widget buildSongCardWithHighliting(
       SongDetail song, BuildContext context, int i) {
-    int id = song.id;
+    final int id = song.id;
     return Column(
       children: [
         ListTile(
@@ -154,15 +153,12 @@ class _DataSearchResultsState extends State<DataSearchResults> {
     );
   }
 
-  onTapHandler(BuildContext context, SongDetail fullSong) async {
+  Future<void> onTapHandler(BuildContext context, SongDetail fullSong) async {
     // we need to put language from searchResult to the firs place in the maps title, text, descr
     SongDetail? orderedLangSong;
     if (fullSong.searchLang != null) {
       orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
     }
-
-    // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
-    //     arguments: orderedLangSong ?? fullSong);
 
     Navigator.push(
         context,

@@ -39,12 +39,11 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
         if (state is GetBibleStudyListSuccessState) {
           return Scaffold(
-              appBar: _buildAppbar(context, state), body: _buildBody(state, i));
+              appBar: _buildAppbar(context, state), body: _buildBody(state));
         } else if (state is BibleStudyLoadingState) {
           return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
         } else if (state is BibleStudyErrorState) {
@@ -105,7 +104,8 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
     );
   }
 
-  Widget _buildBody(GetBibleStudyListSuccessState state, int i) {
+  Widget _buildBody(GetBibleStudyListSuccessState state) {
+    int i = 0;
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
       child: state.topics.isNotEmpty
@@ -141,7 +141,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                           maxLines: 3,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => Navigator.of(context).pushNamed(
                             Routes.ONE_TOPIC_SCREEN,
                             arguments: state.topics[index]),
@@ -156,17 +156,17 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                 );
               },
             )
-          : NoContentWarning(),
+          : const NoContentWarning(),
     );
   }
 
   void showTooltip() {
-    double tooltipShown =
+    final double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
     if (tooltipShown < 5.0) {
-      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
-        Future.delayed(Duration(seconds: 6), () {
+        Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {
               _tooltipVisible = false;

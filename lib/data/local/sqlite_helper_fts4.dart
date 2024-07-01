@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../constants.dart';
-import '../../core/helpers/shared_preferences_helper.dart';
-import '../../core/model/song_detail.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/model/song_detail.dart';
 
 @injectable
 class DatabaseHelperFTS4 {
@@ -39,7 +39,7 @@ class DatabaseHelperFTS4 {
   }
 
   Future<Database?> initDB() async {
-    String path = join((await getDatabasesPath()), DB_NAME);
+    final String path = join((await getDatabasesPath()), DB_NAME);
     // await deleteDatabase(path); // - if we need to clean database
     final Map<String, dynamic> allLanguages =
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
@@ -47,12 +47,12 @@ class DatabaseHelperFTS4 {
       return null;
     }
     final List<String> allSongsTitleKeys = allLanguages.keys.toList();
-    String columnTitleDefinitions =
+    final String columnTitleDefinitions =
         allSongsTitleKeys.map((key) => '$key TEXT').join(', ');
 
     final List<String> allSongsTextKeys =
         SharedPreferencesHelper.getList(StorageKeys.allSongsTextKeys) ?? [];
-    String columnTextDefinitions =
+    final String columnTextDefinitions =
         allSongsTextKeys.map((key) => '$key TEXT').join(', ');
     if (kDebugMode) {
       print(columnTitleDefinitions);
@@ -92,10 +92,10 @@ class DatabaseHelperFTS4 {
       } on Exception catch (e, stackTrace) {
         logError(e, stackTrace);
         //on error we delete db and make a second try
-        String path = join((await getDatabasesPath()), DB_NAME);
+        final String path = join((await getDatabasesPath()), DB_NAME);
         await deleteDatabase(path);
         await FirebaseAnalytics.instance
-            .logEvent(name: "Deleting DB and make second try to insert");
+            .logEvent(name: 'Deleting DB and make second try to insert');
         _db = null;
         final Database? database = await db();
         if (database != null) insertTitlesAndTexts(songs, database);
@@ -107,14 +107,14 @@ class DatabaseHelperFTS4 {
   Future<void> insertTitlesAndTexts(
       List<SongDetail> songs, Database database) async {
     for (SongDetail song in songs) {
-      Map<String, Object?>? map = Map.from(song.title);
+      final Map<String, Object?> map = Map.from(song.title);
       map[ID_SONG] = song.id;
       await database.insert(
         TABLE_TITLE,
         map,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      Map<String, Object?>? map2 = Map.from(song.text);
+      final Map<String, Object?> map2 = Map.from(song.text);
       map2[ID_SONG] = song.id;
       await database.insert(
         TABLE_TEXT,
@@ -180,7 +180,7 @@ class DatabaseHelperFTS4 {
   Future<bool> getFavoriteStatus(int id) async {
     final Database? database = await db();
     if (database != null) {
-      var status = await database.query(TABLE_FAVORITES,
+      final status = await database.query(TABLE_FAVORITES,
           columns: ['$FAVORITE_STATUS'],
           where: '$ID_SONG = ?',
           whereArgs: [id]);
@@ -197,7 +197,8 @@ class DatabaseHelperFTS4 {
     if (database != null) {
       final List<Map<String, dynamic>> items =
           await database.query(TABLE_FAVORITES, columns: [ID_SONG]);
-      List<int> songsIds = items.map((e) => e.values.first as int).toList();
+      final List<int> songsIds =
+          items.map((e) => e.values.first as int).toList();
 
       return songsIds;
     } else
@@ -210,7 +211,7 @@ class DatabaseHelperFTS4 {
       String query, List<String> languagesToShow) async {
     final Database? database = await db();
 
-    List<SongDetail> songs = [];
+    final List<SongDetail> songs = [];
     // log.i('query' + query);
     if (database != null)
     // search in titiles
@@ -228,7 +229,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
           for (Map map in searchInTitles) {
-            SongDetail song = SongDetail(
+            final SongDetail song = SongDetail(
                 id: map['id_song'],
                 searchTitle: map['title'],
                 searchText: map['text'],
@@ -251,7 +252,7 @@ class DatabaseHelperFTS4 {
                   ''');
 
           for (Map map in searhInTexts) {
-            SongDetail song = SongDetail(
+            final SongDetail song = SongDetail(
                 id: map['id_song'],
                 searchTitle: map['title'],
                 searchText: map['text'],

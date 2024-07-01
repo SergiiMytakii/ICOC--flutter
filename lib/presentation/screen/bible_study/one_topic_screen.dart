@@ -16,7 +16,7 @@ class OneTopicScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           topic.topic,
-          style: TextStyle(fontSize: 14),
+          style: const TextStyle(fontSize: 14),
         ),
         centerTitle: true,
       ),
@@ -44,7 +44,7 @@ class OneTopicScreen extends StatelessWidget {
                           .titleMedium!
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: () => Navigator.of(context).pushNamed(
                         Routes.ONE_LESSON_SCREEN,
                         arguments: topic.lessons[index]),

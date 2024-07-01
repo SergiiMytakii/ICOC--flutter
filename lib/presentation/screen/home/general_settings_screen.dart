@@ -5,10 +5,12 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
-import '../../widget/modal_bottom_sheet.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
 class GeneralSettingsScreen extends StatefulWidget {
+  const GeneralSettingsScreen({super.key});
+
   @override
   State<GeneralSettingsScreen> createState() => _GeneralSettingsScreenState();
 }
@@ -33,7 +35,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
         ),
         body: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             SwitchListTile.adaptive(
@@ -54,19 +56,19 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: CupertinoButton(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
                     Icon(
                       Icons.language,
                       color: AdaptiveTheme.of(context).theme.iconTheme.color,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Expanded(
                       child: Text(
-                        "App language".tr(),
+                        'App language'.tr(),
                         maxLines: 2,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
@@ -75,12 +77,12 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                         handleLanguage(locale.languageCode),
                         width: 20,
                         height: 15),
-                    SizedBox(width: 10.0),
+                    const SizedBox(width: 10),
                     Text(
                       locale.languageCode.tr(),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                   ],
@@ -104,8 +106,8 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                       Navigator.pop(context);
                                     },
                                     title: Text(language.tr()),
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 16),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     leading: CountryFlag.fromCountryCode(
                                         handleLanguage(language),
                                         width: 20,

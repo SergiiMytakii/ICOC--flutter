@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
@@ -82,8 +81,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   Future<List<SongDetail>> _searchSongs(String query) async {
     //delete all specific symbols
     final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r"[^a-zA-Zа-яА-Яёієї0-9]+"), ' ');
-    List<SongDetail> searchResult = [];
+        query.trim().replaceAll(RegExp(r'[^a-zA-Zа-яА-Яёієї0-9]+'), ' ');
+    final List<SongDetail> searchResult = [];
     //get all songs from firebase (we will need full versions with all fields)
     final allSongs =
         cache.isEmpty ? await songsRepositoryImpl.getSongs() : cache;
@@ -109,7 +108,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   Future<List<SongDetail>> _searchByText(List<SongDetail> searchResult,
       String trimmedQuery, List<SongDetail> allSongs) async {
-    List<String> orderLang = _getListOrderLangs();
+    final List<String> orderLang = _getListOrderLangs();
     //get results from full text search (only id, title and text)
     searchResult =
         await songsRepositoryImpl.getSearchResult(trimmedQuery, orderLang);
@@ -117,7 +116,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     //combine searchResults with songs
     final List<SongDetail> songs = searchResult.map((song) {
       // Find the matching song in allSongs based on id
-      SongDetail? matchingSong = allSongs.firstWhere(
+      final SongDetail matchingSong = allSongs.firstWhere(
         (element) => element.id == song.id,
         orElse: () => SongDetail.defaultSong(),
       );
@@ -154,7 +153,7 @@ Future<void> updateStoredLanguages(List<SongDetail> songs) async {
         StorageKeys.locale,
       ) ??
       'en';
-  List<String> allTitleKeys = findAllTitleKeys(songs);
+  final List<String> allTitleKeys = findAllTitleKeys(songs);
 
   putDeviceLangToFirstPlace(allTitleKeys, locale);
 
@@ -174,16 +173,16 @@ Future<void> updateStoredLanguages(List<SongDetail> songs) async {
 }
 
 List<String> findAllTitleKeys(List<SongDetail> songs) {
-  Set<String> allTitleKeys = {};
+  final Set<String> allTitleKeys = {};
 
   songs.forEach((song) {
     //chek if some keys in text are corrupted i.e. without number in the end (we meed it for search)
     final keys = song.title.keys;
     keys.forEach((key) {
       if (key.toString().length > 2) {
-        Logger().e("Wrong key in title, songId ${song.id}");
+        Logger().e('Wrong key in title, songId ${song.id}');
         FirebaseAnalytics.instance
-            .logEvent(name: "Wrong key in title, songId ${song.id}");
+            .logEvent(name: 'Wrong key in title, songId ${song.id}');
       }
     });
     allTitleKeys.addAll(song.getAllTitleKeys());

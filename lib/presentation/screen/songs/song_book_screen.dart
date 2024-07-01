@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 
 import 'package:icoc/injection.dart';
 
-import '../../bloc/songs_bloc/songs_bloc.dart';
-import 'widget/data_search.dart';
-import 'widget/app_bar_song_book_screen.dart';
-import 'widget/song_list.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/presentation/screen/songs/widget/data_search.dart';
+import 'package:icoc/presentation/screen/songs/widget/app_bar_song_book_screen.dart';
+import 'package:icoc/presentation/screen/songs/widget/song_list.dart';
 
 class SongBookScreen extends StatefulWidget {
+  const SongBookScreen({super.key});
+
   @override
   State<SongBookScreen> createState() => _SongBookScreenState();
 }
@@ -26,7 +28,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
-    getSongs(useCache: true);
+    getSongs();
     super.initState();
   }
 
@@ -38,7 +40,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
         onRefresh: () => getSongs(useCache: false),
         child: CustomScrollView(
           cacheExtent: 0,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SongBookAppbar(
               'app_bar_title'.tr(),
@@ -57,7 +59,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
     getIt<SongsBloc>().add(SongsRequested(useCache: useCache));
   }
 
-  _handleQuery(String val) {
+  void _handleQuery(String val) {
     setState(() {
       query = val;
       if (query == '') {

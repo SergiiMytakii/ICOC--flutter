@@ -10,7 +10,7 @@ import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
-import '../../../constants.dart';
+import 'package:icoc/constants.dart';
 
 class NotificationsScreen extends StatefulWidget {
   NotificationsScreen({Key? key}) : super(key: key);
@@ -48,7 +48,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     } else {
                       i = 0;
                     }
-                    Future.delayed(Duration(seconds: 10)).then((value) =>
+                    Future.delayed(const Duration(seconds: 10)).then((value) =>
                         _markAsRead(state.notifications[index].title,
                             state.notifications));
 
@@ -59,7 +59,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             onTap: () => _markAsRead(
                                 state.notifications[index].title,
                                 state.notifications),
-                            contentPadding: EdgeInsets.all(8),
+                            contentPadding: const EdgeInsets.all(8),
                             leading: Padding(
                               padding: const EdgeInsets.symmetric(
                                 vertical: 16,
@@ -78,7 +78,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                               ? ScreenColors.songBook
                                               : Theme.of(context).primaryColor),
                                     ),
-                                    child: Center(child: Text('i'))),
+                                    child: const Center(child: Text('i'))),
                               ),
                             ),
                             title: Text(state.notifications[index].title),
@@ -112,7 +112,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  _markAsRead(String title, List<NotificationsModel> notifications) async {
+  Future _markAsRead(
+      String title, List<NotificationsModel> notifications) async {
     if (mounted) {
       getIt<NotificationsBloc>()
           .add(NotificationMarkAsReadRequested(title, notifications));

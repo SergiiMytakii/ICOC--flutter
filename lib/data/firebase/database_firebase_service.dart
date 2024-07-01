@@ -51,7 +51,7 @@ class DatabaseServiceFirebase {
   }
 
   Future insertFeedback(String name, String feedback, String date) async {
-    DocumentReference documentRef = feedbackCollection.doc(date);
+    final DocumentReference documentRef = feedbackCollection.doc(date);
     await documentRef.set({'name': name, 'text': feedback});
     final QuerySnapshot snapshot = await feedbackCollection.get();
     return snapshot;

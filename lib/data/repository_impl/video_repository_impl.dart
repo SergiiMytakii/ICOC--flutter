@@ -16,32 +16,33 @@ import 'package:injectable/injectable.dart';
 class VideoRepositoryImpl extends VideoRepository {
   @override
   Future<List<Video>> getVideoList() async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
+    final DatabaseServiceFirebase databaseServiceFirebase =
+        DatabaseServiceFirebase();
     final QuerySnapshot snapshot = await databaseServiceFirebase.getVideos();
-    List<Video> videos = _listFromSnapshot(snapshot);
+    final List<Video> videos = _listFromSnapshot(snapshot);
     return videos;
   }
 
   @override
   Future<List<Resources>?> fetchVideosFromPlaylist(String playlistId) async {
     final httpClient = HttpService.client;
-    Map<String, String> headers = {
-      "Content-Type": 'application/json',
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
     };
     final url = Uri.parse(
-        "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=$playlistId&key=$YOUTUBE_API_KEY&maxResults=40");
+        'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=$playlistId&key=$YOUTUBE_API_KEY&maxResults=40');
     // Get Playlist Videos
     try {
-      var response = await httpClient.get(
+      final response = await httpClient.get(
         url,
         headers: headers,
       );
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        List<dynamic> videosJson = data['items'];
+        final data = jsonDecode(response.body);
+        final List<dynamic> videosJson = data['items'];
 
         // Fetch first eight videos from uploads playlist
-        List<Resources> videos = [];
+        final List<Resources> videos = [];
         videosJson.forEach(
           (json) => videos.add(
             Resources.fromJsonYoutobePlaylists(json['snippet']),
@@ -63,7 +64,7 @@ class VideoRepositoryImpl extends VideoRepository {
 }
 
 List<Video> _listFromSnapshot(QuerySnapshot snapshot) {
-  List<Video> videos = snapshot.docs.map((doc) {
+  final List<Video> videos = snapshot.docs.map((doc) {
     return Video(
       id: doc.id,
       description: doc.get('description') ?? '',

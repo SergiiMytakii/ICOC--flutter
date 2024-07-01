@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:wakelock/wakelock.dart';
@@ -22,9 +24,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   void initState() {
     youtubePlayerController = YoutubePlayerController(
-      params: YoutubePlayerParams(
-        mute: false,
-        showControls: true,
+      params: const YoutubePlayerParams(
         showFullscreenButton: true,
       ),
     );
@@ -41,7 +41,6 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
       onPopInvoked: (didPop) async {
         Future.delayed(Duration.zero)
             .then((value) => Navigator.of(context).pop());
@@ -57,7 +56,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
                       title: Text(
                         widget.resource.title ?? '',
                         maxLines: 2,
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
                     body: Column(
@@ -71,7 +70,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Text(widget.resource.description ?? '',
               style: Theme.of(context).textTheme.bodyMedium),
         ),

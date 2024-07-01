@@ -18,8 +18,8 @@ class ScaleText extends StatelessWidget {
   }
 
   double calculateFontSize(double fontSize, double scale) {
-    double scaleFactor = 0.5;
-    double currentFontSize =
+    const double scaleFactor = 0.5;
+    final double currentFontSize =
         (fontSize + (scale - 1) * scaleFactor).clamp(10, 46);
     return currentFontSize;
   }

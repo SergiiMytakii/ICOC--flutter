@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/services.dart';
 import 'package:icoc/core/model/q&a_model.dart';
 import 'package:logger/logger.dart';
@@ -32,14 +30,14 @@ class SqliteDatabaseService {
   }
 
   Future<Database> initDB() async {
-    String path = join((await getDatabasesPath()), DB_NAME);
+    final String path = join((await getDatabasesPath()), DB_NAME);
 
-    bool dbExists = await io.File(path).exists();
+    final bool dbExists = await io.File(path).exists();
     log.d(dbExists);
     if (!dbExists) {
       // Copy from asset
-      ByteData data = await rootBundle.load(join("assets/db/ansver.db"));
-      List<int> bytes =
+      final ByteData data = await rootBundle.load(join('assets/db/ansver.db'));
+      final List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
       // Write and flush the bytes written
@@ -56,7 +54,7 @@ class SqliteDatabaseService {
       TABLE_ANSVERS,
     );
 
-    List<QandAModel> ansvers = items.map((item) {
+    final List<QandAModel> ansvers = items.map((item) {
       return QandAModel(
           id: item['UUID'],
           title: item['title'],

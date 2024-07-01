@@ -4,10 +4,11 @@ import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:logger/logger.dart';
 
-import '../../../bloc/font_size_bloc/font_size_bloc.dart';
+import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 
 class SongTextOnSongScreen extends StatelessWidget {
   SongTextOnSongScreen({
+    super.key,
     required this.title,
     required this.textVersion,
     required this.description,
@@ -28,7 +29,8 @@ class SongTextOnSongScreen extends StatelessWidget {
           return ScaleText(
             fontSize: state.fontSize ?? 14,
             child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: SelectionArea(
                   child: Column(
                     children: [
@@ -44,7 +46,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                       ),
                       Container(
                         alignment: Alignment.topRight,
-                        margin: EdgeInsets.symmetric(vertical: 7),
+                        margin: const EdgeInsets.symmetric(vertical: 7),
                         child: Text(
                           description,
                           style: Theme.of(context)
@@ -55,12 +57,12 @@ class SongTextOnSongScreen extends StatelessWidget {
                                   fontStyle: FontStyle.italic),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       textVersion.startsWith('<')
                           ? html.Html(
                               data: textVersion,
                               style: {
-                                "body": html.Style(
+                                'body': html.Style(
                                     alignment: Alignment.center,
                                     fontSize:
                                         html.FontSize(state.fontSize ?? 14)),
@@ -74,7 +76,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                                   .bodyMedium!
                                   .copyWith(fontSize: state.fontSize ?? 14),
                             ),
-                      SizedBox(
+                      const SizedBox(
                         height: 300,
                       )
                     ],

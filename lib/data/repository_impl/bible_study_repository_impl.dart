@@ -10,21 +10,22 @@ import 'package:injectable/injectable.dart';
 class BibleStudyRepositoryImpl extends BibleStudyRepository {
   @override
   Future getBibleStudyList() async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
+    final DatabaseServiceFirebase databaseServiceFirebase =
+        DatabaseServiceFirebase();
     final QuerySnapshot snapshot =
         await databaseServiceFirebase.getBibleStudies();
-    List<BibleStudy> topics = _listFromSnapshot(snapshot);
+    final List<BibleStudy> topics = _listFromSnapshot(snapshot);
     return topics;
   }
 }
 
 List<BibleStudy> _listFromSnapshot(QuerySnapshot snapshot) {
-  List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+  final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
     //получаем все уроки как Map
-    Map lessons = doc.get('lessons') as Map;
-    List<Lesson> less = [];
+    final Map lessons = doc.get('lessons') as Map;
+    final List<Lesson> less = [];
     //получаем все ключи и собираем их в List, упорядочиваем
-    List<int> keys = [];
+    final List<int> keys = [];
     lessons.keys.forEach((key) {
       keys.add(int.parse(key));
     });

@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/injection.dart';
-import '../bloc/font_size_bloc/font_size_bloc.dart';
-import 'modal_bottom_sheet.dart';
+import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
+import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
 class FontSizeAdjustBottomSheet {
   final BuildContext context;
@@ -14,11 +14,10 @@ class FontSizeAdjustBottomSheet {
     required this.color,
   });
 
-  bottomSheet() {
+  void bottomSheet() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      enableDrag: true,
       backgroundColor: Colors.transparent,
       barrierColor: Colors.black.withOpacity(0.2),
       builder: (context) => ModalBottomSheet(
@@ -49,7 +48,7 @@ class FontSizeAdjustBottomSheet {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Container(

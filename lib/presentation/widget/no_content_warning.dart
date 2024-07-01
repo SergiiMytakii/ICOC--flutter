@@ -11,17 +11,17 @@ class NoContentWarning extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 200,
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Text(
             "Unfortunately, there isn't any content here in".tr() +
                 ' ${languagesCodes[context.locale.languageCode]}. ' +
                 'Add more languages in the filter.'.tr(),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
       ],

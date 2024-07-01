@@ -52,7 +52,7 @@ Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics) async {
   final Map<String, dynamic> storedLanguages =
       SharedPreferencesHelper.getMap(StorageKeys.bibleStudyLanguages) ?? {};
   //set keeps only unique values
-  Set<String> allKeys = {};
+  final Set<String> allKeys = {};
   topics.forEach((topic) => allKeys.add(topic.lang));
 
   putDeviceLangToFirstPlace(allKeys.toList(), locale);

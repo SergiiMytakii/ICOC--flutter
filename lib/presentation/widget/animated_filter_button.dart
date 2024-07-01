@@ -35,7 +35,7 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
         SharedPreferencesHelper.getBool(widget.shouldAnimate) ?? true;
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
     if (shouldAnimate || widget.shouldAnimateForever) {
       print('animate');
@@ -43,6 +43,7 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,

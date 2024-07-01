@@ -6,7 +6,7 @@ import 'package:icoc/core/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/model/song_detail.dart';
+import 'package:icoc/core/model/song_detail.dart';
 
 part 'favorite_songs_event.dart';
 part 'favorite_songs_state.dart';
@@ -30,7 +30,7 @@ class FavoriteSongsListBloc
       final List<int> favoriteSongsIds =
           await songsRepositoryImpl.getFavoriteSongs();
       if (favoriteSongsIds.isNotEmpty) {
-        List<SongDetail> songs = await songsRepositoryImpl.getSongs();
+        final List<SongDetail> songs = await songsRepositoryImpl.getSongs();
         final favoriteSongs =
             songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
         final filteredSongs = await filterSongsByLang(favoriteSongs);

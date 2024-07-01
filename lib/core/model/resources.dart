@@ -24,7 +24,7 @@ class Resources {
         thumbnail: json['thumbnail'],
         artist: json['artist']);
   }
-  static defaultResource() {
+  static Resources defaultResource() {
     return Resources(lang: '', title: '', link: '', thumbnail: '', artist: '');
   }
 
@@ -33,14 +33,14 @@ class Resources {
     return Resources(
         lang: '',
         title: json['title'],
-        link: json["resourceId"]["videoId"],
-        thumbnail: json["thumbnails"] != null
-            ? json["thumbnails"]["high"] != null
-                ? json["thumbnails"]["high"]["url"]
+        link: json['resourceId']['videoId'],
+        thumbnail: json['thumbnails'] != null
+            ? json['thumbnails']['high'] != null
+                ? json['thumbnails']['high']['url']
                 : null
             : null,
-        publishedAt: json["publishedAt"],
-        description: json["description"],
+        publishedAt: json['publishedAt'],
+        description: json['description'],
         artist: json['artist']);
   }
 }

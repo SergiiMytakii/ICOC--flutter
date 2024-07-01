@@ -35,7 +35,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
       body: UnfocusOnTapOutside(
         child: CustomScrollView(
           cacheExtent: 0,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             QandAAppbar(
               title: 'drawer_q_and_a'.tr(),
@@ -77,7 +77,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                                       .titleMedium!
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                trailing: Icon(Icons.arrow_forward_ios),
+                                trailing: const Icon(Icons.arrow_forward_ios),
                                 onTap: () => Navigator.of(context).pushNamed(
                                   Routes.ONE_Q_AND_A_SCREEN,
                                   arguments: state.articles[index],

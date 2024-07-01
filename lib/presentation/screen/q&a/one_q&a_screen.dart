@@ -12,7 +12,7 @@ class OneQandAScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var fontSozeAdjust =
+    final fontSozeAdjust =
         FontSizeAdjustBottomSheet(context: context, color: ScreenColors.QandA);
     final article = ModalRoute.of(context)!.settings.arguments as QandAModel;
     return Scaffold(
@@ -23,14 +23,14 @@ class OneQandAScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.text_fields_outlined,
               ),
               onPressed: () => fontSozeAdjust.bottomSheet()),
         ],
       ),
       body: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               BlocBuilder<FontSizeBloc, FontSizeState>(

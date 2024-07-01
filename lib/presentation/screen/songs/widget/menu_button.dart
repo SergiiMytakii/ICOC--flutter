@@ -2,14 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MenuButton extends StatelessWidget {
+  const MenuButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: CupertinoContextMenu(
-        child: Icon(
-          CupertinoIcons.ellipsis,
-          color: Colors.white,
-        ),
         actions: [
           CupertinoContextMenuAction(
             child: const Text('Option 1'),
@@ -33,6 +31,10 @@ class MenuButton extends StatelessWidget {
             },
           ),
         ],
+        child: const Icon(
+          CupertinoIcons.ellipsis,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../constants.dart';
-import '../../widget/custom_button.dart';
+import 'package:icoc/presentation/widget/custom_button.dart';
+
+import 'package:icoc/constants.dart';
 
 class ShareAppScreen extends StatefulWidget {
   const ShareAppScreen({Key? key}) : super(key: key);
@@ -39,19 +39,19 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _shareCard(context, appUrlPlayMarket,
                   'assets/images/logo-google-play.svg', 'google_play'),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               _shareCard(context, appUrlAppStore,
                   'assets/images/appStoreIcon.svg', 'app_store',
                   appStore: 'App Store'),
-              SizedBox(
+              const SizedBox(
                 height: 200,
               ),
             ],
@@ -61,7 +61,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
     );
   }
 
-  _shareCard(BuildContext ct, String link, String image, String store,
+  Column _shareCard(BuildContext ct, String link, String image, String store,
       {String? appStore}) {
     return Column(
       children: [
@@ -73,7 +73,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                   height: 150,
                   width: 150,
                   padding: appStore != null
-                      ? const EdgeInsets.all(12.0)
+                      ? const EdgeInsets.all(12)
                       : EdgeInsets.zero,
                   child: SvgPicture.asset(
                     image,
@@ -88,7 +88,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               width: 6,
             ),
             Column(
@@ -101,20 +101,20 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                       Text(
                         link,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.blueAccent),
+                        style: const TextStyle(color: Colors.blueAccent),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       CustomButton(
+                          onPressed: () => Share.share(link),
+                          color: ScreenColors.general,
                           child: FittedBox(
                             child: Text(
                               'Share link'.tr(),
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
-                          ),
-                          onPressed: () => Share.share(link),
-                          color: ScreenColors.general),
+                          )),
                       CustomButton(
                           onPressed: () => setState(() {
                                 if (store == 'google_play') {
@@ -124,11 +124,11 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                                   _isIosOpened = !_isIosOpened;
                                 }
                               }),
+                          color: ScreenColors.general,
                           child: Text(
                             'QR code'.tr(),
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: ScreenColors.general),
+                            style: const TextStyle(color: Colors.white),
+                          )),
                     ],
                   ),
                 ),
@@ -137,7 +137,7 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
           ],
         ),
         AnimatedContainer(
-          duration: Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 800),
           height: store == 'google_play'
               ? _isGoogleOpened
                   ? MediaQuery.of(context).size.width - 32
@@ -146,14 +146,13 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                   ? MediaQuery.of(context).size.width - 32
                   : 0,
           width: double.maxFinite,
-          margin: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          padding: EdgeInsets.all(8),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: const EdgeInsets.all(8),
           curve: Curves.fastOutSlowIn,
           child: Center(
             child: QrImageView(
               backgroundColor: Colors.white,
               data: link,
-              version: QrVersions.auto,
             ),
           ),
         ),

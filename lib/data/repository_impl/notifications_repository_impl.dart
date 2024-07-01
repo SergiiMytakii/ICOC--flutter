@@ -12,19 +12,21 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
   Future<List<Map<String, NotificationsModel>>> getNotifications() async {
     final List<Map<String, NotificationsModel>> notifications = [];
 
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
-    QuerySnapshot snapshot = await databaseServiceFirebase.getNotifications();
+    final DatabaseServiceFirebase databaseServiceFirebase =
+        DatabaseServiceFirebase();
+    final QuerySnapshot snapshot =
+        await databaseServiceFirebase.getNotifications();
     for (final doc in snapshot.docs) {
-      Map data = doc.data() as Map;
-      var keys = data.keys;
+      final Map data = doc.data() as Map;
+      final keys = data.keys;
       keys.forEach((key) {
         for (final Map notification in data[key]) {
           notifications.add({
             key: NotificationsModel(
                 topic: doc.id,
-                title: notification["title"],
-                text: notification["text"],
-                link: notification["link"])
+                title: notification['title'],
+                text: notification['text'],
+                link: notification['link'])
           });
         }
       });

@@ -17,12 +17,12 @@ class ModalBottomSheet extends StatelessWidget {
     return BackdropFilter(
       filter: blurBackground
           ? ImageFilter.blur(sigmaX: 2, sigmaY: 2)
-          : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+          : ImageFilter.blur(),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
           borderRadius: Platform.isIOS
-              ? BorderRadius.only(
+              ? const BorderRadius.only(
                   topRight: Radius.circular(15),
                   topLeft: Radius.circular(15),
                 )

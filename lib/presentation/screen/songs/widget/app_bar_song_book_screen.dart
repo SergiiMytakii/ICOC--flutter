@@ -4,22 +4,18 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
-import '../../../widget/modal_bottom_sheet.dart';
-import '../../../routes/app_routes.dart';
-import 'bottom_sheet_song_filter.dart';
+import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/screen/songs/widget/bottom_sheet_song_filter.dart';
 
 class SongBookAppbar extends StatefulWidget {
-  SongBookAppbar(
-    this.title,
-    this.callback,
-  );
+  SongBookAppbar(this.title, this.callback, {super.key});
   final String title;
   final Function callback;
 
@@ -42,12 +38,12 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
   }
 
   void showTooltip() {
-    double tooltipShown =
+    final double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
     if (tooltipShown < 4.0) {
-      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
-        Future.delayed(Duration(seconds: 6), () {
+        Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {
               _tooltipVisible = false;
@@ -85,10 +81,8 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     BuildContext context,
   ) {
     return SliverAppBar(
-      primary: true,
       title: Text(widget.title),
       centerTitle: true,
-      automaticallyImplyLeading: true,
       leading: IconButton(
           icon: Icon(
             Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
@@ -114,7 +108,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             ),
             BlocBuilder<SongsBloc, SongsState>(
               builder: (context, state) {
-                bool shouldAnimate =
+                final bool shouldAnimate =
                     state is GetSongsSuccessState && state.songs.isEmpty ||
                         firstLang == '';
                 return AnimatedFilterIconButton(
@@ -130,7 +124,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
                         return ModalBottomSheet(
                             height: MediaQuery.of(context).size.height / 1.4,
                             blurBackground: false,
-                            child: BottomSheetSongsFilter());
+                            child: const BottomSheetSongsFilter());
                       }).then(
                     (value) => setState(() {
                       setFirstLang();
@@ -144,7 +138,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
         buildAddSongButton(context)
       ],
       pinned: true,
-      expandedHeight: 95.0,
+      expandedHeight: 95,
       backgroundColor: WidgetStateColor.resolveWith((states) =>
           AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor!),
       floating: true,
@@ -154,7 +148,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 45,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               right: 10,
               bottom: 8,
@@ -175,7 +169,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
 
 IconButton buildAddSongButton(BuildContext context) {
   return IconButton(
-    icon: Icon(
+    icon: const Icon(
       Icons.add,
     ),
     tooltip: 'icon_button_actions_app_bar_add_song'.tr(),

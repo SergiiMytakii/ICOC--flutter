@@ -11,6 +11,8 @@ import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
 class FeedbackScreen extends StatefulWidget {
+  const FeedbackScreen({super.key});
+
   @override
   _FeedbackScreenState createState() => _FeedbackScreenState();
 }
@@ -37,11 +39,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             'We would love to hear your feedbacks and suggestions!'.tr(),
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -113,20 +115,19 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Text field for writing feedback
               TextField(
                 controller: nameController,
                 keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                   hintText: 'Your name'.tr(),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
-                maxLines: 1,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Text field for writing feedback
               TextField(
                 controller: feedbackController,
@@ -134,11 +135,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   hintText: 'Write your feedback here...'.tr(),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 3,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Button to submit feedback
               CustomButton(
                 onPressed: () {
@@ -146,7 +147,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 },
                 child: Text(
                   'Submit Feedback'.tr(),
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -158,8 +159,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   // Method to submit feedback
   void submitFeedback() {
-    String feedback = feedbackController.text.trim();
-    String name = nameController.text.trim();
+    final String feedback = feedbackController.text.trim();
+    final String name = nameController.text.trim();
     if (feedback.isNotEmpty) {
       getIt<FeedbackBloc>().add(InsertFeedbackRequested(feedback, name));
       setState(() {

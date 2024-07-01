@@ -3,10 +3,10 @@ import 'package:injectable/injectable.dart';
 
 import 'package:icoc/core/model/resources.dart';
 
-import '../../core/model/song_detail.dart';
-import '../../core/repository/songs_repository.dart';
-import '../firebase/database_firebase_service.dart';
-import '../local/sqlite_helper_fts4.dart';
+import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/data/firebase/database_firebase_service.dart';
+import 'package:icoc/data/local/sqlite_helper_fts4.dart';
 
 @dev
 @prod
@@ -21,8 +21,8 @@ class SongsRepositoryImpl implements SongsRepository {
   });
   @override
   Future<List<SongDetail>> getSongs() async {
-    QuerySnapshot snapshot = await databaseServiceFirebase.getSongs();
-    List<SongDetail> songList = _songListFromSnapshot(snapshot);
+    final QuerySnapshot snapshot = await databaseServiceFirebase.getSongs();
+    final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
   }
 
@@ -58,7 +58,7 @@ class SongsRepositoryImpl implements SongsRepository {
 
 //converting  snapshot to song list
 List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
-  List<SongDetail> songs = snapshot.docs.map(
+  final List<SongDetail> songs = snapshot.docs.map(
     (doc) {
       Map data = doc.data() as Map;
       data =
@@ -71,7 +71,7 @@ List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
           }
         },
       );
-      List resourses =
+      final List resourses =
           data['resources'] != null && data['resources'] is Iterable<dynamic>
               ? List.from(doc.get('resources'))
               : [];
