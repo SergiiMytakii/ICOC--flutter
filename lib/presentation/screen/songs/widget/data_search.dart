@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
@@ -29,7 +30,6 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   @override
   Widget build(BuildContext context) {
     getIt<SongsBloc>().add(SearchSongRequested(widget.query));
-    int i = 0;
     return BlocBuilder<SongsBloc, SongsState>(
       builder: (context, state) {
         if (state is SongsLoadingState) {
@@ -38,17 +38,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                //change i for making different colors of divider
-                if (i < 4) {
-                  i++;
-                } else {
-                  i = 0;
-                }
                 return buildSongCardWithHighliting(
-                  state.songs[index],
-                  context,
-                  i,
-                );
+                    state.songs[index], context, index);
               },
               childCount: state.songs.length,
             ),
@@ -120,7 +111,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   Widget buildSongCardWithHighliting(
-      SongDetail song, BuildContext context, int i) {
+      SongDetail song, BuildContext context, int index) {
     final int id = song.id;
     return Column(
       children: [
@@ -146,7 +137,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
         ),
         Divider(
           indent: 50,
-          color: dividerColors[i],
+          color: getDividerColor(index),
           thickness: 1.2,
         )
       ],

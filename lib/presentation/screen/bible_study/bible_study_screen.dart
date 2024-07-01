@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
@@ -95,7 +96,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                       return ModalBottomSheet(
                           height: MediaQuery.of(context).size.height / 1.5,
                           blurBackground: false,
-                          child: BottomSheetBibleStudyFilter());
+                          child: const BottomSheetBibleStudyFilter());
                     }),
                 color: ScreenColors.bibleStudy),
           ],
@@ -105,7 +106,6 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   }
 
   Widget _buildBody(GetBibleStudyListSuccessState state) {
-    int i = 0;
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
       child: state.topics.isNotEmpty
@@ -113,11 +113,6 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
               cacheExtent: 0,
               itemCount: state.topics.length,
               itemBuilder: (context, index) {
-                if (i < 4) {
-                  i++;
-                } else {
-                  i = 0;
-                }
                 return AnimationWrapper(
                   child: Column(
                     children: [
@@ -148,7 +143,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                       ),
                       Divider(
                         indent: 50,
-                        color: dividerColors[i],
+                        color: getDividerColor(index),
                         thickness: 1.2,
                       ),
                     ],

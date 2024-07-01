@@ -135,6 +135,7 @@ class DatabaseHelperFTS4 {
       return 0;
   }
 
+//for testing
   Future<void> printSongsDBHead() async {
     final Database? database = await db();
     final List<Map<String, dynamic>> songs = await database!.query(TABLE_TITLE);

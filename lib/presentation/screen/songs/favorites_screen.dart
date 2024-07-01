@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
@@ -26,7 +27,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('bottom_navigation_bar_favorites'.tr()),
@@ -42,15 +42,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 physics: const BouncingScrollPhysics(),
                 itemCount: state.songs.length,
                 itemBuilder: (BuildContext context, int index) {
-                  //change i to make different colors of divider
-                  if (i < 4) {
-                    i++;
-                  } else {
-                    i = 0;
-                  }
                   return SongCard(
                     song: state.songs[index],
-                    dividerColor: dividerColors[i],
+                    dividerColor: getDividerColor(index),
                     slideActions: [
                       DeleteFromFavorites(songId: state.songs[index].id),
                     ],

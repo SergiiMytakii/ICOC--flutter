@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/model/notifications_model.dart';
@@ -29,7 +30,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'.tr()),
@@ -43,11 +43,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   cacheExtent: 0,
                   itemCount: state.notifications.length,
                   itemBuilder: (BuildContext context, index) {
-                    if (i < 4) {
-                      i++;
-                    } else {
-                      i = 0;
-                    }
                     Future.delayed(const Duration(seconds: 10)).then((value) =>
                         _markAsRead(state.notifications[index].title,
                             state.notifications));
@@ -92,7 +87,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           ),
                           Divider(
                             indent: 50,
-                            color: dividerColors[i],
+                            color: getDividerColor(index),
                             thickness: 1.2,
                           ),
                         ],

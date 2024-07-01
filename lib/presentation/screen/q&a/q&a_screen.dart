@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
@@ -30,7 +30,6 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return Scaffold(
       body: UnfocusOnTapOutside(
         child: CustomScrollView(
@@ -55,11 +54,6 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        if (i < 4) {
-                          i++;
-                        } else {
-                          i = 0;
-                        }
                         return AnimationWrapper(
                           child: Column(
                             children: [
@@ -85,7 +79,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                               ),
                               Divider(
                                 indent: 50,
-                                color: dividerColors[i],
+                                color: getDividerColor(index),
                                 thickness: 1.2,
                               ),
                             ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
@@ -11,7 +11,6 @@ class OneTopicScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final BibleStudy topic =
         ModalRoute.of(context)!.settings.arguments as BibleStudy;
-    int i = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,11 +23,6 @@ class OneTopicScreen extends StatelessWidget {
           cacheExtent: 0,
           itemCount: topic.lessons.length,
           itemBuilder: (context, index) {
-            if (i < 4) {
-              i++;
-            } else {
-              i = 0;
-            }
             return AnimationWrapper(
               child: Column(
                 children: [
@@ -51,7 +45,7 @@ class OneTopicScreen extends StatelessWidget {
                   ),
                   Divider(
                     indent: 50,
-                    color: dividerColors[i],
+                    color: getDividerColor(index),
                     thickness: 1.2,
                   ),
                 ],

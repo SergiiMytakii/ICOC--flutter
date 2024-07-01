@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
@@ -39,14 +40,13 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const int i = 0;
     return BlocBuilder<VideoBloc, VideoState>(
       builder: (context, state) {
         if (state is GetVideoListSuccessState) {
           cache = state.topics;
           return Scaffold(
               appBar: _buildAppBar(context, state.topics.isEmpty),
-              body: _buildBody(state.topics, i));
+              body: _buildBody(state.topics));
         } else if (state is VideoLoadingState) {
           return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
         } else if (state is VideoErrorState) {
@@ -61,7 +61,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
           return cache != null
               ? Scaffold(
                   appBar: _buildAppBar(context, false),
-                  body: _buildBody(cache!, i))
+                  body: _buildBody(cache!))
               : Container();
         }
       },
@@ -101,7 +101,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                       return ModalBottomSheet(
                           height: MediaQuery.of(context).size.height / 1.5,
                           blurBackground: false,
-                          child: BottomSheetVideoFilter());
+                          child: const BottomSheetVideoFilter());
                     }),
                 color: ScreenColors.video),
           ],
@@ -110,7 +110,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
     );
   }
 
-  Widget _buildBody(List<Video> topics, int i) {
+  Widget _buildBody(List<Video> topics) {
     return RefreshIndicator.adaptive(
       onRefresh: _getTopicsList,
       child: topics.isNotEmpty
@@ -118,11 +118,6 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
               cacheExtent: 0,
               itemCount: topics.length,
               itemBuilder: (context, index) {
-                if (i < 4) {
-                  i++;
-                } else {
-                  i = 0;
-                }
                 return AnimationWrapper(
                   child: Column(
                     children: [
@@ -150,7 +145,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                       ),
                       Divider(
                         indent: 50,
-                        color: dividerColors[i],
+                        color: getDividerColor(index),
                         thickness: 1.2,
                       ),
                     ],

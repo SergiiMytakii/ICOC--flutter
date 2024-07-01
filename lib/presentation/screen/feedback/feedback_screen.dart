@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
@@ -30,7 +30,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -57,18 +56,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         cacheExtent: 0,
                         itemCount: state.feedbacks.length,
                         itemBuilder: (context, index) {
-                          if (i < 4) {
-                            i++;
-                          } else {
-                            i = 0;
-                          }
                           return AnimationWrapper(
                             child: Column(
                               children: [
                                 ListTile(
                                   contentPadding: EdgeInsets.zero,
                                   titleTextStyle:
-                                      TextStyle(color: dividerColors[i]),
+                                      TextStyle(color: getDividerColor(index)),
                                   title:
                                       Text(state.feedbacks[index].name ?? ''),
                                   subtitle: Text(state.feedbacks[index].text),
@@ -97,7 +91,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 ),
                                 Divider(
                                   indent: 50,
-                                  color: dividerColors[i],
+                                  color: getDividerColor(index),
                                   thickness: 1.2,
                                 ),
                               ],
