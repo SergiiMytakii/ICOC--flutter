@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:html/parser.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
 import '../../../../constants.dart';
@@ -24,8 +25,7 @@ class SongCard extends StatelessWidget {
     String text = song.text.entries.first.value;
     //если получаем html, то удаляем все теги
     if (text.startsWith('<')) {
-      var document = parse(text);
-      text = parse(document.body!.text).documentElement!.text;
+      text = FormatTextHelper.extractFormattedText(text);
     }
 
     return Column(

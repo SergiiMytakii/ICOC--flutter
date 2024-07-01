@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html/parser.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
@@ -83,8 +84,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
     // print(rawText);
 
     //remove html tags and parts of html tags
-    var document = parse(rawText);
-    String parsedString = parse(document.body!.text).documentElement!.text;
+
+    String parsedString = FormatTextHelper.extractFormattedText(rawText);
     int indexOfGreaterThan = parsedString.indexOf(">");
     // Check if ">" is found
     if (indexOfGreaterThan != -1) {

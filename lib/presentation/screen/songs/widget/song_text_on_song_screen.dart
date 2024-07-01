@@ -75,7 +75,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                                   .copyWith(fontSize: state.fontSize ?? 14),
                             ),
                       SizedBox(
-                        height: 100,
+                        height: 300,
                       )
                     ],
                   ),

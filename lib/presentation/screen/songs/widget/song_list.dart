@@ -53,7 +53,7 @@ class SongList extends StatelessWidget {
             ),
           );
         } else {
-          return SliverToBoxAdapter(child: NoContentWarning());
+          return SliverToBoxAdapter();
         }
       },
     );

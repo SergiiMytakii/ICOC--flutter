@@ -89,7 +89,9 @@ class _OneSongScreenState extends State<OneSongScreen>
             children: [
               //adjust size text screen and player dynamicly
               _tabBarBuilder(song),
-              if (song.resources != null && song.resources!.isNotEmpty)
+              if (song.resources != null &&
+                  song.resources!.isNotEmpty &&
+                  !videoIsPlaying)
                 _buldVideoPreview(song),
               if (videoIsPlaying) _miniPlayerBuilder(),
             ],
@@ -244,7 +246,7 @@ class _OneSongScreenState extends State<OneSongScreen>
         Container(
           height: 110,
           width: double.maxFinite,
-          color: AdaptiveTheme.of(context).theme.colorScheme.background,
+          color: AdaptiveTheme.of(context).theme.colorScheme.surface,
         ),
         Container(
             height: 100,
@@ -283,14 +285,24 @@ class _OneSongScreenState extends State<OneSongScreen>
     final index = tabController.index;
     String text = '';
     String title = '';
+    String description = '';
     if (index < song.text.values.length) {
-      title = song.title.values.elementAt(index);
-      text = song.text.values.elementAt(index);
-      text = title + '\n\n' + text;
+      //because titles could be common for several texts (en1, en2 have the same title) we need to get key first
+      final entry = song.text.entries.elementAt(index);
+      final lang = entry.key.toString().substring(0, 2);
+      title = song.title[lang];
+      description =
+          song.description != null && song.description!.keys.contains(lang)
+              ? song.description![entry.key.toString().substring(0, 2)]
+              : '';
+      text = entry.value;
     } else {
       text = song.chords!.values.elementAt(index - song.text.values.length);
     }
     text = FormatTextHelper.extractFormattedText(text);
+    text = title + '\n\n' + description + '\n\n' + text;
+
+    print(text);
     Share.share(text);
   }
 }
