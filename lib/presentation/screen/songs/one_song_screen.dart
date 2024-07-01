@@ -2,8 +2,9 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
-import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
@@ -43,9 +44,8 @@ class _OneSongScreenState extends State<OneSongScreen>
   @override
   void initState() {
     song = widget.song;
-    Future.delayed(Duration.zero).then((value) => context
-        .read<FavoriteSongStatusBloc>()
-        .add(FavoriteSongStatusRequested(id: song.id)));
+    getIt<FavoriteSongStatusBloc>()
+        .add(FavoriteSongStatusRequested(id: song.id));
     _controller = AnimationController(
         duration:
             Duration(milliseconds: 500), // Set the duration of the animation
@@ -123,11 +123,10 @@ class _OneSongScreenState extends State<OneSongScreen>
                   state.isFavorite ? Icons.favorite : Icons.favorite_border,
                 ),
                 onPressed: () {
-                  context.read<FavoriteSongStatusBloc>().add(
+                  getIt<FavoriteSongStatusBloc>().add(
                       SetFavoriteSongStatusRequested(
                           id: song.id, isFavorite: !state.isFavorite));
-                  context
-                      .read<FavoriteSongsListBloc>()
+                  getIt<FavoriteSongsListBloc>()
                       .add(FavoriteSongsListRequested());
                 },
               );

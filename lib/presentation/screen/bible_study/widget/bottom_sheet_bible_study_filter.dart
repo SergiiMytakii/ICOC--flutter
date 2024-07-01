@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import '../../../../constants.dart';
@@ -51,9 +52,7 @@ class _BottomSheetBibleStudyFilterState
                     callback: (Map<String, dynamic> activeLanguages) {
                       SharedPreferencesHelper.saveMap(
                           StorageKeys.bibleStudyLanguages, activeLanguages);
-                      context
-                          .read<BibleStudyBloc>()
-                          .add(BibleStudyListRequested());
+                      getIt<BibleStudyBloc>().add(BibleStudyListRequested());
                     },
                     key: ValueKey('$index'));
               }),

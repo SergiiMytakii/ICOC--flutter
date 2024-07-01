@@ -3,9 +3,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/injection.dart';
 
-import '../../../core/bloc/songs_bloc/songs_bloc.dart';
+import '../../bloc/songs_bloc/songs_bloc.dart';
 import 'widget/data_search.dart';
 import 'widget/app_bar_song_book_screen.dart';
 import 'widget/song_list.dart';
@@ -26,8 +26,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
-    Future.delayed(Duration.zero)
-        .then((value) => getSongs(context, useCache: true));
+    getSongs(useCache: true);
     super.initState();
   }
 
@@ -36,12 +35,12 @@ class _SongBookScreenState extends State<SongBookScreen> {
     return CupertinoPageScaffold(
       child: RefreshIndicator.adaptive(
         edgeOffset: 130,
-        onRefresh: () => getSongs(context, useCache: false),
+        onRefresh: () => getSongs(useCache: false),
         child: CustomScrollView(
           cacheExtent: 0,
           physics: BouncingScrollPhysics(),
           slivers: <Widget>[
-            IosAppbar(
+            SongBookAppbar(
               'app_bar_title'.tr(),
               _handleQuery,
             )
@@ -54,15 +53,15 @@ class _SongBookScreenState extends State<SongBookScreen> {
     );
   }
 
-  Future<void> getSongs(BuildContext context, {bool? useCache}) async {
-    context.read<SongsBloc>().add(SongsRequested(useCache: useCache));
+  Future<void> getSongs({bool useCache = true}) async {
+    getIt<SongsBloc>().add(SongsRequested(useCache: useCache));
   }
 
   _handleQuery(String val) {
     setState(() {
       query = val;
       if (query == '') {
-        getSongs(context);
+        getSongs();
       }
       if (query.length > 1 && query.contains(RegExp(r'[0-9]'))) {
         showSearchResults = true;

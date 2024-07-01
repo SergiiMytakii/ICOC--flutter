@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/helpers/in_app_review_helper.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
@@ -45,10 +46,9 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      context
-          .read<NotificationsBloc>()
-          .add(NotificationsListRequested(context.locale.languageCode));
       rateApp(context);
+      getIt<NotificationsBloc>()
+          .add(NotificationsListRequested(context.locale.languageCode));
     });
 
     carouselController = CarouselController();

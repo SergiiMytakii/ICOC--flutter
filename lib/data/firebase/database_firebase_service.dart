@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
+@injectable
 class DatabaseServiceFirebase {
   var log = Logger();
-  // final SongLangController songLangController = Get.find();
   final db = FirebaseFirestore.instance;
   late final CollectionReference songCollection;
   late final CollectionReference bibleStudyCollection;
@@ -19,7 +20,6 @@ class DatabaseServiceFirebase {
     notificationsCollection = db.collection('Notifications');
     videoCollection = db.collection('Video');
     feedbackCollection = db.collection('Feedback');
-    //print(songCollection.get().);
   }
 
   //get songs

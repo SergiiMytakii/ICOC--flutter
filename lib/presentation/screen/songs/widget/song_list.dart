@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
+import 'package:icoc/presentation/widget/no_content_warning.dart';
 import '../../../../constants.dart';
-import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
+import '../../../bloc/songs_bloc/songs_bloc.dart';
 import 'slide_actions.dart';
 import 'song_card.dart';
 
@@ -18,26 +20,32 @@ class SongList extends StatelessWidget {
               child:
                   CustomRefreshIndicator(onRefresh: () => getSongs(context)));
         } else if (state is GetSongsSuccessState) {
-          return SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                //iterate index of divider color
-                if (i < 4) {
-                  i++;
-                } else {
-                  i = 0;
-                }
-                return SongCard(
-                  song: state.songs[index],
-                  dividerColor: dividerColors[i],
-                  slideActions: [
-                    AddToFavorites(songId: state.songs[index].id),
-                  ],
+          return state.songs.isNotEmpty
+              ? SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      //iterate index of divider color
+                      if (i < 4) {
+                        i++;
+                      } else {
+                        i = 0;
+                      }
+                      return SongCard(
+                        song: state.songs[index],
+                        dividerColor: dividerColors[i],
+                        slideActions: [
+                          AddToFavorites(songId: state.songs[index].id),
+                        ],
+                      );
+                    },
+                    childCount: state.songs.length,
+                  ),
+                )
+              : SliverToBoxAdapter(
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: NoContentWarning()),
                 );
-              },
-              childCount: state.songs.length,
-            ),
-          );
         } else if (state is SongsErrorState) {
           return SliverToBoxAdapter(
             child: ErrorTextOnScreen(
@@ -45,13 +53,13 @@ class SongList extends StatelessWidget {
             ),
           );
         } else {
-          return SliverToBoxAdapter();
+          return SliverToBoxAdapter(child: NoContentWarning());
         }
       },
     );
   }
 
   Future<void> getSongs(BuildContext context) async {
-    context.read<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(SongsRequested());
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../core/bloc/font_size_bloc/font_size_bloc.dart';
+import '../../../bloc/font_size_bloc/font_size_bloc.dart';
 
 class SongTextOnSongScreen extends StatelessWidget {
   SongTextOnSongScreen({

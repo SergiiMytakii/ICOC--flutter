@@ -2,7 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/core/repository/notifications_repository.dart';
 import 'package:icoc/data/firebase/database_firebase_service.dart';
+import 'package:injectable/injectable.dart';
 
+@dev
+@prod
+@Injectable(as: NotificationsRepository)
 class NotificationsRepositoryImpl extends NotificationsRepository {
   @override
   Future<List<Map<String, NotificationsModel>>> getNotifications() async {

@@ -3,7 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/bloc/feedback_bloc/feedback_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
@@ -20,8 +21,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Feedback');
-    Future.delayed(Duration.zero).then(
-        (value) => context.read<FeedbackBloc>().add(FeedbackListRequested()));
+
+    getIt<FeedbackBloc>().add(FeedbackListRequested());
     super.initState();
   }
 
@@ -160,7 +161,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     String feedback = feedbackController.text.trim();
     String name = nameController.text.trim();
     if (feedback.isNotEmpty) {
-      context.read<FeedbackBloc>().add(InsertFeedbackRequested(feedback, name));
+      getIt<FeedbackBloc>().add(InsertFeedbackRequested(feedback, name));
       setState(() {
         feedbackController.clear();
         nameController.clear();

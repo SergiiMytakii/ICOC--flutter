@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
+
 import 'package:icoc/core/model/resources.dart';
 
 import '../../core/model/song_detail.dart';
@@ -6,10 +8,19 @@ import '../../core/repository/songs_repository.dart';
 import '../firebase/database_firebase_service.dart';
 import '../local/sqlite_helper_fts4.dart';
 
+@dev
+@prod
+@Injectable(as: SongsRepository)
 class SongsRepositoryImpl implements SongsRepository {
+  DatabaseServiceFirebase databaseServiceFirebase;
+  DatabaseHelperFTS4 databaseHelperFTS4;
+
+  SongsRepositoryImpl({
+    required this.databaseServiceFirebase,
+    required this.databaseHelperFTS4,
+  });
   @override
   Future<List<SongDetail>> getSongs() async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
     QuerySnapshot snapshot = await databaseServiceFirebase.getSongs();
     List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
@@ -17,26 +28,22 @@ class SongsRepositoryImpl implements SongsRepository {
 
   @override
   Future<void> insertAllSongsToLocalTable(List<SongDetail> songs) async {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
     await databaseHelperFTS4.insertAllSongs(songs);
   }
 
   @override
   Future<List<SongDetail>> getSearchResult(
       String query, List<String> orderLang) async {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
     return databaseHelperFTS4.getSearchResult(query, orderLang);
   }
 
   @override
   Future<List<int>> getFavoriteSongs() {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
     return databaseHelperFTS4.getListFavorites();
   }
 
   @override
   Future<bool> setFavoriteSong(int id, bool isFavorite) {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
     if (isFavorite)
       return databaseHelperFTS4.addToFavorites(id);
     else
@@ -45,7 +52,6 @@ class SongsRepositoryImpl implements SongsRepository {
 
   @override
   Future<bool> getFavoriteSongStatus(int id) {
-    DatabaseHelperFTS4 databaseHelperFTS4 = DatabaseHelperFTS4();
     return databaseHelperFTS4.getFavoriteStatus(id);
   }
 }

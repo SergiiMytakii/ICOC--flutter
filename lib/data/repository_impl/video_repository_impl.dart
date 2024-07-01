@@ -8,7 +8,11 @@ import 'package:icoc/core/model/video.dart';
 import 'package:icoc/core/repository/video_repository.dart';
 import 'package:icoc/data/api/http_service.dart';
 import 'package:icoc/data/firebase/database_firebase_service.dart';
+import 'package:injectable/injectable.dart';
 
+@dev
+@prod
+@Injectable(as: VideoRepository)
 class VideoRepositoryImpl extends VideoRepository {
   @override
   Future<List<Video>> getVideoList() async {

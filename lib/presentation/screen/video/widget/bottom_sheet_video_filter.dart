@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import '../../../../constants.dart';
@@ -49,7 +49,7 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     callback: (Map<String, dynamic> activeLanguages) {
                       SharedPreferencesHelper.saveMap(
                           StorageKeys.videosAllLanguages, activeLanguages);
-                      context.read<VideoBloc>().add(VideoListRequested());
+                      getIt<VideoBloc>().add(VideoListRequested());
                     },
                     key: ValueKey('$index'));
               }),

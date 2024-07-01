@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icoc/core/model/feedback.dart';
 import 'package:icoc/core/repository/feedback_repository.dart';
 import 'package:icoc/data/firebase/database_firebase_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 
+@dev
+@prod
+@Injectable(as: FeedbackRepository)
 class FeedbackRepositoryImpl extends FeedbackRepository {
   @override
   Future<List<Feedback>> getFeedbackList() async {

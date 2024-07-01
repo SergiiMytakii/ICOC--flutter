@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html/parser.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
+import '../../../bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/model/song_detail.dart';
 import '../../../widget/loading.dart';
 
@@ -27,7 +28,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<SongsBloc>().add(SearchSongRequested(widget.query));
+    getIt<SongsBloc>().add(SearchSongRequested(widget.query));
     int i = 0;
     return BlocBuilder<SongsBloc, SongsState>(
       builder: (context, state) {

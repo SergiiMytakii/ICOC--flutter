@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/font_size_bloc/font_size_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 
 class ScaleText extends StatelessWidget {
   final Widget child;
@@ -11,7 +11,7 @@ class ScaleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onScaleUpdate: (details) {
-          context.read<FontSizeBloc>().add(FontSizeRequested(
+          getIt<FontSizeBloc>().add(FontSizeRequested(
               fontSize: calculateFontSize(fontSize, details.scale)));
         },
         child: child);

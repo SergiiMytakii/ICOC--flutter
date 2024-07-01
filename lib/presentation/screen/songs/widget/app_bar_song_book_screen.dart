@@ -5,16 +5,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
 import '../../../widget/modal_bottom_sheet.dart';
 import '../../../routes/app_routes.dart';
 import 'bottom_sheet_song_filter.dart';
 
-class IosAppbar extends StatefulWidget {
-  IosAppbar(
+class SongBookAppbar extends StatefulWidget {
+  SongBookAppbar(
     this.title,
     this.callback,
   );
@@ -22,10 +24,10 @@ class IosAppbar extends StatefulWidget {
   final Function callback;
 
   @override
-  State<IosAppbar> createState() => _IosAppbarState();
+  State<SongBookAppbar> createState() => _SongBookAppbarState();
 }
 
-class _IosAppbarState extends State<IosAppbar> {
+class _SongBookAppbarState extends State<SongBookAppbar> {
   Map<String, dynamic> allLanguages = {};
   String firstLang = '';
   final GlobalKey tooltipKey = GlobalKey();
@@ -67,9 +69,15 @@ class _IosAppbarState extends State<IosAppbar> {
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ??
             {locale: true};
     allLanguages.removeWhere((key, value) => value == false);
-    setState(() {
-      firstLang = allLanguages.keys.first;
-    });
+    if (allLanguages.isNotEmpty) {
+      setState(() {
+        firstLang = allLanguages.keys.first;
+      });
+    } else {
+      setState(() {
+        firstLang = '';
+      });
+    }
   }
 
   @override
@@ -104,24 +112,32 @@ class _IosAppbarState extends State<IosAppbar> {
                 ),
               ),
             ),
-            AnimatedFilterIconButton(
-              firstLanguage: firstLang,
-              shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
-              color: ScreenColors.songBook,
-              onTap: () => showModalBottomSheet(
-                  scrollControlDisabledMaxHeightRatio: 2,
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  builder: (BuildContext context) {
-                    return ModalBottomSheet(
-                        height: MediaQuery.of(context).size.height / 1.4,
-                        blurBackground: false,
-                        child: BottomSheetSongsFilter());
-                  }).then(
-                (value) => setState(() {
-                  setFirstLang();
-                }),
-              ),
+            BlocBuilder<SongsBloc, SongsState>(
+              builder: (context, state) {
+                bool shouldAnimate =
+                    state is GetSongsSuccessState && state.songs.isEmpty ||
+                        firstLang == '';
+                return AnimatedFilterIconButton(
+                  shouldAnimateForever: shouldAnimate,
+                  firstLanguage: firstLang,
+                  shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
+                  color: ScreenColors.songBook,
+                  onTap: () => showModalBottomSheet(
+                      scrollControlDisabledMaxHeightRatio: 2,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) {
+                        return ModalBottomSheet(
+                            height: MediaQuery.of(context).size.height / 1.4,
+                            blurBackground: false,
+                            child: BottomSheetSongsFilter());
+                      }).then(
+                    (value) => setState(() {
+                      setFirstLang();
+                    }),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -129,7 +145,7 @@ class _IosAppbarState extends State<IosAppbar> {
       ],
       pinned: true,
       expandedHeight: 95.0,
-      backgroundColor: MaterialStateColor.resolveWith((states) =>
+      backgroundColor: WidgetStateColor.resolveWith((states) =>
           AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor!),
       floating: true,
       stretch: true,

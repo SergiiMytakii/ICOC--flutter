@@ -1,7 +1,11 @@
 import 'package:icoc/core/model/q&a_model.dart';
 import 'package:icoc/core/repository/q&a_repository.dart';
 import 'package:icoc/data/local/sqlite_database_service.dart';
+import 'package:injectable/injectable.dart';
 
+@dev
+@prod
+@Injectable(as: QandARepository)
 class QandARepositoryImpl extends QandARepository {
   @override
   Future getArticles() async {

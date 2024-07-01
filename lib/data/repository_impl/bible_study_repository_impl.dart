@@ -2,7 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/core/repository/bible_study_repository.dart';
 import 'package:icoc/data/firebase/database_firebase_service.dart';
+import 'package:injectable/injectable.dart';
 
+@dev
+@prod
+@Injectable(as: BibleStudyRepository)
 class BibleStudyRepositoryImpl extends BibleStudyRepository {
   @override
   Future getBibleStudyList() async {

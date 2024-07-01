@@ -10,7 +10,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:icoc/core/bloc/multibloc_provider.dart';
+import 'package:icoc/presentation/bloc/multibloc_provider.dart';
+import 'package:icoc/injection.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'constants.dart';
@@ -24,6 +26,7 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized();
       await EasyLocalization.ensureInitialized();
       await Firebase.initializeApp();
+      configureDependencies(Environment.dev);
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
       _activateCrashlitics();
       FirebaseAnalytics.instance

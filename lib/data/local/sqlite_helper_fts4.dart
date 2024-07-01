@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,6 +9,7 @@ import '../../constants.dart';
 import '../../core/helpers/shared_preferences_helper.dart';
 import '../../core/model/song_detail.dart';
 
+@injectable
 class DatabaseHelperFTS4 {
   static Database? _db;
   static const String DB_NAME = 'Songs.db';

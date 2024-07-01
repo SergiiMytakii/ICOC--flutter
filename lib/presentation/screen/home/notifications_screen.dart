@@ -3,7 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:icoc/core/bloc/notifications_bloc/notifications_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
@@ -113,8 +114,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   _markAsRead(String title, List<NotificationsModel> notifications) async {
     if (mounted) {
-      context
-          .read<NotificationsBloc>()
+      getIt<NotificationsBloc>()
           .add(NotificationMarkAsReadRequested(title, notifications));
     }
   }

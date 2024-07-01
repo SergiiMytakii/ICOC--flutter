@@ -3,7 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/q&a/widget/q_and_a_app_bar.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
@@ -24,9 +25,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
   void initState() {
     super.initState();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Q&A');
-    Future.delayed(Duration.zero, () {
-      context.read<QandABloc>().add(QandARequested());
-    });
+    getIt<QandABloc>().add(QandARequested());
   }
 
   @override
@@ -43,10 +42,10 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
               callback: (String query) {
                 if (query.length > 2) {
                   previousQuery = query;
-                  context.read<QandABloc>().add(QandARequested(query: query));
+                  getIt<QandABloc>().add(QandARequested(query: query));
                 } else if (previousQuery.length > query.length) {
                   //if user deletes a characters
-                  context.read<QandABloc>().add(QandARequested());
+                  getIt<QandABloc>().add(QandARequested());
                 }
               },
             ),

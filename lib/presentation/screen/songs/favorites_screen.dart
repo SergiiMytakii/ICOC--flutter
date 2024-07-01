@@ -1,7 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
@@ -72,6 +73,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   getFavoriteSongs(BuildContext context) async {
-    context.read<FavoriteSongsListBloc>().add(FavoriteSongsListRequested());
+    getIt<FavoriteSongsListBloc>().add(FavoriteSongsListRequested());
   }
 }

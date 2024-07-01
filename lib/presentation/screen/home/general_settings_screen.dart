@@ -64,11 +64,13 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                     SizedBox(
                       width: 20,
                     ),
-                    Text(
-                      "App language".tr(),
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    Expanded(
+                      child: Text(
+                        "App language".tr(),
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                     ),
-                    Expanded(child: Container()),
                     CountryFlag.fromCountryCode(
                         handleLanguage(locale.languageCode),
                         width: 20,

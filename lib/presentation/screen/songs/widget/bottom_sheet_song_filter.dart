@@ -4,11 +4,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
+import '../../../bloc/songs_bloc/songs_bloc.dart';
 import '../../../../core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetSongsFilter extends StatefulWidget {
@@ -105,9 +105,9 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                 color: Colors.white,
                 style: ButtonStyle(
                     enableFeedback: true,
-                    padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                    padding: WidgetStateProperty.all(EdgeInsets.all(0)),
                     backgroundColor:
-                        MaterialStateProperty.all(ScreenColors.songBook)),
+                        WidgetStateProperty.all(ScreenColors.songBook)),
                 onPressed: () async {
                   _handleTapUpward(label);
                 },
@@ -265,7 +265,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh(Map<String, dynamic> langsToSave) async {
     await SharedPreferencesHelper.saveMap(
         StorageKeys.allSongsLanguages, langsToSave);
-    context.read<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(SongsRequested());
   }
 
   _sortButton(BuildContext context, String title, bool active) {
@@ -300,7 +300,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   void _orderSongs(bool orderByTitle) async {
     await SharedPreferencesHelper.saveBool(
         StorageKeys.orderByTitle, orderByTitle);
-    context.read<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(SongsRequested());
   }
 
   _onReorder(int oldIndex, int newIndex) async {
