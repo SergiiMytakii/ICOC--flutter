@@ -41,6 +41,7 @@ final myLightTheme = ThemeData.light().copyWith(
   primaryColor: const Color(0xff6a4c93),
   primaryColorLight: const Color(0xffbeaed5),
   primaryColorDark: const Color(0xff614587),
+  scaffoldBackgroundColor: Colors.white,
   bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
   iconTheme: const IconThemeData(color: Color(0xff6a4c93)),
   primaryIconTheme: const IconThemeData(color: Color(0xff6a4c93)),

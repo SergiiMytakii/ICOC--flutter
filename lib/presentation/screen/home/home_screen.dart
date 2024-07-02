@@ -11,6 +11,10 @@ import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dar
 import 'package:icoc/core/helpers/in_app_review_helper.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/screen/home/widget/background.dart';
+import 'package:icoc/presentation/screen/home/widget/comet.dart';
+import 'package:icoc/presentation/screen/home/widget/globe_image.dart';
+import 'package:icoc/presentation/screen/home/widget/notification_icon.dart';
 
 import 'package:icoc/presentation/widget/menu_item_card.dart';
 import 'package:icoc/presentation/screen/home/my_drawer.dart';
@@ -26,21 +30,24 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final CarouselController carouselController;
-  late AnimationController animationController;
+  late AnimationController _menuAnimationController;
+
   List<MenuItem> items = HomeScreenMenuItems.items();
   MenuItem currentItem = HomeScreenMenuItems.items().first;
   final isDrawerOpenNotifier = ValueNotifier<bool>(false);
   final angleNotifier = ValueNotifier<double>(0);
+
   void toggleDrawer() async {
     if (isDrawerOpenNotifier.value) {
-      await animationController.reverse();
+      await _menuAnimationController.reverse();
     }
     isDrawerOpenNotifier.value = !isDrawerOpenNotifier.value;
   }
 
   void hideDrawer() async {
     if (isDrawerOpenNotifier.value) {
-      await animationController.reverse();
+      await _menuAnimationController.reverse();
+      isDrawerOpenNotifier.value = false;
     }
     isDrawerOpenNotifier.value;
   }
@@ -55,9 +62,16 @@ class _HomeScreenState extends State<HomeScreen>
 
     carouselController = CarouselController();
 
-    animationController = AnimationController(
+    _menuAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000));
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _menuAnimationController.dispose();
   }
 
   @override
@@ -76,160 +90,90 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Stack(
       children: [
-        GestureDetector(
-          onTap: hideDrawer,
-          child: Image.asset(
-            'assets/images/sky.jpeg',
-            height: screenSize.height,
-            width: screenSize.width,
-            fit: BoxFit.cover,
-          ),
-        ),
+        BackgroundHomeScreen(),
         Positioned(
-          top: 70,
+          top: 50,
           left: 16,
-          child: Builder(builder: (BuildContext scaffoldContext) {
-            return GestureDetector(
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: isDrawerOpenNotifier,
-                  builder: (context, isDrawerOpen, _) => isDrawerOpen
-                      ? const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        )
-                      : Text(
-                          'Menu'.tr(context: context),
-                          style: const TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                ),
-                onTap: () => toggleDrawer());
-          }),
+          child: _buildMenuButton(),
         ),
         Positioned(
           left: screenSize.height * 0.06,
           top: screenSize.height * 0.1,
-          child: ValueListenableBuilder<double>(
-            valueListenable: angleNotifier,
-            builder: (context, angle, _) => Transform.rotate(
-              angle: angle,
-              child: Container(
-                width: screenSize.height * 0.8,
-                height: screenSize.height * 0.8,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.transparent,
-                    ],
-                    stops: [0.85, 1],
-                    focal: Alignment(0, 0),
-                    focalRadius: 0.15,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(28),
-                  child: Image.asset(
-                    'assets/images/globe1.png',
-                    width: screenSize.height * 0.70,
-                    height: screenSize.height * 0.70,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          child:
+              GlobeImage(angleNotifier: angleNotifier, screenSize: screenSize),
         ),
         Positioned(
           left: screenSize.height * 0.09,
           width: screenSize.width,
           top: screenSize.height * 0.18,
-          child: GestureDetector(
-            onTap: () => navigateToScreen(context),
-            child: CarouselSlider(
-              carouselController: carouselController,
-              options: CarouselOptions(
-                height: screenSize.height * 0.65,
-                enlargeFactor: 0.55,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                autoPlayInterval: const Duration(seconds: 6),
-                viewportFraction: 0.3,
-                enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                autoPlayAnimationDuration: const Duration(milliseconds: 1200),
-                scrollDirection: Axis.vertical,
-                onPageChanged: (index, reason) {
-                  currentItem = items[index];
-                  HapticFeedback.heavyImpact();
-                },
-                onScrolled: (scrollPosition) {
-                  angleNotifier.value = scrollPosition! - 10000;
-                },
-              ),
-              items: items.map((item) => MenuItemCard(item)).toList(),
-            ),
-          ),
+          child: _buildCaruselSlider(context, screenSize),
         ),
         ValueListenableBuilder<bool>(
           valueListenable: isDrawerOpenNotifier,
           builder: (context, isDrawerOpen, _) => isDrawerOpen
-              ? Positioned(child: MyDrawer(animationController))
+              ? MyDrawer(_menuAnimationController)
               : const SizedBox(),
         ),
-        Positioned(
-            bottom: 16, left: 16, child: _buildNotificationsIcon(context)),
+        Positioned(bottom: 16, left: 16, child: NotificationIcon()),
       ],
     );
   }
 
-  Widget _buildNotificationsIcon(BuildContext context) {
-    return BlocBuilder<NotificationsBloc, NotificationsState>(
-      builder: (context, state) {
-        int unreadNotificationsCount = 0;
-        if (state is GetNotificationsListSuccessState) {
-          unreadNotificationsCount =
-              countUnreadNotifications(state.notifications);
-          if (unreadNotificationsCount > 0) {
-            FlutterAppBadger.updateBadgeCount(unreadNotificationsCount);
-          } else {
-            FlutterAppBadger.removeBadge();
-          }
-        }
-        return Stack(alignment: AlignmentDirectional.center, children: [
-          state is GetNotificationsListSuccessState &&
-                  unreadNotificationsCount > 0
-              ? Positioned(
-                  left: 13,
-                  bottom: 20,
-                  width: 26,
-                  height: 20,
-                  child: Container(
-                    color: Colors.red,
-                    child: FittedBox(
-                      child: Text(unreadNotificationsCount.toString()),
-                    ),
+  Builder _buildMenuButton() {
+    return Builder(builder: (BuildContext scaffoldContext) {
+      return GestureDetector(
+          child: ValueListenableBuilder<bool>(
+            valueListenable: isDrawerOpenNotifier,
+            builder: (context, isDrawerOpen, _) => isDrawerOpen
+                ? const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  )
+                : Text(
+                    'Menu'.tr(context: context),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                )
-              : Container(),
-          IconButton(
-            icon: const Icon(
-              Icons.messenger_outline,
-              color: Colors.white,
-              size: 36,
-            ),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
           ),
-        ]);
+          onTap: () => toggleDrawer());
+    });
+  }
+
+  GestureDetector _buildCaruselSlider(BuildContext context, Size screenSize) {
+    return GestureDetector(
+      onTap: () async {
+        if (isDrawerOpenNotifier.value) {
+          hideDrawer();
+          await Future.delayed(const Duration(milliseconds: 300));
+        }
+        navigateToScreen(context);
       },
+      child: CarouselSlider(
+        carouselController: carouselController,
+        options: CarouselOptions(
+          height: screenSize.height * 0.65,
+          enlargeFactor: 0.55,
+          autoPlay: true,
+          enlargeCenterPage: true,
+          autoPlayInterval: const Duration(seconds: 6),
+          viewportFraction: 0.3,
+          enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+          autoPlayAnimationDuration: const Duration(milliseconds: 1200),
+          scrollDirection: Axis.vertical,
+          onPageChanged: (index, reason) {
+            currentItem = items[index];
+            HapticFeedback.heavyImpact();
+          },
+          onScrolled: (scrollPosition) {
+            angleNotifier.value = scrollPosition! - 10000;
+          },
+        ),
+        items: items.map((item) => MenuItemCard(item)).toList(),
+      ),
     );
   }
 
   void navigateToScreen(BuildContext context) {
     Navigator.pushNamed(context, currentItem.routeName);
-  }
-
-  int countUnreadNotifications(List<NotificationsModel> notifications) {
-    return notifications.where((element) => element.isRead == false).length;
   }
 }

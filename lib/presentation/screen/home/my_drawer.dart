@@ -102,21 +102,16 @@ class _MyDrawerState extends State<MyDrawer> {
       },
     ];
 
-    return SizedBox(
-      height: 400,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 100),
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          itemCount: drawerItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            return AnimatedDrawerItem(
-                icon: drawerItems[index]['icon'] as IconData,
-                title: drawerItems[index]['title'].toString(),
-                route: drawerItems[index]['route'].toString(),
-                animation: itemAnimations[index]);
-          },
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 80),
+      child: Column(
+        children: List.generate(drawerItems.length, (index) {
+          return AnimatedDrawerItem(
+              icon: drawerItems[index]['icon'] as IconData,
+              title: drawerItems[index]['title'].toString(),
+              route: drawerItems[index]['route'].toString(),
+              animation: itemAnimations[index]);
+        }),
       ),
     );
   }
