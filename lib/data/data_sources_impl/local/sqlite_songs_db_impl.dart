@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -9,8 +10,10 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/song_detail.dart';
 
-@injectable
-class DatabaseHelperFTS4 {
+@dev
+@prod
+@Injectable(as: LocalSongsDB)
+class SqliteSongsDbImpl implements LocalSongsDB {
   static Database? _db;
   static const String DB_NAME = 'Songs.db';
   static const String ID_SONG = 'id_song';
@@ -78,6 +81,7 @@ class DatabaseHelperFTS4 {
 
 /* inserting songs into database */
 
+  @override
   Future<void> insertAllSongs(List<SongDetail> songs) async {
     // Get a reference to the database.
     final Database? database = await db();
@@ -137,6 +141,7 @@ class DatabaseHelperFTS4 {
   }
 
 //for testing
+  @override
   Future<void> printSongsDBHead() async {
     final Database? database = await db();
     final List<Map<String, dynamic>> songs = await database!.query(TABLE_TITLE);
@@ -148,6 +153,7 @@ class DatabaseHelperFTS4 {
 
   /* functions for favorites*/
 
+  @override
   Future<bool> addToFavorites(int id) async {
     // Get a reference to the database.
     final Database? database = await db();
@@ -167,6 +173,7 @@ class DatabaseHelperFTS4 {
     }
   }
 
+  @override
   Future<bool> deleteFromFavorites(int id) async {
     // Get a reference to the database.
     final Database? database = await db();
@@ -183,6 +190,7 @@ class DatabaseHelperFTS4 {
     }
   }
 
+  @override
   Future<bool> getFavoriteStatus(int id) async {
     final Database? database = await db();
     if (database != null) {
@@ -198,6 +206,7 @@ class DatabaseHelperFTS4 {
     }
   }
 
+  @override
   Future<List<int>> getListFavorites() async {
     final Database? database = await db();
     if (database != null) {
@@ -214,6 +223,7 @@ class DatabaseHelperFTS4 {
 
 /* functions for full text search */
 
+  @override
   Future<List<SongDetail>> getSearchResult(
       String query, List<String> languagesToShow) async {
     final Database? database = await db();

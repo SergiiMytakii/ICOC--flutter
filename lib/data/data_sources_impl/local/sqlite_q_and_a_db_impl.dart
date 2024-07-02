@@ -1,11 +1,16 @@
 import 'package:flutter/services.dart';
+import 'package:icoc/core/data_sources/local/local_q_and_a_db_data_source.dart';
 import 'package:icoc/core/model/q&a_model.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
 
-class SqliteDatabaseService {
+@dev
+@prod
+@Injectable(as: LocalQandAdB)
+class SqliteQandAdbImpl implements LocalQandAdB {
   static Database? _db;
   static const String DB_NAME = 'ansver.db';
   static const String TABLE_ANSVERS = 'ansver';
@@ -33,7 +38,6 @@ class SqliteDatabaseService {
     final String path = join((await getDatabasesPath()), DB_NAME);
 
     final bool dbExists = await io.File(path).exists();
-    log.d(dbExists);
     if (!dbExists) {
       // Copy from asset
       final ByteData data = await rootBundle.load(join('assets/db/ansver.db'));
@@ -47,6 +51,7 @@ class SqliteDatabaseService {
     return _db = await openDatabase(path);
   }
 
+  @override
   Future<List<QandAModel>> getAnsvers() async {
     final Database? database = await db;
 

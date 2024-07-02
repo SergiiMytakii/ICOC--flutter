@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:wakelock/wakelock.dart';
@@ -47,6 +48,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
       },
       child: YoutubePlayerScaffold(
           controller: youtubePlayerController,
+          autoFullScreen: false,
           builder: (BuildContext context, Widget player) {
             return SafeArea(
                 top: false,
@@ -72,7 +74,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Text(widget.resource.description ?? '',
-              style: Theme.of(context).textTheme.bodyMedium),
+              style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium),
         ),
       ),
     );

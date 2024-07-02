@@ -1,58 +1,60 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
+import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:icoc/core/model/resources.dart';
 
 import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
-import 'package:icoc/data/firebase/database_firebase_service.dart';
-import 'package:icoc/data/local/sqlite_helper_fts4.dart';
 
 @dev
 @prod
 @Injectable(as: SongsRepository)
 class SongsRepositoryImpl implements SongsRepository {
-  DatabaseServiceFirebase databaseServiceFirebase;
-  DatabaseHelperFTS4 databaseHelperFTS4;
+  final FirebaseDataSource firebaseDataSource;
+  final LocalSongsDB localDB;
 
   SongsRepositoryImpl({
-    required this.databaseServiceFirebase,
-    required this.databaseHelperFTS4,
+    required this.firebaseDataSource,
+    required this.localDB,
   });
   @override
   Future<List<SongDetail>> getSongs() async {
-    final QuerySnapshot snapshot = await databaseServiceFirebase.getSongs();
+    final QuerySnapshot snapshot = await firebaseDataSource
+        .getFromFirebase(FirebaseCollections.Songs.name);
     final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
   }
 
   @override
   Future<void> insertAllSongsToLocalTable(List<SongDetail> songs) async {
-    await databaseHelperFTS4.insertAllSongs(songs);
+    await localDB.insertAllSongs(songs);
   }
 
   @override
   Future<List<SongDetail>> getSearchResult(
       String query, List<String> orderLang) async {
-    return databaseHelperFTS4.getSearchResult(query, orderLang);
+    return localDB.getSearchResult(query, orderLang);
   }
 
   @override
   Future<List<int>> getFavoriteSongs() {
-    return databaseHelperFTS4.getListFavorites();
+    return localDB.getListFavorites();
   }
 
   @override
   Future<bool> setFavoriteSong(int id, bool isFavorite) {
     if (isFavorite)
-      return databaseHelperFTS4.addToFavorites(id);
+      return localDB.addToFavorites(id);
     else
-      return databaseHelperFTS4.deleteFromFavorites(id);
+      return localDB.deleteFromFavorites(id);
   }
 
   @override
   Future<bool> getFavoriteSongStatus(int id) {
-    return databaseHelperFTS4.getFavoriteStatus(id);
+    return localDB.getFavoriteStatus(id);
   }
 }
 
@@ -90,7 +92,6 @@ List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
       return song;
     },
   ).toList();
-  //delete nullable values
   songs.removeWhere((song) => song.text.isEmpty);
   songs.removeWhere((song) => song.title.isEmpty);
   return songs;
