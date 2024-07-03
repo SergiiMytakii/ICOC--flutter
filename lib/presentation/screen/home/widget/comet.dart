@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class CometAnimation extends StatefulWidget {
   final Offset startOffset;
@@ -7,16 +6,33 @@ class CometAnimation extends StatefulWidget {
   final double rotationAngle;
   final double initialRotation;
   final double topOffset;
-  final int delay;
 
-  const CometAnimation(
-      {super.key,
-      required this.startOffset,
-      required this.endOffset,
-      required this.rotationAngle,
-      required this.topOffset,
-      this.initialRotation = 0,
-      required this.delay});
+  const CometAnimation({
+    super.key,
+    required this.startOffset,
+    required this.endOffset,
+    required this.rotationAngle,
+    required this.topOffset,
+    this.initialRotation = 0,
+  });
+
+  CometAnimation copyWith({
+    Key? key,
+    Offset? startOffset,
+    Offset? endOffset,
+    double? initialRotation,
+    double? rotationAngle,
+    double? topOffset,
+  }) {
+    return CometAnimation(
+      key: key ?? this.key,
+      startOffset: startOffset ?? this.startOffset,
+      endOffset: endOffset ?? this.endOffset,
+      initialRotation: initialRotation ?? this.initialRotation,
+      rotationAngle: rotationAngle ?? this.rotationAngle,
+      topOffset: topOffset ?? this.topOffset,
+    );
+  }
 
   @override
   State<CometAnimation> createState() => _CometAnimationState();
@@ -35,7 +51,7 @@ class _CometAnimationState extends State<CometAnimation>
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 15),
-    );
+    )..forward();
 
     _opacityAnimation = Tween<double>(begin: 1, end: 0).animate(
       CurvedAnimation(
@@ -62,8 +78,6 @@ class _CometAnimationState extends State<CometAnimation>
         curve: Curves.easeInOut,
       ),
     );
-    Future.delayed(Duration(seconds: widget.delay))
-        .then((_) => _animationController.forward());
   }
 
   @override

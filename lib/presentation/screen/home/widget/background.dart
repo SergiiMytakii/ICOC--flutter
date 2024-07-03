@@ -15,11 +15,14 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _backgroundAnimationController;
   late Animation<double> _rotationAnimation;
-  late final int index;
+  late final int backgroundIndex;
+  final launchComet = ValueNotifier<int>(0);
+  int? cometIndex;
+  final List<CometAnimation> launchedComets = [];
 
   @override
   void initState() {
-    index = Random().nextInt(10) + 1;
+    backgroundIndex = Random().nextInt(10) + 1;
 
     _backgroundAnimationController = AnimationController(
       vsync: this,
@@ -30,6 +33,19 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
       begin: 0,
       end: -pi * 2, // One full rotation
     ).animate(_backgroundAnimationController);
+    DateTime lastCometLaunchTime =
+        DateTime.now().subtract(const Duration(seconds: 3));
+    _backgroundAnimationController.addListener(() {
+      final i = (_backgroundAnimationController.value * 1000).toInt() % 3;
+      print(i);
+      if (i == 0) {
+        final now = DateTime.now();
+        if (now.difference(lastCometLaunchTime).inSeconds >= 2) {
+          launchComet.value = Random().nextInt(3);
+          lastCometLaunchTime = now;
+        }
+      }
+    });
 
     super.initState();
   }
@@ -39,6 +55,28 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     super.dispose();
     _backgroundAnimationController.dispose();
   }
+
+  final List<CometAnimation> comets = [
+    const CometAnimation(
+      startOffset: Offset(-1, 0.2),
+      endOffset: Offset(2, 0),
+      rotationAngle: math.pi / 40,
+      topOffset: 0.3,
+    ),
+    const CometAnimation(
+      startOffset: Offset(-1, 0.5),
+      endOffset: Offset(2, -0.5),
+      rotationAngle: -math.pi / 40,
+      topOffset: 0.6,
+    ),
+    const CometAnimation(
+      startOffset: Offset(-1, 0),
+      endOffset: Offset(2, 8),
+      rotationAngle: math.pi / 50,
+      topOffset: 0.3,
+      initialRotation: math.pi,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +88,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
           child: RotationTransition(
             turns: _rotationAnimation,
             child: Image.asset(
-              'assets/images/space/space$index.jpg',
+              'assets/images/space/space$backgroundIndex.jpg',
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
@@ -62,28 +100,18 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
           height: screenSize.height,
           color: Colors.black.withOpacity(0.3),
         ),
-        const CometAnimation(
-          startOffset: Offset(-1, 0.2),
-          endOffset: Offset(2, 0),
-          rotationAngle: math.pi / 40,
-          topOffset: 0.3,
-          delay: 0,
-        ),
-        const CometAnimation(
-          startOffset: Offset(-1, 0.5),
-          endOffset: Offset(2, -0.5),
-          rotationAngle: -math.pi / 40,
-          topOffset: 0.6,
-          delay: 4,
-        ),
-        const CometAnimation(
-          startOffset: Offset(-1, 0),
-          endOffset: Offset(2, 8),
-          rotationAngle: math.pi / 50,
-          topOffset: 0.3,
-          initialRotation: math.pi,
-          delay: 7,
-        ),
+        ValueListenableBuilder(
+            valueListenable: launchComet,
+            builder: (context, cometIndex, __) {
+              launchedComets.add(comets[cometIndex]
+                  .copyWith(key: ValueKey(Random().nextInt(1000000))));
+              if (launchedComets.length > 4) launchedComets.removeAt(0);
+              print(
+                  'launch comet $cometIndex  comets count ${launchedComets.length}');
+              return Stack(
+                children: launchedComets,
+              );
+            }),
       ],
     );
   }
