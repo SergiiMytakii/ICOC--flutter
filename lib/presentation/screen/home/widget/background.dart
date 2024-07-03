@@ -19,10 +19,11 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
   final launchComet = ValueNotifier<int>(0);
   int? cometIndex;
   final List<CometAnimation> launchedComets = [];
+  final Random random = Random();
 
   @override
   void initState() {
-    backgroundIndex = Random().nextInt(10) + 1;
+    backgroundIndex = random.nextInt(10) + 1;
 
     _backgroundAnimationController = AnimationController(
       vsync: this,
@@ -41,7 +42,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
       if (i == 0) {
         final now = DateTime.now();
         if (now.difference(lastCometLaunchTime).inSeconds >= 2) {
-          launchComet.value = Random().nextInt(3);
+          launchComet.value = random.nextInt(3);
           lastCometLaunchTime = now;
         }
       }
@@ -84,14 +85,17 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     return Stack(
       children: [
         Transform.scale(
-          scale: 2.5,
+          scale: 2.1,
           child: RotationTransition(
             turns: _rotationAnimation,
-            child: Image.asset(
-              'assets/images/space/space$backgroundIndex.jpg',
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
+            child: Transform.rotate(
+              angle: math.pi / 2 * random.nextInt(5),
+              child: Image.asset(
+                'assets/images/space/space$backgroundIndex.jpg',
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

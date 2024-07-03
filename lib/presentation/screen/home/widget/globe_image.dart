@@ -4,14 +4,13 @@ class GlobeImage extends StatelessWidget {
   const GlobeImage({
     super.key,
     required this.angleNotifier,
-    required this.screenSize,
   });
 
   final ValueNotifier<double> angleNotifier;
-  final Size screenSize;
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return ValueListenableBuilder<double>(
       valueListenable: angleNotifier,
       builder: (context, angle, _) => Transform.rotate(

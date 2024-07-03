@@ -29,8 +29,8 @@ class AnimatedDrawerItem extends StatelessWidget {
           title,
           style: Theme.of(context)
               .textTheme
-              .titleSmall!
-              .copyWith(color: Colors.white),
+              .titleMedium!
+              .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         onTap: () => Navigator.pushNamed(
           context,

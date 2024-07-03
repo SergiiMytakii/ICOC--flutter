@@ -53,10 +53,10 @@ class _CometAnimationState extends State<CometAnimation>
       duration: const Duration(seconds: 15),
     )..forward();
 
-    _opacityAnimation = Tween<double>(begin: 1, end: 0).animate(
+    _opacityAnimation = Tween<double>(begin: 1, end: 0.4).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: const Interval(0, 0.5, curve: Curves.easeIn),
+        curve: const Interval(0, 0.3, curve: Curves.easeInOut),
       ),
     );
 
@@ -124,20 +124,29 @@ class CometPainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
     final path = Path();
     path.moveTo(0, size.height / 2);
-    path.lineTo(size.width * offset.dx, size.height / 2);
-
-    canvas.drawPath(path, paint);
+    final tailLength = size.width * offset.dx;
+    const maxStrokeWidth = 5.0;
+    for (double i = 0; i < tailLength; i += 1) {
+      final strokeWidth = maxStrokeWidth * (i / tailLength);
+      paint.strokeWidth = strokeWidth;
+      path.lineTo(i, size.height / 10);
+      canvas.drawPath(path, paint);
+      path.reset();
+      path.moveTo(i, size.height / 10);
+    }
 
     final cometPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
-        Offset(size.width * offset.dx, size.height / 2), 5, cometPaint);
+        Offset(size.width * offset.dx, size.height / 10), 5, cometPaint);
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/helpers/in_app_review_helper.dart';
 import 'package:icoc/presentation/screen/home/widget/background.dart';
+import 'package:icoc/presentation/screen/home/widget/dimmed_circle.dart';
 import 'package:icoc/presentation/screen/home/widget/globe_image.dart';
 import 'package:icoc/presentation/screen/home/widget/notification_icon.dart';
 
@@ -94,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen>
         Positioned(
           left: screenSize.height * 0.06,
           top: screenSize.height * 0.1,
-          child:
-              GlobeImage(angleNotifier: angleNotifier, screenSize: screenSize),
+          child: GlobeImage(angleNotifier: angleNotifier),
         ),
         Positioned(
           left: screenSize.height * 0.09,
@@ -105,11 +105,23 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         ValueListenableBuilder<bool>(
           valueListenable: isDrawerOpenNotifier,
-          builder: (context, isDrawerOpen, _) => isDrawerOpen
-              ? MyDrawer(_menuAnimationController)
-              : const SizedBox(),
+          builder: (context, isDrawerOpen, _) =>
+              isDrawerOpen ? _buildMenu(screenSize) : const SizedBox(),
         ),
         Positioned(bottom: 16, left: 16, child: NotificationIcon()),
+      ],
+    );
+  }
+
+  Stack _buildMenu(Size screenSize) {
+    return Stack(
+      children: [
+        Positioned(
+          left: screenSize.height * 0.06,
+          top: screenSize.height * 0.1,
+          child: const DimmedCircle(),
+        ),
+        MyDrawer(_menuAnimationController),
       ],
     );
   }
@@ -126,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen>
                   )
                 : Text(
                     'Menu'.tr(context: context),
-                    style: const TextStyle(
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
           ),
