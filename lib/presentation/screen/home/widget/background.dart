@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:icoc/presentation/screen/home/widget/comet.dart';
-import 'dart:math' as math;
 
 class BackgroundHomeScreen extends StatefulWidget {
   BackgroundHomeScreen({super.key});
@@ -27,8 +26,8 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
 
     _backgroundAnimationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2500), // Adjust the rotation speed
-    )..repeat(); // Start the animation in a loop
+      duration: const Duration(seconds: 2500),
+    )..repeat();
 
     _rotationAnimation = Tween<double>(
       begin: 0,
@@ -38,11 +37,10 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
         DateTime.now().subtract(const Duration(seconds: 3));
     _backgroundAnimationController.addListener(() {
       final i = (_backgroundAnimationController.value * 1000).toInt() % 3;
-      print(i);
       if (i == 0) {
         final now = DateTime.now();
         if (now.difference(lastCometLaunchTime).inSeconds >= 2) {
-          launchComet.value = random.nextInt(3);
+          launchComet.value = random.nextInt(4);
           lastCometLaunchTime = now;
         }
       }
@@ -61,21 +59,28 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     const CometAnimation(
       startOffset: Offset(-1, 0.2),
       endOffset: Offset(2, 0),
-      rotationAngle: math.pi / 40,
+      rotationAngle: pi / 40,
       topOffset: 0.3,
     ),
     const CometAnimation(
       startOffset: Offset(-1, 0.5),
       endOffset: Offset(2, -0.5),
-      rotationAngle: -math.pi / 40,
+      rotationAngle: -pi / 40,
       topOffset: 0.6,
     ),
     const CometAnimation(
       startOffset: Offset(-1, 0),
       endOffset: Offset(2, 8),
-      rotationAngle: math.pi / 50,
+      rotationAngle: pi / 50,
       topOffset: 0.3,
-      initialRotation: math.pi,
+      initialRotation: pi,
+    ),
+    const CometAnimation(
+      startOffset: Offset(-1, 0.5),
+      endOffset: Offset(2, 6),
+      rotationAngle: pi / 60,
+      topOffset: 0.3,
+      initialRotation: pi / 1.5,
     ),
   ];
 
@@ -89,7 +94,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
           child: RotationTransition(
             turns: _rotationAnimation,
             child: Transform.rotate(
-              angle: math.pi / 2 * random.nextInt(5),
+              angle: pi / 2 * random.nextInt(5),
               child: Image.asset(
                 'assets/images/space/space$backgroundIndex.jpg',
                 width: double.infinity,
@@ -110,8 +115,6 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
               launchedComets.add(comets[cometIndex]
                   .copyWith(key: ValueKey(Random().nextInt(1000000))));
               if (launchedComets.length > 4) launchedComets.removeAt(0);
-              print(
-                  'launch comet $cometIndex  comets count ${launchedComets.length}');
               return Stack(
                 children: launchedComets,
               );

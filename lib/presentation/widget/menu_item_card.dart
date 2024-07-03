@@ -22,8 +22,8 @@ class MenuItemCard extends StatelessWidget {
               shadows: [
                 const BoxShadow(
                   color: Colors.white,
-                  offset: Offset(-2, 1),
-                  blurRadius: 1.5,
+                  offset: Offset(-2.5, 2.5),
+                  blurRadius: 2,
                   spreadRadius: 2,
                 ),
               ],
