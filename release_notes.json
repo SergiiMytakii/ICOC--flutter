@@ -36,11 +36,27 @@
         "text": "Îmbunătățiri ale interfeței utilizatorului\nCorecții de erori"
     },
     {
+        "language": "ro",
+        "text": "Îmbunătățiri ale interfeței utilizatorului\nCorecții de erori"
+    },
+    {
         "language": "uk-UA",
+        "text": "Покращення користувацького інтерфейсу\nВиправлення помилок"
+    },
+    {
+        "language": "uk",
         "text": "Покращення користувацького інтерфейсу\nВиправлення помилок"
     },
     {
         "language": "es-ES",
         "text": "Mejoras de la interfaz de usuario\nCorrecciones de errores"
+    },
+    {
+        "language": "et",
+        "text": "Kasutajaliidese täiustused\nVigade parandused"
+    },
+    {
+        "language": "lv",
+        "text": "Lietotāja saskarnes uzlabojumi\nBugu labojumi"
     }
 ]
