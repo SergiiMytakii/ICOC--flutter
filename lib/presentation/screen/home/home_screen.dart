@@ -40,14 +40,6 @@ class _HomeScreenState extends State<HomeScreen>
     isDrawerOpenNotifier.value = !isDrawerOpenNotifier.value;
   }
 
-  void hideDrawer() async {
-    if (isDrawerOpenNotifier.value) {
-      await _menuAnimationController.reverse();
-      isDrawerOpenNotifier.value = false;
-    }
-    isDrawerOpenNotifier.value;
-  }
-
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
@@ -149,10 +141,6 @@ class _HomeScreenState extends State<HomeScreen>
   GestureDetector _buildCaruselSlider(BuildContext context, Size screenSize) {
     return GestureDetector(
       onTap: () async {
-        if (isDrawerOpenNotifier.value) {
-          hideDrawer();
-          await Future.delayed(const Duration(milliseconds: 300));
-        }
         navigateToScreen(context);
       },
       child: CarouselSlider(
