@@ -1,8 +1,11 @@
 
 Приложение для Международных Церквей Христа (ICOC). 
-ссылка на обзор https://www.youtube.com/watch?v=UyJUFdwrLss
 Включает:
 песенник
 новостной портал
 библейское учение
 вопросы и ответы
+
+
+
+*to enable injectable generation run:  flutter packages pub run build_runner watch --delete-conflicting-outputs

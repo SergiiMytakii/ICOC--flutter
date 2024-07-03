@@ -21,8 +21,9 @@ Future<List<SongDetail>> orderSongs(List<SongDetail> songs) async {
         return a1.compareTo(b1);
       }
     });
-  } else
+  } else {
     songs.sort((a, b) => a.id.compareTo(b.id));
+  }
 
   return songs;
 }

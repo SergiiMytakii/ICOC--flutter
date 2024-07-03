@@ -4,14 +4,16 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
-import '../../../../core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetSongsFilter extends StatefulWidget {
+  const BottomSheetSongsFilter({super.key});
+
   @override
   State<BottomSheetSongsFilter> createState() => _BottomSheetSongsFilterState();
 }
@@ -30,7 +32,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       height: MediaQuery.of(context).size.height / 1.5,
       child: Column(
         children: [
@@ -50,8 +52,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
               _sortButton(context, 'By tittle'.tr(), orderByTitle == true)
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8),
             child: Divider(
               thickness: 1.5,
             ),
@@ -105,15 +107,15 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                 color: Colors.white,
                 style: ButtonStyle(
                     enableFeedback: true,
-                    padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+                    padding: WidgetStateProperty.all(const EdgeInsets.all(0)),
                     backgroundColor:
-                        MaterialStateProperty.all(ScreenColors.songBook)),
+                        WidgetStateProperty.all(ScreenColors.songBook)),
                 onPressed: () async {
                   _handleTapUpward(label);
                 },
-                icon: Icon(Icons.arrow_upward)),
+                icon: const Icon(Icons.arrow_upward)),
           ),
-          SizedBox(
+          const SizedBox(
             width: 12,
           ),
           SizedBox(
@@ -124,13 +126,13 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                 color: Colors.white,
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(ScreenColors.songBook)),
+                        WidgetStateProperty.all(ScreenColors.songBook)),
                 onPressed: () async {
                   _handleTapDownward(label);
                 },
-                icon: Icon(Icons.arrow_downward)),
+                icon: const Icon(Icons.arrow_downward)),
           ),
-          SizedBox(
+          const SizedBox(
             width: 6,
           ),
           _buildPopUpMenuButton(label),
@@ -160,7 +162,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
             _buildHelp(),
           ];
         },
-        icon: Icon(
+        icon: const Icon(
           CupertinoIcons.ellipsis,
         ),
       ),
@@ -172,19 +174,18 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
       padding: EdgeInsets.zero,
       value: value,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(4),
             child: Text(
               value.tr(),
             ),
           ),
           Platform.isIOS
-              ? Divider(
-                  color: const Color.fromARGB(157, 158, 158, 158),
+              ? const Divider(
+                  color: Color.fromARGB(157, 158, 158, 158),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
     );
@@ -198,15 +199,14 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               '*Language on the top'.tr(),
-              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
+              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
             ),
             Text(
               'will be displayed first'.tr(),
-              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
+              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 14),
             ),
           ],
         ),
@@ -215,7 +215,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Future<void> _moveToTop(String label) async {
-    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
     final index = allLanguages.keys.toList().indexOf(label);
     final value = list.removeAt(index);
     list.insert(0, value);
@@ -226,7 +226,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Future<void> _moveToBottom(String label) async {
-    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
     final index = allLanguages.keys.toList().indexOf(label);
     final value = list.removeAt(index);
     list.add(value);
@@ -237,7 +237,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Future<void> _handleTapUpward(String label) async {
-    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
     final index = allLanguages.keys.toList().indexOf(label);
     if (index == 0) return;
     final newIndex = index - 1;
@@ -250,7 +250,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Future<void> _handleTapDownward(String label) async {
-    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
     final index = allLanguages.keys.toList().indexOf(label);
     if (index == list.length - 1) return;
     final newIndex = index + 1;
@@ -265,12 +265,12 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh(Map<String, dynamic> langsToSave) async {
     await SharedPreferencesHelper.saveMap(
         StorageKeys.allSongsLanguages, langsToSave);
-    context.read<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(SongsRequested());
   }
 
-  _sortButton(BuildContext context, String title, bool active) {
-    Color activeColor = ScreenColors.songBook;
-    Color unActive = Theme.of(context).canvasColor;
+  InkWell _sortButton(BuildContext context, String title, bool active) {
+    const Color activeColor = ScreenColors.songBook;
+    final Color unActive = Theme.of(context).canvasColor;
     return InkWell(
       onTap: () {
         setState(() {
@@ -283,7 +283,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
         width: MediaQuery.of(context).size.width / 3,
         decoration: BoxDecoration(
             color: active ? activeColor : unActive,
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             border: Border.all(color: activeColor)),
         child: Center(
           child: Text(
@@ -300,14 +300,14 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   void _orderSongs(bool orderByTitle) async {
     await SharedPreferencesHelper.saveBool(
         StorageKeys.orderByTitle, orderByTitle);
-    context.read<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(SongsRequested());
   }
 
-  _onReorder(int oldIndex, int newIndex) async {
+  Future _onReorder(int oldIndex, int newIndex) async {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
+    final List<MapEntry<String, dynamic>> list = allLanguages.entries.toList();
     final item = list.removeAt(oldIndex);
     list.insert(newIndex, item);
     setState(() {

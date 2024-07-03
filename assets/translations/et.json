@@ -132,6 +132,9 @@
     "Your name": "Teie nimi",
     "Say Thank you!": "Ütle aitäh!",
     "To the top": "Liigu nimekirja algusesse", "To the bottom": "Liigu nimekirja lõppu", "*Language on the top": "*Keel üleval",
-    "will be displayed first": "kuvatakse esmalt"
+    "will be displayed first": "kuvatakse esmalt",
+    "Unfortunately, there isn't any content here in": "Kahjuks ei ole siin sisu", 
+     "Add more languages in the filter.": "Lisa filtris veel keeli.",
+   "There are not any songs in": "Selles keeles pole ühtegi laulu"
   }
   

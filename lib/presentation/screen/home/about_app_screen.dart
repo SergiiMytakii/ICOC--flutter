@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../constants.dart';
-import '../../widget/custom_button.dart';
-import '../../widget/toast.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/widget/custom_button.dart';
+import 'package:icoc/presentation/widget/toast.dart';
 
 class AboutAppScreen extends StatefulWidget {
+  const AboutAppScreen({super.key});
+
   @override
   State<AboutAppScreen> createState() => _AboutAppScreenState();
 }
@@ -36,7 +38,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
   bool isOpened = false;
   bool _opacity = true;
-  final dataKey = new GlobalKey();
+  final dataKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +50,10 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -59,7 +61,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: ScreenColors.general, fontWeight: FontWeight.w700),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -67,7 +69,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -77,7 +79,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                   .bodyLarge!
                   .copyWith(fontWeight: FontWeight.w900),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -101,7 +103,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             // Padding(
@@ -117,13 +119,13 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.email_outlined,
                   color: Colors.blueAccent,
                 ),
                 TextButton(
                   child: Text(
-                    '$email'.tr(),
+                    email.tr(),
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium!
@@ -146,7 +148,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
     showToast(context: context, message: 'Copied to clipboard'.tr());
   }
 
-  supportProjectBlock(BuildContext context) {
+  Column supportProjectBlock(BuildContext context) {
     return Column(
       children: [
         Padding(
@@ -171,22 +173,22 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             },
             child: Text(
               'Support ptoject'.tr(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),
         AnimatedContainer(
-          duration: Duration(milliseconds: 800),
+          duration: const Duration(milliseconds: 800),
           height: isOpened ? 300 : 0,
           width: double.maxFinite,
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          padding: EdgeInsets.all(8),
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.all(8),
           curve: Curves.fastOutSlowIn,
           child: Column(children: [
             Flexible(
                 child: Text(
               'In Ukraine:'.tr(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )),
             Flexible(
               child: Padding(
@@ -196,11 +198,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                     Text(
                       'MonoBank card:'.tr(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 6,
                     ),
                     _buildCredentialsField(context, monoBankCard),
-                    Expanded(child: SizedBox()),
+                    const Expanded(child: SizedBox()),
                     _buildCopyButton(context, monoBankCard),
                   ],
                 ),
@@ -209,13 +211,13 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             Flexible(
                 child: Text(
               'Out from Ukraine:'.tr(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )),
             Flexible(
               child: Row(
                 children: [
                   Text('PayPal:'.tr()),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
                   _buildCredentialsField(context, payPalAccount),
@@ -229,13 +231,13 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
             Flexible(
                 child: Text(
               'From everywhere:'.tr(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )),
             Flexible(
               child: Row(
                 children: [
                   Text('USDT TRC20:'.tr()),
-                  SizedBox(
+                  const SizedBox(
                     width: 6,
                   ),
                   _buildCredentialsField(context, usdtWallet),
@@ -267,7 +269,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
   AnimatedOpacity _buildCopyButton(BuildContext context, String value) {
     return AnimatedOpacity(
       opacity: _opacity ? 0 : 1,
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 800),
       child: IconButton(
           onPressed: () {
             _copyToClipboard(value);

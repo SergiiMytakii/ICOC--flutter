@@ -86,3 +86,5 @@ Map<String, String> languagesCodes = {
   // 'pt': 'Portuguese',
   // 'sr': 'Serbian',
 };
+
+enum FirebaseCollections { Songs, BibleStudy, Notifications, Video, Feedback }

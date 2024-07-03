@@ -4,28 +4,26 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
-import '../../../widget/modal_bottom_sheet.dart';
-import '../../../routes/app_routes.dart';
-import 'bottom_sheet_song_filter.dart';
+import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/screen/songs/widget/bottom_sheet_song_filter.dart';
 
-class IosAppbar extends StatefulWidget {
-  IosAppbar(
-    this.title,
-    this.callback,
-  );
+class SongBookAppbar extends StatefulWidget {
+  SongBookAppbar(this.title, this.callback, {super.key});
   final String title;
   final Function callback;
 
   @override
-  State<IosAppbar> createState() => _IosAppbarState();
+  State<SongBookAppbar> createState() => _SongBookAppbarState();
 }
 
-class _IosAppbarState extends State<IosAppbar> {
+class _SongBookAppbarState extends State<SongBookAppbar> {
   Map<String, dynamic> allLanguages = {};
   String firstLang = '';
   final GlobalKey tooltipKey = GlobalKey();
@@ -40,12 +38,12 @@ class _IosAppbarState extends State<IosAppbar> {
   }
 
   void showTooltip() {
-    double tooltipShown =
+    final double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
     if (tooltipShown < 4.0) {
-      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
-        Future.delayed(Duration(seconds: 6), () {
+        Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {
               _tooltipVisible = false;
@@ -67,9 +65,15 @@ class _IosAppbarState extends State<IosAppbar> {
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ??
             {locale: true};
     allLanguages.removeWhere((key, value) => value == false);
-    setState(() {
-      firstLang = allLanguages.keys.first;
-    });
+    if (allLanguages.isNotEmpty) {
+      setState(() {
+        firstLang = allLanguages.keys.first;
+      });
+    } else {
+      setState(() {
+        firstLang = '';
+      });
+    }
   }
 
   @override
@@ -77,10 +81,8 @@ class _IosAppbarState extends State<IosAppbar> {
     BuildContext context,
   ) {
     return SliverAppBar(
-      primary: true,
       title: Text(widget.title),
       centerTitle: true,
-      automaticallyImplyLeading: true,
       leading: IconButton(
           icon: Icon(
             Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
@@ -104,32 +106,40 @@ class _IosAppbarState extends State<IosAppbar> {
                 ),
               ),
             ),
-            AnimatedFilterIconButton(
-              firstLanguage: firstLang,
-              shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
-              color: ScreenColors.songBook,
-              onTap: () => showModalBottomSheet(
-                  scrollControlDisabledMaxHeightRatio: 2,
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  builder: (BuildContext context) {
-                    return ModalBottomSheet(
-                        height: MediaQuery.of(context).size.height / 1.4,
-                        blurBackground: false,
-                        child: BottomSheetSongsFilter());
-                  }).then(
-                (value) => setState(() {
-                  setFirstLang();
-                }),
-              ),
+            BlocBuilder<SongsBloc, SongsState>(
+              builder: (context, state) {
+                final bool shouldAnimate =
+                    state is GetSongsSuccessState && state.songs.isEmpty ||
+                        firstLang == '';
+                return AnimatedFilterIconButton(
+                  shouldAnimateForever: shouldAnimate,
+                  firstLanguage: firstLang,
+                  shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
+                  color: ScreenColors.songBook,
+                  onTap: () => showModalBottomSheet(
+                      scrollControlDisabledMaxHeightRatio: 2,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) {
+                        return ModalBottomSheet(
+                            height: MediaQuery.of(context).size.height / 1.4,
+                            blurBackground: false,
+                            child: const BottomSheetSongsFilter());
+                      }).then(
+                    (value) => setState(() {
+                      setFirstLang();
+                    }),
+                  ),
+                );
+              },
             ),
           ],
         ),
         buildAddSongButton(context)
       ],
       pinned: true,
-      expandedHeight: 95.0,
-      backgroundColor: MaterialStateColor.resolveWith((states) =>
+      expandedHeight: 95,
+      backgroundColor: WidgetStateColor.resolveWith((states) =>
           AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor!),
       floating: true,
       stretch: true,
@@ -138,7 +148,7 @@ class _IosAppbarState extends State<IosAppbar> {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 45,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               right: 10,
               bottom: 8,
@@ -159,7 +169,7 @@ class _IosAppbarState extends State<IosAppbar> {
 
 IconButton buildAddSongButton(BuildContext context) {
   return IconButton(
-    icon: Icon(
+    icon: const Icon(
       Icons.add,
     ),
     tooltip: 'icon_button_actions_app_bar_add_song'.tr(),

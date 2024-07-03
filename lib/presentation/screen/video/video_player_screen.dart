@@ -1,3 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:wakelock/wakelock.dart';
@@ -6,8 +9,8 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 class VideoPlayer extends StatefulWidget {
   VideoPlayer(
     this.resource, {
-    Key? key,
-  }) : super(key: key) {
+    super.key,
+  }) {
     Wakelock.enable();
   }
 
@@ -22,9 +25,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   void initState() {
     youtubePlayerController = YoutubePlayerController(
-      params: YoutubePlayerParams(
-        mute: false,
-        showControls: true,
+      params: const YoutubePlayerParams(
         showFullscreenButton: true,
       ),
     );
@@ -41,13 +42,13 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
       onPopInvoked: (didPop) async {
         Future.delayed(Duration.zero)
             .then((value) => Navigator.of(context).pop());
       },
       child: YoutubePlayerScaffold(
           controller: youtubePlayerController,
+          autoFullScreen: false,
           builder: (BuildContext context, Widget player) {
             return SafeArea(
                 top: false,
@@ -57,7 +58,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
                       title: Text(
                         widget.resource.title ?? '',
                         maxLines: 2,
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
                     body: Column(
@@ -71,9 +72,9 @@ class _VideoPlayerState extends State<VideoPlayer> {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Text(widget.resource.description ?? '',
-              style: Theme.of(context).textTheme.bodyMedium),
+              style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium),
         ),
       ),
     );

@@ -3,10 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../constants.dart';
+import 'package:icoc/constants.dart';
 
 class TermsOfUseAndPolicy extends StatelessWidget {
-  const TermsOfUseAndPolicy({Key? key}) : super(key: key);
+  const TermsOfUseAndPolicy({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class TermsOfUseAndPolicy extends StatelessWidget {
                 text: 'terms of use part3'.tr(),
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              TextSpan(text: '''
+              const TextSpan(text: '''
 
 
 '''),

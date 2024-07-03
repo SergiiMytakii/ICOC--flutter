@@ -1,7 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
@@ -14,9 +15,9 @@ class ListVideosScreen extends StatefulWidget {
   final Video video;
 
   ListVideosScreen({
-    Key? key,
+    super.key,
     required this.video,
-  }) : super(key: key) {
+  }) {
     Wakelock.enable();
   }
 
@@ -37,9 +38,7 @@ class _ListVideosState extends State<ListVideosScreen> {
   }
 
   Future<void> _getVideosList() async {
-    Future.delayed(Duration.zero).then((value) => context
-        .read<VideoBloc>()
-        .add(GetVideosFromPlaylist(widget.video.playlistId)));
+    getIt<VideoBloc>().add(GetVideosFromPlaylist(widget.video.playlistId));
   }
 
   @override
@@ -55,7 +54,6 @@ class _ListVideosState extends State<ListVideosScreen> {
         appBar: AppBar(
           centerTitle: true,
           title: Text(widget.video.id),
-          automaticallyImplyLeading: true,
         ),
         body: Stack(children: [
           BlocBuilder<VideoBloc, VideoState>(

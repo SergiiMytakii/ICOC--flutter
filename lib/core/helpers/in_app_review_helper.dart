@@ -16,12 +16,11 @@ void rateApp(BuildContext context) async {
       if (rateMyApp.shouldOpenDialog) {
         rateMyApp.showStarRateDialog(
           context,
-          ignoreNativeDialog: false,
           actionsBuilder: (context, stars) {
             return [
               // Return a list of actions (that will be shown at the bottom of the dialog).
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () async {
                   await rateMyApp
                       .callEvent(RateMyAppEventType.rateButtonPressed);
@@ -32,7 +31,6 @@ void rateApp(BuildContext context) async {
                       false) {
                     await rateMyApp.launchNativeReviewDialog();
                   }
-                  ;
                 },
               ),
             ];

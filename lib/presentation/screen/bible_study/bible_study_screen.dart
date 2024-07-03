@@ -3,7 +3,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
@@ -12,9 +14,10 @@ import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
+import 'package:icoc/presentation/widget/no_content_warning.dart';
 
 class BibleStudyScreen extends StatefulWidget {
-  BibleStudyScreen({Key? key}) : super(key: key);
+  BibleStudyScreen({super.key});
 
   @override
   State<BibleStudyScreen> createState() => _BibleStudyScreenState();
@@ -32,133 +35,133 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   }
 
   Future<void> _getBibleStudyList() async {
-    Future.delayed(Duration.zero).then((value) =>
-        context.read<BibleStudyBloc>().add(BibleStudyListRequested()));
+    getIt<BibleStudyBloc>().add(BibleStudyListRequested());
   }
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'drawer_first_principles'.tr(),
-          ),
-          centerTitle: true,
-          actions: [
-            Stack(
-              children: [
-                Visibility(
-                  visible: _tooltipVisible,
-                  child: Tooltip(
-                    message: 'Filter languages'.tr(),
-                    key: tooltipKey1,
-                    preferBelow: true,
-                    triggerMode: TooltipTriggerMode.manual,
-                    child: Container(
-                      height: 40,
-                      width: 30,
-                    ),
-                  ),
-                ),
-                AnimatedFilterIconButton(
-                    shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-                    onTap: () => showModalBottomSheet(
-                        scrollControlDisabledMaxHeightRatio: 2,
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        builder: (BuildContext context) {
-                          return ModalBottomSheet(
-                              height: MediaQuery.of(context).size.height / 1.5,
-                              blurBackground: false,
-                              child: BottomSheetBibleStudyFilter());
-                        }),
-                    color: ScreenColors.bibleStudy),
-              ],
-            )
-          ],
-        ),
-        body: BlocBuilder<BibleStudyBloc, BibleStudyState>(
-          builder: (context, state) {
-            if (state is GetBibleStudyListSuccessState) {
-              return _buildBody(state, i);
-            } else if (state is BibleStudyLoadingState) {
-              return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
-            } else if (state is BibleStudyErrorState) {
-              return RefreshIndicator.adaptive(
-                  onRefresh: _getBibleStudyList,
-                  child: ListView(
-                    children: [
-                      ErrorTextOnScreen(message: state.message),
-                    ],
-                  ));
-            } else {
-              return Container();
-            }
-          },
-        ));
+    return BlocBuilder<BibleStudyBloc, BibleStudyState>(
+      builder: (context, state) {
+        if (state is GetBibleStudyListSuccessState) {
+          return Scaffold(
+              appBar: _buildAppbar(context, state), body: _buildBody(state));
+        } else if (state is BibleStudyLoadingState) {
+          return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
+        } else if (state is BibleStudyErrorState) {
+          return RefreshIndicator.adaptive(
+              onRefresh: _getBibleStudyList,
+              child: ListView(
+                children: [
+                  ErrorTextOnScreen(message: state.message),
+                ],
+              ));
+        } else {
+          return Container();
+        }
+      },
+    );
   }
 
-  Widget _buildBody(GetBibleStudyListSuccessState state, int i) {
+  AppBar _buildAppbar(
+      BuildContext context, GetBibleStudyListSuccessState state) {
+    return AppBar(
+      title: Text(
+        'drawer_first_principles'.tr(),
+      ),
+      centerTitle: true,
+      actions: [
+        Stack(
+          children: [
+            Visibility(
+              visible: _tooltipVisible,
+              child: Tooltip(
+                message: 'Filter languages'.tr(),
+                key: tooltipKey1,
+                preferBelow: true,
+                triggerMode: TooltipTriggerMode.manual,
+                child: Container(
+                  height: 40,
+                  width: 30,
+                ),
+              ),
+            ),
+            AnimatedFilterIconButton(
+                shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+                shouldAnimateForever: state.topics.isEmpty,
+                onTap: () => showModalBottomSheet(
+                    scrollControlDisabledMaxHeightRatio: 2,
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (BuildContext context) {
+                      return ModalBottomSheet(
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          blurBackground: false,
+                          child: const BottomSheetBibleStudyFilter());
+                    }),
+                color: ScreenColors.bibleStudy),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildBody(GetBibleStudyListSuccessState state) {
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
-      child: ListView.builder(
-        cacheExtent: 0,
-        itemCount: state.topics.length,
-        itemBuilder: (context, index) {
-          if (i < 4) {
-            i++;
-          } else {
-            i = 0;
-          }
-          return AnimationWrapper(
-            child: Column(
-              children: [
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Container(
-                    width: 40,
+      child: state.topics.isNotEmpty
+          ? ListView.builder(
+              cacheExtent: 0,
+              itemCount: state.topics.length,
+              itemBuilder: (context, index) {
+                return AnimationWrapper(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        leading: Container(
+                          width: 40,
+                        ),
+                        title: Text(
+                          state.topics[index].topic,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          state.topics[index].subtopic,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () => Navigator.of(context).pushNamed(
+                            Routes.ONE_TOPIC_SCREEN,
+                            arguments: state.topics[index]),
+                      ),
+                      Divider(
+                        indent: 50,
+                        color: getDividerColor(index),
+                        thickness: 1.2,
+                      ),
+                    ],
                   ),
-                  title: Text(
-                    state.topics[index].topic,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    state.topics[index].subtopic,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  onTap: () => Navigator.of(context).pushNamed(
-                      Routes.ONE_TOPIC_SCREEN,
-                      arguments: state.topics[index]),
-                ),
-                Divider(
-                  indent: 50,
-                  color: dividerColors[i],
-                  thickness: 1.2,
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+                );
+              },
+            )
+          : const NoContentWarning(),
     );
   }
 
   void showTooltip() {
-    double tooltipShown =
+    final double tooltipShown =
         SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
     if (tooltipShown < 5.0) {
-      Future.delayed(Duration(milliseconds: 1500)).then((value) {
+      Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
-        Future.delayed(Duration(seconds: 6), () {
+        Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {
               _tooltipVisible = false;

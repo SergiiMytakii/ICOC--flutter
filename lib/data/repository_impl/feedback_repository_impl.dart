@@ -1,36 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/core/model/feedback.dart';
 import 'package:icoc/core/repository/feedback_repository.dart';
-import 'package:icoc/data/firebase/database_firebase_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 
+@dev
+@prod
+@Injectable(as: FeedbackRepository)
 class FeedbackRepositoryImpl extends FeedbackRepository {
+  final FirebaseDataSource firebaseDataSource;
+
+  FeedbackRepositoryImpl(this.firebaseDataSource);
   @override
   Future<List<Feedback>> getFeedbackList() async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
-    QuerySnapshot snapshot = await databaseServiceFirebase.getFeedbackList();
+    final QuerySnapshot snapshot = await firebaseDataSource
+        .getFromFirebase(FirebaseCollections.Feedback.name);
     final List<Feedback> feedbacks = _listFromSnapshot(snapshot);
     return feedbacks.reversed.toList();
   }
 
   @override
   Future<List<Feedback>> insertFeedback(String name, String feedback) async {
-    DatabaseServiceFirebase databaseServiceFirebase = DatabaseServiceFirebase();
-
-    QuerySnapshot snapshot = await databaseServiceFirebase.insertFeedback(
-      name,
-      feedback,
-      DateTime.now().toUtc().toString(),
-    );
+    final QuerySnapshot snapshot = await firebaseDataSource
+        .postToFirebase(FirebaseCollections.Feedback.name, {
+      'name': name,
+      'text': feedback,
+    });
     final List<Feedback> feedbacks = _listFromSnapshot(snapshot);
     return feedbacks.reversed.toList();
   }
 }
 
 List<Feedback> _listFromSnapshot(QuerySnapshot snapshot) {
-  List<Feedback> feedbacks = snapshot.docs.map((doc) {
-    DateTime parsedDateTime = DateTime.parse(doc.id);
-    String formattedDate = DateFormat('dd.MM\nyyyy').format(parsedDateTime);
+  final List<Feedback> feedbacks = snapshot.docs.map((doc) {
+    final DateTime parsedDateTime = DateTime.parse(doc.id);
+    final String formattedDate =
+        DateFormat('dd.MM\nyyyy').format(parsedDateTime);
     return Feedback(
       date: formattedDate,
       text: doc.get('text') ?? '',

@@ -2,13 +2,15 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../constants.dart';
-import '../favorites_screen.dart';
-import '../song_book_screen.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/screen/songs/favorites_screen.dart';
+import 'package:icoc/presentation/screen/songs/song_book_screen.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
+  const MyBottomNavigationBar({super.key});
+
   @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
+  State<MyBottomNavigationBar> createState() => _MyBottomNavigationBarState();
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
@@ -26,8 +28,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       body: IndexedStack(
         index: _selectedPageIndex,
         children: [
-          SongBookScreen(),
-          FavoritesScreen(),
+          const SongBookScreen(),
+          const FavoritesScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -42,11 +44,11 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         items: [
           BottomNavigationBarItem(
             label: 'bottom_navigation_bar_list'.tr(),
-            icon: Icon(Icons.queue_music),
+            icon: const Icon(Icons.queue_music),
           ),
           BottomNavigationBarItem(
             label: 'bottom_navigation_bar_favorites'.tr(),
-            icon: Icon(Icons.favorite),
+            icon: const Icon(Icons.favorite),
           ),
         ],
       ),

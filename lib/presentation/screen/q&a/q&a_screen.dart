@@ -2,8 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/bloc/q&a_bloc/q&a_bloc.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/q&a/widget/q_and_a_app_bar.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
@@ -12,7 +13,7 @@ import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/unfocus_keyboard.dart';
 
 class QuestionsAndAnswers extends StatefulWidget {
-  QuestionsAndAnswers({Key? key}) : super(key: key);
+  QuestionsAndAnswers({super.key});
 
   @override
   State<QuestionsAndAnswers> createState() => _QuestionsAndAnswersState();
@@ -24,29 +25,26 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
   void initState() {
     super.initState();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Q&A');
-    Future.delayed(Duration.zero, () {
-      context.read<QandABloc>().add(QandARequested());
-    });
+    getIt<QandABloc>().add(QandARequested());
   }
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return Scaffold(
       body: UnfocusOnTapOutside(
         child: CustomScrollView(
           cacheExtent: 0,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             QandAAppbar(
               title: 'drawer_q_and_a'.tr(),
               callback: (String query) {
                 if (query.length > 2) {
                   previousQuery = query;
-                  context.read<QandABloc>().add(QandARequested(query: query));
+                  getIt<QandABloc>().add(QandARequested(query: query));
                 } else if (previousQuery.length > query.length) {
                   //if user deletes a characters
-                  context.read<QandABloc>().add(QandARequested());
+                  getIt<QandABloc>().add(QandARequested());
                 }
               },
             ),
@@ -56,11 +54,6 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        if (i < 4) {
-                          i++;
-                        } else {
-                          i = 0;
-                        }
                         return AnimationWrapper(
                           child: Column(
                             children: [
@@ -78,7 +71,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                                       .titleMedium!
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                trailing: Icon(Icons.arrow_forward_ios),
+                                trailing: const Icon(Icons.arrow_forward_ios),
                                 onTap: () => Navigator.of(context).pushNamed(
                                   Routes.ONE_Q_AND_A_SCREEN,
                                   arguments: state.articles[index],
@@ -86,7 +79,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                               ),
                               Divider(
                                 indent: 50,
-                                color: dividerColors[i],
+                                color: getDividerColor(index),
                                 thickness: 1.2,
                               ),
                             ],

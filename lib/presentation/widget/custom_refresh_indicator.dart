@@ -3,7 +3,8 @@ import 'package:icoc/presentation/widget/loading.dart';
 
 class CustomRefreshIndicator extends StatefulWidget {
   final Function onRefresh;
-  const CustomRefreshIndicator({required this.onRefresh, this.child});
+  const CustomRefreshIndicator(
+      {super.key, required this.onRefresh, this.child});
   final Widget? child;
 
   @override
@@ -32,7 +33,7 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
             ],
           ),
           onRefresh: () async {
-            Future.delayed(Duration(milliseconds: 500)).then((value) {
+            Future.delayed(const Duration(milliseconds: 500)).then((value) {
               if (mounted) {
                 setState(() {
                   opacity = 1;

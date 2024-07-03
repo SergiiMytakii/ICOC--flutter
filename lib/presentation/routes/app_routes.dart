@@ -40,9 +40,9 @@ class Routes {
 }
 
 final routes = {
-  Routes.HOME: (context) => HomeScreen(),
+  Routes.HOME: (context) => const HomeScreen(),
   // Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
-  Routes.ADD_SONG_SCREEN: (context) => AddSongScreen(),
+  Routes.ADD_SONG_SCREEN: (context) => const AddSongScreen(),
   Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
   Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
   Routes.ONE_Q_AND_A_SCREEN: (context) => OneQandAScreen(),
@@ -53,7 +53,7 @@ Route onGenerateRoute(RouteSettings settings) {
     case Routes.SONGBOOK:
       return FadePageRoute(
         builder: (context) {
-          return MyBottomNavigationBar();
+          return const MyBottomNavigationBar();
         },
       );
     case Routes.BIBLE_STUDY:
@@ -77,28 +77,28 @@ Route onGenerateRoute(RouteSettings settings) {
     case Routes.SHARE_APP_SCREEN:
       return FadePageRoute(
         builder: (context) {
-          return ShareAppScreen();
+          return const ShareAppScreen();
         },
       );
     case Routes.SETTINGS:
       return FadePageRoute(
         builder: (context) {
-          return GeneralSettingsScreen();
+          return const GeneralSettingsScreen();
         },
       );
     case Routes.TERMS_OF_USE:
       return FadePageRoute(
         builder: (context) {
-          return TermsOfUseAndPolicy();
+          return const TermsOfUseAndPolicy();
         },
       );
     case Routes.ABOUT_APP_SCREEN:
       return FadePageRoute(builder: (context) {
-        return AboutAppScreen();
+        return const AboutAppScreen();
       });
     case Routes.FEEDBACK_SCREEN:
       return FadePageRoute(builder: (context) {
-        return FeedbackScreen();
+        return const FeedbackScreen();
       });
     case Routes.NOTIFICATIONS_SCREEN:
       return FadePageRoute(
@@ -107,6 +107,6 @@ Route onGenerateRoute(RouteSettings settings) {
         },
       );
     default:
-      return MaterialPageRoute(builder: (context) => HomeScreen());
+      return MaterialPageRoute(builder: (context) => const HomeScreen());
   }
 }

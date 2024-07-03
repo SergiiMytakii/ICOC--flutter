@@ -2,23 +2,24 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
-import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import '../../../constants.dart';
-import '../../../core/model/resources.dart';
-import '../../../core/model/song_detail.dart';
-import '../../widget/font_size_adjust_bottom_sheet.dart';
-import 'widget/song_text_on_song_screen.dart';
-import 'widget/video_card.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
+import 'package:icoc/presentation/screen/songs/widget/song_text_on_song_screen.dart';
+import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 
 class OneSongScreen extends StatefulWidget {
-  OneSongScreen(this.song) {
+  OneSongScreen(this.song, {super.key}) {
     Wakelock.enable();
   }
   final SongDetail song;
@@ -43,12 +44,11 @@ class _OneSongScreenState extends State<OneSongScreen>
   @override
   void initState() {
     song = widget.song;
-    Future.delayed(Duration.zero).then((value) => context
-        .read<FavoriteSongStatusBloc>()
-        .add(FavoriteSongStatusRequested(id: song.id)));
+    getIt<FavoriteSongStatusBloc>()
+        .add(FavoriteSongStatusRequested(id: song.id));
     _controller = AnimationController(
-        duration:
-            Duration(milliseconds: 500), // Set the duration of the animation
+        duration: const Duration(
+            milliseconds: 500), // Set the duration of the animation
         vsync: this,
         lowerBound: 0.48);
     // Create a curved animation
@@ -70,7 +70,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     super.dispose();
   }
 
-  countTabs(SongDetail song) {
+  int countTabs(SongDetail song) {
     final tabs =
         song.text.length + (song.chords != null ? song.chords!.length : 0);
     return tabs;
@@ -89,7 +89,9 @@ class _OneSongScreenState extends State<OneSongScreen>
             children: [
               //adjust size text screen and player dynamicly
               _tabBarBuilder(song),
-              if (song.resources != null && song.resources!.isNotEmpty)
+              if (song.resources != null &&
+                  song.resources!.isNotEmpty &&
+                  !videoIsPlaying)
                 _buldVideoPreview(song),
               if (videoIsPlaying) _miniPlayerBuilder(),
             ],
@@ -103,7 +105,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     BuildContext context,
     SongDetail song,
   ) {
-    var fontSizeAdjust = FontSizeAdjustBottomSheet(
+    final fontSizeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.songBook);
 
     return AppBar(
@@ -118,27 +120,26 @@ class _OneSongScreenState extends State<OneSongScreen>
           builder: (context, state) {
             if (state is GetFavoriteSongStatusSuccessState) {
               return IconButton(
-                tooltip: "to favorite".tr(),
+                tooltip: 'to favorite'.tr(),
                 icon: Icon(
                   state.isFavorite ? Icons.favorite : Icons.favorite_border,
                 ),
                 onPressed: () {
-                  context.read<FavoriteSongStatusBloc>().add(
+                  getIt<FavoriteSongStatusBloc>().add(
                       SetFavoriteSongStatusRequested(
                           id: song.id, isFavorite: !state.isFavorite));
-                  context
-                      .read<FavoriteSongsListBloc>()
+                  getIt<FavoriteSongsListBloc>()
                       .add(FavoriteSongsListRequested());
                 },
               );
             } else {
-              return Icon(Icons.favorite_border);
+              return const Icon(Icons.favorite_border);
             }
           },
         ),
         IconButton(
           tooltip: 'Share'.tr(),
-          icon: Icon(
+          icon: const Icon(
             Icons.share,
           ),
           onPressed: () {
@@ -147,7 +148,7 @@ class _OneSongScreenState extends State<OneSongScreen>
         ),
         IconButton(
             tooltip: 'Font size'.tr(),
-            icon: Icon(
+            icon: const Icon(
               Icons.text_fields_outlined,
             ),
             onPressed: () => fontSizeAdjust.bottomSheet()),
@@ -199,11 +200,11 @@ class _OneSongScreenState extends State<OneSongScreen>
                 youtubePlayerController!.stopVideo();
                 youtubePlayerController!.close();
               },
-              icon: Icon(Icons.close_outlined)),
+              icon: const Icon(Icons.close_outlined)),
         ],
       ),
       AnimatedContainer(
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
         child: Container(
           width: double.maxFinite,
           height: _animation.value * screenSize.width / 16 * 9,
@@ -245,7 +246,7 @@ class _OneSongScreenState extends State<OneSongScreen>
         Container(
           height: 110,
           width: double.maxFinite,
-          color: AdaptiveTheme.of(context).theme.colorScheme.background,
+          color: AdaptiveTheme.of(context).theme.colorScheme.surface,
         ),
         Container(
             height: 100,
@@ -284,14 +285,24 @@ class _OneSongScreenState extends State<OneSongScreen>
     final index = tabController.index;
     String text = '';
     String title = '';
+    String description = '';
     if (index < song.text.values.length) {
-      title = song.title.values.elementAt(index);
-      text = song.text.values.elementAt(index);
-      text = title + '\n\n' + text;
+      //because titles could be common for several texts (en1, en2 have the same title) we need to get key first
+      final entry = song.text.entries.elementAt(index);
+      final lang = entry.key.toString().substring(0, 2);
+      title = song.title[lang];
+      description =
+          song.description != null && song.description!.keys.contains(lang)
+              ? song.description![entry.key.toString().substring(0, 2)]
+              : '';
+      text = entry.value;
     } else {
       text = song.chords!.values.elementAt(index - song.text.values.length);
     }
     text = FormatTextHelper.extractFormattedText(text);
+    text = '$title\n\n$description\n\n$text';
+
+    print(text);
     Share.share(text);
   }
 }

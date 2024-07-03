@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AnimationWrapper extends StatefulWidget {
   final Widget child;
-  const AnimationWrapper({required this.child});
+  const AnimationWrapper({super.key, required this.child});
 
   @override
   State<AnimationWrapper> createState() => _AnimationWrapperState();
@@ -21,7 +21,7 @@ class _AnimationWrapperState extends State<AnimationWrapper>
       duration: const Duration(milliseconds: 300),
     )..forward();
     // Animation will run when widget is built (scrolled into view)
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeOut,

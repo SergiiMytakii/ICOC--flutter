@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class QandAAppbar extends StatelessWidget {
   QandAAppbar({
+    super.key,
     required this.title,
     required this.callback,
   });
@@ -14,13 +15,11 @@ class QandAAppbar extends StatelessWidget {
     BuildContext context,
   ) {
     return SliverAppBar(
-      primary: true,
       title: Text(title),
       centerTitle: true,
-      automaticallyImplyLeading: true,
       pinned: true,
-      expandedHeight: 95.0,
-      backgroundColor: MaterialStateColor.resolveWith((states) =>
+      expandedHeight: 95,
+      backgroundColor: WidgetStateColor.resolveWith((states) =>
           AdaptiveTheme.of(context).theme.appBarTheme.backgroundColor!),
       floating: true,
       stretch: true,
@@ -29,7 +28,7 @@ class QandAAppbar extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             height: 45,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 10,
               right: 10,
               bottom: 8,
