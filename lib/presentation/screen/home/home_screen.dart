@@ -80,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen>
       children: [
         BackgroundHomeScreen(),
         Positioned(
-          top: 50,
+          top: 70,
           left: 16,
-          child: _buildMenuButton(),
+          child: _buildMenuButton(screenSize),
         ),
         Positioned(
           left: screenSize.height * 0.06,
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Builder _buildMenuButton() {
+  Builder _buildMenuButton(Size screenSize) {
     return Builder(builder: (BuildContext scaffoldContext) {
       return GestureDetector(
           child: ValueListenableBuilder<bool>(
@@ -130,8 +130,11 @@ class _HomeScreenState extends State<HomeScreen>
                   )
                 : Text(
                     'Menu'.tr(context: context),
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                    style: screenSize.width > 400
+                        ? Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.bold)
+                        : Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                   ),
           ),
           onTap: () => toggleDrawer());

@@ -90,7 +90,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     return Stack(
       children: [
         Transform.scale(
-          scale: 2.1,
+          scale: 2.3,
           child: RotationTransition(
             turns: _rotationAnimation,
             child: Transform.rotate(
