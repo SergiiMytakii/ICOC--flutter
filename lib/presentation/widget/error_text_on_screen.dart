@@ -13,8 +13,8 @@ class ErrorTextOnScreen extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Oops.. something went wrong..".tr()),
-          SizedBox(
+          Text('Oops.. something went wrong..'.tr()),
+          const SizedBox(
             height: 20,
           ),
           Text(

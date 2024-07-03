@@ -1,13 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetVideoFilter extends StatefulWidget {
+  const BottomSheetVideoFilter({super.key});
+
   @override
   State<BottomSheetVideoFilter> createState() => _BottomSheetVideoFilterState();
 }
@@ -25,7 +27,9 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
       height: MediaQuery.of(context).size.height / 1.6,
       child: Column(
         children: [
@@ -40,7 +44,6 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
           ),
           Expanded(
             child: ListView(
-              scrollDirection: Axis.vertical,
               children: List.generate(allLanguages.length, (index) {
                 return MyCheckboxListTile(
                     allLanguages: allLanguages,
@@ -49,7 +52,7 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     callback: (Map<String, dynamic> activeLanguages) {
                       SharedPreferencesHelper.saveMap(
                           StorageKeys.videosAllLanguages, activeLanguages);
-                      context.read<VideoBloc>().add(VideoListRequested());
+                      getIt<VideoBloc>().add(VideoListRequested());
                     },
                     key: ValueKey('$index'));
               }),

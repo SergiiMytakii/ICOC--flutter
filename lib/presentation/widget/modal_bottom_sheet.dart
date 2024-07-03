@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 
 class ModalBottomSheet extends StatelessWidget {
   const ModalBottomSheet(
-      {Key? key, this.child, this.height, this.blurBackground = true})
-      : super(key: key);
+      {super.key, this.child, this.height, this.blurBackground = true});
 
   final Widget? child;
   final double? height;
@@ -17,12 +16,12 @@ class ModalBottomSheet extends StatelessWidget {
     return BackdropFilter(
       filter: blurBackground
           ? ImageFilter.blur(sigmaX: 2, sigmaY: 2)
-          : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+          : ImageFilter.blur(),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
           borderRadius: Platform.isIOS
-              ? BorderRadius.only(
+              ? const BorderRadius.only(
                   topRight: Radius.circular(15),
                   topLeft: Radius.circular(15),
                 )

@@ -9,9 +9,9 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({
-    Key? key,
+    super.key,
     required this.resources,
-  }) : super(key: key);
+  });
 
   final Resources resources;
 
@@ -73,7 +73,7 @@ class _VideoCardState extends State<VideoCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(widget.resources.title ?? "",
+                      child: Text(widget.resources.title ?? '',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium!),

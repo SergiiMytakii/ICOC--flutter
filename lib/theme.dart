@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 
 final myDarkTheme = ThemeData.dark().copyWith(
-  appBarTheme: AppBarTheme(backgroundColor: Colors.black),
-  tabBarTheme: TabBarTheme(
+  appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+  tabBarTheme: const TabBarTheme(
       labelStyle: TextStyle(fontSize: 16),
       unselectedLabelStyle: TextStyle(fontSize: 16),
       labelColor: Color(0xffff595e),
       indicatorColor: Color(0xffff595e)),
-  primaryColor: Color(0xff6a4c93),
-  primaryColorLight: Color(0xffbeaed5),
-  primaryColorDark: Color(0xff614587),
+  primaryColor: const Color(0xff6a4c93),
+  primaryColorLight: const Color(0xffbeaed5),
+  primaryColorDark: const Color(0xff614587),
   //bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.grey),
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: Color(0xffbeaed5),
   ),
-  primaryIconTheme: IconThemeData(color: Color(0xffbeaed5)),
+  primaryIconTheme: const IconThemeData(color: Color(0xffbeaed5)),
   scaffoldBackgroundColor: Colors.black54,
   brightness: Brightness.dark,
-  colorScheme: ColorScheme(
-    background: Colors.black,
-    onBackground: Colors.white,
+  colorScheme: const ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xff6a4c93),
     onPrimary: Colors.white,
@@ -27,36 +25,35 @@ final myDarkTheme = ThemeData.dark().copyWith(
     onSecondary: Colors.white,
     error: Colors.red,
     onError: Colors.black,
-    surface: Color.fromARGB(255, 70, 70, 70),
+    surface: Colors.black,
     onSurface: Colors.white,
   ),
 );
 
 final myLightTheme = ThemeData.light().copyWith(
-  appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+  appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
   brightness: Brightness.light,
-  tabBarTheme: TabBarTheme(
+  tabBarTheme: const TabBarTheme(
       labelStyle: TextStyle(fontSize: 16),
       unselectedLabelStyle: TextStyle(fontSize: 16),
       labelColor: Color(0xffff595e),
       indicatorColor: Color(0xffff595e)),
-  primaryColor: Color(0xff6a4c93),
-  primaryColorLight: Color(0xffbeaed5),
-  primaryColorDark: Color(0xff614587),
-  bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.white),
-  iconTheme: IconThemeData(color: Color(0xff6a4c93)),
-  primaryIconTheme: IconThemeData(color: Color(0xff6a4c93)),
+  primaryColor: const Color(0xff6a4c93),
+  primaryColorLight: const Color(0xffbeaed5),
+  primaryColorDark: const Color(0xff614587),
+  scaffoldBackgroundColor: Colors.white,
+  bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.white),
+  iconTheme: const IconThemeData(color: Color(0xff6a4c93)),
+  primaryIconTheme: const IconThemeData(color: Color(0xff6a4c93)),
   colorScheme: ColorScheme(
-    background: Colors.white,
-    onBackground: Colors.black,
     brightness: Brightness.light,
-    primary: Color(0xff6a4c93),
+    primary: const Color(0xff6a4c93),
     onPrimary: Colors.white,
     secondary: Colors.grey.withOpacity(0.9),
     onSecondary: Colors.black,
     error: Colors.red,
     onError: Colors.white,
-    surface: Color.fromARGB(255, 226, 226, 226),
+    surface: Colors.white,
     onSurface: Colors.black,
   ),
 );

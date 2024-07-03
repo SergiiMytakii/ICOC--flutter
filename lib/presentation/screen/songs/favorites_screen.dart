@@ -1,15 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
-import '../../../constants.dart';
-import 'widget/slide_actions.dart';
-import 'widget/song_card.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/screen/songs/widget/slide_actions.dart';
+import 'package:icoc/presentation/screen/songs/widget/song_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({super.key});
+
   @override
   State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
@@ -23,7 +27,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text('bottom_navigation_bar_favorites'.tr()),
@@ -36,18 +39,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           builder: (context, state) {
             if (state is GetFavoriteSongsListSuccessState) {
               return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: state.songs.length,
                 itemBuilder: (BuildContext context, int index) {
-                  //change i to make different colors of divider
-                  if (i < 4) {
-                    i++;
-                  } else {
-                    i = 0;
-                  }
                   return SongCard(
                     song: state.songs[index],
-                    dividerColor: dividerColors[i],
+                    dividerColor: getDividerColor(index),
                     slideActions: [
                       DeleteFromFavorites(songId: state.songs[index].id),
                     ],
@@ -61,7 +58,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 ),
               );
             } else if (state is FavoriteSongsErrorState) {
-              return ErrorTextOnScreen();
+              return const ErrorTextOnScreen();
             } else {
               return Container();
             }
@@ -71,7 +68,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  getFavoriteSongs(BuildContext context) async {
-    context.read<FavoriteSongsListBloc>().add(FavoriteSongsListRequested());
+  Future<void> getFavoriteSongs(BuildContext context) async {
+    getIt<FavoriteSongsListBloc>().add(FavoriteSongsListRequested());
   }
 }

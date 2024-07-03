@@ -10,13 +10,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:icoc/core/bloc/multibloc_provider.dart';
+import 'package:icoc/presentation/bloc/multibloc_provider.dart';
+import 'package:icoc/injection.dart';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'constants.dart';
-import 'core/helpers/shared_preferences_helper.dart';
-import 'presentation/routes/app_routes.dart';
-import 'theme.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/theme.dart';
 
 void main() async {
   runZonedGuarded(
@@ -24,6 +26,7 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized();
       await EasyLocalization.ensureInitialized();
       await Firebase.initializeApp();
+      configureDependencies(Environment.dev);
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
       _activateCrashlitics();
       FirebaseAnalytics.instance
@@ -41,7 +44,7 @@ void main() async {
               .map((languageCode) => Locale(languageCode))
               .toList(),
           path: 'assets/translations',
-          fallbackLocale: Locale('en', 'US'),
+          fallbackLocale: const Locale('en', 'US'),
           child: MyApp(savedThemeMode: savedThemeMode),
         ),
       );
@@ -58,7 +61,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key, this.savedThemeMode}) : super(key: key);
+  MyApp({super.key, this.savedThemeMode});
 
   final AdaptiveThemeMode? savedThemeMode;
 
@@ -89,7 +92,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-_activateCrashlitics() {
+void _activateCrashlitics() {
   final logger = Logger();
   FlutterError.onError = (errorDetails) {
     logger.e(errorDetails);

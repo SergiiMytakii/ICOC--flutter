@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:html/parser.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/bloc/songs_bloc/songs_bloc.dart';
-import '../../../../core/model/song_detail.dart';
-import '../../../widget/loading.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/presentation/widget/loading.dart';
 
 class DataSearchResults extends StatefulWidget {
-  DataSearchResults(this.query);
+  DataSearchResults(this.query, {super.key});
   final String query;
 
   @override
@@ -27,8 +29,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<SongsBloc>().add(SearchSongRequested(widget.query));
-    int i = 0;
+    getIt<SongsBloc>().add(SearchSongRequested(widget.query));
     return BlocBuilder<SongsBloc, SongsState>(
       builder: (context, state) {
         if (state is SongsLoadingState) {
@@ -37,17 +38,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                //change i for making different colors of divider
-                if (i < 4) {
-                  i++;
-                } else {
-                  i = 0;
-                }
                 return buildSongCardWithHighliting(
-                  state.songs[index],
-                  context,
-                  i,
-                );
+                    state.songs[index], context, index);
               },
               childCount: state.songs.length,
             ),
@@ -61,7 +53,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   // returns TextSpan with hihglited words for title
   List<TextSpan> title(SongDetail song, BuildContext context) {
-    String rawText = song.searchTitle ?? '';
+    final String rawText = song.searchTitle ?? '';
     final List<String> title = rawText.split(' ');
     //print(title);
     return title.map((word) {
@@ -78,13 +70,13 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   // returns TextSpan with hihglited words for text
   List<TextSpan> text(SongDetail song, BuildContext context) {
-    String rawText = song.searchText ?? '';
+    final String rawText = song.searchText ?? '';
     // print(rawText);
 
     //remove html tags and parts of html tags
-    var document = parse(rawText);
-    String parsedString = parse(document.body!.text).documentElement!.text;
-    int indexOfGreaterThan = parsedString.indexOf(">");
+
+    String parsedString = FormatTextHelper.extractFormattedText(rawText);
+    final int indexOfGreaterThan = parsedString.indexOf('>');
     // Check if ">" is found
     if (indexOfGreaterThan != -1) {
       // Extract the substring starting from the index of ">"
@@ -105,7 +97,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   String trimText(String word) {
-    String word1 = word.replaceAll('[', '');
+    final String word1 = word.replaceAll('[', '');
     // word = word1.replaceAll('br', '<p>');
     // word = word1.replaceAll(
     //     RegExp(
@@ -119,8 +111,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   Widget buildSongCardWithHighliting(
-      SongDetail song, BuildContext context, int i) {
-    int id = song.id;
+      SongDetail song, BuildContext context, int index) {
+    final int id = song.id;
     return Column(
       children: [
         ListTile(
@@ -145,22 +137,19 @@ class _DataSearchResultsState extends State<DataSearchResults> {
         ),
         Divider(
           indent: 50,
-          color: dividerColors[i],
+          color: getDividerColor(index),
           thickness: 1.2,
         )
       ],
     );
   }
 
-  onTapHandler(BuildContext context, SongDetail fullSong) async {
+  Future<void> onTapHandler(BuildContext context, SongDetail fullSong) async {
     // we need to put language from searchResult to the firs place in the maps title, text, descr
     SongDetail? orderedLangSong;
     if (fullSong.searchLang != null) {
       orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
     }
-
-    // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
-    //     arguments: orderedLangSong ?? fullSong);
 
     Navigator.push(
         context,

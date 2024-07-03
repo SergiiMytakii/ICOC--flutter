@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:html/parser.dart';
+import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/model/song_detail.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/model/song_detail.dart';
 
-import '../one_song_screen.dart';
+import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;
@@ -14,6 +14,7 @@ class SongCard extends StatelessWidget {
   final Color dividerColor;
 
   SongCard({
+    super.key,
     required this.song,
     required this.dividerColor,
     this.slideActions,
@@ -24,8 +25,7 @@ class SongCard extends StatelessWidget {
     String text = song.text.entries.first.value;
     //если получаем html, то удаляем все теги
     if (text.startsWith('<')) {
-      var document = parse(text);
-      text = parse(document.body!.text).documentElement!.text;
+      text = FormatTextHelper.extractFormattedText(text);
     }
 
     return Column(
@@ -61,7 +61,7 @@ class SongCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               trailing: song.resources != null && song.resources!.isNotEmpty
-                  ? Icon(
+                  ? const Icon(
                       Icons.play_circle,
                       color: ScreenColors.songBook,
                     )

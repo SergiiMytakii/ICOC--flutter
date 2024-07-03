@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/bloc/bible_study_bloc/bible_study_bloc.dart';
-import 'package:icoc/core/bloc/font_size_bloc/font_size_bloc.dart';
+import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
@@ -15,7 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
 
 class OneLessonScreen extends StatefulWidget {
-  OneLessonScreen() {
+  OneLessonScreen({super.key}) {
     Wakelock.enable();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -37,7 +37,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var fontSozeAdjust = FontSizeAdjustBottomSheet(
+    final fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.bibleStudy);
     final lesson = ModalRoute.of(context)!.settings.arguments as Lesson;
 
@@ -47,13 +47,13 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
           appBar: AppBar(
             title: Text(
               lesson.title,
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
             ),
             centerTitle: true,
             actions: [
               IconButton(
                 tooltip: 'Share'.tr(),
-                icon: Icon(
+                icon: const Icon(
                   Icons.share,
                 ),
                 onPressed: () {
@@ -63,7 +63,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                 },
               ),
               IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.text_fields_outlined,
                   ),
                   onPressed: () => fontSozeAdjust.bottomSheet()),
@@ -72,7 +72,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
           body: SingleChildScrollView(
             child: SelectionArea(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: BlocBuilder<FontSizeBloc, FontSizeState>(
                     builder: (context, state) {
                   if (state is FontSizeSuccess) {
@@ -84,13 +84,13 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                           launchUrl(Uri.parse(url ?? ''));
                         },
                         style: {
-                          "body": html.Style(
+                          'body': html.Style(
                             fontSize: html.FontSize(state.fontSize ?? 14),
                           ),
-                          "h5": html.Style(
+                          'h5': html.Style(
                             fontSize: html.FontSize(state.fontSize ?? 14),
                           ),
-                          "p": html.Style(
+                          'p': html.Style(
                             fontSize: html.FontSize(state.fontSize ?? 14),
                           ),
                         },

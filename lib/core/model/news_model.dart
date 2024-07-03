@@ -16,14 +16,14 @@ class News {
   final List<int>? categories;
 
   factory News.fromJson(Map<String, dynamic> json) => News(
-        id: json["id"],
-        publicationDate: DateTime.parse(json["date"]),
-        title: Guid.fromJson(json["title"]).rendered,
-        content: Content.fromJson(json["content"]).rendered,
-        excerpt: Content.fromJson(json["excerpt"]).rendered,
-        imageUrl: BetterFeaturedImage.fromJson(json["better_featured_image"])
+        id: json['id'],
+        publicationDate: DateTime.parse(json['date']),
+        title: Guid.fromJson(json['title']).rendered,
+        content: Content.fromJson(json['content']).rendered,
+        excerpt: Content.fromJson(json['excerpt']).rendered,
+        imageUrl: BetterFeaturedImage.fromJson(json['better_featured_image'])
             .sourceUrl,
-        categories: List<int>.from(json["categories"].map((x) => x)),
+        categories: List<int>.from(json['categories'].map((x) => x)),
       );
 }
 
@@ -47,12 +47,12 @@ class BetterFeaturedImage {
 
   factory BetterFeaturedImage.fromJson(Map<String, dynamic> json) =>
       BetterFeaturedImage(
-        id: json["id"],
-        altText: json["alt_text"],
-        caption: json["caption"],
-        description: json["description"],
-        post: json["post"],
-        sourceUrl: json["source_url"],
+        id: json['id'],
+        altText: json['alt_text'],
+        caption: json['caption'],
+        description: json['description'],
+        post: json['post'],
+        sourceUrl: json['source_url'],
       );
 }
 
@@ -66,13 +66,13 @@ class Content {
   final bool? protected;
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
-        rendered: json["rendered"],
-        protected: json["protected"],
+        rendered: json['rendered'],
+        protected: json['protected'],
       );
 
   Map<String, dynamic> toJson() => {
-        "rendered": rendered,
-        "protected": protected,
+        'rendered': rendered,
+        'protected': protected,
       };
 }
 
@@ -84,6 +84,6 @@ class Guid {
   final String? rendered;
 
   factory Guid.fromJson(Map<String, dynamic> json) => Guid(
-        rendered: json["rendered"],
+        rendered: json['rendered'],
       );
 }

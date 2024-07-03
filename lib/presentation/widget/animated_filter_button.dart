@@ -7,6 +7,7 @@ class AnimatedFilterIconButton extends StatefulWidget {
   final Function onTap;
   final Color color;
   final String shouldAnimate;
+  final bool shouldAnimateForever;
   final String? firstLanguage;
 
   const AnimatedFilterIconButton(
@@ -14,10 +15,11 @@ class AnimatedFilterIconButton extends StatefulWidget {
       required this.onTap,
       required this.color,
       required this.shouldAnimate,
+      this.shouldAnimateForever = false,
       this.firstLanguage});
 
   @override
-  _AnimatedFilterIconButtonState createState() =>
+  State<AnimatedFilterIconButton> createState() =>
       _AnimatedFilterIconButtonState();
 }
 
@@ -33,13 +35,15 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
         SharedPreferencesHelper.getBool(widget.shouldAnimate) ?? true;
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
-    if (shouldAnimate) {
+    if (shouldAnimate || widget.shouldAnimateForever) {
+      print('animate');
       _controller.repeat(reverse: true);
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
@@ -50,30 +54,31 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
         return Transform.scale(
           scale: scaleFactor,
           child: IconButton(
-            icon: widget.firstLanguage != null
-                ? Text(
-                    widget.firstLanguage!,
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: ColorTween(
-                              begin: AdaptiveTheme.of(context)
-                                  .theme
-                                  .colorScheme
-                                  .onBackground,
-                              end: widget.color)
-                          .evaluate(_controller),
-                    ),
-                  )
-                : Icon(
-                    Icons.filter_alt_outlined,
-                    color: ColorTween(
-                            begin: AdaptiveTheme.of(context)
-                                .theme
-                                .colorScheme
-                                .onBackground,
-                            end: widget.color)
-                        .evaluate(_controller),
-                  ),
+            icon: Row(children: [
+              Text(
+                widget.firstLanguage ?? context.locale.languageCode,
+                style: TextStyle(
+                  fontSize: 22,
+                  color: ColorTween(
+                          begin: AdaptiveTheme.of(context)
+                              .theme
+                              .colorScheme
+                              .onSurface,
+                          end: widget.color)
+                      .evaluate(_controller),
+                ),
+              ),
+              Icon(
+                Icons.filter_alt_outlined,
+                color: ColorTween(
+                        begin: AdaptiveTheme.of(context)
+                            .theme
+                            .colorScheme
+                            .onSurface,
+                        end: widget.color)
+                    .evaluate(_controller),
+              ),
+            ]),
             tooltip: 'icon_button_actions_app_bar_filter'.tr(),
             onPressed: () {
               _controller.animateBack(0);

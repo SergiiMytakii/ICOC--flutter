@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../../routes/app_routes.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 
 class AnimatedDrawerItem extends StatelessWidget {
   final IconData icon;
@@ -10,7 +10,8 @@ class AnimatedDrawerItem extends StatelessWidget {
   final Animation<Offset> animation;
 
   AnimatedDrawerItem(
-      {required this.icon,
+      {super.key,
+      required this.icon,
       required this.title,
       required this.route,
       required this.animation});
@@ -28,8 +29,8 @@ class AnimatedDrawerItem extends StatelessWidget {
           title,
           style: Theme.of(context)
               .textTheme
-              .titleSmall!
-              .copyWith(color: Colors.white),
+              .titleMedium!
+              .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         onTap: () => Navigator.pushNamed(
           context,
@@ -41,7 +42,7 @@ class AnimatedDrawerItem extends StatelessWidget {
 }
 
 class MyDrawer extends StatefulWidget {
-  MyDrawer(this.animationController);
+  MyDrawer(this.animationController, {super.key});
   final AnimationController animationController;
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -58,8 +59,8 @@ class _MyDrawerState extends State<MyDrawer> {
     itemAnimations = List.generate(
       4,
       (index) => Tween<Offset>(
-        begin: Offset(-1.0, 0.0),
-        end: Offset(0.0, 0.0),
+        begin: const Offset(-1, 0),
+        end: const Offset(0, 0),
       ).animate(
         CurvedAnimation(
           parent: widget.animationController,
@@ -101,21 +102,16 @@ class _MyDrawerState extends State<MyDrawer> {
       },
     ];
 
-    return SizedBox(
-      height: 400,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 100),
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          itemCount: drawerItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            return AnimatedDrawerItem(
-                icon: drawerItems[index]['icon'] as IconData,
-                title: drawerItems[index]['title'].toString(),
-                route: drawerItems[index]['route'].toString(),
-                animation: itemAnimations[index]);
-          },
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 80),
+      child: Column(
+        children: List.generate(drawerItems.length, (index) {
+          return AnimatedDrawerItem(
+              icon: drawerItems[index]['icon'] as IconData,
+              title: drawerItems[index]['title'].toString(),
+              route: drawerItems[index]['route'].toString(),
+              animation: itemAnimations[index]);
+        }),
       ),
     );
   }

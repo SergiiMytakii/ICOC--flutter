@@ -1,9 +1,12 @@
+// ignore_for_file: overridden_fields
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 import 'package:logger/logger.dart';
 
 class MyCheckboxListTile extends StatefulWidget {
+  @override
   final ValueKey key;
   final String label;
   final Color color;
@@ -11,6 +14,7 @@ class MyCheckboxListTile extends StatefulWidget {
   final Function callback;
   final Map<String, dynamic> allLanguages;
 
+  // ignore: use_key_in_widget_constructors
   MyCheckboxListTile(
       {required this.allLanguages,
       required this.label,
@@ -45,7 +49,7 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
               .copyWith(fontWeight: bold ? FontWeight.w900 : FontWeight.normal),
         ),
         value: widget.allLanguages[widget.label],
-        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         secondary: widget.trailingIcon,
         onChanged: (val) {
           setState(() {

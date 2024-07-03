@@ -2,16 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/bloc/feedback_bloc/feedback_bloc.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
 class FeedbackScreen extends StatefulWidget {
+  const FeedbackScreen({super.key});
+
   @override
-  _FeedbackScreenState createState() => _FeedbackScreenState();
+  State<FeedbackScreen> createState() => _FeedbackScreenState();
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
@@ -20,14 +23,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Feedback');
-    Future.delayed(Duration.zero).then(
-        (value) => context.read<FeedbackBloc>().add(FeedbackListRequested()));
+
+    getIt<FeedbackBloc>().add(FeedbackListRequested());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int i = 0;
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -36,11 +38,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             'We would love to hear your feedbacks and suggestions!'.tr(),
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -54,18 +56,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         cacheExtent: 0,
                         itemCount: state.feedbacks.length,
                         itemBuilder: (context, index) {
-                          if (i < 4) {
-                            i++;
-                          } else {
-                            i = 0;
-                          }
                           return AnimationWrapper(
                             child: Column(
                               children: [
                                 ListTile(
                                   contentPadding: EdgeInsets.zero,
                                   titleTextStyle:
-                                      TextStyle(color: dividerColors[i]),
+                                      TextStyle(color: getDividerColor(index)),
                                   title:
                                       Text(state.feedbacks[index].name ?? ''),
                                   subtitle: Text(state.feedbacks[index].text),
@@ -94,7 +91,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 ),
                                 Divider(
                                   indent: 50,
-                                  color: dividerColors[i],
+                                  color: getDividerColor(index),
                                   thickness: 1.2,
                                 ),
                               ],
@@ -112,20 +109,19 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Text field for writing feedback
               TextField(
                 controller: nameController,
                 keyboardType: TextInputType.multiline,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                   hintText: 'Your name'.tr(),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
-                maxLines: 1,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Text field for writing feedback
               TextField(
                 controller: feedbackController,
@@ -133,11 +129,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   hintText: 'Write your feedback here...'.tr(),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 3,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Button to submit feedback
               CustomButton(
                 onPressed: () {
@@ -145,7 +141,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 },
                 child: Text(
                   'Submit Feedback'.tr(),
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -157,10 +153,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   // Method to submit feedback
   void submitFeedback() {
-    String feedback = feedbackController.text.trim();
-    String name = nameController.text.trim();
+    final String feedback = feedbackController.text.trim();
+    final String name = nameController.text.trim();
     if (feedback.isNotEmpty) {
-      context.read<FeedbackBloc>().add(InsertFeedbackRequested(feedback, name));
+      getIt<FeedbackBloc>().add(InsertFeedbackRequested(feedback, name));
       setState(() {
         feedbackController.clear();
         nameController.clear();

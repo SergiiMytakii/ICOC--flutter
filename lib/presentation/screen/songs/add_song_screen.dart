@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../constants.dart';
-import '../../widget/toast.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/presentation/widget/toast.dart';
 
 class AddSongScreen extends StatefulWidget {
+  const AddSongScreen({super.key});
+
   @override
   State<AddSongScreen> createState() => _AddSongScreenState();
 }
@@ -30,7 +32,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
         centerTitle: true,
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         // height: Get.size.height,
         child: ListView(
           children: [
@@ -41,7 +43,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             TextFormField(
@@ -49,22 +51,22 @@ class _AddSongScreenState extends State<AddSongScreen> {
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 errorText: valid ? null : 'Add title'.tr(),
                 labelText: 'Title'.tr(),
                 hintText: 'Add here title of the song'.tr(),
-                hintStyle: TextStyle(fontSize: 14),
-                border: OutlineInputBorder(
+                hintStyle: const TextStyle(fontSize: 14),
+                border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: ScreenColors.songBook)),
-                disabledBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             TextFormField(
@@ -72,22 +74,22 @@ class _AddSongScreenState extends State<AddSongScreen> {
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 labelText: 'Description'.tr(),
                 hintText:
                     'Add here information like author, church etc...'.tr(),
-                hintStyle: TextStyle(fontSize: 14),
-                border: OutlineInputBorder(
+                hintStyle: const TextStyle(fontSize: 14),
+                border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: ScreenColors.songBook)),
-                disabledBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             TextFormField(
@@ -96,23 +98,23 @@ class _AddSongScreenState extends State<AddSongScreen> {
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 errorText: valid ? null : 'Add text'.tr(),
                 labelText: 'Text and chords'.tr(),
                 hintText: 'Add here text of the song, chords'.tr(),
-                hintStyle: TextStyle(fontSize: 14),
+                hintStyle: const TextStyle(fontSize: 14),
                 alignLabelWithHint: true,
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black87)),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: ScreenColors.songBook)),
-                disabledBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             TextFormField(
@@ -120,36 +122,36 @@ class _AddSongScreenState extends State<AddSongScreen> {
               textCapitalization: TextCapitalization.sentences,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 labelText: 'Link'.tr(),
                 hintText: 'Add here link'.tr(),
-                hintStyle: TextStyle(fontSize: 14),
+                hintStyle: const TextStyle(fontSize: 14),
                 hintMaxLines: 2,
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: ScreenColors.songBook)),
-                disabledBorder: OutlineInputBorder(
+                disabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey)),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             CustomButton(
               onPressed: () => sendEmail(context),
+              color: ScreenColors.songBook,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Send'.tr(),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ],
               ),
-              color: ScreenColors.songBook,
             )
           ],
         ),
@@ -169,6 +171,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       });
     }
 
+    // ignore: prefer_interpolation_to_compose_strings
     final body = 'title:  ' +
         titleController.text +
         ' ________________________________________________ ' +
@@ -187,7 +190,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       final result = await launchUrl(uri);
       if (result) {
         showToast(context: context, message: 'Email has been sent'.tr());
-        await Future.delayed(Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 1));
         Navigator.pop(context);
       }
     } else
