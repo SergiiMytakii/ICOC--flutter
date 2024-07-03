@@ -1,50 +1,50 @@
 [
     {
         "language": "cs-CZ",
-        "text": "Nová sekce „Symfonie“ přidána"
+        "text": "Vylepšení uživatelského rozhraní\nOpravy chyb"
     },
     {
         "language": "no-NO",
-        "text": "Den nye seksjonen 'Symfoni' er lagt til"
+        "text": "Brukergrensesnittforbedringer\nFeilrettinger"
     },
     {
         "language": "en-US",
-        "text": "The new section 'Symphony' added"
+        "text": "UI improvements\nbug fixes"
     },
     {
         "language": "de-DE",
-        "text": "Der neue Abschnitt 'Symphonie' wurde hinzugefügt"
+        "text": "Verbesserungen der Benutzeroberfläche\nFehlerbehebungen"
     },
     {
         "language": "pl-PL",
-        "text": "Nowa sekcja „Symfonia” została dodana"
+        "text": "Ulepszenia interfejsu użytkownika\nPoprawki błędów"
     },
     {
         "language": "ru-RU",
-        "text": "Новый раздел \"Симфония\" добавлен"
+        "text": "Улучшения пользовательского интерфейса\nИсправления ошибок"
     },
     {
         "language": "fr-FR",
-        "text": "La nouvelle section 'Symphonie' ajoutée"
+        "text": "Améliorations de l'interface utilisateur\nCorrections de bogues"
     },
     {
         "language": "it-IT",
-        "text": "La nuova sezione 'Symphony' è stata aggiunta"
+        "text": "Miglioramenti dell'interfaccia utente\nCorrezioni di bug"
     },
     {
         "language": "ro-RO",
-        "text": "Noua secțiune 'Simfonie' adăugată"
+        "text": "Îmbunătățiri ale interfeței utilizatorului\nCorecții de erori"
     },
     {
         "language": "el-GR",
-        "text": "Η νέα ενότητα 'Συμφωνία' προστέθηκε"
+        "text": "Βελτιώσεις διεπαφής χρήστη\nΔιορθώσεις σφαλμάτων"
     },
     {
         "language": "uk-UA",
-        "text": "Додано новий розділ 'Симфонія'"
+        "text": "Покращення користувацького інтерфейсу\nВиправлення помилок"
     },
     {
         "language": "es-ES",
-        "text": "La nueva sección 'Sinfonía' añadida"
+        "text": "Mejoras de la interfaz de usuario\nCorrecciones de errores"
     }
 ]
