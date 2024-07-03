@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
 import 'package:icoc/constants.dart';
@@ -38,12 +40,7 @@ class SongCard extends StatelessWidget {
             ),
             child: ListTile(
               onTap: (() {
-                // Navigator.pushNamed(context, Routes.ONE_SONG_SCREEN,
-                //     arguments: song);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => OneSongScreen(song)));
+                context.push(Routes.ONE_SONG_SCREEN, extra: song);
               }),
               horizontalTitleGap: 12,
               leading: Text(song.id.toString(),

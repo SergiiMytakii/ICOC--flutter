@@ -18,7 +18,24 @@
 	<array>
 		<string>en</string>
 		<string>uk</string>
-		<string>ru</string>
+		<string>fr</string>
+		<string>de</string>
+		<string>es</string>
+		<string>it</string>
+		<string>bg</string>
+		<string>lt</string>
+		<string>lv</string>
+		<string>pl</string>
+		<string>ro</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>icoc</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleName</key>
 	<string>Projects</string>

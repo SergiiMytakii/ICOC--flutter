@@ -22,7 +22,6 @@ class Routes {
   static const SONGBOOK = '/bottom_navigation_bar';
   static const Q_AND_ANSVERS = '/q_and_a';
   static const ADD_SONG_SCREEN = '/add_song_screen';
-  static const ICOC_RU_NEWS = '/news';
   static const BIBLE_STUDY = '/bible_study_screen';
   static const NOTIFICATIONS_SCREEN = '/notifications_screen';
   static const SETTINGS = '/general_settings';
@@ -34,19 +33,21 @@ class Routes {
   static const ONE_Q_AND_A_SCREEN = '/one_q_and_a_screen';
   static const SHARE_APP_SCREEN = '/share_app_screen';
   static const VIDEO_PLAYER_SCREEN = '/video_player_screen';
+  static const LIST_VIDEOS_SCREEN = '/list_videos_screen';
   static const FEEDBACK_SCREEN = '/feedback_screen';
   static const VIDEO = '/video_titles_screen';
+  static const VIDEO_PLAYER = '/video_player';
   static const TERMS_OF_USE = '/terms_of_use_screen';
 }
 
-final routes = {
-  Routes.HOME: (context) => const HomeScreen(),
-  // Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
-  Routes.ADD_SONG_SCREEN: (context) => const AddSongScreen(),
-  Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
-  Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
-  Routes.ONE_Q_AND_A_SCREEN: (context) => OneQandAScreen(),
-};
+// final routes = {
+//   Routes.HOME: (context) => const HomeScreen(),
+//   // Routes.ONE_SONG_SCREEN: (context) => OneSongScreen(),
+//   Routes.ADD_SONG_SCREEN: (context) => const AddSongScreen(),
+//   Routes.ONE_TOPIC_SCREEN: (context) => OneTopicScreen(),
+//   Routes.ONE_LESSON_SCREEN: (context) => OneLessonScreen(),
+//   Routes.ONE_Q_AND_A_SCREEN: (context) => OneQandAScreen(),
+// };
 
 Route onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {

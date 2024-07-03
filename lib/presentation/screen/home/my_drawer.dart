@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:icoc/presentation/routes/app_routes.dart';
 
@@ -32,8 +33,7 @@ class AnimatedDrawerItem extends StatelessWidget {
               .titleMedium!
               .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        onTap: () => Navigator.pushNamed(
-          context,
+        onTap: () => context.push(
           route,
         ),
       ),
@@ -103,7 +103,7 @@ class _MyDrawerState extends State<MyDrawer> {
     ];
 
     return Padding(
-      padding: const EdgeInsets.only(top: 80),
+      padding: const EdgeInsets.only(top: 100),
       child: Column(
         children: List.generate(drawerItems.length, (index) {
           return AnimatedDrawerItem(

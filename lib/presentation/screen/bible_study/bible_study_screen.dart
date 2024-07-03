@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
@@ -137,9 +138,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => Navigator.of(context).pushNamed(
-                            Routes.ONE_TOPIC_SCREEN,
-                            arguments: state.topics[index]),
+                        onTap: () => context.push(
+                          Routes.ONE_TOPIC_SCREEN,
+                          extra: state.topics[index],
+                        ),
                       ),
                       Divider(
                         indent: 50,

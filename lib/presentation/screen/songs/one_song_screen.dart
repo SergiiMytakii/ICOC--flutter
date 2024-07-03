@@ -83,7 +83,7 @@ class _OneSongScreenState extends State<OneSongScreen>
       child: DefaultTabController(
         length: countTabs(song),
         child: Scaffold(
-          appBar: appBar(context, song),
+          appBar: _buildAppBar(context, song),
           body: Stack(
             alignment: AlignmentDirectional.bottomCenter,
             children: [
@@ -101,7 +101,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     );
   }
 
-  AppBar appBar(
+  AppBar _buildAppBar(
     BuildContext context,
     SongDetail song,
   ) {

@@ -1,12 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/video.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
@@ -138,10 +140,8 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ListVideosScreen(video: topics[index]))),
+                        onTap: () => context.push(Routes.LIST_VIDEOS_SCREEN,
+                            extra: topics[index]),
                       ),
                       Divider(
                         indent: 50,

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
 class OneTopicScreen extends StatelessWidget {
-  OneTopicScreen({super.key});
+  final BibleStudy topic;
+  OneTopicScreen({super.key, required this.topic});
 
   @override
   Widget build(BuildContext context) {
-    final BibleStudy topic =
-        ModalRoute.of(context)!.settings.arguments as BibleStudy;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,9 +39,8 @@ class OneTopicScreen extends StatelessWidget {
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () => Navigator.of(context).pushNamed(
-                        Routes.ONE_LESSON_SCREEN,
-                        arguments: topic.lessons[index]),
+                    onTap: () => context.push(Routes.ONE_LESSON_SCREEN,
+                        extra: topic.lessons[index]),
                   ),
                   Divider(
                     indent: 50,

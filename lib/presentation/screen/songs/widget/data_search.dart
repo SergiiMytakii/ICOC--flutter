@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:logger/logger.dart';
 
@@ -150,10 +152,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
     if (fullSong.searchLang != null) {
       orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
     }
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => OneSongScreen(orderedLangSong ?? fullSong)));
+ 
+    context.push( Routes.ONE_SONG_SCREEN, extra:
+        orderedLangSong ?? fullSong);
   }
 }

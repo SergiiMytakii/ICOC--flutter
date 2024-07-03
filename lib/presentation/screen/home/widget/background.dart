@@ -51,8 +51,8 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
 
   @override
   void dispose() {
-    super.dispose();
     _backgroundAnimationController.dispose();
+    super.dispose();
   }
 
   final List<CometAnimation> comets = [

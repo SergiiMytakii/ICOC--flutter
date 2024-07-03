@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/helpers/in_app_review_helper.dart';
@@ -172,6 +173,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void navigateToScreen(BuildContext context) {
-    Navigator.pushNamed(context, currentItem.routeName);
+    context.push(currentItem.routeName);
   }
 }

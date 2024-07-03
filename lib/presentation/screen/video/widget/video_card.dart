@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 import 'package:icoc/presentation/widget/vertical_slide_page_route.dart';
@@ -54,8 +56,8 @@ class _VideoCardState extends State<VideoCard> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.of(context).push(VerticalSlidePageRoute(
-                      builder: (context) => VideoPlayer(widget.resources)));
+                  //todo add  VerticalSlidePageRoute
+                  context.push(Routes.VIDEO_PLAYER, extra: widget.resources);
                 },
                 child: Container(
                   width: double.maxFinite,

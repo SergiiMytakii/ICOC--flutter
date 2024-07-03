@@ -15,7 +15,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock/wakelock.dart';
 
 class OneLessonScreen extends StatefulWidget {
-  OneLessonScreen({super.key}) {
+  final Lesson lesson;
+  OneLessonScreen({super.key, required this.lesson}) {
     Wakelock.enable();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -39,14 +40,13 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
   Widget build(BuildContext context) {
     final fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.bibleStudy);
-    final lesson = ModalRoute.of(context)!.settings.arguments as Lesson;
 
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              lesson.title,
+              widget.lesson.title,
               style: const TextStyle(fontSize: 14),
             ),
             centerTitle: true,
@@ -58,7 +58,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                 ),
                 onPressed: () {
                   Share.share(FormatTextHelper.extractFormattedText(
-                    lesson.text,
+                    widget.lesson.text,
                   ));
                 },
               ),
@@ -79,7 +79,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                     return ScaleText(
                       fontSize: state.fontSize ?? 14,
                       child: html.Html(
-                        data: lesson.text,
+                        data: widget.lesson.text,
                         onLinkTap: (url, __, ___) {
                           launchUrl(Uri.parse(url ?? ''));
                         },
