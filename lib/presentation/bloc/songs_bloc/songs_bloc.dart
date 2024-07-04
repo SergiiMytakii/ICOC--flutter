@@ -54,7 +54,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     try {
       emit(SongsLoadingState());
       final searchResults = await _searchSongs(event.query);
-      emit(SearchSongsSuccessState(searchResults));
+      emit(GetSongsSuccessState(searchResults));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(SongsErrorState(error.toString()));

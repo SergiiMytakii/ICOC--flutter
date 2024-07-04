@@ -28,7 +28,7 @@ import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
-    GoRoute(
+    FadeGoRoute(
       path: Routes.HOME,
       builder: (BuildContext context, GoRouterState state) =>
           const HomeScreen(),
@@ -86,10 +86,10 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: Routes.ONE_SONG_SCREEN,
+      path: '${Routes.ONE_SONG_SCREEN}/:songId',
       builder: (BuildContext context, GoRouterState state) {
-        final SongDetail song = state.extra as SongDetail;
-        return OneSongScreen(song);
+        final songId = state.pathParameters['songId'];
+        return OneSongScreen(songId ?? '');
       },
     ),
     GoRoute(

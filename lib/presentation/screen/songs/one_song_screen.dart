@@ -6,6 +6,7 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
@@ -19,10 +20,10 @@ import 'package:icoc/presentation/screen/songs/widget/song_text_on_song_screen.d
 import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 
 class OneSongScreen extends StatefulWidget {
-  OneSongScreen(this.song, {super.key}) {
+  OneSongScreen(this.songId, {super.key}) {
     Wakelock.enable();
   }
-  final SongDetail song;
+  final String songId;
 
   @override
   State<OneSongScreen> createState() => _OneSongScreenState();
@@ -38,14 +39,13 @@ class _OneSongScreenState extends State<OneSongScreen>
   bool videoIsPlaying = false;
   YoutubePlayerController? youtubePlayerController;
   late final TabController tabController;
-  late final SongDetail song;
+
   List<String> tabsKeys = [];
 
   @override
   void initState() {
-    song = widget.song;
     getIt<FavoriteSongStatusBloc>()
-        .add(FavoriteSongStatusRequested(id: song.id));
+        .add(FavoriteSongStatusRequested(id: int.parse(widget.songId)));
     _controller = AnimationController(
         duration: const Duration(
             milliseconds: 500), // Set the duration of the animation
@@ -57,8 +57,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     _controller.addListener(() {
       setState(() {}); // Trigger a rebuild on each animation frame
     });
-    tabsKeys = getAllKeys();
-    tabController = TabController(length: tabsKeys.length, vsync: this);
+
     super.initState();
   }
 
@@ -80,24 +79,38 @@ class _OneSongScreenState extends State<OneSongScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      child: DefaultTabController(
-        length: countTabs(song),
-        child: Scaffold(
-          appBar: _buildAppBar(context, song),
-          body: Stack(
-            alignment: AlignmentDirectional.bottomCenter,
-            children: [
-              //adjust size text screen and player dynamicly
-              _tabBarBuilder(song),
-              if (song.resources != null &&
-                  song.resources!.isNotEmpty &&
-                  !videoIsPlaying)
-                _buldVideoPreview(song),
-              if (videoIsPlaying) _miniPlayerBuilder(),
-            ],
-          ),
-        ),
-      ),
+      child: BlocBuilder<SongsBloc, SongsState>(builder: (context, state) {
+        if (state is GetSongsSuccessState) {
+          SongDetail song = state.songs
+              .firstWhere((item) => item.id.toString() == widget.songId);
+          //if song came from   from searchResult we need to put search language to the first place in the maps title, text, descr to show them in the first tab
+          if (song.searchLang != null) {
+            song = song.orderByLanguage([song.searchLang!]);
+          }
+          tabsKeys = getAllKeys(song);
+          tabController = TabController(length: tabsKeys.length, vsync: this);
+          return DefaultTabController(
+            length: countTabs(song),
+            child: Scaffold(
+              appBar: _buildAppBar(context, song),
+              body: Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: [
+                  //adjust size text screen and player dynamicly
+                  _tabBarBuilder(song),
+                  if (song.resources != null &&
+                      song.resources!.isNotEmpty &&
+                      !videoIsPlaying)
+                    _buldVideoPreview(song),
+                  if (videoIsPlaying) _miniPlayerBuilder(),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return const SizedBox();
+        }
+      }),
     );
   }
 
@@ -143,7 +156,7 @@ class _OneSongScreenState extends State<OneSongScreen>
             Icons.share,
           ),
           onPressed: () {
-            shareSong();
+            shareSong(song);
           },
         ),
         IconButton(
@@ -272,7 +285,7 @@ class _OneSongScreenState extends State<OneSongScreen>
       return key;
   }
 
-  List<String> getAllKeys() {
+  List<String> getAllKeys(SongDetail song) {
     final songsKeys = song.text.keys.map((key) => cleanKeys(key)).toList();
     List<String> chordsKeys = [];
     if (song.chords != null && song.chords!.isNotEmpty) {
@@ -281,7 +294,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     return songsKeys + chordsKeys;
   }
 
-  void shareSong() {
+  void shareSong(SongDetail song) {
     final index = tabController.index;
     String text = '';
     String title = '';

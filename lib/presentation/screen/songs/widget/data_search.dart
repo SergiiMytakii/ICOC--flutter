@@ -36,7 +36,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
       builder: (context, state) {
         if (state is SongsLoadingState) {
           return SliverToBoxAdapter(child: Loading());
-        } else if (state is SearchSongsSuccessState) {
+        } else if (state is GetSongsSuccessState) {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
@@ -100,27 +100,17 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   String trimText(String word) {
     final String word1 = word.replaceAll('[', '');
-    // word = word1.replaceAll('br', '<p>');
-    // word = word1.replaceAll(
-    //     RegExp(
-    //       r'<[^>]*>|&[^;]+;',
-    //       multiLine: true,
-    //     ),
-    //     '');
-    //word = word1.replaceAll('/>', '');
-
     return word1;
   }
 
   Widget buildSongCardWithHighliting(
       SongDetail song, BuildContext context, int index) {
-    final int id = song.id;
     return Column(
       children: [
         ListTile(
-          onTap: () => onTapHandler(context, song),
+          onTap: () => context.push('${Routes.ONE_SONG_SCREEN}/${song.id}'),
           horizontalTitleGap: 12,
-          leading: Text(id.toString(),
+          leading: Text(song.id.toString(),
               style: Theme.of(context).textTheme.titleSmall),
           title: RichText(
             text: TextSpan(
@@ -144,16 +134,5 @@ class _DataSearchResultsState extends State<DataSearchResults> {
         )
       ],
     );
-  }
-
-  Future<void> onTapHandler(BuildContext context, SongDetail fullSong) async {
-    // we need to put language from searchResult to the firs place in the maps title, text, descr
-    SongDetail? orderedLangSong;
-    if (fullSong.searchLang != null) {
-      orderedLangSong = fullSong.orderByLanguage([fullSong.searchLang!]);
-    }
- 
-    context.push( Routes.ONE_SONG_SCREEN, extra:
-        orderedLangSong ?? fullSong);
   }
 }

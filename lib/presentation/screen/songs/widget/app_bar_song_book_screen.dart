@@ -10,6 +10,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
+import 'package:icoc/presentation/widget/custom_back_icon.dart';
 
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
@@ -84,13 +85,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     return SliverAppBar(
       title: Text(widget.title),
       centerTitle: true,
-      leading: IconButton(
-          icon: Icon(
-            Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
-          ),
-          onPressed: () {
-            context.pop();
-          }),
+      leading: const CustomBackIcon(Routes.HOME),
       actions: [
         Stack(
           children: [

@@ -11,11 +11,6 @@ final class GetSongsSuccessState extends SongsState {
   final List<SongDetail> songs;
 }
 
-final class SearchSongsSuccessState extends SongsState {
-  SearchSongsSuccessState(this.songs);
-  final List<SongDetail> songs;
-}
-
 final class SongsErrorState extends SongsState {
   SongsErrorState(this.message);
   final String message;

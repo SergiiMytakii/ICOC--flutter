@@ -28,15 +28,8 @@
 		<string>pl</string>
 		<string>ro</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>icoc</string>
-			</array>
-		</dict>
-	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>CFBundleName</key>
 	<string>Projects</string>
 	<key>CFBundlePackageType</key>

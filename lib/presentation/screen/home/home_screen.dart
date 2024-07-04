@@ -173,6 +173,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void navigateToScreen(BuildContext context) {
-    context.push(currentItem.routeName);
+    context.go(currentItem.routeName);
   }
 }

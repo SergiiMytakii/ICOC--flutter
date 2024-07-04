@@ -13,6 +13,7 @@ import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
+import 'package:icoc/presentation/widget/custom_back_icon.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -76,6 +77,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
         'Video'.tr(),
       ),
       centerTitle: true,
+      leading: const CustomBackIcon(Routes.HOME),
       actions: [
         Stack(
           children: [

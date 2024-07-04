@@ -40,7 +40,7 @@ class SongCard extends StatelessWidget {
             ),
             child: ListTile(
               onTap: (() {
-                context.push(Routes.ONE_SONG_SCREEN, extra: song);
+                context.push('${Routes.ONE_SONG_SCREEN}/${song.id}');
               }),
               horizontalTitleGap: 12,
               leading: Text(song.id.toString(),
