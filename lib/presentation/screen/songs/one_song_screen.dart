@@ -82,26 +82,29 @@ class _OneSongScreenState extends State<OneSongScreen>
       top: false,
       child: BlocBuilder<SongsBloc, SongsState>(builder: (context, state) {
         if (state is GetSongsSuccessState) {
-          final SongDetail song = _receiveAndAdjustSong(state);
-
-          return DefaultTabController(
-            length: tabsKeys.length,
-            child: Scaffold(
-              appBar: _buildAppBar(context, song),
-              body: Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: [
-                  //adjust size text screen and player dynamicly
-                  _tabBarBuilder(song),
-                  if (song.resources != null &&
-                      song.resources!.isNotEmpty &&
-                      !videoIsPlaying)
-                    _buldVideoPreview(song),
-                  if (videoIsPlaying) _miniPlayerBuilder(),
-                ],
+          final SongDetail? song = _receiveAndAdjustSong(state);
+          if (song != null) {
+            return DefaultTabController(
+              length: tabsKeys.length,
+              child: Scaffold(
+                appBar: _buildAppBar(context, song),
+                body: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    //adjust size text screen and player dynamicly
+                    _tabBarBuilder(song),
+                    if (song.resources != null &&
+                        song.resources!.isNotEmpty &&
+                        !videoIsPlaying)
+                      _buldVideoPreview(song),
+                    if (videoIsPlaying) _miniPlayerBuilder(),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            return const SizedBox();
+          }
         } else if (state is SongsErrorState) {
           return const Scaffold(body: ErrorTextOnScreen());
         } else {
@@ -111,7 +114,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     );
   }
 
-  SongDetail _receiveAndAdjustSong(GetSongsSuccessState state) {
+  SongDetail? _receiveAndAdjustSong(GetSongsSuccessState state) {
     SongDetail song = state.songs.firstWhere(
       (item) => item.id.toString() == widget.songId,
       orElse: SongDetail.defaultSong,
@@ -131,6 +134,8 @@ class _OneSongScreenState extends State<OneSongScreen>
         SharedPreferencesHelper.saveMap(
                 StorageKeys.allSongsLanguages, allLanguages)
             .then((_) => getIt<SongsBloc>().add(SongsRequested()));
+        return null;
+        // tabsKeys.insert(0, widget.lang!);
       } else
       // put lang from the deep link to the first place
       {
