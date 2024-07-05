@@ -7,6 +7,7 @@ import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock/wakelock.dart';
@@ -81,8 +82,10 @@ class _OneSongScreenState extends State<OneSongScreen>
       top: false,
       child: BlocBuilder<SongsBloc, SongsState>(builder: (context, state) {
         if (state is GetSongsSuccessState) {
-          SongDetail song = state.songs
-              .firstWhere((item) => item.id.toString() == widget.songId);
+          SongDetail song = state.songs.firstWhere(
+            (item) => item.id.toString() == widget.songId,
+            orElse: SongDetail.defaultSong,
+          );
           //if song came from   from searchResult we need to put search language to the first place in the maps title, text, descr to show them in the first tab
           if (song.searchLang != null) {
             song = song.orderByLanguage([song.searchLang!]);
@@ -107,6 +110,11 @@ class _OneSongScreenState extends State<OneSongScreen>
               ),
             ),
           );
+        } else if (state is SongsInitial) {
+          getIt<SongsBloc>().add(SongsRequested());
+          return const SizedBox();
+        } else if (state is SongsErrorState) {
+          return const Scaffold(body: ErrorTextOnScreen());
         } else {
           return const SizedBox();
         }

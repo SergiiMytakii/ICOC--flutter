@@ -33,8 +33,8 @@ class AnimatedDrawerItem extends StatelessWidget {
               .titleMedium!
               .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        onTap: () => context.push(
-          route,
+        onTap: () => context.go(
+          '/$route',
         ),
       ),
     );
@@ -83,22 +83,22 @@ class _MyDrawerState extends State<MyDrawer> {
       {
         'icon': Icons.info,
         'title': 'Terms of Use'.tr(context: context),
-        'route': Routes.TERMS_OF_USE,
+        'route': TERMS_OF_USE,
       },
       {
         'icon': Icons.share,
         'title': 'drawer_share_app'.tr(context: context),
-        'route': Routes.SHARE_APP_SCREEN,
+        'route': SHARE_APP_SCREEN,
       },
       {
         'icon': Icons.info,
         'title': 'drawer_about_app'.tr(context: context),
-        'route': Routes.ABOUT_APP_SCREEN,
+        'route': ABOUT_APP_SCREEN,
       },
       {
         'icon': Icons.settings,
         'title': 'drawer_settings'.tr(context: context),
-        'route': Routes.SETTINGS,
+        'route': SETTINGS,
       },
     ];
 

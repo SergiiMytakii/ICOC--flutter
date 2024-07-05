@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/core/model/q&a_model.dart';
 import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/routes/routes_with_transitions.dart';
@@ -28,106 +27,122 @@ import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
+    //main sections
     FadeGoRoute(
-      path: Routes.HOME,
-      builder: (BuildContext context, GoRouterState state) =>
-          const HomeScreen(),
-    ),
-    FadeGoRoute(
-        path: Routes.SONGBOOK,
+        path: HOME,
         builder: (BuildContext context, GoRouterState state) =>
-            const MyBottomNavigationBar()),
-    FadeGoRoute(
-      path: Routes.Q_AND_ANSVERS,
-      builder: (BuildContext context, GoRouterState state) =>
-          QuestionsAndAnswers(),
-    ),
-    GoRoute(
-      path: Routes.ADD_SONG_SCREEN,
-      builder: (BuildContext context, GoRouterState state) =>
-          const AddSongScreen(),
-    ),
-    GoRoute(
-      path: Routes.ONE_TOPIC_SCREEN,
-      builder: (BuildContext context, GoRouterState state) {
-        final bibleStudyTopic = state.extra as BibleStudy;
-        return OneTopicScreen(topic: bibleStudyTopic);
-      },
-    ),
-    GoRoute(
-      path: Routes.ONE_LESSON_SCREEN,
-      builder: (BuildContext context, GoRouterState state) {
-        final lesson = state.extra as Lesson;
-        return OneLessonScreen(lesson: lesson);
-      },
-    ),
-    GoRoute(
-      path: Routes.ONE_Q_AND_A_SCREEN,
-      builder: (BuildContext context, GoRouterState state) {
-        final QandAModel article = state.extra as QandAModel;
-        return OneQandAScreen(article: article);
-      },
-    ),
-    FadeGoRoute(
-      path: Routes.BIBLE_STUDY,
-      builder: (BuildContext context, GoRouterState state) =>
-          BibleStudyScreen(),
-    ),
-    FadeGoRoute(
-      path: Routes.VIDEO,
-      builder: (BuildContext context, GoRouterState state) =>
-          ListTopicsScreen(),
-    ),
-    VerticalSlideGoRoute(
-      path: Routes.VIDEO_PLAYER,
-      builder: (BuildContext context, GoRouterState state) {
-        final Resources resources = state.extra as Resources;
-        return VideoPlayer(resources);
-      },
-    ),
-    GoRoute(
-      path: '${Routes.ONE_SONG_SCREEN}/:songId',
-      builder: (BuildContext context, GoRouterState state) {
-        final songId = state.pathParameters['songId'];
-        return OneSongScreen(songId ?? '');
-      },
-    ),
-    GoRoute(
-      path: Routes.LIST_VIDEOS_SCREEN,
-      builder: (BuildContext context, GoRouterState state) {
-        final Video video = state.extra as Video;
-        return ListVideosScreen(video: video);
-      },
-    ),
-    FadeGoRoute(
-      path: Routes.SHARE_APP_SCREEN,
-      builder: (BuildContext context, GoRouterState state) =>
-          const ShareAppScreen(),
-    ),
-    FadeGoRoute(
-      path: Routes.SETTINGS,
-      builder: (BuildContext context, GoRouterState state) =>
-          const GeneralSettingsScreen(),
-    ),
-    FadeGoRoute(
-      path: Routes.TERMS_OF_USE,
-      builder: (BuildContext context, GoRouterState state) =>
-          const TermsOfUseAndPolicy(),
-    ),
-    FadeGoRoute(
-      path: Routes.ABOUT_APP_SCREEN,
-      builder: (BuildContext context, GoRouterState state) =>
-          const AboutAppScreen(),
-    ),
-    FadeGoRoute(
-      path: Routes.FEEDBACK_SCREEN,
-      builder: (BuildContext context, GoRouterState state) =>
-          const FeedbackScreen(),
-    ),
-    FadeGoRoute(
-      path: Routes.NOTIFICATIONS_SCREEN,
-      builder: (BuildContext context, GoRouterState state) =>
-          NotificationsScreen(),
-    ),
+            const HomeScreen(),
+        routes: [
+          //main sections
+          FadeGoRoute(
+              path: SONGBOOK,
+              builder: (BuildContext context, GoRouterState state) =>
+                  const MyBottomNavigationBar(),
+              routes: [
+                GoRoute(
+                  path: '$ONE_SONG_SCREEN/:songId',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final songId = state.pathParameters['songId'];
+                    return OneSongScreen(songId ?? '');
+                  },
+                ),
+                GoRoute(
+                  path: ADD_SONG_SCREEN,
+                  builder: (BuildContext context, GoRouterState state) =>
+                      const AddSongScreen(),
+                ),
+              ]),
+          FadeGoRoute(
+              path: Q_AND_ANSVERS,
+              builder: (BuildContext context, GoRouterState state) =>
+                  QuestionsAndAnswers(),
+              routes: [
+                GoRoute(
+                  path: ONE_Q_AND_A_SCREEN,
+                  builder: (BuildContext context, GoRouterState state) {
+                    final QandAModel article = state.extra as QandAModel;
+                    return OneQandAScreen(article: article);
+                  },
+                ),
+              ]),
+
+          FadeGoRoute(
+              path: BIBLE_STUDY,
+              builder: (BuildContext context, GoRouterState state) =>
+                  BibleStudyScreen(),
+              routes: [
+                GoRoute(
+                    path: ONE_TOPIC_SCREEN,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final bibleStudyTopic = state.extra as BibleStudy;
+                      return OneTopicScreen(topic: bibleStudyTopic);
+                    },
+                    routes: [
+                      GoRoute(
+                        path: ONE_LESSON_SCREEN,
+                        builder: (BuildContext context, GoRouterState state) {
+                          final lesson = state.extra as Lesson;
+                          return OneLessonScreen(lesson: lesson);
+                        },
+                      ),
+                    ]),
+              ]),
+          FadeGoRoute(
+              path: VIDEO,
+              builder: (BuildContext context, GoRouterState state) =>
+                  ListTopicsScreen(),
+              routes: [
+                GoRoute(
+                    path: LIST_VIDEOS_SCREEN,
+                    builder: (BuildContext context, GoRouterState state) {
+                      final Video video = state.extra as Video;
+                      return ListVideosScreen(video: video);
+                    },
+                    routes: [
+                      VerticalSlideGoRoute(
+                        path: VIDEO_PLAYER,
+                        builder: (BuildContext context, GoRouterState state) {
+                          final Resources resources = state.extra as Resources;
+                          return VideoPlayer(resources);
+                        },
+                      ),
+                    ]),
+              ]),
+
+          FadeGoRoute(
+            path: FEEDBACK_SCREEN,
+            builder: (BuildContext context, GoRouterState state) =>
+                const FeedbackScreen(),
+          ),
+
+          //menu screens
+
+          FadeGoRoute(
+            path: SETTINGS,
+            builder: (BuildContext context, GoRouterState state) =>
+                const GeneralSettingsScreen(),
+          ),
+          FadeGoRoute(
+            path: SHARE_APP_SCREEN,
+            builder: (BuildContext context, GoRouterState state) =>
+                const ShareAppScreen(),
+          ),
+          FadeGoRoute(
+            path: TERMS_OF_USE,
+            builder: (BuildContext context, GoRouterState state) =>
+                const TermsOfUseAndPolicy(),
+          ),
+          FadeGoRoute(
+            path: ABOUT_APP_SCREEN,
+            builder: (BuildContext context, GoRouterState state) =>
+                const AboutAppScreen(),
+          ),
+
+          FadeGoRoute(
+            path: NOTIFICATIONS_SCREEN,
+            builder: (BuildContext context, GoRouterState state) =>
+                NotificationsScreen(),
+          ),
+        ]),
   ],
 );

@@ -42,7 +42,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 14),
           ),
-          leading: const CustomBackIcon(Routes.HOME),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),

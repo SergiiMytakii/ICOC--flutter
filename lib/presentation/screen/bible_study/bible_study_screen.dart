@@ -71,7 +71,6 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
         'drawer_first_principles'.tr(),
       ),
       centerTitle: true,
-      leading: const CustomBackIcon(Routes.HOME),
       actions: [
         Stack(
           children: [
@@ -140,8 +139,8 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => context.push(
-                          Routes.ONE_TOPIC_SCREEN,
+                        onTap: () => context.go(
+                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN',
                           extra: state.topics[index],
                         ),
                       ),

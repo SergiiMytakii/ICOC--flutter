@@ -108,7 +108,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
     return Column(
       children: [
         ListTile(
-          onTap: () => context.push('${Routes.ONE_SONG_SCREEN}/${song.id}'),
+          onTap: () => context.go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}'),
           horizontalTitleGap: 12,
           leading: Text(song.id.toString(),
               style: Theme.of(context).textTheme.titleSmall),

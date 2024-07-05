@@ -8,8 +8,6 @@ import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/model/song_detail.dart';
 
-import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
-
 class SongCard extends StatelessWidget {
   final SongDetail song;
   final List<Widget>? slideActions;
@@ -40,7 +38,7 @@ class SongCard extends StatelessWidget {
             ),
             child: ListTile(
               onTap: (() {
-                context.push('${Routes.ONE_SONG_SCREEN}/${song.id}');
+                context.go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}');
               }),
               horizontalTitleGap: 12,
               leading: Text(song.id.toString(),

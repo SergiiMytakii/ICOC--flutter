@@ -77,7 +77,6 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
         'Video'.tr(),
       ),
       centerTitle: true,
-      leading: const CustomBackIcon(Routes.HOME),
       actions: [
         Stack(
           children: [
@@ -142,7 +141,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => context.push(Routes.LIST_VIDEOS_SCREEN,
+                        onTap: () => context.go('/$VIDEO/$LIST_VIDEOS_SCREEN',
                             extra: topics[index]),
                       ),
                       Divider(

@@ -1,22 +1,24 @@
-class Routes {
-  static const HOME = '/';
-  static const SONGBOOK = '/bottom_navigation_bar';
-  static const Q_AND_ANSVERS = '/q_and_a';
-  static const ADD_SONG_SCREEN = '/add_song_screen';
-  static const BIBLE_STUDY = '/bible_study_screen';
-  static const NOTIFICATIONS_SCREEN = '/notifications_screen';
-  static const SETTINGS = '/general_settings';
-  static const ONE_SONG_SCREEN = '/one_song_screen';
-  static const ABOUT_APP_SCREEN = '/about_app_screen';
-  static const ONE_NEWS_SCREEN = '/one_news_screen';
-  static const ONE_TOPIC_SCREEN = '/one_topic_screen';
-  static const ONE_LESSON_SCREEN = '/one_lesson_screen';
-  static const ONE_Q_AND_A_SCREEN = '/one_q_and_a_screen';
-  static const SHARE_APP_SCREEN = '/share_app_screen';
-  static const VIDEO_PLAYER_SCREEN = '/video_player_screen';
-  static const LIST_VIDEOS_SCREEN = '/list_videos_screen';
-  static const FEEDBACK_SCREEN = '/feedback_screen';
-  static const VIDEO = '/video_titles_screen';
-  static const VIDEO_PLAYER = '/video_player';
-  static const TERMS_OF_USE = '/terms_of_use_screen';
-}
+const HOME = '/';
+
+const SONGBOOK = 'songbook';
+const ONE_SONG_SCREEN = 'songs';
+const ADD_SONG_SCREEN = 'addsong';
+
+const Q_AND_ANSVERS = 'qanda';
+const ONE_Q_AND_A_SCREEN = 'oneqanda';
+
+const VIDEO = 'video';
+const LIST_VIDEOS_SCREEN = 'listvideos';
+const VIDEO_PLAYER = 'videoplayer';
+
+const BIBLE_STUDY = 'biblestudy';
+const ONE_TOPIC_SCREEN = 'onetopic';
+const ONE_LESSON_SCREEN = 'onelesson';
+
+const SETTINGS = 'settings';
+const ABOUT_APP_SCREEN = 'aboutapp';
+const SHARE_APP_SCREEN = 'shareapp';
+const TERMS_OF_USE = 'termsofuse';
+
+const FEEDBACK_SCREEN = 'feedback';
+const NOTIFICATIONS_SCREEN = 'notifications';

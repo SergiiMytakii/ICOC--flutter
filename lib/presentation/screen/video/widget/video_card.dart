@@ -56,8 +56,8 @@ class _VideoCardState extends State<VideoCard> {
             children: [
               InkWell(
                 onTap: () {
-                  //todo add  VerticalSlidePageRoute
-                  context.push(Routes.VIDEO_PLAYER, extra: widget.resources);
+                  context.go('/$VIDEO/$LIST_VIDEOS_SCREEN/$VIDEO_PLAYER',
+                      extra: widget.resources);
                 },
                 child: Container(
                   width: double.maxFinite,

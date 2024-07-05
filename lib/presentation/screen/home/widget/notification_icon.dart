@@ -49,7 +49,7 @@ class NotificationIcon extends StatelessWidget {
               color: Colors.white,
               size: 36,
             ),
-            onPressed: () => context.push(Routes.NOTIFICATIONS_SCREEN),
+            onPressed: () => context.go('/$NOTIFICATIONS_SCREEN'),
           ),
         ]);
       },

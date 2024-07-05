@@ -3,26 +3,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-GoRoute FadeGoRoute({
-  required String path,
-  required Widget Function(BuildContext context, GoRouterState state) builder,
-}) {
+GoRoute FadeGoRoute(
+    {required String path,
+    required Widget Function(BuildContext context, GoRouterState state) builder,
+    List<RouteBase> routes = const []}) {
   return GoRoute(
-    path: path,
-    pageBuilder: (BuildContext context, GoRouterState state) {
-      return CustomTransitionPage(
-        transitionDuration: const Duration(milliseconds: 500),
-        key: state.pageKey,
-        child: builder(context, state),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
-            child: child,
-          );
-        },
-      );
-    },
-  );
+      path: path,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return CustomTransitionPage(
+          transitionDuration: const Duration(milliseconds: 500),
+          key: state.pageKey,
+          child: builder(context, state),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
+              child: child,
+            );
+          },
+        );
+      },
+      routes: routes);
 }
 
 GoRoute VerticalSlideGoRoute({

@@ -73,8 +73,8 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 trailing: const Icon(Icons.arrow_forward_ios),
-                                onTap: () => context.push(
-                                  Routes.ONE_Q_AND_A_SCREEN,
+                                onTap: () => context.go(
+                                  '/$Q_AND_ANSVERS/$ONE_Q_AND_A_SCREEN',
                                   extra: state.articles[index],
                                 ),
                               ),

@@ -85,7 +85,6 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     return SliverAppBar(
       title: Text(widget.title),
       centerTitle: true,
-      leading: const CustomBackIcon(Routes.HOME),
       actions: [
         Stack(
           children: [
@@ -170,7 +169,7 @@ IconButton buildAddSongButton(BuildContext context) {
     ),
     tooltip: 'icon_button_actions_app_bar_add_song'.tr(),
     onPressed: () {
-      context.push(Routes.ADD_SONG_SCREEN);
+      context.go('/$SONGBOOK/$ADD_SONG_SCREEN');
     },
   );
 }

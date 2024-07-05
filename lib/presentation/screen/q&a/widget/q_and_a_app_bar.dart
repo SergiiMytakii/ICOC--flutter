@@ -18,7 +18,6 @@ class QandAAppbar extends StatelessWidget {
   ) {
     return SliverAppBar(
       title: Text(title),
-      leading: const CustomBackIcon(Routes.HOME),
       centerTitle: true,
       pinned: true,
       expandedHeight: 95,

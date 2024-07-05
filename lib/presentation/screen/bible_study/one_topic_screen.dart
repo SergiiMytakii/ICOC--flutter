@@ -39,7 +39,8 @@ class OneTopicScreen extends StatelessWidget {
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () => context.push(Routes.ONE_LESSON_SCREEN,
+                    onTap: () => context.go(
+                        '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/$ONE_LESSON_SCREEN',
                         extra: topic.lessons[index]),
                   ),
                   Divider(
