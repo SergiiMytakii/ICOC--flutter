@@ -45,44 +45,39 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (didPop) async {
-        Future.delayed(Duration.zero).then((value) => context.pop());
-      },
-      child: YoutubePlayerScaffold(
-          controller: youtubePlayerController,
-          autoFullScreen: false,
-          builder: (BuildContext context, Widget player) {
-            return SafeArea(
-              top: false,
-              child: BlocBuilder<VideoBloc, VideoState>(
-                builder: (context, state) {
-                  if (state is GetVideosFromPlaylistSuccessState) {
-                    final resource = state.resources.firstWhere(
-                        (item) => item.link.contains(widget.videoId));
-                    return Scaffold(
-                        appBar: AppBar(
-                          centerTitle: true,
-                          title: Text(
-                            resource.title ?? '',
-                            maxLines: 2,
-                            style: const TextStyle(fontSize: 12),
-                          ),
+    return YoutubePlayerScaffold(
+        controller: youtubePlayerController,
+        autoFullScreen: false,
+        builder: (BuildContext context, Widget player) {
+          return SafeArea(
+            top: false,
+            child: BlocBuilder<VideoBloc, VideoState>(
+              builder: (context, state) {
+                if (state is GetVideosFromPlaylistSuccessState) {
+                  final resource = state.resources
+                      .firstWhere((item) => item.link.contains(widget.videoId));
+                  return Scaffold(
+                      appBar: AppBar(
+                        centerTitle: true,
+                        title: Text(
+                          resource.title ?? '',
+                          maxLines: 2,
+                          style: const TextStyle(fontSize: 12),
                         ),
-                        body: Column(
-                          children: [player, currentVideoInfo(resource)],
-                        ));
-                  }
-                  if (state is VideoErrorState) {
-                    return const Scaffold(body: ErrorTextOnScreen());
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
-            );
-          }),
-    );
+                      ),
+                      body: Column(
+                        children: [player, currentVideoInfo(resource)],
+                      ));
+                }
+                if (state is VideoErrorState) {
+                  return const Scaffold(body: ErrorTextOnScreen());
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+          );
+        });
   }
 
   Widget currentVideoInfo(Resources resource) {

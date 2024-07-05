@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc/core/helpers/count_song_tabs.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
@@ -108,7 +109,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
     return Column(
       children: [
         ListTile(
-          onTap: () => context.go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}'),
+          onTap: () => context
+              .go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}/${countTabs(song)}'),
           horizontalTitleGap: 12,
           leading: Text(song.id.toString(),
               style: Theme.of(context).textTheme.titleSmall),

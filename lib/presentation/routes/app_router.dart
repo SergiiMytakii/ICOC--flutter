@@ -40,10 +40,17 @@ final GoRouter router = GoRouter(
                   const MyBottomNavigationBar(),
               routes: [
                 GoRoute(
-                  path: '$ONE_SONG_SCREEN/:songId',
+                  path: '$ONE_SONG_SCREEN/:songId/:tabsCount',
                   builder: (BuildContext context, GoRouterState state) {
                     final songId = state.pathParameters['songId'];
-                    return OneSongScreen(songId ?? '');
+                    final tabsCount = state.pathParameters['tabsCount'];
+                    final lang = state.uri.queryParameters['lang'];
+
+                    return OneSongScreen(
+                      songId: songId ?? '',
+                      tabsCount: int.parse(tabsCount ?? '1'),
+                      lang: lang,
+                    );
                   },
                 ),
                 GoRoute(

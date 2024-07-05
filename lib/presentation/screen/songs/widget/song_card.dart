@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc/core/helpers/count_song_tabs.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
@@ -38,7 +39,9 @@ class SongCard extends StatelessWidget {
             ),
             child: ListTile(
               onTap: (() {
-                context.go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}');
+                context.go(
+                  '/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}/${countTabs(song)}',
+                );
               }),
               horizontalTitleGap: 12,
               leading: Text(song.id.toString(),

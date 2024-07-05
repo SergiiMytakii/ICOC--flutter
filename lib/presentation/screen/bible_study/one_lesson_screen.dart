@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
@@ -64,9 +66,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                     Icons.share,
                   ),
                   onPressed: () {
-                    Share.share(FormatTextHelper.extractFormattedText(
-                      lesson.text,
-                    ));
+                    _share(lesson);
                   },
                 ),
                 IconButton(
@@ -118,5 +118,21 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
         }
       },
     );
+  }
+
+  void _share(Lesson lesson) {
+    final link =
+        '$ICOC_WEB_PAGE/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${widget.topicId}/$ONE_LESSON_SCREEN/${lesson.id}';
+    final hint = 'Open in ICOC app:'.tr();
+
+    final text = '''
+              ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
+              $hint\n
+              $link''';
+
+    Share.share(
+      text,
+    );
+    print(link);
   }
 }
