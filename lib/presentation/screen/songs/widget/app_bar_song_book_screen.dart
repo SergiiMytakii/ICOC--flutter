@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +8,6 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
-import 'package:icoc/presentation/widget/custom_back_icon.dart';
 
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';

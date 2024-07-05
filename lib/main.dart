@@ -18,7 +18,6 @@ import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/theme.dart';
 
 void main() async {

@@ -133,6 +133,5 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     Share.share(
       text,
     );
-    print(link);
   }
 }

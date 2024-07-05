@@ -1,8 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
-import 'package:icoc/presentation/widget/custom_back_icon.dart';
 
 class QandAAppbar extends StatelessWidget {
   QandAAppbar({
