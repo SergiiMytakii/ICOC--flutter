@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
@@ -49,8 +49,7 @@ class NotificationIcon extends StatelessWidget {
               color: Colors.white,
               size: 36,
             ),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(Routes.NOTIFICATIONS_SCREEN),
+            onPressed: () => context.go('/$NOTIFICATIONS_SCREEN'),
           ),
         ]);
       },

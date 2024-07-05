@@ -2,19 +2,23 @@
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoPlayer extends StatefulWidget {
-  VideoPlayer(
-    this.resource, {
+  VideoPlayer({
+    required this.videoId,
     super.key,
   }) {
     Wakelock.enable();
   }
 
-  final Resources resource;
+  final String videoId;
 
   @override
   State<VideoPlayer> createState() => _VideoPlayerState();
@@ -29,7 +33,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
         showFullscreenButton: true,
       ),
     );
-    youtubePlayerController.loadVideoById(videoId: widget.resource.link);
+    youtubePlayerController.loadVideoById(videoId: widget.videoId);
     super.initState();
   }
 
@@ -41,39 +45,47 @@ class _VideoPlayerState extends State<VideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (didPop) async {
-        Future.delayed(Duration.zero)
-            .then((value) => Navigator.of(context).pop());
-      },
-      child: YoutubePlayerScaffold(
-          controller: youtubePlayerController,
-          autoFullScreen: false,
-          builder: (BuildContext context, Widget player) {
-            return SafeArea(
-                top: false,
-                child: Scaffold(
-                    appBar: AppBar(
-                      centerTitle: true,
-                      title: Text(
-                        widget.resource.title ?? '',
-                        maxLines: 2,
-                        style: const TextStyle(fontSize: 12),
+    return YoutubePlayerScaffold(
+        controller: youtubePlayerController,
+        autoFullScreen: false,
+        builder: (BuildContext context, Widget player) {
+          return SafeArea(
+            top: false,
+            child: BlocBuilder<VideoBloc, VideoState>(
+              builder: (context, state) {
+                if (state is GetVideosFromPlaylistSuccessState) {
+                  final resource = state.resources
+                      .firstWhere((item) => item.link.contains(widget.videoId));
+                  return Scaffold(
+                      appBar: AppBar(
+                        centerTitle: true,
+                        title: Text(
+                          resource.title ?? '',
+                          maxLines: 2,
+                          style: const TextStyle(fontSize: 12),
+                        ),
                       ),
-                    ),
-                    body: Column(
-                      children: [player, currentVideoInfo()],
-                    )));
-          }),
-    );
+                      body: Column(
+                        children: [player, currentVideoInfo(resource)],
+                      ));
+                }
+                if (state is VideoErrorState) {
+                  return const Scaffold(body: ErrorTextOnScreen());
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+          );
+        });
   }
 
-  Widget currentVideoInfo() {
+  Widget currentVideoInfo(Resources resource) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(widget.resource.description ?? '',
+          child: Text(resource.description ?? '',
               style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium),
         ),
       ),

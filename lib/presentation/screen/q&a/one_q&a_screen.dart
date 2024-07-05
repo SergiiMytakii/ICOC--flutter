@@ -1,20 +1,25 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:icoc/constants.dart';
-import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/model/q&a_model.dart';
+import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 
 class OneQandAScreen extends StatelessWidget {
-  OneQandAScreen({super.key});
+  final QandAModel article;
+  OneQandAScreen({
+    super.key,
+    required this.article,
+  });
 
   @override
   Widget build(BuildContext context) {
     final fontSozeAdjust =
         FontSizeAdjustBottomSheet(context: context, color: ScreenColors.QandA);
-    final article = ModalRoute.of(context)!.settings.arguments as QandAModel;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

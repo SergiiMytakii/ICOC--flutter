@@ -30,6 +30,7 @@ const YOUTUBE_API_KEY = 'AIzaSyA-Hp3iqUoRZKhVwZ3lqFOOwntlkOaZg5I';
 
 const String YOUTUBE_TERMS_OF_SERVISES = 'https://www.youtube.com/t/terms';
 const String YOUTUBE_PRIVACY_POLICIES = 'https://policies.google.com/privacy';
+const String ICOC_WEB_PAGE = 'https://icoc.netlify.app';
 
 class StorageKeys {
   static const String orderByTitle = 'orderByTitle';

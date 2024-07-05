@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
@@ -11,6 +12,7 @@ import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_s
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
+import 'package:icoc/presentation/widget/custom_back_icon.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -137,9 +139,9 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => Navigator.of(context).pushNamed(
-                            Routes.ONE_TOPIC_SCREEN,
-                            arguments: state.topics[index]),
+                        onTap: () => context.go(
+                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${state.topics[index].id}',
+                        ),
                       ),
                       Divider(
                         indent: 50,

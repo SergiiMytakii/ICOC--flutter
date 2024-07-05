@@ -12,7 +12,7 @@ class BackgroundHomeScreen extends StatefulWidget {
 
 class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _backgroundAnimationController;
+  late AnimationController _controller;
   late Animation<double> _rotationAnimation;
   late final int backgroundIndex;
   final launchComet = ValueNotifier<int>(0);
@@ -24,7 +24,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
   void initState() {
     backgroundIndex = random.nextInt(10) + 1;
 
-    _backgroundAnimationController = AnimationController(
+    _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2500),
     )..repeat();
@@ -32,11 +32,11 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
     _rotationAnimation = Tween<double>(
       begin: 0,
       end: -pi * 2, // One full rotation
-    ).animate(_backgroundAnimationController);
+    ).animate(_controller);
     DateTime lastCometLaunchTime =
         DateTime.now().subtract(const Duration(seconds: 3));
-    _backgroundAnimationController.addListener(() {
-      final i = (_backgroundAnimationController.value * 1000).toInt() % 3;
+    _controller.addListener(() {
+      final i = (_controller.value * 1000).toInt() % 3;
       if (i == 0) {
         final now = DateTime.now();
         if (now.difference(lastCometLaunchTime).inSeconds >= 2) {
@@ -51,8 +51,8 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
-    _backgroundAnimationController.dispose();
   }
 
   final List<CometAnimation> comets = [

@@ -17,7 +17,7 @@ class MenuItemCard extends StatelessWidget {
           children: [
             Icon(
               item.icon,
-              size: 50,
+              size: 55,
               color: item.color,
               shadows: [
                 const BoxShadow(
@@ -29,14 +29,14 @@ class MenuItemCard extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              width: 10,
+              width: 7,
             ),
             Expanded(
               child: AutoSizeText(
                 item.title.tr(context: context),
                 maxLines: 3,
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 35,
                   color: item.color,
                   fontWeight: FontWeight.bold,
                   shadows: [

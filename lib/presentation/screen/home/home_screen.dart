@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
 import 'package:icoc/core/helpers/in_app_review_helper.dart';
@@ -25,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late final CarouselController carouselController;
+  late final CarouselController _carouselController;
   late AnimationController _menuAnimationController;
 
   List<MenuItem> items = HomeScreenMenuItems.items();
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen>
           .add(NotificationsListRequested(context.locale.languageCode));
     });
 
-    carouselController = CarouselController();
+    _carouselController = CarouselController();
 
     _menuAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000));
@@ -144,10 +145,10 @@ class _HomeScreenState extends State<HomeScreen>
   GestureDetector _buildCaruselSlider(BuildContext context, Size screenSize) {
     return GestureDetector(
       onTap: () async {
-        navigateToScreen(context);
+        context.go('/${currentItem.routeName}');
       },
       child: CarouselSlider(
-        carouselController: carouselController,
+        carouselController: _carouselController,
         options: CarouselOptions(
           height: screenSize.height * 0.65,
           enlargeFactor: 0.55,
@@ -169,9 +170,5 @@ class _HomeScreenState extends State<HomeScreen>
         items: items.map((item) => MenuItemCard(item)).toList(),
       ),
     );
-  }
-
-  void navigateToScreen(BuildContext context) {
-    Navigator.pushNamed(context, currentItem.routeName);
   }
 }

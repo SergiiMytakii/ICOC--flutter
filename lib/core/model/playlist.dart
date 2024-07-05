@@ -1,11 +1,11 @@
-class Video {
-  final String id;
+class Playlist {
+  final String name;
   final String lang;
   final String description;
   final String playlistId;
 
-  Video(
-      {required this.id,
+  Playlist(
+      {required this.name,
       required this.lang,
       required this.description,
       required this.playlistId});

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart';
@@ -72,9 +73,9 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 trailing: const Icon(Icons.arrow_forward_ios),
-                                onTap: () => Navigator.of(context).pushNamed(
-                                  Routes.ONE_Q_AND_A_SCREEN,
-                                  arguments: state.articles[index],
+                                onTap: () => context.go(
+                                  '/$Q_AND_ANSVERS/$ONE_Q_AND_A_SCREEN',
+                                  extra: state.articles[index],
                                 ),
                               ),
                               Divider(

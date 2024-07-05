@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -191,7 +192,7 @@ class _AddSongScreenState extends State<AddSongScreen> {
       if (result) {
         showToast(context: context, message: 'Email has been sent'.tr());
         await Future.delayed(const Duration(seconds: 1));
-        Navigator.pop(context);
+        context.pop();
       }
     } else
       showToast(
