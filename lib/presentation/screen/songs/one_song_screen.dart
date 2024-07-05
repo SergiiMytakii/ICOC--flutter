@@ -110,9 +110,6 @@ class _OneSongScreenState extends State<OneSongScreen>
               ),
             ),
           );
-        } else if (state is SongsInitial) {
-          getIt<SongsBloc>().add(SongsRequested());
-          return const SizedBox();
         } else if (state is SongsErrorState) {
           return const Scaffold(body: ErrorTextOnScreen());
         } else {

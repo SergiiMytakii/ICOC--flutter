@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
@@ -12,12 +11,10 @@ import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:wakelock/wakelock.dart';
 
 class ListVideosScreen extends StatefulWidget {
-  final Video video;
+  final String playlistId;
+  final String? playlistName;
 
-  ListVideosScreen({
-    super.key,
-    required this.video,
-  }) {
+  ListVideosScreen({super.key, required this.playlistId, this.playlistName}) {
     Wakelock.enable();
   }
 
@@ -38,7 +35,7 @@ class _ListVideosState extends State<ListVideosScreen> {
   }
 
   Future<void> _getVideosList() async {
-    getIt<VideoBloc>().add(GetVideosFromPlaylist(widget.video.playlistId));
+    getIt<VideoBloc>().add(GetVideosFromPlaylist(widget.playlistId));
   }
 
   @override
@@ -53,37 +50,34 @@ class _ListVideosState extends State<ListVideosScreen> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(widget.video.id),
+          title: Text(widget.playlistName ?? ''),
         ),
-        body: Stack(children: [
-          BlocBuilder<VideoBloc, VideoState>(
-            builder: (context, state) {
-              if (state is GetVideosFromPlaylistSuccessState) {
-                return RefreshIndicator.adaptive(
-                  onRefresh: () => _getVideosList(),
-                  child: ListView.builder(
-                    cacheExtent: 0,
-                    itemBuilder: (context, index) => state.resources.isNotEmpty
-                        ? AnimationWrapper(
-                            child: VideoCard(
-                              resources: state.resources[index],
-                            ),
-                          )
-                        : Container(height: 200),
-                    itemCount: state.resources.length,
-                  ),
-                );
-              } else if (state is VideoLoadingState) {
-                return CustomRefreshIndicator(
-                    onRefresh: () => _getVideosList());
-              } else if (state is VideoErrorState) {
-                return ErrorTextOnScreen(message: state.message);
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ]),
+        body: BlocBuilder<VideoBloc, VideoState>(
+          builder: (context, state) {
+            if (state is GetVideosFromPlaylistSuccessState) {
+              return RefreshIndicator.adaptive(
+                onRefresh: () => _getVideosList(),
+                child: ListView.builder(
+                  cacheExtent: 0,
+                  itemBuilder: (context, index) => state.resources.isNotEmpty
+                      ? AnimationWrapper(
+                          child: VideoCard(
+                            resources: state.resources[index],
+                          ),
+                        )
+                      : Container(height: 200),
+                  itemCount: state.resources.length,
+                ),
+              );
+            } else if (state is VideoLoadingState) {
+              return CustomRefreshIndicator(onRefresh: () => _getVideosList());
+            } else if (state is VideoErrorState) {
+              return ErrorTextOnScreen(message: state.message);
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

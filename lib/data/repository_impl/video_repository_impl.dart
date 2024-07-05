@@ -8,7 +8,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/video.dart';
+import 'package:icoc/core/model/playlist.dart';
 import 'package:icoc/core/repository/video_repository.dart';
 
 @dev
@@ -19,11 +19,11 @@ class VideoRepositoryImpl extends VideoRepository {
   final HttpClient httpClient;
   VideoRepositoryImpl(this.firebaseDataSource, this.httpClient);
   @override
-  Future<List<Video>> getVideoList() async {
+  Future<List<Playlist>> getVideoList() async {
     final QuerySnapshot snapshot = await firebaseDataSource
         .getFromFirebase(FirebaseCollections.Video.name);
-    final List<Video> videos = _listFromSnapshot(snapshot);
-    return videos;
+    final List<Playlist> playlists = _listFromSnapshot(snapshot);
+    return playlists;
   }
 
   @override
@@ -43,14 +43,14 @@ class VideoRepositoryImpl extends VideoRepository {
         final data = jsonDecode(response.body);
         final List<dynamic> videosJson = data['items'];
 
-        // Fetch first eight videos from uploads playlist
-        final List<Resources> videos = [];
+        // Fetch first eight playlists from uploads playlist
+        final List<Resources> playlists = [];
         videosJson.forEach(
-          (json) => videos.add(
+          (json) => playlists.add(
             Resources.fromJsonYoutobePlaylists(json['snippet']),
           ),
         );
-        return videos;
+        return playlists;
       } else {
         logError(
             json.decode(response.body)['error']['message'] ??
@@ -65,14 +65,14 @@ class VideoRepositoryImpl extends VideoRepository {
   }
 }
 
-List<Video> _listFromSnapshot(QuerySnapshot snapshot) {
-  final List<Video> videos = snapshot.docs.map((doc) {
-    return Video(
-      id: doc.id,
+List<Playlist> _listFromSnapshot(QuerySnapshot snapshot) {
+  final List<Playlist> playlists = snapshot.docs.map((doc) {
+    return Playlist(
+      name: doc.id,
       description: doc.get('description') ?? '',
       lang: doc.get('lang') ?? '',
       playlistId: doc.get('playlistId') ?? '',
     );
   }).toList();
-  return videos;
+  return playlists;
 }

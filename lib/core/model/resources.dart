@@ -6,12 +6,14 @@ class Resources {
   final String? artist;
   final String? publishedAt;
   final String? description;
+  final String? playlistId;
 
   Resources(
       {required this.lang,
       required this.title,
       required this.link,
       this.thumbnail,
+      this.playlistId,
       this.publishedAt,
       this.description,
       this.artist});
@@ -20,6 +22,7 @@ class Resources {
     return Resources(
         lang: json['lang'] ?? '',
         title: json['title'],
+        playlistId: json['playlistId'],
         link: json['link'] ?? '',
         thumbnail: json['thumbnail'],
         artist: json['artist']);
@@ -41,6 +44,7 @@ class Resources {
             : null,
         publishedAt: json['publishedAt'],
         description: json['description'],
+        playlistId: json['playlistId'],
         artist: json['artist']);
   }
 }

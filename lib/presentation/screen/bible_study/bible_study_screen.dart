@@ -140,8 +140,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => context.go(
-                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN',
-                          extra: state.topics[index],
+                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${state.topics[index].id}',
                         ),
                       ),
                       Divider(

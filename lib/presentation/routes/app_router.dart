@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/core/model/q&a_model.dart';
 import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/video.dart';
+import 'package:icoc/core/model/playlist.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/routes/routes_with_transitions.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
@@ -72,17 +72,19 @@ final GoRouter router = GoRouter(
                   BibleStudyScreen(),
               routes: [
                 GoRoute(
-                    path: ONE_TOPIC_SCREEN,
+                    path: '$ONE_TOPIC_SCREEN/:topicId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final bibleStudyTopic = state.extra as BibleStudy;
-                      return OneTopicScreen(topic: bibleStudyTopic);
+                      final id = state.pathParameters['topicId'];
+                      return OneTopicScreen(topicId: id ?? '');
                     },
                     routes: [
                       GoRoute(
-                        path: ONE_LESSON_SCREEN,
+                        path: '$ONE_LESSON_SCREEN/:id',
                         builder: (BuildContext context, GoRouterState state) {
-                          final lesson = state.extra as Lesson;
-                          return OneLessonScreen(lesson: lesson);
+                          final id = state.pathParameters['id'];
+                          final topicId = state.pathParameters['topicId'];
+                          return OneLessonScreen(
+                              lessonId: id ?? '', topicId: topicId ?? '');
                         },
                       ),
                     ]),
@@ -93,17 +95,21 @@ final GoRouter router = GoRouter(
                   ListTopicsScreen(),
               routes: [
                 GoRoute(
-                    path: LIST_VIDEOS_SCREEN,
+                    path: '$LIST_VIDEOS_SCREEN/:playlistId',
                     builder: (BuildContext context, GoRouterState state) {
-                      final Video video = state.extra as Video;
-                      return ListVideosScreen(video: video);
+                      final playlistId = state.pathParameters['playlistId'];
+                      final playlistName = state.extra as String?;
+                      return ListVideosScreen(
+                        playlistId: playlistId ?? '',
+                        playlistName: playlistName,
+                      );
                     },
                     routes: [
                       VerticalSlideGoRoute(
-                        path: VIDEO_PLAYER,
+                        path: '$VIDEO_PLAYER/:videoId',
                         builder: (BuildContext context, GoRouterState state) {
-                          final Resources resources = state.extra as Resources;
-                          return VideoPlayer(resources);
+                          final videoId = state.pathParameters['videoId'];
+                          return VideoPlayer(videoId: videoId ?? '');
                         },
                       ),
                     ]),
