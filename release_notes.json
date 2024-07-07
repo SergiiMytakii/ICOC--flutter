@@ -1,62 +1,62 @@
-[
+[ 
     {
         "language": "cs-CZ",
-        "text": "Vylepšení uživatelského rozhraní\nOpravy chyb"
+        "text": "Když sdílíte text písně nebo článku, může být otevřen v aplikaci."
     },
     {
         "language": "no-NO",
-        "text": "Brukergrensesnittforbedringer\nFeilrettinger"
+        "text": "Når du deler teksten til en sang eller en artikkel, kan den åpnes i appen."
     },
     {
         "language": "en-US",
-        "text": "UI improvements\nbug fixes"
+        "text": "When you share text of the song or an article it could be opened in the app."
     },
     {
         "language": "de-DE",
-        "text": "Verbesserungen der Benutzeroberfläche\nFehlerbehebungen"
+        "text": "Wenn Sie den Text eines Liedes oder eines Artikels teilen, kann er in der App geöffnet werden."
     },
     {
         "language": "pl-PL",
-        "text": "Ulepszenia interfejsu użytkownika\nPoprawki błędów"
+        "text": "Gdy udostępnisz tekst piosenki lub artykułu, może on zostać otwarty w aplikacji."
     },
     {
         "language": "ru-RU",
-        "text": "Улучшения пользовательского интерфейса\nИсправления ошибок"
+        "text": "Когда вы делитесь текстом песни или статьи, он может быть открыт в приложении."
     },
     {
         "language": "fr-FR",
-        "text": "Améliorations de l'interface utilisateur\nCorrections de bogues"
+        "text": "Lorsque vous partagez le texte d'une chanson ou d'un article, il peut être ouvert dans l'application."
     },
     {
         "language": "it-IT",
-        "text": "Miglioramenti dell'interfaccia utente\nCorrezioni di bug"
+        "text": "Quando condividi il testo di una canzone o di un articolo, potrebbe essere aperto nell'app."
     },
     {
         "language": "ro-RO",
-        "text": "Îmbunătățiri ale interfeței utilizatorului\nCorecții de erori"
+        "text": "Când partajezi textul unei melodii sau al unui articol, acesta ar putea fi deschis în aplicație."
     },
     {
         "language": "ro",
-        "text": "Îmbunătățiri ale interfeței utilizatorului\nCorecții de erori"
+        "text": "Când partajezi textul unei melodii sau al unui articol, acesta ar putea fi deschis în aplicație."
     },
     {
         "language": "uk-UA",
-        "text": "Покращення користувацького інтерфейсу\nВиправлення помилок"
+        "text": "Коли ви поділитеся текстом пісні або статті, його можна буде відкрити в додатку."
     },
     {
         "language": "uk",
-        "text": "Покращення користувацького інтерфейсу\nВиправлення помилок"
+        "text": "Коли ви поділитеся текстом пісні або статті, його можна буде відкрити в додатку."
     },
     {
         "language": "es-ES",
-        "text": "Mejoras de la interfaz de usuario\nCorrecciones de errores"
+        "text": "Cuando compartas el texto de una canción o un artículo, se podría abrir en la aplicación."
     },
     {
         "language": "et",
-        "text": "Kasutajaliidese täiustused\nVigade parandused"
+        "text": "Kui jagad laulu või artikli teksti, võib see rakenduses avaneda."
     },
     {
         "language": "lv",
-        "text": "Lietotāja saskarnes uzlabojumi\nBugu labojumi"
+        "text": "Kad dalīsieties ar dziesmas vai raksta tekstu, to varēs atvērt lietotnē."
     }
 ]
