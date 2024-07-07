@@ -12,12 +12,12 @@ import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:icoc/presentation/bloc/multibloc_provider.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/routes/app_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/theme.dart';
 
 void main() async {
@@ -76,16 +76,16 @@ class MyApp extends StatelessWidget {
       builder: (light, dark) => MyMultiblocProvider(
         child: OverlaySupport.global(
           toastTheme: ToastThemeData(textColor: Colors.white),
-          child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              theme: light,
-              darkTheme: dark,
-              title: 'ICOC',
-              routes: routes,
-              onGenerateRoute: (settings) => onGenerateRoute(settings)),
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            theme: light,
+            darkTheme: dark,
+            title: 'ICOC',
+            routerConfig: router,
+          ),
         ),
       ),
     );

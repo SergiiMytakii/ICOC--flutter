@@ -1,13 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/core/model/video.dart';
-import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
+import 'package:icoc/core/model/playlist.dart';
+import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
@@ -24,7 +25,7 @@ class ListTopicsScreen extends StatefulWidget {
 }
 
 class _ListTopicsScreenState extends State<ListTopicsScreen> {
-  List<Video>? cache;
+  List<Playlist>? cache;
   final GlobalKey tooltipKey2 = GlobalKey();
   bool _tooltipVisible = true;
   @override
@@ -62,7 +63,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
               ? Scaffold(
                   appBar: _buildAppBar(context, false),
                   body: _buildBody(cache!))
-              : Container();
+              : const SizedBox();
         }
       },
     );
@@ -71,7 +72,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
   AppBar _buildAppBar(BuildContext context, bool shoudFilterAnimate) {
     return AppBar(
       title: Text(
-        'Video'.tr(),
+        'Playlist'.tr(),
       ),
       centerTitle: true,
       actions: [
@@ -110,7 +111,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
     );
   }
 
-  Widget _buildBody(List<Video> topics) {
+  Widget _buildBody(List<Playlist> topics) {
     return RefreshIndicator.adaptive(
       onRefresh: _getTopicsList,
       child: topics.isNotEmpty
@@ -126,7 +127,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           width: 40,
                         ),
                         title: Text(
-                          topics[index].id,
+                          topics[index].name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context).textTheme.titleLarge,
@@ -138,10 +139,9 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ListVideosScreen(video: topics[index]))),
+                        onTap: () => context.go(
+                            '/$VIDEO/$LIST_VIDEOS_SCREEN/${topics[index].playlistId}',
+                            extra: topics[index].name),
                       ),
                       Divider(
                         indent: 50,

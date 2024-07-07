@@ -5,7 +5,7 @@ import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/video.dart';
+import 'package:icoc/core/model/playlist.dart';
 import 'package:icoc/core/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -28,9 +28,9 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   ) async {
     try {
       emit(VideoLoadingState());
-      final List<Video> videos = await videoRepository.getVideoList();
+      final List<Playlist> videos = await videoRepository.getVideoList();
       if (videos.isNotEmpty) {
-        final List<Video> filteredVideos = await filterByLanguages(videos);
+        final List<Playlist> filteredVideos = await filterByLanguages(videos);
         emit(GetVideoListSuccessState(filteredVideos));
       } else {
         emit(VideoErrorState(
@@ -65,7 +65,7 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   }
 }
 
-Future<List<Video>> filterByLanguages(List<Video> videos) async {
+Future<List<Playlist>> filterByLanguages(List<Playlist> videos) async {
   final locale = SharedPreferencesHelper.getString(
         StorageKeys.locale,
       ) ??

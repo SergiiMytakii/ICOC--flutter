@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
@@ -83,13 +82,6 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     return SliverAppBar(
       title: Text(widget.title),
       centerTitle: true,
-      leading: IconButton(
-          icon: Icon(
-            Platform.isIOS ? Icons.arrow_back_ios_new : Icons.arrow_back,
-          ),
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
-          }),
       actions: [
         Stack(
           children: [
@@ -174,7 +166,7 @@ IconButton buildAddSongButton(BuildContext context) {
     ),
     tooltip: 'icon_button_actions_app_bar_add_song'.tr(),
     onPressed: () {
-      Navigator.pushNamed(context, Routes.ADD_SONG_SCREEN);
+      context.go('/$SONGBOOK/$ADD_SONG_SCREEN');
     },
   );
 }

@@ -19,19 +19,19 @@ class HomeScreenMenuItems {
   static List<MenuItem> items() {
     return [
       MenuItem('drawer_song_book', ScreenColors.songBook, Icons.music_note,
-          Routes.SONGBOOK),
+          SONGBOOK),
       MenuItem('drawer_first_principles', ScreenColors.bibleStudy,
-          Icons.import_contacts, Routes.BIBLE_STUDY),
+          Icons.import_contacts, BIBLE_STUDY),
       MenuItem('drawer_q_and_a', ScreenColors.QandA, Icons.question_answer,
-          Routes.Q_AND_ANSVERS),
+          Q_AND_ANSVERS),
       MenuItem(
         'Video',
         ScreenColors.video,
         Icons.play_arrow,
-        Routes.VIDEO,
+        VIDEO,
       ),
       MenuItem('Say Thank you!', ScreenColors.general, Icons.thumb_up_alt,
-          Routes.FEEDBACK_SCREEN),
+          FEEDBACK_SCREEN),
     ];
   }
 }

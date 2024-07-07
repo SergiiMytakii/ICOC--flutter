@@ -43,6 +43,7 @@ List<BibleStudy> _listFromSnapshot(QuerySnapshot snapshot) {
     });
     return BibleStudy(
         topic: doc.id,
+        id: doc.get('id'),
         subtopic: doc.get('subtopic'),
         lessons: less,
         lang: doc.get('lang'));

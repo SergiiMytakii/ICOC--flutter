@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:icoc/constants.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
@@ -103,7 +104,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                       FirebaseAnalytics.instance.logEvent(
                                           name: 'change language',
                                           parameters: {'language': language});
-                                      Navigator.pop(context);
+                                      context.pop();
                                     },
                                     title: Text(language.tr()),
                                     contentPadding: const EdgeInsets.symmetric(

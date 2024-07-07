@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MenuButton extends StatelessWidget {
   const MenuButton({super.key});
@@ -13,21 +14,21 @@ class MenuButton extends StatelessWidget {
             child: const Text('Option 1'),
             onPressed: () {
               // Handle Option 1
-              Navigator.pop(context);
+              context.pop();
             },
           ),
           CupertinoContextMenuAction(
             child: const Text('Option 2'),
             onPressed: () {
               // Handle Option 2
-              Navigator.pop(context);
+              context.pop();
             },
           ),
           CupertinoContextMenuAction(
             child: const Text('Option 3'),
             onPressed: () {
               // Handle Option 3
-              Navigator.pop(context);
+              context.pop();
             },
           ),
         ],

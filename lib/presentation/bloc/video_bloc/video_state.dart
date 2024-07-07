@@ -8,7 +8,7 @@ final class VideoInitial extends VideoState {}
 final class VideoLoadingState extends VideoState {}
 
 final class GetVideoListSuccessState extends VideoState {
-  final List<Video> topics;
+  final List<Playlist> topics;
 
   GetVideoListSuccessState(this.topics);
 }
