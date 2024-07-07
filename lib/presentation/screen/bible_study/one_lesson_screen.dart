@@ -44,7 +44,6 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
   Widget build(BuildContext context) {
     final fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.bibleStudy);
-
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
         if (state is GetBibleStudyListSuccessState) {
@@ -127,8 +126,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
 
     final text = '''
               ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
-              $hint\n
-              $link''';
+              $hint $link''';
 
     Share.share(
       text,

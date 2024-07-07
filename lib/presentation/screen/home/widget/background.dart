@@ -57,19 +57,19 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
 
   final List<CometAnimation> comets = [
     const CometAnimation(
-      startOffset: Offset(-1, 0.2),
+      startOffset: Offset(-1, 0.3),
       endOffset: Offset(2, 0),
       rotationAngle: pi / 40,
-      topOffset: 0.3,
+      topOffset: 0.4,
     ),
     const CometAnimation(
-      startOffset: Offset(-1, 0.5),
+      startOffset: Offset(-1, 0.6),
       endOffset: Offset(2, -0.5),
       rotationAngle: -pi / 40,
       topOffset: 0.6,
     ),
     const CometAnimation(
-      startOffset: Offset(-1, 0),
+      startOffset: Offset(-1, 0.2),
       endOffset: Offset(2, 8),
       rotationAngle: pi / 50,
       topOffset: 0.3,
@@ -114,7 +114,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
             builder: (context, cometIndex, __) {
               launchedComets.add(comets[cometIndex]
                   .copyWith(key: ValueKey(Random().nextInt(1000000))));
-              if (launchedComets.length > 4) launchedComets.removeAt(0);
+              if (launchedComets.length > 3) launchedComets.removeAt(0);
               return Stack(
                 children: launchedComets,
               );

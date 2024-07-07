@@ -25,7 +25,7 @@ import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
     //main sections
-    FadeGoRoute(
+    GoRoute(
         path: HOME,
         builder: (BuildContext context, GoRouterState state) =>
             const HomeScreen(),

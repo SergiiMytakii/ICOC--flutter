@@ -11,7 +11,6 @@ GoRoute FadeGoRoute(
       path: path,
       pageBuilder: (BuildContext context, GoRouterState state) {
         return CustomTransitionPage(
-          transitionDuration: const Duration(milliseconds: 500),
           key: state.pageKey,
           child: builder(context, state),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

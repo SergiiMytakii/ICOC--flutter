@@ -91,20 +91,20 @@ class _CometAnimationState extends State<CometAnimation>
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
-        return AnimatedPositioned(
-          duration: const Duration(milliseconds: 800),
-          left: MediaQuery.of(context).size.width * _positionAnimation.value.dx,
-          top: MediaQuery.of(context).size.height *
-              widget.topOffset *
-              _positionAnimation.value.dy,
+        return Transform.translate(
+          offset: Offset(
+            MediaQuery.of(context).size.width * _positionAnimation.value.dx,
+            MediaQuery.of(context).size.height *
+                widget.topOffset *
+                _positionAnimation.value.dy,
+          ),
           child: RotationTransition(
             turns: _rotationAnimation,
-            child: AnimatedOpacity(
-              opacity: _opacityAnimation.value,
-              duration: const Duration(milliseconds: 800),
+            child: FadeTransition(
+              opacity: _opacityAnimation,
               child: CustomPaint(
                 painter: CometPainter(_positionAnimation.value),
-                size: const Size(200, 50),
+                size: const Size(150, 25),
               ),
             ),
           ),
@@ -132,7 +132,8 @@ class CometPainter extends CustomPainter {
     path.moveTo(0, size.height / 2);
     final tailLength = size.width * offset.dx;
     const maxStrokeWidth = 5.0;
-    for (double i = 0; i < tailLength; i += 1) {
+
+    for (double i = 0; i < tailLength; i += 10) {
       final strokeWidth = maxStrokeWidth * (i / tailLength);
       paint.strokeWidth = strokeWidth;
       path.lineTo(i, size.height / 10);
