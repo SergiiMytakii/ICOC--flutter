@@ -14,8 +14,8 @@ import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/songs/widget/bottom_sheet_song_filter.dart';
 
 class SongBookAppbar extends StatefulWidget {
-  SongBookAppbar(this.title, this.callback, {super.key});
-  final String title;
+  SongBookAppbar(this.callback, {super.key});
+
   final Function callback;
 
   @override
@@ -80,7 +80,9 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     BuildContext context,
   ) {
     return SliverAppBar(
-      title: Text(widget.title),
+      title: Text(
+        'app_bar_title'.tr(),
+      ),
       centerTitle: true,
       actions: [
         Stack(

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/model/bible_study.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
@@ -44,6 +45,8 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
   Widget build(BuildContext context) {
     final fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.bibleStudy);
+    // final state = context.select((BibleStudyBloc bloc) => bloc.state);
+
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
         if (state is GetBibleStudyListSuccessState) {
@@ -126,7 +129,8 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
 
     final text = '''
               ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
-              $hint $link''';
+              $hint\n
+              $link''';
 
     Share.share(
       text,

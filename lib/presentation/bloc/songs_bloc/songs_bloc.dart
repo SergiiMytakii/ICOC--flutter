@@ -87,7 +87,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     final allSongs =
         cache.isEmpty ? await songsRepositoryImpl.getSongs() : cache;
 
-    if (trimmedQuery.contains(RegExp(r'[0-9]'))) {
+    if (trimmedQuery.contains(RegExp(r'[0-9]')) && trimmedQuery.length <= 3) {
       return await _searchByNumber(allSongs, trimmedQuery);
     } else {
       return await _searchByText(searchResult, trimmedQuery, allSongs);

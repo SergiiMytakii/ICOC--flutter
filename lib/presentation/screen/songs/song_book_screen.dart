@@ -36,14 +36,21 @@ class _SongBookScreenState extends State<SongBookScreen> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: RefreshIndicator.adaptive(
+        color: Colors.transparent,
         edgeOffset: 130,
-        onRefresh: () => getSongs(useCache: false),
+        onRefresh: () async {
+          if (query.isNotEmpty) {
+            getSongs(useCache: false);
+            await Future.delayed(const Duration(milliseconds: 1000));
+            _handleQuery(query);
+          } else
+            getSongs(useCache: false);
+        },
         child: CustomScrollView(
           cacheExtent: 0,
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SongBookAppbar(
-              'app_bar_title'.tr(),
               _handleQuery,
             )
             //in case its android platform
@@ -59,7 +66,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
     getIt<SongsBloc>().add(SongsRequested(useCache: useCache));
   }
 
-  void _handleQuery(String val) {
+  Future<void> _handleQuery(String val) async {
     setState(() {
       query = val;
       if (query == '') {
