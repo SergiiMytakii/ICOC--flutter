@@ -51,13 +51,15 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
         } else if (state is VideoLoadingState) {
           return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
         } else if (state is VideoErrorState) {
-          return RefreshIndicator.adaptive(
-              onRefresh: _getTopicsList,
-              child: ListView(
-                children: [
-                  ErrorTextOnScreen(message: state.message),
-                ],
-              ));
+          return Scaffold(
+            body: RefreshIndicator.adaptive(
+                onRefresh: _getTopicsList,
+                child: ListView(
+                  children: [
+                    ErrorTextOnScreen(message: state.message),
+                  ],
+                )),
+          );
         } else {
           return cache != null
               ? Scaffold(

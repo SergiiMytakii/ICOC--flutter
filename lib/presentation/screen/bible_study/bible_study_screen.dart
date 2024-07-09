@@ -49,15 +49,17 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
         } else if (state is BibleStudyLoadingState) {
           return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
         } else if (state is BibleStudyErrorState) {
-          return RefreshIndicator.adaptive(
-              onRefresh: _getBibleStudyList,
-              child: ListView(
-                children: [
-                  ErrorTextOnScreen(message: state.message),
-                ],
-              ));
+          return Scaffold(
+            body: RefreshIndicator.adaptive(
+                onRefresh: _getBibleStudyList,
+                child: ListView(
+                  children: [
+                    ErrorTextOnScreen(message: state.message),
+                  ],
+                )),
+          );
         } else {
-          return Container();
+          return const SizedBox();
         }
       },
     );

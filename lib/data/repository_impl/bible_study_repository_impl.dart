@@ -15,9 +15,8 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   @override
   Future getBibleStudyList() async {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-        FirebaseCollections.BibleStudy.name,
-        orderBy: 'lessons',
-        descending: true);
+      FirebaseCollections.BibleStudy.name,
+    );
     final List<BibleStudy> topics = _listFromSnapshot(snapshot);
     return topics;
   }
@@ -28,19 +27,16 @@ List<BibleStudy> _listFromSnapshot(QuerySnapshot snapshot) {
     //получаем все уроки как Map
     final Map lessons = doc.get('lessons') as Map;
     final List<Lesson> less = [];
-    //получаем все ключи и собираем их в List, упорядочиваем
-    final List<int> keys = [];
-    lessons.keys.forEach((key) {
-      keys.add(int.parse(key));
-    });
-    keys.sort();
-    keys.forEach((key) {
+
+    lessons.forEach((key, lesson) {
       less.add(Lesson(
-          id: key,
-          title: lessons[key.toString()]['title'] ??
-              lessons[key.toString()]['titile'],
-          text: lessons[key.toString()]['text']));
+          id: int.parse(key),
+          title: lessons[key]['title'] ?? lessons[key]['titile'],
+          text: lessons[key]['text']));
     });
+    less.sort(
+      (a, b) => a.id.compareTo(b.id),
+    );
     return BibleStudy(
         topic: doc.id,
         id: doc.get('id'),

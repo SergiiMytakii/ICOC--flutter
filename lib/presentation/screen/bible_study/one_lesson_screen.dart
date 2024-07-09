@@ -114,9 +114,12 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
             ),
           );
         } else if (state is BibleStudyErrorState) {
-          return const Scaffold(body: ErrorTextOnScreen());
+          return Scaffold(
+              body: ErrorTextOnScreen(
+            message: state.message,
+          ));
         } else {
-          return const SizedBox();
+          return const Scaffold(body: SizedBox());
         }
       },
     );
@@ -128,6 +131,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     final hint = 'Open in ICOC app:'.tr();
 
     final text = '''
+              ${lesson.title}\n\n
               ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
               $hint\n
               $link''';

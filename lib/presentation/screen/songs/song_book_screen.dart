@@ -52,9 +52,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
           slivers: <Widget>[
             SongBookAppbar(
               _handleQuery,
-            )
-            //in case its android platform
-            ,
+            ),
             showSearchResults ? DataSearchResults(query) : const SongList()
           ],
         ),
