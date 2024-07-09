@@ -313,11 +313,11 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   String cleanKeys(String key) {
     if (key == 'v1')
-      return 'shords';
+      return 'chords';
     else if (key.endsWith('1'))
       return key.replaceFirst('1', '');
     else if (key == 'v2')
-      return 'shords2';
+      return 'chords2';
     else
       return key;
   }
