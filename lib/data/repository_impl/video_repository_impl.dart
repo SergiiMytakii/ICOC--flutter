@@ -67,12 +67,7 @@ class VideoRepositoryImpl extends VideoRepository {
 
 List<Playlist> _listFromSnapshot(QuerySnapshot snapshot) {
   final List<Playlist> playlists = snapshot.docs.map((doc) {
-    return Playlist(
-      name: doc.id,
-      description: doc.get('description') ?? '',
-      lang: doc.get('lang') ?? '',
-      playlistId: doc.get('playlistId') ?? '',
-    );
+    return Playlist.fromJson(doc.data() as Map<String, dynamic>);
   }).toList();
   return playlists;
 }

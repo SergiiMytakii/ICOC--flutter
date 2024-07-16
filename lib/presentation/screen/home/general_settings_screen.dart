@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
 class GeneralSettingsScreen extends StatefulWidget {
@@ -101,6 +102,8 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                   return ListTile(
                                     onTap: () async {
                                       await context.setLocale(Locale(language));
+                                      SharedPreferencesHelper.saveString(
+                                          StorageKeys.locale, language);
                                       FirebaseAnalytics.instance.logEvent(
                                           name: 'change language',
                                           parameters: {'language': language});
@@ -123,22 +126,6 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             ),
           ],
         ));
-  }
-
-  String textForItems(String language) {
-    switch (language) {
-      case 'ru':
-        return 'dropdown_menu_lang_app_russian'.tr();
-
-      case 'en':
-        return 'dropdown_menu_lang_app_english'.tr();
-
-      case 'uk':
-        return 'dropdown_menu_lang_app_ukrainian'.tr();
-
-      default:
-        return 'dropdown_menu_lang_app_russian'.tr();
-    }
   }
 
   String handleLanguage(String language) {

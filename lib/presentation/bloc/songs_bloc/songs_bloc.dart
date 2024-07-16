@@ -32,13 +32,6 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     emit(SongsLoadingState());
     try {
       final songs = await _fetchSongs(event.useCache);
-      // if (songs.isEmpty) {
-      //   await Future.delayed(Duration(seconds: 1));
-      //   emit(SongsErrorState(
-      //       "Can't  load data... Please, check your internet connection and pull down to refresh!"
-      //           .tr()));
-      //   return;
-      // }
       await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
       emit(GetSongsSuccessState(songs));
     } catch (error, stackTrace) {

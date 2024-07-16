@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   cacheExtent: 0,
                   itemCount: state.notifications.length,
                   itemBuilder: (BuildContext context, index) {
-                    Future.delayed(const Duration(seconds: 10)).then((value) =>
+                    Future.delayed(const Duration(seconds: 6)).then((value) =>
                         _markAsRead(state.notifications[index].title,
                             state.notifications));
 
@@ -76,7 +77,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     child: const Center(child: Text('i'))),
                               ),
                             ),
-                            title: Text(state.notifications[index].title),
+                            title: Text(
+                              state.notifications[index].title,
+                              style: AdaptiveTheme.of(context)
+                                  .theme
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                      color: getDividerColor(index).withOpacity(
+                                          state.notifications[index].isRead
+                                              ? 0.7
+                                              : 1)),
+                            ),
                             subtitle: state.notifications[index].text
                                     .trim()
                                     .startsWith('<')

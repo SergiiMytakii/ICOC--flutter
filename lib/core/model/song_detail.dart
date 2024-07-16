@@ -24,15 +24,77 @@ class SongDetail {
       this.searchText,
       this.searchTitle});
 
-  factory SongDetail.fromJson(Map<String, dynamic> parsedJson) {
+  factory SongDetail.fromJson(Map parsedJson, int id) {
     // log.d(parsedJson);
+    // Logger().f(parsedJson['resources'].runtimeType);
+    // Logger().f(parsedJson['resources']);
+    final title = parsedJson['title'] as Map;
+    title.removeWhere(
+      (key, value) => value == null,
+    );
+    final text = parsedJson['text'] as Map;
+    text.removeWhere(
+      (key, value) => value == null,
+    );
+    final description = parsedJson['description'] as Map?;
+    description?.removeWhere(
+      (key, value) => value == null,
+    );
+    final chords = parsedJson['chords'] as Map?;
+    chords?.removeWhere(
+      (key, value) => value == null,
+    );
     return SongDetail(
-      id: parsedJson['Id'] ?? 0,
-      title: parsedJson['title'] ?? '',
-      text: parsedJson['text'] ?? '',
-      description: parsedJson['description'] ?? '',
-      resources: parsedJson['resourses'] ?? [],
-      chords: parsedJson['chords'] ?? '',
+      id: id,
+      title: title,
+      text: text,
+      description: description,
+      resources: parsedJson['resources'] != null
+          ? List<Resources>.from(parsedJson['resources']
+              .map((resource) => Resources.fromJson(resource)))
+          : null,
+      chords: chords,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['text'] = text;
+    if (description != null) {
+      data['description'] = description;
+    }
+    if (resources != null) {
+      data['resources'] = resources?.map((v) => v.toJson()).toList();
+    }
+    if (chords != null) {
+      data['chords'] = chords;
+    }
+    return data;
+  }
+
+  SongDetail copyWith({
+    int? id,
+    Map? description,
+    Map? title,
+    Map? text,
+    List<Resources>? resources,
+    Map? chords,
+    String? searchTitle,
+    String? searchText,
+    String? searchLang,
+  }) {
+    return SongDetail(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      title: title ?? this.title,
+      text: text ?? this.text,
+      resources: resources ?? this.resources,
+      chords: chords ?? this.chords,
+      searchTitle: searchTitle ?? this.searchTitle,
+      searchText: searchText ?? this.searchText,
+      searchLang: searchLang ?? this.searchLang,
     );
   }
 

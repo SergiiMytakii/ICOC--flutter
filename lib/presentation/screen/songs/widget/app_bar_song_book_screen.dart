@@ -23,13 +23,19 @@ class SongBookAppbar extends StatefulWidget {
 }
 
 class _SongBookAppbarState extends State<SongBookAppbar> {
-  Map<String, dynamic> allLanguages = {};
+  Map<String, dynamic>? allLanguages;
   String firstLang = '';
   final GlobalKey tooltipKey = GlobalKey();
   bool _tooltipVisible = true;
 
   @override
   void initState() {
+    allLanguages =
+        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages);
+    if (allLanguages == null) {
+      Future.delayed(const Duration(seconds: 2))
+          .then((_) => _showSelectLangBottomSheet());
+    }
     setFirstLang();
     showTooltip();
 
@@ -63,10 +69,11 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     allLanguages =
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ??
             {locale: true};
-    allLanguages.removeWhere((key, value) => value == false);
-    if (allLanguages.isNotEmpty) {
+
+    allLanguages!.removeWhere((key, value) => value == false);
+    if (allLanguages!.isNotEmpty) {
       setState(() {
-        firstLang = allLanguages.keys.first;
+        firstLang = allLanguages!.keys.first;
       });
     } else {
       setState(() {
@@ -110,16 +117,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
                   firstLanguage: firstLang,
                   shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
                   color: ScreenColors.songBook,
-                  onTap: () => showModalBottomSheet(
-                      scrollControlDisabledMaxHeightRatio: 2,
-                      context: context,
-                      backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) {
-                        return ModalBottomSheet(
-                            height: MediaQuery.of(context).size.height / 1.4,
-                            blurBackground: false,
-                            child: const BottomSheetSongsFilter());
-                      }).then(
+                  onTap: () => _showSelectLangBottomSheet().then(
                     (value) => setState(() {
                       setFirstLang();
                     }),
@@ -158,6 +156,19 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> _showSelectLangBottomSheet() {
+    return showModalBottomSheet(
+        scrollControlDisabledMaxHeightRatio: 2,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return ModalBottomSheet(
+              height: MediaQuery.of(context).size.height / 1.4,
+              blurBackground: false,
+              child: const BottomSheetSongsFilter());
+        });
   }
 }
 

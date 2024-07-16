@@ -70,6 +70,14 @@ List<NotificationsModel> filterNotificationsByLang(
       filteredNotifications.add(notificationMap.values.first);
     }
   }).toList();
+  //if no notifications on the current language then show english notifications
+  if (filteredNotifications.isEmpty) {
+    final engNotification = notifications.firstWhere(
+        (notificationMap) => notificationMap.keys.first == 'en',
+        orElse: () => {});
+    if (engNotification.isNotEmpty)
+      filteredNotifications.add(engNotification['en']!);
+  }
   return filteredNotifications;
 }
 

@@ -17,32 +17,10 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
       FirebaseCollections.BibleStudy.name,
     );
-    final List<BibleStudy> topics = _listFromSnapshot(snapshot);
-    return topics;
+    final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return BibleStudy.fromJson(data);
+    }).toList();
+    return bibleStudies;
   }
-}
-
-List<BibleStudy> _listFromSnapshot(QuerySnapshot snapshot) {
-  final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-    //получаем все уроки как Map
-    final Map lessons = doc.get('lessons') as Map;
-    final List<Lesson> less = [];
-
-    lessons.forEach((key, lesson) {
-      less.add(Lesson(
-          id: int.parse(key),
-          title: lessons[key]['title'] ?? lessons[key]['titile'],
-          text: lessons[key]['text']));
-    });
-    less.sort(
-      (a, b) => a.id.compareTo(b.id),
-    );
-    return BibleStudy(
-        topic: doc.id,
-        id: doc.get('id'),
-        subtopic: doc.get('subtopic'),
-        lessons: less,
-        lang: doc.get('lang'));
-  }).toList();
-  return bibleStudies;
 }

@@ -47,4 +47,38 @@ class Resources {
         playlistId: json['playlistId'],
         artist: json['artist']);
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'lang': lang,
+      'title': title,
+      'link': link,
+      'thumbnail': thumbnail,
+      'artist': artist,
+      'publishedAt': publishedAt,
+      'description': description,
+      'playlistId': playlistId,
+    };
+  }
+
+  Resources copyWith({
+    String? lang,
+    String? title,
+    String? link,
+    String? thumbnail,
+    String? artist,
+    String? publishedAt,
+    String? description,
+    String? playlistId,
+  }) {
+    return Resources(
+      lang: lang ?? this.lang,
+      title: title ?? this.title,
+      link: link ?? this.link,
+      thumbnail: thumbnail ?? this.thumbnail,
+      artist: artist ?? this.artist,
+      publishedAt: publishedAt ?? this.publishedAt,
+      description: description ?? this.description,
+      playlistId: playlistId ?? this.playlistId,
+    );
+  }
 }

@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/rendering.dart';
 import 'package:icoc/injection.dart';
-
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/screen/songs/widget/data_search.dart';
 import 'package:icoc/presentation/screen/songs/widget/app_bar_song_book_screen.dart';
@@ -20,16 +18,20 @@ class SongBookScreen extends StatefulWidget {
 class _SongBookScreenState extends State<SongBookScreen> {
   String query = '';
   bool showSearchResults = false;
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
     getSongs();
+    _scrollController = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,14 +41,20 @@ class _SongBookScreenState extends State<SongBookScreen> {
         color: Colors.transparent,
         edgeOffset: 130,
         onRefresh: () async {
+          if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.reverse) {
+            return; // Do not refresh when scrolling up
+          }
           if (query.isNotEmpty) {
             getSongs(useCache: false);
             await Future.delayed(const Duration(milliseconds: 1000));
             _handleQuery(query);
-          } else
+          } else {
             getSongs(useCache: false);
+          }
         },
         child: CustomScrollView(
+          controller: _scrollController,
           cacheExtent: 0,
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[

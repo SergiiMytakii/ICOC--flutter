@@ -47,7 +47,8 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           return Scaffold(
               appBar: _buildAppbar(context, state), body: _buildBody(state));
         } else if (state is BibleStudyLoadingState) {
-          return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
+          return Scaffold(
+              body: CustomRefreshIndicator(onRefresh: _getBibleStudyList));
         } else if (state is BibleStudyErrorState) {
           return Scaffold(
             body: RefreshIndicator.adaptive(

@@ -56,6 +56,8 @@ class _VideoPlayerState extends State<VideoPlayer> {
                   final resource = state.resources
                       .firstWhere((item) => item.link.contains(widget.videoId));
                   return Scaffold(
+                      backgroundColor:
+                          AdaptiveTheme.of(context).theme.colorScheme.surface,
                       appBar: AppBar(
                         centerTitle: true,
                         title: Text(

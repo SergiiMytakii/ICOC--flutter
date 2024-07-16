@@ -129,7 +129,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           width: 40,
                         ),
                         title: Text(
-                          topics[index].name,
+                          topics[index].title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context).textTheme.titleLarge,
@@ -143,7 +143,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => context.go(
                             '/$VIDEO/$LIST_VIDEOS_SCREEN/${topics[index].playlistId}',
-                            extra: topics[index].name),
+                            extra: topics[index].title),
                       ),
                       Divider(
                         indent: 50,
