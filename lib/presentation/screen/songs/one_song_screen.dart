@@ -83,7 +83,7 @@ class _OneSongScreenState extends State<OneSongScreen>
       child: BlocBuilder<SongsBloc, SongsState>(builder: (context, state) {
         return state.maybeWhen(
           success: (songs) {
-            final SongDetail? song = _receiveAndAdjustSong(songs);
+            final SongDetail? song = _receiveAndPrepareSong(songs);
             if (song != null) {
               return DefaultTabController(
                 length: tabsKeys.length,
@@ -114,7 +114,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     );
   }
 
-  SongDetail? _receiveAndAdjustSong(List<SongDetail> songs) {
+  SongDetail? _receiveAndPrepareSong(List<SongDetail> songs) {
     SongDetail song = songs.firstWhere(
       (item) => item.id.toString() == widget.songId,
       orElse: SongDetail.defaultSong,
@@ -136,10 +136,8 @@ class _OneSongScreenState extends State<OneSongScreen>
             .then((_) =>
                 getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
         return null;
-        // tabsKeys.insert(0, widget.lang!);
-      } else
-      // put lang from the deep link to the first place
-      {
+      } else {
+        // put the lang from the deep link to the first place
         song = song.orderByLanguage([widget.lang!]);
         tabsKeys.remove(widget.lang!);
         tabsKeys.insert(0, widget.lang!);
