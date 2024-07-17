@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +26,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late final CarouselController _carouselController;
+  final carousel_slider.CarouselController _carouselController =
+      carousel_slider.CarouselController();
   late AnimationController _menuAnimationController;
 
   List<MenuItem> items = HomeScreenMenuItems.items();
@@ -48,8 +49,6 @@ class _HomeScreenState extends State<HomeScreen>
       getIt<NotificationsBloc>()
           .add(NotificationsListRequested(context.locale.languageCode));
     });
-
-    _carouselController = CarouselController();
 
     _menuAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000));
@@ -147,16 +146,16 @@ class _HomeScreenState extends State<HomeScreen>
       onTap: () async {
         context.go('/${currentItem.routeName}');
       },
-      child: CarouselSlider(
+      child: carousel_slider.CarouselSlider(
         carouselController: _carouselController,
-        options: CarouselOptions(
+        options: carousel_slider.CarouselOptions(
           height: screenSize.height * 0.65,
           enlargeFactor: 0.55,
           autoPlay: true,
           enlargeCenterPage: true,
           autoPlayInterval: const Duration(seconds: 6),
           viewportFraction: 0.3,
-          enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+          enlargeStrategy: carousel_slider.CenterPageEnlargeStrategy.zoom,
           autoPlayAnimationDuration: const Duration(milliseconds: 1200),
           scrollDirection: Axis.vertical,
           onPageChanged: (index, reason) {

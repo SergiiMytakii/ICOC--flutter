@@ -8,15 +8,12 @@ import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
-import 'package:wakelock/wakelock.dart';
 
 class ListVideosScreen extends StatefulWidget {
   final String playlistId;
   final String? playlistName;
 
-  ListVideosScreen({super.key, required this.playlistId, this.playlistName}) {
-    Wakelock.enable();
-  }
+  ListVideosScreen({super.key, required this.playlistId, this.playlistName});
 
   @override
   State<ListVideosScreen> createState() => _ListVideosState();

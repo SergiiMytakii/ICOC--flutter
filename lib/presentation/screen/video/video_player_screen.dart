@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoPlayer extends StatefulWidget {
@@ -14,7 +14,7 @@ class VideoPlayer extends StatefulWidget {
     required this.videoId,
     super.key,
   }) {
-    Wakelock.enable();
+    WakelockPlus.enable();
   }
 
   final String videoId;

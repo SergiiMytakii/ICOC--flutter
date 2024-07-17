@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/model/bible_study.dart';
-import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
@@ -15,14 +14,14 @@ import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class OneLessonScreen extends StatefulWidget {
   final String lessonId;
   final String topicId;
 
   OneLessonScreen({super.key, required this.lessonId, required this.topicId}) {
-    Wakelock.enable();
+    WakelockPlus.enable();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,

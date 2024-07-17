@@ -12,7 +12,7 @@ import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'package:icoc/constants.dart';
@@ -25,7 +25,7 @@ import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 class OneSongScreen extends StatefulWidget {
   OneSongScreen(
       {super.key, required this.songId, this.tabsCount = 1, this.lang}) {
-    Wakelock.enable();
+    WakelockPlus.enable();
   }
   final String songId;
   final String?
