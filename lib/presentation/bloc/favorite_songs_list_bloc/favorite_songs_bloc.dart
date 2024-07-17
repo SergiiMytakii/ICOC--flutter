@@ -4,28 +4,33 @@ import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:icoc/core/model/song_detail.dart';
 
 part 'favorite_songs_event.dart';
 part 'favorite_songs_state.dart';
+part 'favorite_songs_bloc.freezed.dart';
 
 @singleton
 class FavoriteSongsListBloc
-    extends Bloc<FavoriteSongsListEvent, FavoriteSongsState> {
+    extends Bloc<FavoriteSongsEvent, FavoriteSongsState> {
   final SongsRepository songsRepositoryImpl;
 
   FavoriteSongsListBloc(this.songsRepositoryImpl)
-      : super(FavoriteSongsInitial()) {
-    on<FavoriteSongsListRequested>(_onFavoriteSongsListRequested);
+      : super(const FavoriteSongsState.initial()) {
+    on<FavoriteSongsEvent>((event, emit) {
+      event.map(
+        getRequested: (event) => _onFavoriteSongsListRequested(event, emit),
+      );
+    });
   }
 
   Future<void> _onFavoriteSongsListRequested(
     FavoriteSongsListRequested event,
     Emitter<FavoriteSongsState> emit,
   ) async {
-    emit(FavoriteSongsLoadingState());
+    emit(const FavoriteSongsState.loading());
     try {
       final List<int> favoriteSongsIds =
           await songsRepositoryImpl.getFavoriteSongs();
@@ -35,13 +40,13 @@ class FavoriteSongsListBloc
             songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
         final filteredSongs = await filterSongsByLang(favoriteSongs);
         final orderedSongs = await orderSongs(filteredSongs);
-        emit(GetFavoriteSongsListSuccessState(orderedSongs));
+        emit(FavoriteSongsState.success(orderedSongs));
       } else {
-        emit(GetFavoriteSongsListSuccessState([]));
+        emit(const FavoriteSongsState.success([]));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(FavoriteSongsErrorState(error.toString()));
+      emit(FavoriteSongsState.error(error.toString()));
     }
   }
 }

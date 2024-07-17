@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
@@ -51,8 +51,8 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   @override
   void initState() {
-    getIt<FavoriteSongStatusBloc>()
-        .add(FavoriteSongStatusRequested(id: int.parse(widget.songId)));
+    getIt<FavoriteSongStatusBloc>().add(
+        FavoriteSongStatusEvent.statusRequested(id: int.parse(widget.songId)));
     _controller = AnimationController(
         duration: const Duration(
             milliseconds: 500), // Set the duration of the animation
@@ -81,41 +81,41 @@ class _OneSongScreenState extends State<OneSongScreen>
     return SafeArea(
       top: false,
       child: BlocBuilder<SongsBloc, SongsState>(builder: (context, state) {
-        if (state is GetSongsSuccessState) {
-          final SongDetail? song = _receiveAndAdjustSong(state);
-          if (song != null) {
-            return DefaultTabController(
-              length: tabsKeys.length,
-              child: Scaffold(
-                appBar: _buildAppBar(context, song),
-                body: Stack(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  children: [
-                    //adjust size text screen and player dynamicly
-                    _tabBarBuilder(song),
-                    if (song.resources != null &&
-                        song.resources!.isNotEmpty &&
-                        !videoIsPlaying)
-                      _buldVideoPreview(song),
-                    if (videoIsPlaying) _miniPlayerBuilder(),
-                  ],
+        return state.maybeWhen(
+          success: (songs) {
+            final SongDetail? song = _receiveAndAdjustSong(songs);
+            if (song != null) {
+              return DefaultTabController(
+                length: tabsKeys.length,
+                child: Scaffold(
+                  appBar: _buildAppBar(context, song),
+                  body: Stack(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    children: [
+                      //adjust size text screen and player dynamicly
+                      _tabBarBuilder(song),
+                      if (song.resources != null &&
+                          song.resources!.isNotEmpty &&
+                          !videoIsPlaying)
+                        _buldVideoPreview(song),
+                      if (videoIsPlaying) _miniPlayerBuilder(),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return const SizedBox();
-          }
-        } else if (state is SongsErrorState) {
-          return const Scaffold(body: ErrorTextOnScreen());
-        } else {
-          return const SizedBox();
-        }
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+          error: (_) => const Scaffold(body: ErrorTextOnScreen()),
+          orElse: () => const SizedBox.shrink(),
+        );
       }),
     );
   }
 
-  SongDetail? _receiveAndAdjustSong(GetSongsSuccessState state) {
-    SongDetail song = state.songs.firstWhere(
+  SongDetail? _receiveAndAdjustSong(List<SongDetail> songs) {
+    SongDetail song = songs.firstWhere(
       (item) => item.id.toString() == widget.songId,
       orElse: SongDetail.defaultSong,
     );
@@ -133,7 +133,8 @@ class _OneSongScreenState extends State<OneSongScreen>
         allLanguages[widget.lang!] = true;
         SharedPreferencesHelper.saveMap(
                 StorageKeys.allSongsLanguages, allLanguages)
-            .then((_) => getIt<SongsBloc>().add(SongsRequested()));
+            .then((_) =>
+                getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
         return null;
         // tabsKeys.insert(0, widget.lang!);
       } else
@@ -168,23 +169,22 @@ class _OneSongScreenState extends State<OneSongScreen>
       actions: [
         BlocBuilder<FavoriteSongStatusBloc, FavoriteSongStatusState>(
           builder: (context, state) {
-            if (state is GetFavoriteSongStatusSuccessState) {
-              return IconButton(
+            return state.maybeWhen(
+              success: (isFavorite) => IconButton(
                 tooltip: 'to favorite'.tr(),
                 icon: Icon(
-                  state.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
                 ),
                 onPressed: () {
                   getIt<FavoriteSongStatusBloc>().add(
-                      SetFavoriteSongStatusRequested(
-                          id: song.id, isFavorite: !state.isFavorite));
+                      FavoriteSongStatusEvent.setStatusRequested(
+                          id: song.id, isFavorite: !isFavorite));
                   getIt<FavoriteSongsListBloc>()
-                      .add(FavoriteSongsListRequested());
+                      .add(const FavoriteSongsEvent.getRequested());
                 },
-              );
-            } else {
-              return const Icon(Icons.favorite_border);
-            }
+              ),
+              orElse: () => const Icon(Icons.favorite_border),
+            );
           },
         ),
         IconButton(

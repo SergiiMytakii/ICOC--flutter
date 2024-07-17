@@ -11,7 +11,7 @@ class ScaleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onScaleUpdate: (details) {
-          getIt<FontSizeBloc>().add(FontSizeRequested(
+          getIt<FontSizeBloc>().add(FontSizeEvent.requested(
               fontSize: calculateFontSize(fontSize, details.scale)));
         },
         child: child);

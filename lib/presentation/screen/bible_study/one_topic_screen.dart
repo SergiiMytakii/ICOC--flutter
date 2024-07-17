@@ -14,57 +14,59 @@ class OneTopicScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
-        if (state is GetBibleStudyListSuccessState) {
-          final bibleStudy =
-              state.topics.firstWhere((item) => item.id == int.parse(topicId));
+        return state.when(
+          initial: () => const SizedBox(),
+          loading: () => const SizedBox(),
+          success: (topics) {
+            final bibleStudy =
+                topics.firstWhere((item) => item.id == int.parse(topicId));
 
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                bibleStudy.topic,
-                style: const TextStyle(fontSize: 14),
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  bibleStudy.topic,
+                  style: const TextStyle(fontSize: 14),
+                ),
+                centerTitle: true,
               ),
-              centerTitle: true,
-            ),
-            body: ListView.builder(
-                cacheExtent: 0,
-                itemCount: bibleStudy.lessons.length,
-                itemBuilder: (context, index) {
-                  return AnimationWrapper(
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: Text(' ${bibleStudy.lessons[index].id + 1}',
-                              style: Theme.of(context).textTheme.titleLarge),
-                          title: Text(
-                            bibleStudy.lessons[index].title,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(fontWeight: FontWeight.bold),
+              body: ListView.builder(
+                  cacheExtent: 0,
+                  itemCount: bibleStudy.lessons.length,
+                  itemBuilder: (context, index) {
+                    return AnimationWrapper(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: Text(
+                                ' ${bibleStudy.lessons[index].id + 1}',
+                                style: Theme.of(context).textTheme.titleLarge),
+                            title: Text(
+                              bibleStudy.lessons[index].title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () => context.go(
+                              '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/$topicId/$ONE_LESSON_SCREEN/${bibleStudy.lessons[index].id}',
+                            ),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () => context.go(
-                            '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/$topicId/$ONE_LESSON_SCREEN/${bibleStudy.lessons[index].id}',
+                          Divider(
+                            indent: 50,
+                            color: getDividerColor(index),
+                            thickness: 1.2,
                           ),
-                        ),
-                        Divider(
-                          indent: 50,
-                          color: getDividerColor(index),
-                          thickness: 1.2,
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-          );
-        } else if (state is BibleStudyErrorState) {
-          return const Scaffold(body: ErrorTextOnScreen());
-        } else {
-          return const SizedBox();
-        }
+                        ],
+                      ),
+                    );
+                  }),
+            );
+          },
+          error: (message) => const Scaffold(body: ErrorTextOnScreen()),
+        );
       },
     );
   }

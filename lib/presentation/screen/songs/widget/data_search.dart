@@ -31,24 +31,22 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    getIt<SongsBloc>().add(SearchSongRequested(widget.query));
+    getIt<SongsBloc>().add(SongsEvent.searchSongRequested(widget.query));
     return BlocBuilder<SongsBloc, SongsState>(
       builder: (context, state) {
-        if (state is SongsLoadingState) {
-          return SliverToBoxAdapter(child: Loading());
-        } else if (state is GetSongsSuccessState) {
-          return SliverList(
+        return state.maybeWhen(
+          loading: () => SliverToBoxAdapter(child: Loading()),
+          success: (songs) => SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return buildSongCardWithHighliting(
-                    state.songs[index], context, index);
+                    songs[index], context, index);
               },
-              childCount: state.songs.length,
+              childCount: songs.length,
             ),
-          );
-        } else {
-          return SliverToBoxAdapter(child: Container());
-        }
+          ),
+          orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+        );
       },
     );
   }

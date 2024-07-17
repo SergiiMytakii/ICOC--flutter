@@ -44,82 +44,74 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
   Widget build(BuildContext context) {
     final fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.bibleStudy);
-    // final state = context.select((BibleStudyBloc bloc) => bloc.state);
 
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
-        if (state is GetBibleStudyListSuccessState) {
-          final topic = state.topics
-              .firstWhere((item) => item.id == int.parse(widget.topicId));
-          final lesson = topic.lessons
-              .firstWhere((item) => item.id == int.parse(widget.lessonId));
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                lesson.title,
-                style: const TextStyle(fontSize: 14),
-              ),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  tooltip: 'Share'.tr(),
-                  icon: const Icon(
-                    Icons.share,
+        return state.when(
+          initial: () => const Scaffold(body: SizedBox()),
+          loading: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+          success: (topics) {
+            final topic = topics
+                .firstWhere((item) => item.id == int.parse(widget.topicId));
+            final lesson = topic.lessons
+                .firstWhere((item) => item.id == int.parse(widget.lessonId));
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  lesson.title,
+                  style: const TextStyle(fontSize: 14),
+                ),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    tooltip: 'Share'.tr(),
+                    icon: const Icon(Icons.share),
+                    onPressed: () => _share(lesson),
                   ),
-                  onPressed: () {
-                    _share(lesson);
-                  },
-                ),
-                IconButton(
-                    icon: const Icon(
-                      Icons.text_fields_outlined,
+                  IconButton(
+                    icon: const Icon(Icons.text_fields_outlined),
+                    onPressed: () => fontSozeAdjust.bottomSheet(),
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: SelectionArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: BlocBuilder<FontSizeBloc, FontSizeState>(
+                      builder: (context, fontState) {
+                        return fontState.maybeWhen(
+                          success: (fontSize) => ScaleText(
+                            fontSize: fontSize ?? 14,
+                            child: html.Html(
+                              data: lesson.text,
+                              onLinkTap: (url, __, ___) {
+                                launchUrl(Uri.parse(url ?? ''));
+                              },
+                              style: {
+                                'body': html.Style(
+                                    fontSize: html.FontSize(fontSize ?? 14)),
+                                'h5': html.Style(
+                                    fontSize: html.FontSize(fontSize ?? 14)),
+                                'p': html.Style(
+                                    fontSize: html.FontSize(fontSize ?? 14)),
+                              },
+                            ),
+                          ),
+                          orElse: () => const SizedBox(),
+                        );
+                      },
                     ),
-                    onPressed: () => fontSozeAdjust.bottomSheet()),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: SelectionArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: BlocBuilder<FontSizeBloc, FontSizeState>(
-                      builder: (context, state) {
-                    if (state is FontSizeSuccess) {
-                      return ScaleText(
-                        fontSize: state.fontSize ?? 14,
-                        child: html.Html(
-                          data: lesson.text,
-                          onLinkTap: (url, __, ___) {
-                            launchUrl(Uri.parse(url ?? ''));
-                          },
-                          style: {
-                            'body': html.Style(
-                              fontSize: html.FontSize(state.fontSize ?? 14),
-                            ),
-                            'h5': html.Style(
-                              fontSize: html.FontSize(state.fontSize ?? 14),
-                            ),
-                            'p': html.Style(
-                              fontSize: html.FontSize(state.fontSize ?? 14),
-                            ),
-                          },
-                        ),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  }),
+                  ),
                 ),
               ),
-            ),
-          );
-        } else if (state is BibleStudyErrorState) {
-          return Scaffold(
-              body: ErrorTextOnScreen(
-            message: state.message,
-          ));
-        } else {
-          return const Scaffold(body: SizedBox());
-        }
+            );
+          },
+          error: (message) => Scaffold(
+            body: ErrorTextOnScreen(message: message),
+          ),
+        );
       },
     );
   }
@@ -135,8 +127,6 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
               $hint\n
               $link''';
 
-    Share.share(
-      text,
-    );
+    Share.share(text);
   }
 }

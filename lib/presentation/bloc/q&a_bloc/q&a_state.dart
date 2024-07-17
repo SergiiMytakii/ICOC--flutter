@@ -1,20 +1,10 @@
 part of 'q&a_bloc.dart';
 
-@immutable
-sealed class QandAState {}
-
-final class QandAInitial extends QandAState {}
-
-final class QandALoadingState extends QandAState {}
-
-final class GetQandASuccessState extends QandAState {
-  final List<QandAModel> articles;
-
-  GetQandASuccessState(this.articles);
-}
-
-final class QandAErrorState extends QandAState {
-  final String message;
-
-  QandAErrorState(this.message);
+@freezed
+class QandAState with _$QandAState {
+  const factory QandAState.initial() = QandAInitial;
+  const factory QandAState.loading() = QandALoadingState;
+  const factory QandAState.success(List<QandAModel> articles) =
+      GetQandASuccessState;
+  const factory QandAState.error(String message) = QandAErrorState;
 }

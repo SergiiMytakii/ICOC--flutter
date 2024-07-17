@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
-import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart';
+import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
@@ -25,7 +25,7 @@ class MyMultiblocProvider extends StatelessWidget {
         ),
         BlocProvider<FontSizeBloc>(
           create: (BuildContext context) =>
-              getIt<FontSizeBloc>()..add(FontSizeRequested()),
+              getIt<FontSizeBloc>()..add(const FontSizeRequested()),
         ),
         BlocProvider<FavoriteSongsListBloc>(
           create: (BuildContext context) => getIt<FavoriteSongsListBloc>(),

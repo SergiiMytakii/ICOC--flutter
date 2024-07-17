@@ -1,10 +1,6 @@
 part of 'q&a_bloc.dart';
 
-@immutable
-sealed class QandAEvent {}
-
-class QandARequested extends QandAEvent {
-  final String? query;
-
-  QandARequested({this.query});
+@freezed
+sealed class QandAEvent with _$QandAEvent {
+  const factory QandAEvent.requested({String? query}) = QandARequested;
 }

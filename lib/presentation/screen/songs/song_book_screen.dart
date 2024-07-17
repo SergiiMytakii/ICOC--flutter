@@ -69,7 +69,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
   }
 
   Future<void> getSongs({bool useCache = true}) async {
-    getIt<SongsBloc>().add(SongsRequested(useCache: useCache));
+    getIt<SongsBloc>().add(SongsEvent.songsRequested(useCache: useCache));
   }
 
   Future<void> _handleQuery(String val) async {

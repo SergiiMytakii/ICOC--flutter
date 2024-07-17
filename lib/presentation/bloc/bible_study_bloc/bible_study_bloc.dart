@@ -7,17 +7,23 @@ import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/core/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bible_study_event.dart';
 part 'bible_study_state.dart';
+part 'bible_study_bloc.freezed.dart';
 
 @singleton
 class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   final BibleStudyRepository bibleStudyRepository;
 
-  BibleStudyBloc(this.bibleStudyRepository) : super(BibleStudyInitial()) {
-    on<BibleStudyListRequested>(_onBibleStudyListRequested);
+  BibleStudyBloc(this.bibleStudyRepository)
+      : super(const BibleStudyState.initial()) {
+    on<BibleStudyEvent>((event, emit) async {
+      await event.map(
+        listRequested: (event) => _onBibleStudyListRequested(event, emit),
+      );
+    });
   }
 
   Future<void> _onBibleStudyListRequested(
@@ -25,20 +31,20 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
     Emitter<BibleStudyState> emit,
   ) async {
     try {
-      emit(BibleStudyLoadingState());
+      emit(const BibleStudyState.loading());
       final List<BibleStudy> topics =
           await bibleStudyRepository.getBibleStudyList();
       if (topics.isNotEmpty) {
         final List<BibleStudy> filteredTopics = await filterByLanguages(topics);
-        emit(GetBibleStudyListSuccessState(filteredTopics));
+        emit(BibleStudyState.success(filteredTopics));
       } else {
-        emit(BibleStudyErrorState(
+        emit(BibleStudyState.error(
             "Can't  load data... Please, check your internet connection and pull down to refresh!"
                 .tr()));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(BibleStudyErrorState(error.toString()));
+      emit(BibleStudyState.error(error.toString()));
     }
   }
 }

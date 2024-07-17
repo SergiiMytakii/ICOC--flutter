@@ -52,29 +52,28 @@ class _VideoPlayerState extends State<VideoPlayer> {
             top: false,
             child: BlocBuilder<VideoBloc, VideoState>(
               builder: (context, state) {
-                if (state is GetVideosFromPlaylistSuccessState) {
-                  final resource = state.resources
-                      .firstWhere((item) => item.link.contains(widget.videoId));
-                  return Scaffold(
-                      backgroundColor:
-                          AdaptiveTheme.of(context).theme.colorScheme.surface,
-                      appBar: AppBar(
-                        centerTitle: true,
-                        title: Text(
-                          resource.title ?? '',
-                          maxLines: 2,
-                          style: const TextStyle(fontSize: 12),
+                return state.maybeWhen(
+                  getVideosFromPlaylistSuccess: (resources) {
+                    final resource = resources.firstWhere(
+                        (item) => item.link.contains(widget.videoId));
+                    return Scaffold(
+                        backgroundColor:
+                            AdaptiveTheme.of(context).theme.colorScheme.surface,
+                        appBar: AppBar(
+                          centerTitle: true,
+                          title: Text(
+                            resource.title ?? '',
+                            maxLines: 2,
+                            style: const TextStyle(fontSize: 12),
+                          ),
                         ),
-                      ),
-                      body: Column(
-                        children: [player, currentVideoInfo(resource)],
-                      ));
-                }
-                if (state is VideoErrorState) {
-                  return const Scaffold(body: ErrorTextOnScreen());
-                } else {
-                  return const SizedBox();
-                }
+                        body: Column(
+                          children: [player, currentVideoInfo(resource)],
+                        ));
+                  },
+                  error: (message) => const Scaffold(body: ErrorTextOnScreen()),
+                  orElse: () => const SizedBox.shrink(),
+                );
               },
             ),
           );

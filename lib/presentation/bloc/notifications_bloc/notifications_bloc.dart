@@ -5,17 +5,18 @@ import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/notifications_model.dart';
 import 'package:icoc/core/repository/notifications_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';
+part 'notifications_bloc.freezed.dart';
 
 @singleton
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   final NotificationsRepository notificationsRepository;
 
   NotificationsBloc(this.notificationsRepository)
-      : super(NotificationsInitial()) {
+      : super(const NotificationsState.initial()) {
     on<NotificationsListRequested>(_onNotificationsListRequested);
     on<NotificationMarkAsReadRequested>(_onNotificationMarkAsReadRequested);
   }
@@ -25,17 +26,17 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     Emitter<NotificationsState> emit,
   ) async {
     try {
-      emit(NotificationsLoadingState());
+      emit(const NotificationsState.loading());
       final List<Map<String, NotificationsModel>> notifications =
           await notificationsRepository.getNotifications();
       final List<NotificationsModel> filteredNotifications =
           filterNotificationsByLang(event.locale, notifications);
       final List<NotificationsModel> markedNotifications =
           await checkAndMarkWhatIsRead(filteredNotifications);
-      emit(GetNotificationsListSuccessState(markedNotifications));
+      emit(NotificationsState.success(markedNotifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(NotificationsErrorState(error.toString()));
+      emit(NotificationsState.error(error.toString()));
     }
   }
 
@@ -49,15 +50,16 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       isRead.add(event.title);
       SharedPreferencesHelper.saveList(StorageKeys.notifications, isRead);
 
-      event.notifications.forEach((notification) {
+      final updatedNotifications = event.notifications.map((notification) {
         if (notification.title == event.title) {
           notification.isRead = true;
         }
-      });
-      emit(GetNotificationsListSuccessState(event.notifications));
+        return notification;
+      }).toList();
+      emit(NotificationsState.success(updatedNotifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(NotificationsErrorState(error.toString()));
+      emit(NotificationsState.error(error.toString()));
     }
   }
 }
@@ -86,11 +88,12 @@ Future<List<NotificationsModel>> checkAndMarkWhatIsRead(
   final List<String> isRead =
       SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
   if (isRead.isNotEmpty) {
-    notifications.forEach((notification) {
+    return notifications.map((notification) {
       if (isRead.contains(notification.title)) {
         notification.isRead = true;
       }
-    });
+      return notification;
+    }).toList();
   }
   return notifications;
 }

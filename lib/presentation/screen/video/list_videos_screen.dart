@@ -32,7 +32,8 @@ class _ListVideosState extends State<ListVideosScreen> {
   }
 
   Future<void> _getVideosList() async {
-    getIt<VideoBloc>().add(GetVideosFromPlaylist(widget.playlistId));
+    getIt<VideoBloc>()
+        .add(VideoEvent.getVideosFromPlaylist(playlistId: widget.playlistId));
   }
 
   @override
@@ -51,28 +52,32 @@ class _ListVideosState extends State<ListVideosScreen> {
         ),
         body: BlocBuilder<VideoBloc, VideoState>(
           builder: (context, state) {
-            if (state is GetVideosFromPlaylistSuccessState) {
-              return RefreshIndicator.adaptive(
-                onRefresh: () => _getVideosList(),
-                child: ListView.builder(
-                  cacheExtent: 0,
-                  itemBuilder: (context, index) => state.resources.isNotEmpty
-                      ? AnimationWrapper(
-                          child: VideoCard(
-                            resources: state.resources[index],
-                          ),
-                        )
-                      : Container(height: 200),
-                  itemCount: state.resources.length,
-                ),
-              );
-            } else if (state is VideoLoadingState) {
-              return CustomRefreshIndicator(onRefresh: () => _getVideosList());
-            } else if (state is VideoErrorState) {
-              return ErrorTextOnScreen(message: state.message);
-            } else {
-              return Container();
-            }
+            return state.maybeWhen(
+              getVideosFromPlaylistSuccess: (resources) {
+                return RefreshIndicator.adaptive(
+                  onRefresh: () => _getVideosList(),
+                  child: ListView.builder(
+                    cacheExtent: 0,
+                    itemBuilder: (context, index) => resources.isNotEmpty
+                        ? AnimationWrapper(
+                            child: VideoCard(
+                              resources: resources[index],
+                            ),
+                          )
+                        : Container(height: 200),
+                    itemCount: resources.length,
+                  ),
+                );
+              },
+              loading: () {
+                return CustomRefreshIndicator(
+                    onRefresh: () => _getVideosList());
+              },
+              error: (message) {
+                return ErrorTextOnScreen(message: message);
+              },
+              orElse: () => const SizedBox.shrink(),
+            );
           },
         ),
       ),

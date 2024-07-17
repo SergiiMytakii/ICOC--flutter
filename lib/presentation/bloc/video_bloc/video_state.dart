@@ -1,26 +1,12 @@
 part of 'video_bloc.dart';
 
-@immutable
-sealed class VideoState {}
-
-final class VideoInitial extends VideoState {}
-
-final class VideoLoadingState extends VideoState {}
-
-final class GetVideoListSuccessState extends VideoState {
-  final List<Playlist> topics;
-
-  GetVideoListSuccessState(this.topics);
-}
-
-final class GetVideosFromPlaylistSuccessState extends VideoState {
-  final List<Resources> resources;
-
-  GetVideosFromPlaylistSuccessState(this.resources);
-}
-
-final class VideoErrorState extends VideoState {
-  final String message;
-
-  VideoErrorState(this.message);
+@freezed
+class VideoState with _$VideoState {
+  const factory VideoState.initial() = VideoInitial;
+  const factory VideoState.loading() = VideoLoadingState;
+  const factory VideoState.getVideoListSuccess(List<Playlist> topics) =
+      GetVideoListSuccessState;
+  const factory VideoState.getVideosFromPlaylistSuccess(
+      List<Resources> resources) = GetVideosFromPlaylistSuccessState;
+  const factory VideoState.error(String message) = VideoErrorState;
 }

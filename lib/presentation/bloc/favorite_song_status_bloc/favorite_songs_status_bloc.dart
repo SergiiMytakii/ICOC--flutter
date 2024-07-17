@@ -2,12 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
-
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
-part 'favorite_songs_event.dart';
-part 'favorite_songs_state.dart';
+part 'favorite_songs_status_event.dart';
+part 'favorite_songs_status_state.dart';
+part 'favorite_songs_bloc.freezed.dart';
 
 @singleton
 class FavoriteSongStatusBloc
@@ -15,9 +15,13 @@ class FavoriteSongStatusBloc
   final SongsRepository songsRepositoryImpl;
 
   FavoriteSongStatusBloc(this.songsRepositoryImpl)
-      : super(FavoriteSongStatusInitial()) {
-    on<FavoriteSongStatusRequested>(_onFavoriteSongStatusRequested);
-    on<SetFavoriteSongStatusRequested>(_onSetFavoriteSongStatusRequested);
+      : super(const FavoriteSongStatusState.initial()) {
+    on<FavoriteSongStatusEvent>((event, emit) async {
+      await event.map(
+        statusRequested: (e) => _onFavoriteSongStatusRequested(e, emit),
+        setStatusRequested: (e) => _onSetFavoriteSongStatusRequested(e, emit),
+      );
+    });
   }
 
   Future<void> _onFavoriteSongStatusRequested(
@@ -25,13 +29,13 @@ class FavoriteSongStatusBloc
     Emitter<FavoriteSongStatusState> emit,
   ) async {
     try {
-      emit(FavoriteSongStatusLoadingState());
+      emit(const FavoriteSongStatusState.loading());
       final bool isFavorite =
           await songsRepositoryImpl.getFavoriteSongStatus(event.id);
-      emit(GetFavoriteSongStatusSuccessState(isFavorite));
+      emit(FavoriteSongStatusState.success(isFavorite: isFavorite));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(FavoriteSongStatusErrorState(error.toString()));
+      emit(FavoriteSongStatusState.error(message: error.toString()));
     }
   }
 
@@ -40,17 +44,17 @@ class FavoriteSongStatusBloc
     Emitter<FavoriteSongStatusState> emit,
   ) async {
     try {
-      emit(FavoriteSongStatusLoadingState());
+      emit(const FavoriteSongStatusState.loading());
       final result =
           await songsRepositoryImpl.setFavoriteSong(event.id, event.isFavorite);
       if (result) {
-        emit(GetFavoriteSongStatusSuccessState(event.isFavorite));
+        emit(FavoriteSongStatusState.success(isFavorite: event.isFavorite));
       } else {
-        emit(FavoriteSongStatusErrorState('Error'.tr()));
+        emit(FavoriteSongStatusState.error(message: 'Error'.tr()));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(FavoriteSongStatusErrorState(error.toString()));
+      emit(FavoriteSongStatusState.error(message: error.toString()));
     }
   }
 }

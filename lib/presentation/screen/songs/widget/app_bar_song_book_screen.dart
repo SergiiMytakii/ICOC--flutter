@@ -109,9 +109,11 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             ),
             BlocBuilder<SongsBloc, SongsState>(
               builder: (context, state) {
-                final bool shouldAnimate =
-                    state is GetSongsSuccessState && state.songs.isEmpty ||
-                        firstLang == '';
+                final bool shouldAnimate = state.maybeWhen(
+                      success: (songs) => songs.isEmpty,
+                      orElse: () => false,
+                    ) ||
+                    firstLang == '';
                 return AnimatedFilterIconButton(
                   shouldAnimateForever: shouldAnimate,
                   firstLanguage: firstLang,

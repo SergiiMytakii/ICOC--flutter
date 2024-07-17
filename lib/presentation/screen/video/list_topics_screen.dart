@@ -36,37 +36,42 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
   }
 
   Future<void> _getTopicsList() async {
-    getIt<VideoBloc>().add(VideoListRequested());
+    getIt<VideoBloc>().add(const VideoEvent.listRequested());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoBloc, VideoState>(
       builder: (context, state) {
-        if (state is GetVideoListSuccessState) {
-          cache = state.topics;
-          return Scaffold(
-              appBar: _buildAppBar(context, state.topics.isEmpty),
-              body: _buildBody(state.topics));
-        } else if (state is VideoLoadingState) {
-          return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
-        } else if (state is VideoErrorState) {
-          return Scaffold(
-            body: RefreshIndicator.adaptive(
-                onRefresh: _getTopicsList,
-                child: ListView(
-                  children: [
-                    ErrorTextOnScreen(message: state.message),
-                  ],
-                )),
-          );
-        } else {
-          return cache != null
-              ? Scaffold(
-                  appBar: _buildAppBar(context, false),
-                  body: _buildBody(cache!))
-              : const SizedBox();
-        }
+        return state.maybeWhen(
+          getVideoListSuccess: (topics) {
+            cache = topics;
+            return Scaffold(
+                appBar: _buildAppBar(context, topics.isEmpty),
+                body: _buildBody(topics));
+          },
+          loading: () {
+            return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
+          },
+          error: (message) {
+            return Scaffold(
+              body: RefreshIndicator.adaptive(
+                  onRefresh: _getTopicsList,
+                  child: ListView(
+                    children: [
+                      ErrorTextOnScreen(message: message),
+                    ],
+                  )),
+            );
+          },
+          orElse: () {
+            return cache != null
+                ? Scaffold(
+                    appBar: _buildAppBar(context, false),
+                    body: _buildBody(cache!))
+                : const SizedBox();
+          },
+        );
       },
     );
   }

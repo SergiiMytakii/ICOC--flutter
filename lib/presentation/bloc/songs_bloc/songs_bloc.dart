@@ -11,16 +11,23 @@ import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'songs_event.dart';
 part 'songs_state.dart';
+part 'songs_bloc.freezed.dart';
 
 @singleton
 class SongsBloc extends Bloc<SongsEvent, SongsState> {
-  SongsBloc(this.songsRepositoryImpl) : super(SongsInitial()) {
-    on<SongsRequested>(_onSongsRequested);
-    on<SearchSongRequested>(_onSearchSongRequested);
+  SongsBloc(this.songsRepositoryImpl) : super(const SongsState.initial()) {
+    on<SongsEvent>((event, emit) async {
+      await event.map(
+        songsRequested: (e) => _onSongsRequested(e, emit),
+        searchSongRequested: (e) => _onSearchSongRequested(e, emit),
+      );
+    });
   }
+
   final SongsRepository songsRepositoryImpl;
   bool sqliteBDisUpdated = false;
   List<SongDetail> cache = [];
@@ -29,14 +36,14 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     SongsRequested event,
     Emitter<SongsState> emit,
   ) async {
-    emit(SongsLoadingState());
+    emit(const SongsState.loading());
     try {
       final songs = await _fetchSongs(event.useCache);
       await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-      emit(GetSongsSuccessState(songs));
+      emit(SongsState.success(songs));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(SongsErrorState(error.toString()));
+      emit(SongsState.error(error.toString()));
     }
   }
 
@@ -45,12 +52,12 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     Emitter<SongsState> emit,
   ) async {
     try {
-      emit(SongsLoadingState());
+      emit(const SongsState.loading());
       final searchResults = await _searchSongs(event.query);
-      emit(GetSongsSuccessState(searchResults));
+      emit(SongsState.success(searchResults));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(SongsErrorState(error.toString()));
+      emit(SongsState.error(error.toString()));
     }
   }
 
@@ -65,18 +72,15 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       songs = cache;
     }
 
-    //save all keys of text (ru1, ru2, en1 ets..).  We need them to store data in SQL table
     await findAndSaveAllTextKeys(songs);
     final filteredSongs = await filterSongsByLang(songs);
     return await orderSongs(filteredSongs);
   }
 
   Future<List<SongDetail>> _searchSongs(String query) async {
-    //delete all specific symbols
     final String trimmedQuery =
         query.trim().replaceAll(RegExp(r'[^a-zA-Zа-яА-Яёієї0-9]+'), ' ');
     final List<SongDetail> searchResult = [];
-    //get all songs from firebase (we will need full versions with all fields)
     final allSongs =
         cache.isEmpty ? await songsRepositoryImpl.getSongs() : cache;
 
@@ -102,18 +106,14 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   Future<List<SongDetail>> _searchByText(List<SongDetail> searchResult,
       String trimmedQuery, List<SongDetail> allSongs) async {
     final List<String> orderLang = _getListOrderLangs();
-    //get results from full text search (only id, title and text)
     searchResult =
         await songsRepositoryImpl.getSearchResult(trimmedQuery, orderLang);
 
-    //combine searchResults with songs
     final List<SongDetail> songs = searchResult.map((song) {
-      // Find the matching song in allSongs based on id
       final SongDetail matchingSong = allSongs.firstWhere(
         (element) => element.id == song.id,
         orElse: () => SongDetail.defaultSong(),
       );
-      // Create a new instance of SongDetail with updated values
       return SongDetail(
         id: matchingSong.id,
         description: matchingSong.description,
@@ -131,7 +131,6 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   }
 
   List<String> _getListOrderLangs() {
-    //convert map to a list with langs to show
     final allLanguages =
         SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
     final filtered =
@@ -150,14 +149,11 @@ Future<void> updateStoredLanguages(List<SongDetail> songs) async {
 
   putDeviceLangToFirstPlace(allTitleKeys, locale);
 
-  //get stored all languages (ordered)
   final Map<String, dynamic> orderedAllLanguages =
       SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
 
-  //iterate languages from Firebase songs and add them to the Map
   allTitleKeys.forEach((String lang) {
     if (!orderedAllLanguages.containsKey(lang)) {
-      // print('insert $lang');
       orderedAllLanguages[lang] = lang == locale;
     }
   });
@@ -169,7 +165,6 @@ List<String> findAllTitleKeys(List<SongDetail> songs) {
   final Set<String> allTitleKeys = {};
 
   songs.forEach((song) {
-    //chek if some keys in text are corrupted i.e. without number in the end (we meed it for search)
     final keys = song.title.keys;
     keys.forEach((key) {
       if (key.toString().length > 2) {

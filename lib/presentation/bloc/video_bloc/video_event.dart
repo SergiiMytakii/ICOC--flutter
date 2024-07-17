@@ -1,11 +1,8 @@
 part of 'video_bloc.dart';
 
-@immutable
-sealed class VideoEvent {}
-
-class VideoListRequested extends VideoEvent {}
-
-class GetVideosFromPlaylist extends VideoEvent {
-  final String playlistId;
-  GetVideosFromPlaylist(this.playlistId);
+@freezed
+sealed class VideoEvent with _$VideoEvent {
+  const factory VideoEvent.listRequested() = VideoListRequested;
+  const factory VideoEvent.getVideosFromPlaylist({required String playlistId}) =
+      GetVideosFromPlaylist;
 }
