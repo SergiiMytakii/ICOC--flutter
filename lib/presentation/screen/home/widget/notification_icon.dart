@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/model/notifications_model.dart';
@@ -22,9 +21,10 @@ class NotificationIcon extends StatelessWidget {
           unreadNotificationsCount =
               countUnreadNotifications(state.notifications);
           if (unreadNotificationsCount > 0) {
-            FlutterAppBadger.updateBadgeCount(unreadNotificationsCount);
+            // FlutterAppBadger.updateBadgeCount(unreadNotificationsCount);
+            // AppBadgePlus.updateBadge(unreadNotificationsCount);
           } else {
-            FlutterAppBadger.removeBadge();
+            // AppBadgePlus.updateBadge(0);
           }
         }
         return Stack(alignment: AlignmentDirectional.center, children: [
