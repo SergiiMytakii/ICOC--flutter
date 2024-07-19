@@ -66,9 +66,6 @@ class _$BibleStudyEventCopyWithImpl<$Res, $Val extends BibleStudyEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -87,9 +84,6 @@ class __$$BibleStudyListRequestedImplCopyWithImpl<$Res>
       _$BibleStudyListRequestedImpl _value,
       $Res Function(_$BibleStudyListRequestedImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -243,9 +237,6 @@ class _$BibleStudyStateCopyWithImpl<$Res, $Val extends BibleStudyState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -262,9 +253,6 @@ class __$$BibleStudyInitialImplCopyWithImpl<$Res>
   __$$BibleStudyInitialImplCopyWithImpl(_$BibleStudyInitialImpl _value,
       $Res Function(_$BibleStudyInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -381,9 +369,6 @@ class __$$BibleStudyLoadingStateImplCopyWithImpl<$Res>
       _$BibleStudyLoadingStateImpl _value,
       $Res Function(_$BibleStudyLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -505,8 +490,6 @@ class __$$GetBibleStudyListSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$GetBibleStudyListSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -553,9 +536,7 @@ class _$GetBibleStudyListSuccessStateImpl
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_topics));
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetBibleStudyListSuccessStateImplCopyWith<
@@ -643,10 +624,7 @@ abstract class GetBibleStudyListSuccessState implements BibleStudyState {
       _$GetBibleStudyListSuccessStateImpl;
 
   List<BibleStudy> get topics;
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetBibleStudyListSuccessStateImplCopyWith<
           _$GetBibleStudyListSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -669,8 +647,6 @@ class __$$BibleStudyErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$BibleStudyErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -709,9 +685,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BibleStudyErrorStateImplCopyWith<_$BibleStudyErrorStateImpl>
@@ -799,10 +773,7 @@ abstract class BibleStudyErrorState implements BibleStudyState {
       _$BibleStudyErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BibleStudyErrorStateImplCopyWith<_$BibleStudyErrorStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

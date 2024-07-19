@@ -17,33 +17,41 @@ class NotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationsBloc, NotificationsState>(
       builder: (context, state) {
-        int unreadNotificationsCount = 0;
-        if (state is GetNotificationsListSuccessState) {
-          unreadNotificationsCount =
-              countUnreadNotifications(state.notifications);
-          if (unreadNotificationsCount > 0) {
+        return state.maybeWhen(
+          success: (notifications) {
+            final int unreadNotificationsCount =
+                countUnreadNotifications(notifications);
+
             AppBadgePlus.updateBadge(unreadNotificationsCount);
-          } else {
-            AppBadgePlus.updateBadge(0);
-          }
-        }
-        return Stack(alignment: AlignmentDirectional.center, children: [
-          state is GetNotificationsListSuccessState &&
-                  unreadNotificationsCount > 0
-              ? Positioned(
-                  left: 13,
-                  bottom: 20,
-                  width: 26,
-                  height: 20,
-                  child: Container(
-                    color: Colors.red,
-                    child: FittedBox(
-                      child: Text(unreadNotificationsCount.toString()),
+
+            return Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                if (unreadNotificationsCount > 0)
+                  Positioned(
+                    left: 13,
+                    bottom: 20,
+                    width: 26,
+                    height: 20,
+                    child: Container(
+                      color: Colors.red,
+                      child: FittedBox(
+                        child: Text(unreadNotificationsCount.toString()),
+                      ),
                     ),
                   ),
-                )
-              : Container(),
-          IconButton(
+                IconButton(
+                  icon: const Icon(
+                    Icons.messenger_outline,
+                    color: Colors.white,
+                    size: 36,
+                  ),
+                  onPressed: () => context.go('/$NOTIFICATIONS_SCREEN'),
+                ),
+              ],
+            );
+          },
+          orElse: () => IconButton(
             icon: const Icon(
               Icons.messenger_outline,
               color: Colors.white,
@@ -51,7 +59,7 @@ class NotificationIcon extends StatelessWidget {
             ),
             onPressed: () => context.go('/$NOTIFICATIONS_SCREEN'),
           ),
-        ]);
+        );
       },
     );
   }

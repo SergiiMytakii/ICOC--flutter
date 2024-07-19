@@ -72,9 +72,6 @@ class _$SongsEventCopyWithImpl<$Res, $Val extends SongsEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -94,8 +91,6 @@ class __$$SongsRequestedImplCopyWithImpl<$Res>
       _$SongsRequestedImpl _value, $Res Function(_$SongsRequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -136,9 +131,7 @@ class _$SongsRequestedImpl implements SongsRequested {
   @override
   int get hashCode => Object.hash(runtimeType, useCache);
 
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SongsRequestedImplCopyWith<_$SongsRequestedImpl> get copyWith =>
@@ -212,10 +205,7 @@ abstract class SongsRequested implements SongsEvent {
   const factory SongsRequested({final bool useCache}) = _$SongsRequestedImpl;
 
   bool get useCache;
-
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SongsRequestedImplCopyWith<_$SongsRequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -237,8 +227,6 @@ class __$$SearchSongRequestedImplCopyWithImpl<$Res>
       $Res Function(_$SearchSongRequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -277,9 +265,7 @@ class _$SearchSongRequestedImpl implements SearchSongRequested {
   @override
   int get hashCode => Object.hash(runtimeType, query);
 
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchSongRequestedImplCopyWith<_$SearchSongRequestedImpl> get copyWith =>
@@ -354,10 +340,7 @@ abstract class SearchSongRequested implements SongsEvent {
       _$SearchSongRequestedImpl;
 
   String get query;
-
-  /// Create a copy of SongsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SearchSongRequestedImplCopyWith<_$SearchSongRequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -432,9 +415,6 @@ class _$SongsStateCopyWithImpl<$Res, $Val extends SongsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -451,9 +431,6 @@ class __$$SongsInitialImplCopyWithImpl<$Res>
   __$$SongsInitialImplCopyWithImpl(
       _$SongsInitialImpl _value, $Res Function(_$SongsInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -568,9 +545,6 @@ class __$$SongsLoadingStateImplCopyWithImpl<$Res>
   __$$SongsLoadingStateImplCopyWithImpl(_$SongsLoadingStateImpl _value,
       $Res Function(_$SongsLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -688,8 +662,6 @@ class __$$GetSongsSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$GetSongsSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -735,9 +707,7 @@ class _$GetSongsSuccessStateImpl implements GetSongsSuccessState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_songs));
 
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetSongsSuccessStateImplCopyWith<_$GetSongsSuccessStateImpl>
@@ -825,10 +795,7 @@ abstract class GetSongsSuccessState implements SongsState {
       _$GetSongsSuccessStateImpl;
 
   List<SongDetail> get songs;
-
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetSongsSuccessStateImplCopyWith<_$GetSongsSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -850,8 +817,6 @@ class __$$SongsErrorStateImplCopyWithImpl<$Res>
       _$SongsErrorStateImpl _value, $Res Function(_$SongsErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -890,9 +855,7 @@ class _$SongsErrorStateImpl implements SongsErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SongsErrorStateImplCopyWith<_$SongsErrorStateImpl> get copyWith =>
@@ -978,10 +941,7 @@ abstract class SongsErrorState implements SongsState {
   const factory SongsErrorState(final String message) = _$SongsErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of SongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SongsErrorStateImplCopyWith<_$SongsErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

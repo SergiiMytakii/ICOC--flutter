@@ -26,6 +26,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   void initState() {
     FirebaseAnalytics.instance
         .logScreenView(screenName: 'Notifications screen');
+    Future.delayed(const Duration(seconds: 4)).then((value) => _markAsRead());
     super.initState();
   }
 
@@ -46,15 +47,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 cacheExtent: 0,
                 itemCount: notifications.length,
                 itemBuilder: (BuildContext context, index) {
-                  Future.delayed(const Duration(seconds: 6)).then((value) =>
-                      _markAsRead(notifications[index].title, notifications));
-
                   return AnimationWrapper(
                     child: Column(
                       children: [
                         ListTile(
-                          onTap: () => _markAsRead(
-                              notifications[index].title, notifications),
+                          onTap: () => _markAsRead(id: notifications[index].id),
                           contentPadding: const EdgeInsets.all(8),
                           leading: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -110,11 +107,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Future _markAsRead(
-      String title, List<NotificationsModel> notifications) async {
-    if (mounted) {
-      getIt<NotificationsBloc>().add(NotificationsEvent.markAsReadRequested(
-          title: title, notifications: notifications));
-    }
+  Future _markAsRead({String? id}) async {
+    getIt<NotificationsBloc>().add(NotificationsEvent.markAsReadRequested(
+      id: id,
+    ));
   }
 }

@@ -50,9 +50,7 @@ mixin _$QandAEvent {
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of QandAEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $QandAEventCopyWith<QandAEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,8 +74,6 @@ class _$QandAEventCopyWithImpl<$Res, $Val extends QandAEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of QandAEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -111,8 +107,6 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
       _$QandARequestedImpl _value, $Res Function(_$QandARequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of QandAEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,9 +145,7 @@ class _$QandARequestedImpl implements QandARequested {
   @override
   int get hashCode => Object.hash(runtimeType, query);
 
-  /// Create a copy of QandAEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
@@ -222,11 +214,8 @@ abstract class QandARequested implements QandAEvent {
 
   @override
   String? get query;
-
-  /// Create a copy of QandAEvent
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -301,9 +290,6 @@ class _$QandAStateCopyWithImpl<$Res, $Val extends QandAState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -320,9 +306,6 @@ class __$$QandAInitialImplCopyWithImpl<$Res>
   __$$QandAInitialImplCopyWithImpl(
       _$QandAInitialImpl _value, $Res Function(_$QandAInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -437,9 +420,6 @@ class __$$QandALoadingStateImplCopyWithImpl<$Res>
   __$$QandALoadingStateImplCopyWithImpl(_$QandALoadingStateImpl _value,
       $Res Function(_$QandALoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -557,8 +537,6 @@ class __$$GetQandASuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$GetQandASuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -604,9 +582,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_articles));
 
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetQandASuccessStateImplCopyWith<_$GetQandASuccessStateImpl>
@@ -694,10 +670,7 @@ abstract class GetQandASuccessState implements QandAState {
       _$GetQandASuccessStateImpl;
 
   List<QandAModel> get articles;
-
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetQandASuccessStateImplCopyWith<_$GetQandASuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -719,8 +692,6 @@ class __$$QandAErrorStateImplCopyWithImpl<$Res>
       _$QandAErrorStateImpl _value, $Res Function(_$QandAErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -759,9 +730,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$QandAErrorStateImplCopyWith<_$QandAErrorStateImpl> get copyWith =>
@@ -847,10 +816,7 @@ abstract class QandAErrorState implements QandAState {
   const factory QandAErrorState(final String message) = _$QandAErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of QandAState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$QandAErrorStateImplCopyWith<_$QandAErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
