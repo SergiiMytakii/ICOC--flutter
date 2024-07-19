@@ -28,7 +28,8 @@ class BibleStudy {
     return BibleStudy(
       lessons: (json['lessons'] as Map<String, dynamic>).entries.map((entry) {
         return Lesson.fromJson(entry.key, entry.value);
-      }).toList(),
+      }).toList()
+        ..sort((a, b) => a.id.compareTo(b.id)),
       topic: json['topic'] as String,
       id: json['id'] as int,
       subtopic: json['subtopic'] as String,

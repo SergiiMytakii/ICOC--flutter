@@ -14,8 +14,8 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   final FeedbackRepository feedbackRepository;
 
   FeedbackBloc(this.feedbackRepository) : super(const FeedbackState.initial()) {
-    on<FeedbackEvent>((event, emit) {
-      event.when(
+    on<FeedbackEvent>((event, emit) async {
+      await event.when(
         listRequested: () => _onFeedbackListRequested(emit),
         insertRequested: (feedback, name) =>
             _onInsertFeedbackRequested(feedback, name, emit),

@@ -19,8 +19,8 @@ class FavoriteSongsListBloc
 
   FavoriteSongsListBloc(this.songsRepositoryImpl)
       : super(const FavoriteSongsState.initial()) {
-    on<FavoriteSongsEvent>((event, emit) {
-      event.map(
+    on<FavoriteSongsEvent>((event, emit) async {
+      await event.map(
         getRequested: (event) => _onFavoriteSongsListRequested(event, emit),
       );
     });
@@ -31,6 +31,7 @@ class FavoriteSongsListBloc
     Emitter<FavoriteSongsState> emit,
   ) async {
     emit(const FavoriteSongsState.loading());
+
     try {
       final List<int> favoriteSongsIds =
           await songsRepositoryImpl.getFavoriteSongs();

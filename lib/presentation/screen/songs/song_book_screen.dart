@@ -23,7 +23,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
-    getSongs();
+    _getSongs();
     _scrollController = ScrollController();
     super.initState();
   }
@@ -46,11 +46,11 @@ class _SongBookScreenState extends State<SongBookScreen> {
             return; // Do not refresh when scrolling up
           }
           if (query.isNotEmpty) {
-            getSongs(useCache: false);
+            _getSongs(useCache: false);
             await Future.delayed(const Duration(milliseconds: 1000));
             _handleQuery(query);
           } else {
-            getSongs(useCache: false);
+            _getSongs(useCache: false);
           }
         },
         child: CustomScrollView(
@@ -68,7 +68,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
     );
   }
 
-  Future<void> getSongs({bool useCache = true}) async {
+  Future<void> _getSongs({bool useCache = true}) async {
     getIt<SongsBloc>().add(SongsEvent.songsRequested(useCache: useCache));
   }
 
@@ -76,7 +76,7 @@ class _SongBookScreenState extends State<SongBookScreen> {
     setState(() {
       query = val;
       if (query == '') {
-        getSongs();
+        _getSongs();
       }
       if (query.length > 1 && query.contains(RegExp(r'[0-9]'))) {
         showSearchResults = true;

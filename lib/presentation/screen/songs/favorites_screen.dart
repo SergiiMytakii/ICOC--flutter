@@ -21,7 +21,7 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
-    getFavoriteSongs(context);
+    _getFavoriteSongs();
     super.initState();
   }
 
@@ -34,7 +34,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         automaticallyImplyLeading: false,
       ),
       body: RefreshIndicator.adaptive(
-        onRefresh: () => getFavoriteSongs(context),
+        onRefresh: () => _getFavoriteSongs(),
         child: BlocBuilder<FavoriteSongsListBloc, FavoriteSongsState>(
           builder: (context, state) {
             return state.when(
@@ -65,7 +65,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Future<void> getFavoriteSongs(BuildContext context) async {
+  Future<void> _getFavoriteSongs() async {
     getIt<FavoriteSongsListBloc>().add(const FavoriteSongsEvent.getRequested());
   }
 }
