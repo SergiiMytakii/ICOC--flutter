@@ -72,9 +72,6 @@ class _$FeedbackEventCopyWithImpl<$Res, $Val extends FeedbackEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of FeedbackEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -92,9 +89,6 @@ class __$$FeedbackListRequestedImplCopyWithImpl<$Res>
   __$$FeedbackListRequestedImplCopyWithImpl(_$FeedbackListRequestedImpl _value,
       $Res Function(_$FeedbackListRequestedImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FeedbackEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -203,8 +197,6 @@ class __$$InsertFeedbackRequestedImplCopyWithImpl<$Res>
       $Res Function(_$InsertFeedbackRequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FeedbackEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -253,9 +245,7 @@ class _$InsertFeedbackRequestedImpl implements InsertFeedbackRequested {
   @override
   int get hashCode => Object.hash(runtimeType, feedback, name);
 
-  /// Create a copy of FeedbackEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$InsertFeedbackRequestedImplCopyWith<_$InsertFeedbackRequestedImpl>
@@ -332,10 +322,7 @@ abstract class InsertFeedbackRequested implements FeedbackEvent {
 
   String get feedback;
   String get name;
-
-  /// Create a copy of FeedbackEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$InsertFeedbackRequestedImplCopyWith<_$InsertFeedbackRequestedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -412,9 +399,6 @@ class _$FeedbackStateCopyWithImpl<$Res, $Val extends FeedbackState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -431,9 +415,6 @@ class __$$FeedbackInitialImplCopyWithImpl<$Res>
   __$$FeedbackInitialImplCopyWithImpl(
       _$FeedbackInitialImpl _value, $Res Function(_$FeedbackInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -550,9 +531,6 @@ class __$$FeedbackLoadingStateImplCopyWithImpl<$Res>
   __$$FeedbackLoadingStateImplCopyWithImpl(_$FeedbackLoadingStateImpl _value,
       $Res Function(_$FeedbackLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -675,8 +653,6 @@ class __$$GetFeedbackListSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$GetFeedbackListSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -723,9 +699,7 @@ class _$GetFeedbackListSuccessStateImpl implements GetFeedbackListSuccessState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_feedbacks));
 
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetFeedbackListSuccessStateImplCopyWith<_$GetFeedbackListSuccessStateImpl>
@@ -814,10 +788,7 @@ abstract class GetFeedbackListSuccessState implements FeedbackState {
       _$GetFeedbackListSuccessStateImpl;
 
   List<Feedback> get feedbacks;
-
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetFeedbackListSuccessStateImplCopyWith<_$GetFeedbackListSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -839,8 +810,6 @@ class __$$FeedbackErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$FeedbackErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -879,9 +848,7 @@ class _$FeedbackErrorStateImpl implements FeedbackErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FeedbackErrorStateImplCopyWith<_$FeedbackErrorStateImpl> get copyWith =>
@@ -970,10 +937,7 @@ abstract class FeedbackErrorState implements FeedbackState {
       _$FeedbackErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of FeedbackState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FeedbackErrorStateImplCopyWith<_$FeedbackErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -20,20 +20,20 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<NotificationsListRequested>(_onNotificationsListRequested);
     on<NotificationMarkAsReadRequested>(_onNotificationMarkAsReadRequested);
   }
-
+  List<NotificationsModel> notifications = [];
   Future<void> _onNotificationsListRequested(
     NotificationsListRequested event,
     Emitter<NotificationsState> emit,
   ) async {
     try {
       emit(const NotificationsState.loading());
-      final List<Map<String, NotificationsModel>> notifications =
+      final List<NotificationsModel> allNotifications =
           await notificationsRepository.getNotifications();
       final List<NotificationsModel> filteredNotifications =
-          filterNotificationsByLang(event.locale, notifications);
-      final List<NotificationsModel> markedNotifications =
-          await checkAndMarkWhatIsRead(filteredNotifications);
-      emit(NotificationsState.success(markedNotifications));
+          filterNotificationsByLang(
+              event.locale, allNotifications.reversed.toList());
+      notifications = await checkAndMarkWhatIsRead(filteredNotifications);
+      emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(NotificationsState.error(error.toString()));
@@ -44,19 +44,33 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     NotificationMarkAsReadRequested event,
     Emitter<NotificationsState> emit,
   ) async {
+    emit(const NotificationsState.loading());
     try {
-      final List<String> isRead =
-          SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
-      isRead.add(event.title);
-      SharedPreferencesHelper.saveList(StorageKeys.notifications, isRead);
+      if (event.id != null) {
+        final List<String> isRead =
+            SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
+        isRead.add(event.id!);
+        SharedPreferencesHelper.saveList(StorageKeys.notifications, isRead);
 
-      final updatedNotifications = event.notifications.map((notification) {
-        if (notification.title == event.title) {
+        notifications = notifications.map((notification) {
+          if (notification.id == event.id) {
+            notification.isRead = true;
+          }
+          return notification;
+        }).toList();
+      } else {
+        //mark as read all notifications
+        final isRead =
+            notifications.map((notification) => notification.id).toList();
+        SharedPreferencesHelper.saveList(StorageKeys.notifications, isRead);
+
+        notifications = notifications.map((notification) {
           notification.isRead = true;
-        }
-        return notification;
-      }).toList();
-      emit(NotificationsState.success(updatedNotifications));
+
+          return notification;
+        }).toList();
+      }
+      emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(NotificationsState.error(error.toString()));
@@ -65,20 +79,15 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 }
 
 List<NotificationsModel> filterNotificationsByLang(
-    String locale, List<Map<String, NotificationsModel>> notifications) {
-  final List<NotificationsModel> filteredNotifications = [];
-  notifications.map((notificationMap) {
-    if (notificationMap.keys.first == locale) {
-      filteredNotifications.add(notificationMap.values.first);
-    }
-  }).toList();
+    String locale, List<NotificationsModel> notifications) {
+  List<NotificationsModel> filteredNotifications = notifications
+      .where((notification) => notification.lang == locale)
+      .toList();
   //if no notifications on the current language then show english notifications
   if (filteredNotifications.isEmpty) {
-    final engNotification = notifications.firstWhere(
-        (notificationMap) => notificationMap.keys.first == 'en',
-        orElse: () => {});
-    if (engNotification.isNotEmpty)
-      filteredNotifications.add(engNotification['en']!);
+    filteredNotifications = notifications
+        .where((notification) => notification.lang == 'en')
+        .toList();
   }
   return filteredNotifications;
 }
@@ -89,7 +98,7 @@ Future<List<NotificationsModel>> checkAndMarkWhatIsRead(
       SharedPreferencesHelper.getList(StorageKeys.notifications) ?? [];
   if (isRead.isNotEmpty) {
     return notifications.map((notification) {
-      if (isRead.contains(notification.title)) {
+      if (isRead.contains(notification.id)) {
         notification.isRead = true;
       }
       return notification;

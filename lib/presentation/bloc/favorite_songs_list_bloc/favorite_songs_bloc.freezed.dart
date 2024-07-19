@@ -66,9 +66,6 @@ class _$FavoriteSongsEventCopyWithImpl<$Res, $Val extends FavoriteSongsEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of FavoriteSongsEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -88,9 +85,6 @@ class __$$FavoriteSongsListRequestedImplCopyWithImpl<$Res>
       _$FavoriteSongsListRequestedImpl _value,
       $Res Function(_$FavoriteSongsListRequestedImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FavoriteSongsEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -244,9 +238,6 @@ class _$FavoriteSongsStateCopyWithImpl<$Res, $Val extends FavoriteSongsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -263,9 +254,6 @@ class __$$FavoriteSongsInitialImplCopyWithImpl<$Res>
   __$$FavoriteSongsInitialImplCopyWithImpl(_$FavoriteSongsInitialImpl _value,
       $Res Function(_$FavoriteSongsInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -384,9 +372,6 @@ class __$$FavoriteSongsLoadingStateImplCopyWithImpl<$Res>
       _$FavoriteSongsLoadingStateImpl _value,
       $Res Function(_$FavoriteSongsLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -508,8 +493,6 @@ class __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$GetFavoriteSongsSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -556,9 +539,7 @@ class _$GetFavoriteSongsSuccessStateImpl
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_songs));
 
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetFavoriteSongsSuccessStateImplCopyWith<
@@ -646,10 +627,7 @@ abstract class GetFavoriteSongsSuccessState implements FavoriteSongsState {
       _$GetFavoriteSongsSuccessStateImpl;
 
   List<SongDetail> get songs;
-
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetFavoriteSongsSuccessStateImplCopyWith<
           _$GetFavoriteSongsSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -675,8 +653,6 @@ class __$$FavoriteSongsErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$FavoriteSongsErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -715,9 +691,7 @@ class _$FavoriteSongsErrorStateImpl implements FavoriteSongsErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FavoriteSongsErrorStateImplCopyWith<_$FavoriteSongsErrorStateImpl>
@@ -804,10 +778,7 @@ abstract class FavoriteSongsErrorState implements FavoriteSongsState {
       _$FavoriteSongsErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of FavoriteSongsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FavoriteSongsErrorStateImplCopyWith<_$FavoriteSongsErrorStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

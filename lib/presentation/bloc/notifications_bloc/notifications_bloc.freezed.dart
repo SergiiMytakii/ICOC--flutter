@@ -19,23 +19,19 @@ mixin _$NotificationsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String locale) listRequested,
-    required TResult Function(
-            String title, List<NotificationsModel> notifications)
-        markAsReadRequested,
+    required TResult Function(String? id) markAsReadRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String locale)? listRequested,
-    TResult? Function(String title, List<NotificationsModel> notifications)?
-        markAsReadRequested,
+    TResult? Function(String? id)? markAsReadRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String locale)? listRequested,
-    TResult Function(String title, List<NotificationsModel> notifications)?
-        markAsReadRequested,
+    TResult Function(String? id)? markAsReadRequested,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -79,9 +75,6 @@ class _$NotificationsEventCopyWithImpl<$Res, $Val extends NotificationsEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,8 +97,6 @@ class __$$NotificationsListRequestedImplCopyWithImpl<$Res>
       $Res Function(_$NotificationsListRequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -144,9 +135,7 @@ class _$NotificationsListRequestedImpl implements NotificationsListRequested {
   @override
   int get hashCode => Object.hash(runtimeType, locale);
 
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationsListRequestedImplCopyWith<_$NotificationsListRequestedImpl>
@@ -157,9 +146,7 @@ class _$NotificationsListRequestedImpl implements NotificationsListRequested {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String locale) listRequested,
-    required TResult Function(
-            String title, List<NotificationsModel> notifications)
-        markAsReadRequested,
+    required TResult Function(String? id) markAsReadRequested,
   }) {
     return listRequested(locale);
   }
@@ -168,8 +155,7 @@ class _$NotificationsListRequestedImpl implements NotificationsListRequested {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String locale)? listRequested,
-    TResult? Function(String title, List<NotificationsModel> notifications)?
-        markAsReadRequested,
+    TResult? Function(String? id)? markAsReadRequested,
   }) {
     return listRequested?.call(locale);
   }
@@ -178,8 +164,7 @@ class _$NotificationsListRequestedImpl implements NotificationsListRequested {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String locale)? listRequested,
-    TResult Function(String title, List<NotificationsModel> notifications)?
-        markAsReadRequested,
+    TResult Function(String? id)? markAsReadRequested,
     required TResult orElse(),
   }) {
     if (listRequested != null) {
@@ -228,10 +213,7 @@ abstract class NotificationsListRequested implements NotificationsEvent {
       _$NotificationsListRequestedImpl;
 
   String get locale;
-
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$NotificationsListRequestedImplCopyWith<_$NotificationsListRequestedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -243,7 +225,7 @@ abstract class _$$NotificationMarkAsReadRequestedImplCopyWith<$Res> {
           $Res Function(_$NotificationMarkAsReadRequestedImpl) then) =
       __$$NotificationMarkAsReadRequestedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String title, List<NotificationsModel> notifications});
+  $Res call({String? id});
 }
 
 /// @nodoc
@@ -256,23 +238,16 @@ class __$$NotificationMarkAsReadRequestedImplCopyWithImpl<$Res>
       $Res Function(_$NotificationMarkAsReadRequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
-    Object? notifications = null,
+    Object? id = freezed,
   }) {
     return _then(_$NotificationMarkAsReadRequestedImpl(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      notifications: null == notifications
-          ? _value._notifications
-          : notifications // ignore: cast_nullable_to_non_nullable
-              as List<NotificationsModel>,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -281,24 +256,14 @@ class __$$NotificationMarkAsReadRequestedImplCopyWithImpl<$Res>
 
 class _$NotificationMarkAsReadRequestedImpl
     implements NotificationMarkAsReadRequested {
-  const _$NotificationMarkAsReadRequestedImpl(
-      {required this.title,
-      required final List<NotificationsModel> notifications})
-      : _notifications = notifications;
+  const _$NotificationMarkAsReadRequestedImpl({this.id});
 
   @override
-  final String title;
-  final List<NotificationsModel> _notifications;
-  @override
-  List<NotificationsModel> get notifications {
-    if (_notifications is EqualUnmodifiableListView) return _notifications;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_notifications);
-  }
+  final String? id;
 
   @override
   String toString() {
-    return 'NotificationsEvent.markAsReadRequested(title: $title, notifications: $notifications)';
+    return 'NotificationsEvent.markAsReadRequested(id: $id)';
   }
 
   @override
@@ -306,18 +271,13 @@ class _$NotificationMarkAsReadRequestedImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$NotificationMarkAsReadRequestedImpl &&
-            (identical(other.title, title) || other.title == title) &&
-            const DeepCollectionEquality()
-                .equals(other._notifications, _notifications));
+            (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, title, const DeepCollectionEquality().hash(_notifications));
+  int get hashCode => Object.hash(runtimeType, id);
 
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationMarkAsReadRequestedImplCopyWith<
@@ -329,33 +289,29 @@ class _$NotificationMarkAsReadRequestedImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String locale) listRequested,
-    required TResult Function(
-            String title, List<NotificationsModel> notifications)
-        markAsReadRequested,
+    required TResult Function(String? id) markAsReadRequested,
   }) {
-    return markAsReadRequested(title, notifications);
+    return markAsReadRequested(id);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String locale)? listRequested,
-    TResult? Function(String title, List<NotificationsModel> notifications)?
-        markAsReadRequested,
+    TResult? Function(String? id)? markAsReadRequested,
   }) {
-    return markAsReadRequested?.call(title, notifications);
+    return markAsReadRequested?.call(id);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String locale)? listRequested,
-    TResult Function(String title, List<NotificationsModel> notifications)?
-        markAsReadRequested,
+    TResult Function(String? id)? markAsReadRequested,
     required TResult orElse(),
   }) {
     if (markAsReadRequested != null) {
-      return markAsReadRequested(title, notifications);
+      return markAsReadRequested(id);
     }
     return orElse();
   }
@@ -396,17 +352,11 @@ class _$NotificationMarkAsReadRequestedImpl
 }
 
 abstract class NotificationMarkAsReadRequested implements NotificationsEvent {
-  const factory NotificationMarkAsReadRequested(
-          {required final String title,
-          required final List<NotificationsModel> notifications}) =
+  const factory NotificationMarkAsReadRequested({final String? id}) =
       _$NotificationMarkAsReadRequestedImpl;
 
-  String get title;
-  List<NotificationsModel> get notifications;
-
-  /// Create a copy of NotificationsEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? get id;
+  @JsonKey(ignore: true)
   _$$NotificationMarkAsReadRequestedImplCopyWith<
           _$NotificationMarkAsReadRequestedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -482,9 +432,6 @@ class _$NotificationsStateCopyWithImpl<$Res, $Val extends NotificationsState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -501,9 +448,6 @@ class __$$NotificationsInitialImplCopyWithImpl<$Res>
   __$$NotificationsInitialImplCopyWithImpl(_$NotificationsInitialImpl _value,
       $Res Function(_$NotificationsInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -622,9 +566,6 @@ class __$$NotificationsLoadingStateImplCopyWithImpl<$Res>
       _$NotificationsLoadingStateImpl _value,
       $Res Function(_$NotificationsLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -746,8 +687,6 @@ class __$$GetNotificationsListSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$GetNotificationsListSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -796,9 +735,7 @@ class _$GetNotificationsListSuccessStateImpl
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_notifications));
 
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$GetNotificationsListSuccessStateImplCopyWith<
@@ -887,10 +824,7 @@ abstract class GetNotificationsListSuccessState implements NotificationsState {
       _$GetNotificationsListSuccessStateImpl;
 
   List<NotificationsModel> get notifications;
-
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$GetNotificationsListSuccessStateImplCopyWith<
           _$GetNotificationsListSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -916,8 +850,6 @@ class __$$NotificationsErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$NotificationsErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -956,9 +888,7 @@ class _$NotificationsErrorStateImpl implements NotificationsErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$NotificationsErrorStateImplCopyWith<_$NotificationsErrorStateImpl>
@@ -1045,10 +975,7 @@ abstract class NotificationsErrorState implements NotificationsState {
       _$NotificationsErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of NotificationsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$NotificationsErrorStateImplCopyWith<_$NotificationsErrorStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

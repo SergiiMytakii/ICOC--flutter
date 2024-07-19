@@ -50,9 +50,7 @@ mixin _$FontSizeEvent {
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of FontSizeEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FontSizeEventCopyWith<FontSizeEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,8 +74,6 @@ class _$FontSizeEventCopyWithImpl<$Res, $Val extends FontSizeEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of FontSizeEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -111,8 +107,6 @@ class __$$FontSizeRequestedImplCopyWithImpl<$Res>
       $Res Function(_$FontSizeRequestedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FontSizeEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -152,9 +146,7 @@ class _$FontSizeRequestedImpl implements FontSizeRequested {
   @override
   int get hashCode => Object.hash(runtimeType, fontSize);
 
-  /// Create a copy of FontSizeEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FontSizeRequestedImplCopyWith<_$FontSizeRequestedImpl> get copyWith =>
@@ -224,11 +216,8 @@ abstract class FontSizeRequested implements FontSizeEvent {
 
   @override
   double? get fontSize;
-
-  /// Create a copy of FontSizeEvent
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FontSizeRequestedImplCopyWith<_$FontSizeRequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -297,9 +286,6 @@ class _$FontSizeStateCopyWithImpl<$Res, $Val extends FontSizeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -316,9 +302,6 @@ class __$$FontSizeInitialImplCopyWithImpl<$Res>
   __$$FontSizeInitialImplCopyWithImpl(
       _$FontSizeInitialImpl _value, $Res Function(_$FontSizeInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -430,8 +413,6 @@ class __$$FontSizeSuccessImplCopyWithImpl<$Res>
       _$FontSizeSuccessImpl _value, $Res Function(_$FontSizeSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -471,9 +452,7 @@ class _$FontSizeSuccessImpl implements FontSizeSuccess {
   @override
   int get hashCode => Object.hash(runtimeType, fontSize);
 
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FontSizeSuccessImplCopyWith<_$FontSizeSuccessImpl> get copyWith =>
@@ -554,10 +533,7 @@ abstract class FontSizeSuccess implements FontSizeState {
       _$FontSizeSuccessImpl;
 
   double? get fontSize;
-
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FontSizeSuccessImplCopyWith<_$FontSizeSuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -579,8 +555,6 @@ class __$$FontSizeErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$FontSizeErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -619,9 +593,7 @@ class _$FontSizeErrorStateImpl implements FontSizeErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FontSizeErrorStateImplCopyWith<_$FontSizeErrorStateImpl> get copyWith =>
@@ -702,10 +674,7 @@ abstract class FontSizeErrorState implements FontSizeState {
       _$FontSizeErrorStateImpl;
 
   String get message;
-
-  /// Create a copy of FontSizeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FontSizeErrorStateImplCopyWith<_$FontSizeErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

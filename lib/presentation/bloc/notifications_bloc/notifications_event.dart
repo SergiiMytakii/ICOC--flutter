@@ -7,7 +7,6 @@ sealed class NotificationsEvent with _$NotificationsEvent {
   }) = NotificationsListRequested;
 
   const factory NotificationsEvent.markAsReadRequested({
-    required String title,
-    required List<NotificationsModel> notifications,
+    String? id,
   }) = NotificationMarkAsReadRequested;
 }
