@@ -4,8 +4,6 @@ import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:icoc/core/model/resources.dart';
-
 import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
 
@@ -62,33 +60,8 @@ class SongsRepositoryImpl implements SongsRepository {
 List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
   final List<SongDetail> songs = snapshot.docs.map(
     (doc) {
-      Map data = doc.data() as Map;
-      data =
-          Map.fromEntries(data.entries.where((entry) => entry.value != null));
-      data.forEach(
-        (key, value) {
-          if (value is Map) {
-            data[key] = Map.fromEntries(
-                value.entries.where((entry) => entry.value != null));
-          }
-        },
-      );
-      final List resourses =
-          data['resources'] != null && data['resources'] is Iterable<dynamic>
-              ? List.from(doc.get('resources'))
-              : [];
-      final song = SongDetail(
-          id: int.parse(doc.id),
-          description: data['description'] ?? {},
-          text: data['text'] ?? {},
-          title: data['title'] ?? {},
-          chords: data['chords'] ?? {},
-          resources: resourses.isNotEmpty
-              ? resourses.map((item) {
-                  //log.e(item);
-                  return Resources.fromJson(item);
-                }).toList()
-              : []);
+      final Map data = doc.data() as Map;
+      final song = SongDetail.fromJson(data, int.parse(doc.id));
       return song;
     },
   ).toList();

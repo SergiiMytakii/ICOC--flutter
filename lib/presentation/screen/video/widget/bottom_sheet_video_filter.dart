@@ -52,7 +52,7 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     callback: (Map<String, dynamic> activeLanguages) {
                       SharedPreferencesHelper.saveMap(
                           StorageKeys.videosAllLanguages, activeLanguages);
-                      getIt<VideoBloc>().add(VideoListRequested());
+                      getIt<VideoBloc>().add(const VideoEvent.listRequested());
                     },
                     key: ValueKey('$index'));
               }),

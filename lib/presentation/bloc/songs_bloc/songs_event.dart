@@ -1,16 +1,9 @@
 part of 'songs_bloc.dart';
 
-sealed class SongsEvent {}
-
-bool sqliteBDisUpdated = false;
-List<SongDetail>? cache;
-
-class SongsRequested extends SongsEvent {
-  SongsRequested({this.useCache = true});
-  final bool useCache;
-}
-
-class SearchSongRequested extends SongsEvent {
-  SearchSongRequested(this.query);
-  final String query;
+@freezed
+sealed class SongsEvent with _$SongsEvent {
+  const factory SongsEvent.songsRequested({@Default(true) bool useCache}) =
+      SongsRequested;
+  const factory SongsEvent.searchSongRequested(String query) =
+      SearchSongRequested;
 }

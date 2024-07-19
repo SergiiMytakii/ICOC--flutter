@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -153,7 +154,15 @@ class _AddSongScreenState extends State<AddSongScreen> {
                   ),
                 ],
               ),
-            )
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Text(
+              'suggestion to get admin panel'.tr(),
+              style: const TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

@@ -131,7 +131,7 @@ class CometPainter extends CustomPainter {
     final path = Path();
     path.moveTo(0, size.height / 2);
     final tailLength = size.width * offset.dx;
-    const maxStrokeWidth = 5.0;
+    const maxStrokeWidth = 9.0;
 
     for (double i = 0; i < tailLength; i += 10) {
       final strokeWidth = maxStrokeWidth * (i / tailLength);
@@ -147,7 +147,7 @@ class CometPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
-        Offset(size.width * offset.dx, size.height / 10), 5, cometPaint);
+        Offset(size.width * offset.dx, size.height / 10), 4, cometPaint);
   }
 
   @override

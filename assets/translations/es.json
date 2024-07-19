@@ -1,4 +1,6 @@
 {
+  "suggestion to get admin panel": "Al enviar este formulario, enviará un correo electrónico al administrador, quien agregará la canción a la aplicación. \n Sin embargo, si está en el ministerio de adoración y desea agregar y editar canciones por sí mismo, agregue en el campo 'Título': 'Quiero acceso al panel de administración.'",
+
     "app_bar_title": "Libro de canciones",
     "add_song": "Envía el texto de la canción y aparecerá aquí pronto.",
     "icon_button_actions_app_bar_filter": "Idiomas de las canciones y prioridad de visualización",

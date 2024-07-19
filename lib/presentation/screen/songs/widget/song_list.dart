@@ -16,45 +16,41 @@ class SongList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SongsBloc, SongsState>(
       builder: (context, state) {
-        if (state is SongsLoadingState) {
-          return SliverToBoxAdapter(
-              child:
-                  CustomRefreshIndicator(onRefresh: () => getSongs(context)));
-        } else if (state is GetSongsSuccessState) {
-          return state.songs.isNotEmpty
-              ? SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return SongCard(
-                        song: state.songs[index],
-                        dividerColor: getDividerColor(index),
-                        slideActions: [
-                          AddToFavorites(songId: state.songs[index].id),
-                        ],
-                      );
-                    },
-                    childCount: state.songs.length,
-                  ),
-                )
-              : SliverToBoxAdapter(
-                  child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: const NoContentWarning()),
-                );
-        } else if (state is SongsErrorState) {
-          return SliverToBoxAdapter(
+        return state.when(
+          initial: () => const SliverToBoxAdapter(),
+          loading: () => SliverToBoxAdapter(
+              child: CustomRefreshIndicator(
+                  onRefresh: () => getIt<SongsBloc>()
+                      .add(const SongsEvent.songsRequested()))),
+          success: (songs) {
+            return songs.isNotEmpty
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return SongCard(
+                          song: songs[index],
+                          dividerColor: getDividerColor(index),
+                          slideActions: [
+                            AddToFavorites(songId: songs[index].id),
+                          ],
+                        );
+                      },
+                      childCount: songs.length,
+                    ),
+                  )
+                : SliverToBoxAdapter(
+                    child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: const NoContentWarning()),
+                  );
+          },
+          error: (message) => SliverToBoxAdapter(
             child: ErrorTextOnScreen(
-              message: state.message,
+              message: message,
             ),
-          );
-        } else {
-          return const SliverToBoxAdapter();
-        }
+          ),
+        );
       },
     );
-  }
-
-  Future<void> getSongs(BuildContext context) async {
-    getIt<SongsBloc>().add(SongsRequested());
   }
 }

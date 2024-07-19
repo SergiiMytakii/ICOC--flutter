@@ -1,20 +1,12 @@
 part of 'notifications_bloc.dart';
 
-@immutable
-sealed class NotificationsState {}
-
-final class NotificationsInitial extends NotificationsState {}
-
-final class NotificationsLoadingState extends NotificationsState {}
-
-final class GetNotificationsListSuccessState extends NotificationsState {
-  final List<NotificationsModel> notifications;
-
-  GetNotificationsListSuccessState(this.notifications);
-}
-
-final class NotificationsErrorState extends NotificationsState {
-  final String message;
-
-  NotificationsErrorState(this.message);
+@freezed
+class NotificationsState with _$NotificationsState {
+  const factory NotificationsState.initial() = NotificationsInitial;
+  const factory NotificationsState.loading() = NotificationsLoadingState;
+  const factory NotificationsState.success(
+          List<NotificationsModel> notifications) =
+      GetNotificationsListSuccessState;
+  const factory NotificationsState.error(String message) =
+      NotificationsErrorState;
 }

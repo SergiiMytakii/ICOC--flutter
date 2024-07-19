@@ -42,7 +42,7 @@ import 'package:icoc/data/repository_impl/songs_repository_impl.dart' as _i14;
 import 'package:icoc/data/repository_impl/video_repository_impl.dart' as _i28;
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart'
     as _i31;
-import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_bloc.dart'
+import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart'
     as _i26;
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart'
     as _i24;

@@ -24,7 +24,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Feedback');
 
-    getIt<FeedbackBloc>().add(FeedbackListRequested());
+    getIt<FeedbackBloc>().add(const FeedbackEvent.listRequested());
     super.initState();
   }
 
@@ -51,10 +51,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               Expanded(
                 child: BlocBuilder<FeedbackBloc, FeedbackState>(
                   builder: (context, state) {
-                    if (state is GetFeedbackListSuccessState) {
-                      return ListView.builder(
+                    return state.when(
+                      initial: () => const SizedBox.shrink(),
+                      loading: () => Loading(),
+                      getFeedbackListSuccess: (feedbacks) => ListView.builder(
                         cacheExtent: 0,
-                        itemCount: state.feedbacks.length,
+                        itemCount: feedbacks.length,
                         itemBuilder: (context, index) {
                           return AnimationWrapper(
                             child: Column(
@@ -63,9 +65,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                   contentPadding: EdgeInsets.zero,
                                   titleTextStyle:
                                       TextStyle(color: getDividerColor(index)),
-                                  title:
-                                      Text(state.feedbacks[index].name ?? ''),
-                                  subtitle: Text(state.feedbacks[index].text),
+                                  title: Text(feedbacks[index].name ?? ''),
+                                  subtitle: Text(feedbacks[index].text),
                                   leading: SizedBox(
                                     width: 35,
                                     child: Center(
@@ -75,12 +76,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                         children: [
                                           // Display day and month on the first line
                                           Text(
-                                            state.feedbacks[index].date
+                                            feedbacks[index]
+                                                .date
                                                 .split('\n')[0],
                                           ),
                                           // Display year on the second line
                                           Text(
-                                            state.feedbacks[index].date
+                                            feedbacks[index]
+                                                .date
                                                 .split('\n')[1],
                                             textAlign: TextAlign.center,
                                           ),
@@ -98,14 +101,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             ),
                           );
                         },
-                      );
-                    } else if (state is FeedbackLoadingState) {
-                      return Loading();
-                    } else if (state is FeedbackErrorState) {
-                      return ErrorTextOnScreen(message: state.message);
-                    } else {
-                      return Container();
-                    }
+                      ),
+                      error: (message) => ErrorTextOnScreen(message: message),
+                    );
                   },
                 ),
               ),
@@ -156,7 +154,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     final String feedback = feedbackController.text.trim();
     final String name = nameController.text.trim();
     if (feedback.isNotEmpty) {
-      getIt<FeedbackBloc>().add(InsertFeedbackRequested(feedback, name));
+      getIt<FeedbackBloc>()
+          .add(FeedbackEvent.insertRequested(feedback: feedback, name: name));
       setState(() {
         feedbackController.clear();
         nameController.clear();

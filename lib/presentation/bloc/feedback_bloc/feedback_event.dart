@@ -1,13 +1,10 @@
 part of 'feedback_bloc.dart';
 
-@immutable
-sealed class FeedbackEvent {}
-
-class FeedbackListRequested extends FeedbackEvent {}
-
-class InsertFeedbackRequested extends FeedbackEvent {
-  final String feedback;
-  final String name;
-
-  InsertFeedbackRequested(this.feedback, this.name);
+@freezed
+sealed class FeedbackEvent with _$FeedbackEvent {
+  const factory FeedbackEvent.listRequested() = FeedbackListRequested;
+  const factory FeedbackEvent.insertRequested({
+    required String feedback,
+    required String name,
+  }) = InsertFeedbackRequested;
 }

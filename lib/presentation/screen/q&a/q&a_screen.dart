@@ -26,7 +26,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
   void initState() {
     super.initState();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Q&A');
-    getIt<QandABloc>().add(QandARequested());
+    getIt<QandABloc>().add(const QandAEvent.requested());
   }
 
   @override
@@ -42,17 +42,20 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
               callback: (String query) {
                 if (query.length > 2) {
                   previousQuery = query;
-                  getIt<QandABloc>().add(QandARequested(query: query));
+                  getIt<QandABloc>().add(QandAEvent.requested(query: query));
                 } else if (previousQuery.length > query.length) {
                   //if user deletes a characters
-                  getIt<QandABloc>().add(QandARequested());
+                  getIt<QandABloc>().add(const QandAEvent.requested());
                 }
               },
             ),
             BlocBuilder<QandABloc, QandAState>(
               builder: (context, state) {
-                if (state is GetQandASuccessState) {
-                  return SliverList(
+                return state.when(
+                  initial: () =>
+                      const SliverToBoxAdapter(child: SizedBox.shrink()),
+                  loading: () => SliverToBoxAdapter(child: Loading()),
+                  success: (articles) => SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         return AnimationWrapper(
@@ -60,11 +63,11 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                             children: [
                               ListTile(
                                 leading: Text(
-                                  state.articles[index].id.toString(),
+                                  articles[index].id.toString(),
                                   style: Theme.of(context).textTheme.titleLarge,
                                 ),
                                 title: Text(
-                                  state.articles[index].title,
+                                  articles[index].title,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 3,
                                   style: Theme.of(context)
@@ -75,7 +78,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                                 trailing: const Icon(Icons.arrow_forward_ios),
                                 onTap: () => context.go(
                                   '/$Q_AND_ANSVERS/$ONE_Q_AND_A_SCREEN',
-                                  extra: state.articles[index],
+                                  extra: articles[index],
                                 ),
                               ),
                               Divider(
@@ -87,18 +90,13 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                           ),
                         );
                       },
-                      childCount: state.articles.length,
+                      childCount: articles.length,
                     ),
-                  );
-                } else if (state is QandALoadingState) {
-                  return SliverToBoxAdapter(child: Loading());
-                } else if (state is QandAErrorState) {
-                  return SliverToBoxAdapter(
-                    child: ErrorTextOnScreen(message: state.message),
-                  );
-                } else {
-                  return SliverToBoxAdapter(child: Container());
-                }
+                  ),
+                  error: (message) => SliverToBoxAdapter(
+                    child: ErrorTextOnScreen(message: message),
+                  ),
+                );
               },
             ),
           ],

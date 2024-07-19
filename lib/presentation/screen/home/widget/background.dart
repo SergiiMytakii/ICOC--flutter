@@ -26,7 +26,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2500),
+      duration: const Duration(seconds: 2000),
     )..repeat();
 
     _rotationAnimation = Tween<double>(
@@ -39,7 +39,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
       final i = (_controller.value * 1000).toInt() % 3;
       if (i == 0) {
         final now = DateTime.now();
-        if (now.difference(lastCometLaunchTime).inSeconds >= 2) {
+        if (now.difference(lastCometLaunchTime).inSeconds >= 3) {
           launchComet.value = random.nextInt(4);
           lastCometLaunchTime = now;
         }
@@ -58,15 +58,15 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
   final List<CometAnimation> comets = [
     const CometAnimation(
       startOffset: Offset(-1, 0.3),
-      endOffset: Offset(2, 0),
-      rotationAngle: pi / 40,
-      topOffset: 0.4,
+      endOffset: Offset(2, 0.1),
+      rotationAngle: pi / 60,
+      topOffset: 0.5,
     ),
     const CometAnimation(
       startOffset: Offset(-1, 0.6),
       endOffset: Offset(2, -0.5),
-      rotationAngle: -pi / 40,
-      topOffset: 0.6,
+      rotationAngle: -pi / 20,
+      topOffset: 1.3,
     ),
     const CometAnimation(
       startOffset: Offset(-1, 0.2),
@@ -97,6 +97,8 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
               angle: pi / 2 * random.nextInt(5),
               child: Image.asset(
                 'assets/images/space/space$backgroundIndex.jpg',
+                cacheWidth: screenSize.width.toInt(),
+                cacheHeight: screenSize.height.toInt(),
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,

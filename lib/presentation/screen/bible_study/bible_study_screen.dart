@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
@@ -18,7 +19,7 @@ import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/no_content_warning.dart';
 
 class BibleStudyScreen extends StatefulWidget {
-  BibleStudyScreen({super.key});
+  const BibleStudyScreen({super.key});
 
   @override
   State<BibleStudyScreen> createState() => _BibleStudyScreenState();
@@ -27,6 +28,7 @@ class BibleStudyScreen extends StatefulWidget {
 class _BibleStudyScreenState extends State<BibleStudyScreen> {
   final GlobalKey tooltipKey1 = GlobalKey();
   bool _tooltipVisible = true;
+
   @override
   void initState() {
     _getBibleStudyList();
@@ -36,35 +38,38 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   }
 
   Future<void> _getBibleStudyList() async {
-    getIt<BibleStudyBloc>().add(BibleStudyListRequested());
+    getIt<BibleStudyBloc>().add(const BibleStudyEvent.listRequested());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
-        if (state is GetBibleStudyListSuccessState) {
-          return Scaffold(
-              appBar: _buildAppbar(context, state), body: _buildBody(state));
-        } else if (state is BibleStudyLoadingState) {
-          return CustomRefreshIndicator(onRefresh: _getBibleStudyList);
-        } else if (state is BibleStudyErrorState) {
-          return RefreshIndicator.adaptive(
+        return state.when(
+          initial: () => const SizedBox(),
+          loading: () => Scaffold(
+            body: CustomRefreshIndicator(onRefresh: _getBibleStudyList),
+          ),
+          success: (topics) => Scaffold(
+            appBar: _buildAppbar(context, topics),
+            body: _buildBody(topics),
+          ),
+          error: (message) => Scaffold(
+            body: RefreshIndicator.adaptive(
               onRefresh: _getBibleStudyList,
               child: ListView(
                 children: [
-                  ErrorTextOnScreen(message: state.message),
+                  ErrorTextOnScreen(message: message),
                 ],
-              ));
-        } else {
-          return Container();
-        }
+              ),
+            ),
+          ),
+        );
       },
     );
   }
 
-  AppBar _buildAppbar(
-      BuildContext context, GetBibleStudyListSuccessState state) {
+  AppBar _buildAppbar(BuildContext context, List<BibleStudy> topics) {
     return AppBar(
       title: Text(
         'drawer_first_principles'.tr(),
@@ -87,32 +92,35 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
               ),
             ),
             AnimatedFilterIconButton(
-                shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-                shouldAnimateForever: state.topics.isEmpty,
-                onTap: () => showModalBottomSheet(
-                    scrollControlDisabledMaxHeightRatio: 2,
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (BuildContext context) {
-                      return ModalBottomSheet(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          blurBackground: false,
-                          child: const BottomSheetBibleStudyFilter());
-                    }),
-                color: ScreenColors.bibleStudy),
+              shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+              shouldAnimateForever: topics.isEmpty,
+              onTap: () => showModalBottomSheet(
+                scrollControlDisabledMaxHeightRatio: 2,
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return ModalBottomSheet(
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    blurBackground: false,
+                    child: const BottomSheetBibleStudyFilter(),
+                  );
+                },
+              ),
+              color: ScreenColors.bibleStudy,
+            ),
           ],
         )
       ],
     );
   }
 
-  Widget _buildBody(GetBibleStudyListSuccessState state) {
+  Widget _buildBody(List<BibleStudy> topics) {
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
-      child: state.topics.isNotEmpty
+      child: topics.isNotEmpty
           ? ListView.builder(
               cacheExtent: 0,
-              itemCount: state.topics.length,
+              itemCount: topics.length,
               itemBuilder: (context, index) {
                 return AnimationWrapper(
                   child: Column(
@@ -123,7 +131,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                           width: 40,
                         ),
                         title: Text(
-                          state.topics[index].topic,
+                          topics[index].topic,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context)
@@ -132,14 +140,14 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          state.topics[index].subtopic,
+                          topics[index].subtopic,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => context.go(
-                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${state.topics[index].id}',
+                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${topics[index].id}',
                         ),
                       ),
                       Divider(
@@ -163,10 +171,11 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
         Future.delayed(const Duration(seconds: 6), () {
-          if (mounted)
+          if (mounted) {
             setState(() {
               _tooltipVisible = false;
             });
+          }
         });
       });
       SharedPreferencesHelper.saveDouble(

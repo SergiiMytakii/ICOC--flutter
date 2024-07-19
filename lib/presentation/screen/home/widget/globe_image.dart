@@ -23,15 +23,16 @@ class GlobeImage extends StatelessWidget {
             gradient: RadialGradient(
               colors: [
                 Colors.white,
+                Color.fromARGB(128, 255, 255, 255),
                 Colors.transparent,
               ],
-              stops: [0.85, 1],
+              stops: [0.8, 0.95, 1],
               focal: Alignment(0, 0),
-              focalRadius: 0.15,
+              focalRadius: 0.13,
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(28),
+            padding: const EdgeInsets.all(18),
             child: Image.asset(
               'assets/images/globe1.png',
               width: screenSize.height * 0.70,

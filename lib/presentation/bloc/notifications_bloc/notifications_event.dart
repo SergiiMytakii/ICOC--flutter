@@ -1,15 +1,13 @@
 part of 'notifications_bloc.dart';
 
-@immutable
-sealed class NotificationsEvent {}
+@freezed
+sealed class NotificationsEvent with _$NotificationsEvent {
+  const factory NotificationsEvent.listRequested({
+    required String locale,
+  }) = NotificationsListRequested;
 
-class NotificationsListRequested extends NotificationsEvent {
-  final String locale;
-  NotificationsListRequested(this.locale);
-}
-
-class NotificationMarkAsReadRequested extends NotificationsEvent {
-  final String title;
-  final List<NotificationsModel> notifications;
-  NotificationMarkAsReadRequested(this.title, this.notifications);
+  const factory NotificationsEvent.markAsReadRequested({
+    required String title,
+    required List<NotificationsModel> notifications,
+  }) = NotificationMarkAsReadRequested;
 }

@@ -40,19 +40,18 @@ class OneQandAScreen extends StatelessWidget {
             children: [
               BlocBuilder<FontSizeBloc, FontSizeState>(
                 builder: (context, state) {
-                  if (state is FontSizeSuccess) {
-                    return ScaleText(
-                      fontSize: state.fontSize ?? 14,
+                  return state.maybeWhen(
+                    success: (fontSize) => ScaleText(
+                      fontSize: fontSize ?? 14,
                       child: SelectionArea(
                         child: Text(
                           article.text,
-                          style: TextStyle(fontSize: state.fontSize),
+                          style: TextStyle(fontSize: fontSize),
                         ),
                       ),
-                    );
-                  } else {
-                    return Container();
-                  }
+                    ),
+                    orElse: () => Container(),
+                  );
                 },
               )
             ],

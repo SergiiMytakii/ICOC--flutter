@@ -37,14 +37,14 @@ class FontSizeAdjustBottomSheet {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: BlocBuilder<FontSizeBloc, FontSizeState>(
               builder: (context, state) {
-                if (state is FontSizeSuccess) {
-                  return Row(
+                return state.maybeWhen(
+                  success: (fontSize) => Row(
                     children: [
                       Container(
                         width: 80,
                         child: Text(
                           'aA',
-                          style: TextStyle(fontSize: state.fontSize),
+                          style: TextStyle(fontSize: fontSize),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -57,20 +57,20 @@ class FontSizeAdjustBottomSheet {
                           activeColor: color,
                           inactiveColor: color,
                           label: 'Font size'.tr(),
-                          value: state.fontSize ?? 14,
+                          value: fontSize ?? 14,
                           min: 12,
                           max: 46,
                           divisions: 34,
                           onChanged: (val) {
                             getIt<FontSizeBloc>()
-                                .add(FontSizeRequested(fontSize: val));
+                                .add(FontSizeEvent.requested(fontSize: val));
                           },
                         ),
                       ),
                     ],
-                  );
-                } else
-                  return Container();
+                  ),
+                  orElse: () => Container(),
+                );
               },
             ),
           ),

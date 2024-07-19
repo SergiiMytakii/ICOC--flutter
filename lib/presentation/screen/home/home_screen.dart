@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late final CarouselController _carouselController;
+  final CarouselControllerPlus _carouselController = CarouselControllerPlus();
   late AnimationController _menuAnimationController;
 
   List<MenuItem> items = HomeScreenMenuItems.items();
@@ -45,11 +45,9 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     Future.delayed(Duration.zero).then((value) {
       rateApp(context);
-      getIt<NotificationsBloc>()
-          .add(NotificationsListRequested(context.locale.languageCode));
+      getIt<NotificationsBloc>().add(NotificationsEvent.listRequested(
+          locale: context.locale.languageCode));
     });
-
-    _carouselController = CarouselController();
 
     _menuAnimationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1000));
@@ -148,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen>
         context.go('/${currentItem.routeName}');
       },
       child: CarouselSlider(
-        carouselController: _carouselController,
+        controller: _carouselController,
         options: CarouselOptions(
           height: screenSize.height * 0.65,
           enlargeFactor: 0.55,

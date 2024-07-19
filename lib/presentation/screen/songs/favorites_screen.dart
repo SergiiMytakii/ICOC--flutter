@@ -21,7 +21,7 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
-    getFavoriteSongs(context);
+    _getFavoriteSongs();
     super.initState();
   }
 
@@ -34,41 +34,38 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         automaticallyImplyLeading: false,
       ),
       body: RefreshIndicator.adaptive(
-        onRefresh: () => getFavoriteSongs(context),
+        onRefresh: () => _getFavoriteSongs(),
         child: BlocBuilder<FavoriteSongsListBloc, FavoriteSongsState>(
           builder: (context, state) {
-            if (state is GetFavoriteSongsListSuccessState) {
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: state.songs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return SongCard(
-                    song: state.songs[index],
-                    dividerColor: getDividerColor(index),
-                    slideActions: [
-                      DeleteFromFavorites(songId: state.songs[index].id),
-                    ],
-                  );
-                },
-              );
-            } else if (state is FavoriteSongsLoadingState) {
-              return Center(
+            return state.when(
+              initial: () => Container(),
+              loading: () => Center(
                 child: Loading(
                   color: ScreenColors.songBook,
                 ),
-              );
-            } else if (state is FavoriteSongsErrorState) {
-              return const ErrorTextOnScreen();
-            } else {
-              return Container();
-            }
+              ),
+              success: (songs) => ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: songs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SongCard(
+                    song: songs[index],
+                    dividerColor: getDividerColor(index),
+                    slideActions: [
+                      DeleteFromFavorites(songId: songs[index].id),
+                    ],
+                  );
+                },
+              ),
+              error: (errorMessage) => const ErrorTextOnScreen(),
+            );
           },
         ),
       ),
     );
   }
 
-  Future<void> getFavoriteSongs(BuildContext context) async {
-    getIt<FavoriteSongsListBloc>().add(FavoriteSongsListRequested());
+  Future<void> _getFavoriteSongs() async {
+    getIt<FavoriteSongsListBloc>().add(const FavoriteSongsEvent.getRequested());
   }
 }

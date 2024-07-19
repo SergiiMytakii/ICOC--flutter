@@ -1,4 +1,6 @@
 {
+  "suggestion to get admin panel": "Inviando questo modulo, invierai un'email all'amministratore, che aggiungerà la canzone all'app. \n Tuttavia, se fai parte del ministero di adorazione e desideri aggiungere e modificare le canzoni da solo, aggiungi nel campo 'Titolo': 'Voglio accesso al pannello di amministrazione.'",
+
     "Open in ICOC app:": "Apri nell'app ICOC:",    "app_bar_title": "Libro delle canzoni",
     "add_song": "Invia il testo della canzone e apparirà qui presto.",
     "icon_button_actions_app_bar_filter": "Lingue delle canzoni e priorità di visualizzazione",

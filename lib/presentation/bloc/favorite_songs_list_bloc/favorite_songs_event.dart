@@ -1,6 +1,6 @@
 part of 'favorite_songs_bloc.dart';
 
-@immutable
-sealed class FavoriteSongsListEvent {}
-
-class FavoriteSongsListRequested extends FavoriteSongsListEvent {}
+@freezed
+class FavoriteSongsEvent with _$FavoriteSongsEvent {
+  const factory FavoriteSongsEvent.getRequested() = FavoriteSongsListRequested;
+}

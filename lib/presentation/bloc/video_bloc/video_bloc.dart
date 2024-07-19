@@ -8,18 +8,23 @@ import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/playlist.dart';
 import 'package:icoc/core/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'video_event.dart';
 part 'video_state.dart';
+part 'video_bloc.freezed.dart';
 
 @singleton
 class VideoBloc extends Bloc<VideoEvent, VideoState> {
   final VideoRepository videoRepository;
 
-  VideoBloc(this.videoRepository) : super(VideoInitial()) {
-    on<VideoListRequested>(_onVideoListRequested);
-    on<GetVideosFromPlaylist>(_onGetVideosFromPlaylist);
+  VideoBloc(this.videoRepository) : super(const VideoState.initial()) {
+    on<VideoEvent>((event, emit) async {
+      await event.map(
+        listRequested: (event) => _onVideoListRequested(event, emit),
+        getVideosFromPlaylist: (event) => _onGetVideosFromPlaylist(event, emit),
+      );
+    });
   }
 
   Future<void> _onVideoListRequested(
@@ -27,19 +32,19 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     Emitter<VideoState> emit,
   ) async {
     try {
-      emit(VideoLoadingState());
+      emit(const VideoState.loading());
       final List<Playlist> videos = await videoRepository.getVideoList();
       if (videos.isNotEmpty) {
         final List<Playlist> filteredVideos = await filterByLanguages(videos);
-        emit(GetVideoListSuccessState(filteredVideos));
+        emit(VideoState.getVideoListSuccess(filteredVideos));
       } else {
-        emit(VideoErrorState(
+        emit(VideoState.error(
             "Can't  load data... Please, check your internet connection and pull down to refresh!"
                 .tr()));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(VideoErrorState(error.toString()));
+      emit(VideoState.error(error.toString()));
     }
   }
 
@@ -48,19 +53,19 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     Emitter<VideoState> emit,
   ) async {
     try {
-      emit(VideoLoadingState());
+      emit(const VideoState.loading());
       final List<Resources>? resources =
           await videoRepository.fetchVideosFromPlaylist(event.playlistId);
       if (resources != null && resources.isNotEmpty) {
-        emit(GetVideosFromPlaylistSuccessState(resources));
+        emit(VideoState.getVideosFromPlaylistSuccess(resources));
       } else {
-        emit(VideoErrorState(
+        emit(VideoState.error(
             "Can't  load data... Please, check your internet connection and pull down to refresh!"
                 .tr()));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(VideoErrorState(error.toString()));
+      emit(VideoState.error(error.toString()));
     }
   }
 }

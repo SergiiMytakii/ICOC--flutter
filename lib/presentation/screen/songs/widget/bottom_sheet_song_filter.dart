@@ -265,7 +265,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh(Map<String, dynamic> langsToSave) async {
     await SharedPreferencesHelper.saveMap(
         StorageKeys.allSongsLanguages, langsToSave);
-    getIt<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(const SongsEvent.songsRequested());
   }
 
   InkWell _sortButton(BuildContext context, String title, bool active) {
@@ -300,7 +300,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   void _orderSongs(bool orderByTitle) async {
     await SharedPreferencesHelper.saveBool(
         StorageKeys.orderByTitle, orderByTitle);
-    getIt<SongsBloc>().add(SongsRequested());
+    getIt<SongsBloc>().add(const SongsEvent.songsRequested());
   }
 
   Future _onReorder(int oldIndex, int newIndex) async {

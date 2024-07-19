@@ -46,8 +46,8 @@ android {
         applicationId "ru.icoc.app"
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 25
-        versionName "5.5.0"
+        versionCode 27
+        versionName "5.6.0"
         multiDexEnabled true
     }
 
@@ -77,5 +77,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'com.google.firebase.crashlytics'
 

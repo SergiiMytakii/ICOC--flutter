@@ -1,19 +1,9 @@
 part of 'feedback_bloc.dart';
 
-@immutable
-sealed class FeedbackState {}
-
-final class FeedbackInitial extends FeedbackState {}
-
-final class FeedbackLoadingState extends FeedbackState {}
-
-final class GetFeedbackListSuccessState extends FeedbackState {
-  final List<Feedback> feedbacks;
-  GetFeedbackListSuccessState(this.feedbacks);
-}
-
-final class FeedbackErrorState extends FeedbackState {
-  final String message;
-
-  FeedbackErrorState(this.message);
+@freezed
+class FeedbackState with _$FeedbackState {
+  const factory FeedbackState.initial() = FeedbackInitial;
+  const factory FeedbackState.loading() = FeedbackLoadingState;
+  const factory FeedbackState.getFeedbackListSuccess(List<Feedback> feedbacks) = GetFeedbackListSuccessState;
+  const factory FeedbackState.error(String message) = FeedbackErrorState;
 }

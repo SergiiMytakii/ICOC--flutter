@@ -21,7 +21,7 @@ class _AnimationWrapperState extends State<AnimationWrapper>
       duration: const Duration(milliseconds: 300),
     )..forward();
     // Animation will run when widget is built (scrolled into view)
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1).animate(
+    _scaleAnimation = Tween<double>(begin: 0.7, end: 1).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeOut,

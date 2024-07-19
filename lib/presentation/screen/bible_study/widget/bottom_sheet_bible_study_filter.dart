@@ -52,7 +52,8 @@ class _BottomSheetBibleStudyFilterState
                     callback: (Map<String, dynamic> activeLanguages) {
                       SharedPreferencesHelper.saveMap(
                           StorageKeys.bibleStudyLanguages, activeLanguages);
-                      getIt<BibleStudyBloc>().add(BibleStudyListRequested());
+                      getIt<BibleStudyBloc>()
+                          .add(const BibleStudyEvent.listRequested());
                     },
                     key: ValueKey('$index'));
               }),

@@ -1,6 +1,6 @@
 part of 'bible_study_bloc.dart';
 
-@immutable
-sealed class BibleStudyEvent {}
-
-class BibleStudyListRequested extends BibleStudyEvent {}
+@freezed
+sealed class BibleStudyEvent with _$BibleStudyEvent {
+  const factory BibleStudyEvent.listRequested() = BibleStudyListRequested;
+}

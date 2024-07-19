@@ -18,7 +18,7 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
   //get songs
   @override
   Future<QuerySnapshot> getFromFirebase(String collectionName,
-      {String? orderBy, bool? descending}) async {
+      {dynamic orderBy, bool? descending}) async {
     final CollectionReference collection = db.collection(collectionName);
     if (descending != null && orderBy != null) {
       return collection.orderBy(orderBy, descending: descending).get();

@@ -1,18 +1,11 @@
 part of 'favorite_songs_bloc.dart';
 
-@immutable
-sealed class FavoriteSongsState {}
-
-final class FavoriteSongsInitial extends FavoriteSongsState {}
-
-final class FavoriteSongsLoadingState extends FavoriteSongsState {}
-
-final class GetFavoriteSongsListSuccessState extends FavoriteSongsState {
-  GetFavoriteSongsListSuccessState(this.songs);
-  final List<SongDetail> songs;
-}
-
-final class FavoriteSongsErrorState extends FavoriteSongsState {
-  FavoriteSongsErrorState(this.message);
-  final String message;
+@freezed
+class FavoriteSongsState with _$FavoriteSongsState {
+  const factory FavoriteSongsState.initial() = FavoriteSongsInitial;
+  const factory FavoriteSongsState.loading() = FavoriteSongsLoadingState;
+  const factory FavoriteSongsState.success(List<SongDetail> songs) =
+      GetFavoriteSongsSuccessState;
+  const factory FavoriteSongsState.error(String message) =
+      FavoriteSongsErrorState;
 }

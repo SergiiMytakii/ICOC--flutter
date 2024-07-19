@@ -25,9 +25,9 @@ class SongTextOnSongScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FontSizeBloc, FontSizeState>(
       builder: (context, state) {
-        if (state is FontSizeSuccess) {
-          return ScaleText(
-            fontSize: state.fontSize ?? 14,
+        return state.maybeWhen(
+          success: (fontSize) => ScaleText(
+            fontSize: fontSize ?? 14,
             child: SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -41,7 +41,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                             .textTheme
                             .headlineMedium!
                             .copyWith(
-                                fontSize: (state.fontSize ?? 14) + 5,
+                                fontSize: (fontSize ?? 14) + 5,
                                 fontWeight: FontWeight.bold),
                       ),
                       Container(
@@ -53,7 +53,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                               .textTheme
                               .headlineSmall!
                               .copyWith(
-                                  fontSize: (state.fontSize ?? 14),
+                                  fontSize: (fontSize ?? 14),
                                   fontStyle: FontStyle.italic),
                         ),
                       ),
@@ -64,8 +64,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                               style: {
                                 'body': html.Style(
                                     alignment: Alignment.center,
-                                    fontSize:
-                                        html.FontSize(state.fontSize ?? 14)),
+                                    fontSize: html.FontSize(fontSize ?? 14)),
                               },
                             )
                           : Text(
@@ -74,7 +73,7 @@ class SongTextOnSongScreen extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
-                                  .copyWith(fontSize: state.fontSize ?? 14),
+                                  .copyWith(fontSize: fontSize ?? 14),
                             ),
                       const SizedBox(
                         height: 300,
@@ -82,10 +81,9 @@ class SongTextOnSongScreen extends StatelessWidget {
                     ],
                   ),
                 )),
-          );
-        } else {
-          return Container();
-        }
+          ),
+          orElse: () => const SizedBox.shrink(),
+        );
       },
     );
   }

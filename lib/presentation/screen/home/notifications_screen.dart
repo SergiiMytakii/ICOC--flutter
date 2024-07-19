@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -38,69 +39,71 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: SafeArea(
         child: BlocBuilder<NotificationsBloc, NotificationsState>(
           builder: (context, state) {
-            if (state is GetNotificationsListSuccessState) {
-              return ListView.builder(
-                  cacheExtent: 0,
-                  itemCount: state.notifications.length,
-                  itemBuilder: (BuildContext context, index) {
-                    Future.delayed(const Duration(seconds: 10)).then((value) =>
-                        _markAsRead(state.notifications[index].title,
-                            state.notifications));
+            return state.when(
+              initial: () => const SizedBox.shrink(),
+              loading: () => Loading(),
+              success: (notifications) => ListView.builder(
+                cacheExtent: 0,
+                itemCount: notifications.length,
+                itemBuilder: (BuildContext context, index) {
+                  Future.delayed(const Duration(seconds: 6)).then((value) =>
+                      _markAsRead(notifications[index].title, notifications));
 
-                    return AnimationWrapper(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            onTap: () => _markAsRead(
-                                state.notifications[index].title,
-                                state.notifications),
-                            contentPadding: const EdgeInsets.all(8),
-                            leading: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16,
-                              ),
-                              child: CircleAvatar(
-                                backgroundColor:
-                                    !state.notifications[index].isRead
-                                        ? ScreenColors.songBook
-                                        : Colors.transparent,
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: !state
-                                                  .notifications[index].isRead
-                                              ? ScreenColors.songBook
-                                              : Theme.of(context).primaryColor),
-                                    ),
-                                    child: const Center(child: Text('i'))),
-                              ),
+                  return AnimationWrapper(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () => _markAsRead(
+                              notifications[index].title, notifications),
+                          contentPadding: const EdgeInsets.all(8),
+                          leading: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
                             ),
-                            title: Text(state.notifications[index].title),
-                            subtitle: state.notifications[index].text
-                                    .trim()
-                                    .startsWith('<')
-                                ? Html(data: state.notifications[index].text)
-                                : Text(
-                                    state.notifications[index].text,
+                            child: CircleAvatar(
+                              backgroundColor: !notifications[index].isRead
+                                  ? ScreenColors.songBook
+                                  : Colors.transparent,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: !notifications[index].isRead
+                                            ? ScreenColors.songBook
+                                            : Theme.of(context).primaryColor),
                                   ),
+                                  child: const Center(child: Text('i'))),
+                            ),
                           ),
-                          Divider(
-                            indent: 50,
-                            color: getDividerColor(index),
-                            thickness: 1.2,
+                          title: Text(
+                            notifications[index].title,
+                            style: AdaptiveTheme.of(context)
+                                .theme
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    color: getDividerColor(index).withOpacity(
+                                        notifications[index].isRead ? 0.7 : 1)),
                           ),
-                        ],
-                      ),
-                    );
-                  });
-            } else if (state is NotificationsLoadingState) {
-              return Loading();
-            } else if (state is NotificationsErrorState) {
-              return ErrorTextOnScreen(message: state.message);
-            } else {
-              return Container();
-            }
+                          subtitle:
+                              notifications[index].text.trim().startsWith('<')
+                                  ? Html(data: notifications[index].text)
+                                  : Text(
+                                      notifications[index].text,
+                                    ),
+                        ),
+                        Divider(
+                          indent: 50,
+                          color: getDividerColor(index),
+                          thickness: 1.2,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              error: (message) => ErrorTextOnScreen(message: message),
+            );
           },
         ),
       ),
@@ -110,8 +113,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Future _markAsRead(
       String title, List<NotificationsModel> notifications) async {
     if (mounted) {
-      getIt<NotificationsBloc>()
-          .add(NotificationMarkAsReadRequested(title, notifications));
+      getIt<NotificationsBloc>().add(NotificationsEvent.markAsReadRequested(
+          title: title, notifications: notifications));
     }
   }
 }

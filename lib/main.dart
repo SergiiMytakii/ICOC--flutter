@@ -9,7 +9,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:icoc/presentation/bloc/bloc_observer.dart';
 import 'package:icoc/presentation/bloc/multibloc_provider.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/routes/app_router.dart';
@@ -26,17 +28,15 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized();
       await EasyLocalization.ensureInitialized();
       await Firebase.initializeApp();
+      await GetStorage.init();
       configureDependencies(Environment.dev);
-      final savedThemeMode = await AdaptiveTheme.getThemeMode();
       _activateCrashlitics();
+      _setScreenSettings();
+      Bloc.observer = AppBlocObserver();
+      final savedThemeMode = await AdaptiveTheme.getThemeMode();
       FirebaseAnalytics.instance
           .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
-      await GetStorage.init();
 
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light));
       runApp(
         EasyLocalization(
           useOnlyLangCode: true,
@@ -58,6 +58,13 @@ void main() async {
           .recordError(error, stackTrace, printDetails: true);
     },
   );
+}
+
+void _setScreenSettings() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light));
 }
 
 class MyApp extends StatelessWidget {

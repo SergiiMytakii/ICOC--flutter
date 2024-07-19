@@ -14,14 +14,14 @@ import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class OneLessonScreen extends StatefulWidget {
   final String lessonId;
   final String topicId;
 
   OneLessonScreen({super.key, required this.lessonId, required this.topicId}) {
-    Wakelock.enable();
+    WakelockPlus.enable();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
@@ -44,77 +44,74 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
   Widget build(BuildContext context) {
     final fontSozeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.bibleStudy);
+
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
-        if (state is GetBibleStudyListSuccessState) {
-          final topic = state.topics
-              .firstWhere((item) => item.id == int.parse(widget.topicId));
-          final lesson = topic.lessons
-              .firstWhere((item) => item.id == int.parse(widget.lessonId));
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                lesson.title,
-                style: const TextStyle(fontSize: 14),
-              ),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  tooltip: 'Share'.tr(),
-                  icon: const Icon(
-                    Icons.share,
+        return state.when(
+          initial: () => const Scaffold(body: SizedBox()),
+          loading: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+          success: (topics) {
+            final topic = topics
+                .firstWhere((item) => item.id == int.parse(widget.topicId));
+            final lesson = topic.lessons
+                .firstWhere((item) => item.id == int.parse(widget.lessonId));
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  lesson.title,
+                  style: const TextStyle(fontSize: 14),
+                ),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    tooltip: 'Share'.tr(),
+                    icon: const Icon(Icons.share),
+                    onPressed: () => _share(lesson),
                   ),
-                  onPressed: () {
-                    _share(lesson);
-                  },
-                ),
-                IconButton(
-                    icon: const Icon(
-                      Icons.text_fields_outlined,
+                  IconButton(
+                    icon: const Icon(Icons.text_fields_outlined),
+                    onPressed: () => fontSozeAdjust.bottomSheet(),
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: SelectionArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: BlocBuilder<FontSizeBloc, FontSizeState>(
+                      builder: (context, fontState) {
+                        return fontState.maybeWhen(
+                          success: (fontSize) => ScaleText(
+                            fontSize: fontSize ?? 14,
+                            child: html.Html(
+                              data: lesson.text,
+                              onLinkTap: (url, __, ___) {
+                                launchUrl(Uri.parse(url ?? ''));
+                              },
+                              style: {
+                                'body': html.Style(
+                                    fontSize: html.FontSize(fontSize ?? 14)),
+                                'h5': html.Style(
+                                    fontSize: html.FontSize(fontSize ?? 14)),
+                                'p': html.Style(
+                                    fontSize: html.FontSize(fontSize ?? 14)),
+                              },
+                            ),
+                          ),
+                          orElse: () => const SizedBox(),
+                        );
+                      },
                     ),
-                    onPressed: () => fontSozeAdjust.bottomSheet()),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: SelectionArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: BlocBuilder<FontSizeBloc, FontSizeState>(
-                      builder: (context, state) {
-                    if (state is FontSizeSuccess) {
-                      return ScaleText(
-                        fontSize: state.fontSize ?? 14,
-                        child: html.Html(
-                          data: lesson.text,
-                          onLinkTap: (url, __, ___) {
-                            launchUrl(Uri.parse(url ?? ''));
-                          },
-                          style: {
-                            'body': html.Style(
-                              fontSize: html.FontSize(state.fontSize ?? 14),
-                            ),
-                            'h5': html.Style(
-                              fontSize: html.FontSize(state.fontSize ?? 14),
-                            ),
-                            'p': html.Style(
-                              fontSize: html.FontSize(state.fontSize ?? 14),
-                            ),
-                          },
-                        ),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  }),
+                  ),
                 ),
               ),
-            ),
-          );
-        } else if (state is BibleStudyErrorState) {
-          return const Scaffold(body: ErrorTextOnScreen());
-        } else {
-          return const SizedBox();
-        }
+            );
+          },
+          error: (message) => Scaffold(
+            body: ErrorTextOnScreen(message: message),
+          ),
+        );
       },
     );
   }
@@ -125,11 +122,11 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     final hint = 'Open in ICOC app:'.tr();
 
     final text = '''
+              ${lesson.title}\n\n
               ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
-              $hint $link''';
+              $hint\n
+              $link''';
 
-    Share.share(
-      text,
-    );
+    Share.share(text);
   }
 }
