@@ -206,11 +206,10 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   void _startPlayVideo(Resources resources, String videoId) async {
     youtubePlayerController = YoutubePlayerController();
-    youtubePlayerController!.loadVideoById(videoId: videoId);
     setState(() {
       videoIsPlaying = true;
     });
-    youtubePlayerController!.playVideo();
+    youtubePlayerController!.loadVideoById(videoId: videoId);
     _controller.forward();
   }
 
@@ -240,12 +239,12 @@ class _OneSongScreenState extends State<OneSongScreen>
           ),
           IconButton(
               color: ScreenColors.songBook,
-              onPressed: () {
+              onPressed: () async {
                 _controller.reverse().then((value) => setState(() {
                       videoIsPlaying = false;
                       miniPlayerOpened = true;
                     }));
-                youtubePlayerController!.stopVideo();
+                await youtubePlayerController!.stopVideo();
                 youtubePlayerController!.close();
               },
               icon: const Icon(Icons.close_outlined)),
