@@ -14,8 +14,6 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
   NotificationsRepositoryImpl(this.firebaseDataSource);
   @override
   Future<List<NotificationsModel>> getNotifications() async {
-    // final List<Map<String, NotificationsModel>> notifications = [];
-
     final QuerySnapshot snapshot = await firebaseDataSource
         .getFromFirebase(FirebaseCollections.Notifications.name);
     final List<NotificationsModel> notifications = snapshot.docs.map(
