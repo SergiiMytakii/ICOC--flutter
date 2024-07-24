@@ -7,8 +7,8 @@ class SongDetail {
   final Map? description;
   final Map title;
   final Map text;
-  final List<YoutubeVideo>? youtubeVideos;
   final Map? chords;
+  List<YoutubeVideo>? youtubeVideos;
   String? searchTitle;
   String? searchText;
   String? searchLang;

@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetBibleStudyFilter extends StatefulWidget {
   const BottomSheetBibleStudyFilter({super.key});
@@ -21,7 +21,7 @@ class _BottomSheetBibleStudyFilterState
   @override
   void initState() {
     allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.bibleStudyLanguages) ?? {};
+        getIt<LocalCache>().getMap(StorageKeys.bibleStudyLanguages) ?? {};
 
     super.initState();
   }
@@ -50,7 +50,7 @@ class _BottomSheetBibleStudyFilterState
                     color: ScreenColors.bibleStudy,
                     label: allLanguages.keys.toList()[index],
                     callback: (Map<String, dynamic> activeLanguages) {
-                      SharedPreferencesHelper.saveMap(
+                      getIt<LocalCache>().saveMap(
                           StorageKeys.bibleStudyLanguages, activeLanguages);
                       getIt<BibleStudyBloc>()
                           .add(const BibleStudyEvent.listRequested());

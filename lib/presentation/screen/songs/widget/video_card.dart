@@ -35,7 +35,7 @@ class _VideoCardState extends State<VideoCard> {
       child: Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.white)),
         child: GestureDetector(
-          onTap: () => widget.onTap(widget.resource, videoId),
+          onTap: () => widget.onTap(videoId),
           child: Stack(
             children: [
               Image.network(

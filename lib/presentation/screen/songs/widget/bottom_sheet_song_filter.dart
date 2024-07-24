@@ -4,12 +4,13 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/constants.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetSongsFilter extends StatefulWidget {
   const BottomSheetSongsFilter({super.key});
@@ -24,7 +25,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   @override
   void initState() {
     allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+        getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
 
     super.initState();
   }
@@ -263,8 +264,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Future<void> _saveAndRefresh(Map<String, dynamic> langsToSave) async {
-    await SharedPreferencesHelper.saveMap(
-        StorageKeys.allSongsLanguages, langsToSave);
+    await getIt<LocalCache>()
+        .saveMap(StorageKeys.allSongsLanguages, langsToSave);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
   }
 
@@ -298,8 +299,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   void _orderSongs(bool orderByTitle) async {
-    await SharedPreferencesHelper.saveBool(
-        StorageKeys.orderByTitle, orderByTitle);
+    await getIt<LocalCache>().saveBool(StorageKeys.orderByTitle, orderByTitle);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
   }
 

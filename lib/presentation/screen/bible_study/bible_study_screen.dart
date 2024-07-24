@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
@@ -164,9 +164,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
     );
   }
 
-  void showTooltip() {
+  void showTooltip() async {
     final double tooltipShown =
-        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+        await getIt<LocalCache>().getDouble(StorageKeys.shouldShowTooltip) ??
+            0.0;
     if (tooltipShown < 5.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
@@ -178,8 +179,8 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           }
         });
       });
-      SharedPreferencesHelper.saveDouble(
-          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+      getIt<LocalCache>()
+          .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
   }
 }

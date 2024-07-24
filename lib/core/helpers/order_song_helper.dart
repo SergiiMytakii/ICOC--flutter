@@ -1,11 +1,12 @@
 //order songs by id or by title
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/injection.dart';
 
 Future<List<SongDetail>> orderSongs(List<SongDetail> songs) async {
   final bool orderByTitle =
-      SharedPreferencesHelper.getBool(StorageKeys.orderByTitle) ?? true;
+      await getIt<LocalCache>().getBool(StorageKeys.orderByTitle) ?? true;
   if (orderByTitle) {
     songs.sort((a, b) {
       final String a1 = a.title.entries.first.value;

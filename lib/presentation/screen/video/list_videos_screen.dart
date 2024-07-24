@@ -23,7 +23,7 @@ class _ListVideosState extends State<ListVideosScreen> {
   double minHeight = 60;
   double controlsPanelHeight = 0;
 
-  YoutubeVideo selectedVideo = YoutubeVideo.defaultResource();
+  YoutubeVideo selectedVideo = YoutubeVideo.defaultVideo();
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Videos Screen');

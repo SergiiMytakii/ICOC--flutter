@@ -1,34 +1,28 @@
-class YoutubeVideo {
-  final String lang;
-  final String? title;
-  final String link;
-  final String? thumbnail;
-  final String? artist;
-  final String? publishedAt;
-  final String? description;
-  final String? playlistId;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  YoutubeVideo(
-      {required this.lang,
-      required this.title,
-      required this.link,
-      this.thumbnail,
-      this.playlistId,
-      this.publishedAt,
-      this.description,
-      this.artist});
+part 'youtube_video.freezed.dart';
+part 'youtube_video.g.dart';
 
-  factory YoutubeVideo.fromJson(Map json) {
-    return YoutubeVideo(
-        lang: json['lang'] ?? '',
-        title: json['title'],
-        playlistId: json['playlistId'],
-        link: json['link'] ?? '',
-        thumbnail: json['thumbnail'],
-        artist: json['artist']);
-  }
-  static YoutubeVideo defaultResource() {
-    return YoutubeVideo(
+@freezed
+class YoutubeVideo with _$YoutubeVideo {
+  const factory YoutubeVideo({
+    required String lang,
+    required String? title,
+    required String link,
+    String? thumbnail,
+    String? artist,
+    String? publishedAt,
+    String? description,
+    String? playlistId,
+  }) = _YoutubeVideo;
+
+  factory YoutubeVideo.fromJson(Map<String, dynamic> json) =>
+      _$YoutubeVideoFromJson(json);
+
+  const YoutubeVideo._();
+
+  static YoutubeVideo defaultVideo() {
+    return const YoutubeVideo(
         lang: '', title: '', link: '', thumbnail: '', artist: '');
   }
 
@@ -47,39 +41,5 @@ class YoutubeVideo {
         description: json['description'],
         playlistId: json['playlistId'],
         artist: json['artist']);
-  }
-  Map<String, dynamic> toJson() {
-    return {
-      'lang': lang,
-      'title': title,
-      'link': link,
-      'thumbnail': thumbnail,
-      'artist': artist,
-      'publishedAt': publishedAt,
-      'description': description,
-      'playlistId': playlistId,
-    };
-  }
-
-  YoutubeVideo copyWith({
-    String? lang,
-    String? title,
-    String? link,
-    String? thumbnail,
-    String? artist,
-    String? publishedAt,
-    String? description,
-    String? playlistId,
-  }) {
-    return YoutubeVideo(
-      lang: lang ?? this.lang,
-      title: title ?? this.title,
-      link: link ?? this.link,
-      thumbnail: thumbnail ?? this.thumbnail,
-      artist: artist ?? this.artist,
-      publishedAt: publishedAt ?? this.publishedAt,
-      description: description ?? this.description,
-      playlistId: playlistId ?? this.playlistId,
-    );
   }
 }

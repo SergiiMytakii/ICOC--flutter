@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
@@ -30,8 +31,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
 
   @override
   void initState() {
-    allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages);
+    allLanguages = getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages);
     if (allLanguages == null) {
       Future.delayed(const Duration(seconds: 2))
           .then((_) => _showSelectLangBottomSheet());
@@ -42,9 +42,10 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
     super.initState();
   }
 
-  void showTooltip() {
+  void showTooltip() async {
     final double tooltipShown =
-        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+        await getIt<LocalCache>().getDouble(StorageKeys.shouldShowTooltip) ??
+            0.0;
     if (tooltipShown < 4.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
@@ -55,20 +56,19 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             });
         });
       });
-      SharedPreferencesHelper.saveDouble(
-          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+      getIt<LocalCache>()
+          .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
   }
 
-  void setFirstLang() {
+  void setFirstLang() async {
     //this needed to display primary language
-    final locale = SharedPreferencesHelper.getString(
+    final locale = await getIt<LocalCache>().getString(
           StorageKeys.locale,
         ) ??
         'en';
-    allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ??
-            {locale: true};
+    allLanguages = getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ??
+        {locale: true};
 
     allLanguages!.removeWhere((key, value) => value == false);
     if (allLanguages!.isNotEmpty) {

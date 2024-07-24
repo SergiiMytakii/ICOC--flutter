@@ -1,12 +1,13 @@
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/injection.dart';
 
 Future<List<SongDetail>> filterSongsByLang(List<SongDetail> songs) async {
   //keys represent languages
   //values show should lang be displayed or not
   final Map<String, dynamic> allLanguages =
-      SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+      await getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
 
   // SharedPreferencesHelper.removeValue('orderLanguages');
   final Map<String, dynamic> newMap = Map.from(allLanguages);

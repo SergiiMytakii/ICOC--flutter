@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/bible_study.dart';
 import 'package:icoc/core/repository/bible_study_repository.dart';
+import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -50,13 +51,13 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
 }
 
 Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics) async {
-  final locale = SharedPreferencesHelper.getString(
+  final locale = await getIt<LocalCache>().getString(
         StorageKeys.locale,
       ) ??
       'en';
 
   final Map<String, dynamic> storedLanguages =
-      SharedPreferencesHelper.getMap(StorageKeys.bibleStudyLanguages) ?? {};
+      getIt<LocalCache>().getMap(StorageKeys.bibleStudyLanguages) ?? {};
   //set keeps only unique values
   final Set<String> allKeys = {};
   topics.forEach((topic) => allKeys.add(topic.lang));
@@ -68,8 +69,7 @@ Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics) async {
       storedLanguages[lang] = lang == locale;
     }
   });
-  SharedPreferencesHelper.saveMap(
-      StorageKeys.bibleStudyLanguages, storedLanguages);
+  getIt<LocalCache>().saveMap(StorageKeys.bibleStudyLanguages, storedLanguages);
 
   final filteredTopics = topics.where((topic) {
     return storedLanguages.entries

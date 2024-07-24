@@ -1,7 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/injection.dart';
 import 'package:logger/logger.dart';
 
 Future<void> findAndSaveAllTextKeys(List<SongDetail> songs) async {
@@ -19,6 +20,6 @@ Future<void> findAndSaveAllTextKeys(List<SongDetail> songs) async {
 
     allTextKeys.addAll(song.getAllTextKeys());
   });
-  await SharedPreferencesHelper.saveList(
-      StorageKeys.allSongsTextKeys, allTextKeys.toList());
+  await getIt<LocalCache>()
+      .saveList(StorageKeys.allSongsTextKeys, allTextKeys.toList());
 }

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/youtube_video/youtube_video.dart';
 import 'package:icoc/core/model/playlist.dart';
 import 'package:icoc/core/repository/video_repository.dart';
@@ -17,8 +17,10 @@ part 'video_bloc.freezed.dart';
 @singleton
 class VideoBloc extends Bloc<VideoEvent, VideoState> {
   final VideoRepository videoRepository;
+  final LocalCache localCache;
 
-  VideoBloc(this.videoRepository) : super(const VideoState.initial()) {
+  VideoBloc(this.videoRepository, this.localCache)
+      : super(const VideoState.initial()) {
     on<VideoEvent>((event, emit) async {
       await event.map(
         listRequested: (event) => _onVideoListRequested(event, emit),
@@ -35,7 +37,8 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
       emit(const VideoState.loading());
       final List<Playlist> videos = await videoRepository.getVideoList();
       if (videos.isNotEmpty) {
-        final List<Playlist> filteredVideos = await filterByLanguages(videos);
+        final List<Playlist> filteredVideos =
+            await filterByLanguages(videos, localCache);
         emit(VideoState.getVideoListSuccess(filteredVideos));
       } else {
         emit(VideoState.error(
@@ -70,13 +73,14 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   }
 }
 
-Future<List<Playlist>> filterByLanguages(List<Playlist> videos) async {
-  final locale = SharedPreferencesHelper.getString(
+Future<List<Playlist>> filterByLanguages(
+    List<Playlist> videos, LocalCache localCache) async {
+  final locale = await localCache.getString(
         StorageKeys.locale,
       ) ??
       'en';
   final Map<String, dynamic> storedLanguages =
-      SharedPreferencesHelper.getMap(StorageKeys.videosAllLanguages) ?? {};
+      localCache.getMap(StorageKeys.videosAllLanguages) ?? {};
 //set keeps only unique values
   final Set<String> allKeys = {};
   videos.forEach((video) => allKeys.add(video.lang));
@@ -88,8 +92,7 @@ Future<List<Playlist>> filterByLanguages(List<Playlist> videos) async {
       storedLanguages[lang] = lang == locale;
     }
   });
-  SharedPreferencesHelper.saveMap(
-      StorageKeys.videosAllLanguages, storedLanguages);
+  localCache.saveMap(StorageKeys.videosAllLanguages, storedLanguages);
   final filteredVideos = videos.where((topic) {
     return storedLanguages.entries
         .any((element) => element.value == true && element.key == topic.lang);
