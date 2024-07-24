@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/core/model/notifications_model.dart';
+import 'package:icoc/core/model/notifications/notifications_model.dart';
 import 'package:icoc/core/repository/notifications_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -80,15 +80,22 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
 List<NotificationsModel> filterNotificationsByLang(
     String locale, List<NotificationsModel> notifications) {
-  List<NotificationsModel> filteredNotifications = notifications
-      .where((notification) => notification.lang == locale)
-      .toList();
-  //if no notifications on the current language then show english notifications
-  if (filteredNotifications.isEmpty) {
-    filteredNotifications = notifications
-        .where((notification) => notification.lang == 'en')
-        .toList();
-  }
+  //  notifications.forEach((notification)=> );
+
+  final List<NotificationsModel> filteredNotifications = [];
+
+  notifications.map((notif) {
+    final engNotification = notif.notifications
+        .where((notificationVersion) => notificationVersion.lang == 'en');
+
+    notif.notifications.removeWhere((item) => item.lang != locale);
+    //if no notifications on the current language exists then show english notifications
+    if (notif.notifications.isEmpty && engNotification.isNotEmpty) {
+      notif.notifications.add(engNotification.first);
+    }
+    filteredNotifications.add(notif);
+  }).toList();
+
   return filteredNotifications;
 }
 
