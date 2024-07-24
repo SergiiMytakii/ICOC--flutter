@@ -4,14 +4,14 @@ import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/model/youtube_video/youtube_video.dart';
 import 'package:icoc/theme.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({super.key, required this.resource, required this.onTap});
 
-  final Resources resource;
+  final YoutubeVideo resource;
   final Function onTap;
 
   @override

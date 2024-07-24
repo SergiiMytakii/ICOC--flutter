@@ -1,4 +1,4 @@
-class Resources {
+class YoutubeVideo {
   final String lang;
   final String? title;
   final String link;
@@ -8,7 +8,7 @@ class Resources {
   final String? description;
   final String? playlistId;
 
-  Resources(
+  YoutubeVideo(
       {required this.lang,
       required this.title,
       required this.link,
@@ -18,8 +18,8 @@ class Resources {
       this.description,
       this.artist});
 
-  factory Resources.fromJson(Map json) {
-    return Resources(
+  factory YoutubeVideo.fromJson(Map json) {
+    return YoutubeVideo(
         lang: json['lang'] ?? '',
         title: json['title'],
         playlistId: json['playlistId'],
@@ -27,13 +27,14 @@ class Resources {
         thumbnail: json['thumbnail'],
         artist: json['artist']);
   }
-  static Resources defaultResource() {
-    return Resources(lang: '', title: '', link: '', thumbnail: '', artist: '');
+  static YoutubeVideo defaultResource() {
+    return YoutubeVideo(
+        lang: '', title: '', link: '', thumbnail: '', artist: '');
   }
 
-  factory Resources.fromJsonYoutobePlaylists(Map json) {
+  factory YoutubeVideo.fromJsonYoutubePlaylists(Map json) {
     //log.w(json);
-    return Resources(
+    return YoutubeVideo(
         lang: '',
         title: json['title'],
         link: json['resourceId']['videoId'],
@@ -60,7 +61,7 @@ class Resources {
     };
   }
 
-  Resources copyWith({
+  YoutubeVideo copyWith({
     String? lang,
     String? title,
     String? link,
@@ -70,7 +71,7 @@ class Resources {
     String? description,
     String? playlistId,
   }) {
-    return Resources(
+    return YoutubeVideo(
       lang: lang ?? this.lang,
       title: title ?? this.title,
       link: link ?? this.link,

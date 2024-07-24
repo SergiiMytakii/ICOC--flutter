@@ -16,7 +16,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/model/youtube_video/youtube_video.dart';
 import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_text_on_song_screen.dart';
@@ -94,8 +94,8 @@ class _OneSongScreenState extends State<OneSongScreen>
                     children: [
                       //adjust size text screen and player dynamicly
                       _tabBarBuilder(song),
-                      if (song.resources != null &&
-                          song.resources!.isNotEmpty &&
+                      if (song.youtubeVideos != null &&
+                          song.youtubeVideos!.isNotEmpty &&
                           !videoIsPlaying)
                         _buldVideoPreview(song),
                       if (videoIsPlaying) _miniPlayerBuilder(),
@@ -204,7 +204,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     );
   }
 
-  void _startPlayVideo(Resources resources, String videoId) async {
+  void _startPlayVideo(YoutubeVideo youtubeVideo, String videoId) async {
     youtubePlayerController = YoutubePlayerController();
     setState(() {
       videoIsPlaying = true;
@@ -299,9 +299,9 @@ class _OneSongScreenState extends State<OneSongScreen>
             height: 100,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: song.resources!
-                  .map((resource) =>
-                      VideoCard(resource: resource, onTap: _startPlayVideo))
+              children: song.youtubeVideos!
+                  .map((youtubeVideo) =>
+                      VideoCard(resource: youtubeVideo, onTap: _startPlayVideo))
                   .toList(),
             )),
       ],

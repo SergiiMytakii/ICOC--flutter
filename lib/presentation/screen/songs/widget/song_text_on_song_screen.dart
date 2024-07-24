@@ -12,13 +12,12 @@ class SongTextOnSongScreen extends StatelessWidget {
     required this.title,
     required this.textVersion,
     required this.description,
-    this.resources,
   });
 
   final String textVersion;
   final String description;
   final String title;
-  final Map? resources;
+
   final log = Logger();
 
   @override

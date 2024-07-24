@@ -58,15 +58,16 @@ class SongCard extends StatelessWidget {
                 maxLines: 2,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              trailing: song.resources != null && song.resources!.isNotEmpty
-                  ? const Icon(
-                      Icons.play_circle,
-                      color: ScreenColors.songBook,
-                    )
-                  : Container(
-                      height: 1,
-                      width: 1,
-                    ),
+              trailing:
+                  song.youtubeVideos != null && song.youtubeVideos!.isNotEmpty
+                      ? const Icon(
+                          Icons.play_circle,
+                          color: ScreenColors.songBook,
+                        )
+                      : Container(
+                          height: 1,
+                          width: 1,
+                        ),
             ),
           ),
         ),

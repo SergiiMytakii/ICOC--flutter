@@ -120,7 +120,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
         title: matchingSong.title,
         text: matchingSong.text,
         chords: matchingSong.chords,
-        resources: matchingSong.resources,
+        youtubeVideos: matchingSong.youtubeVideos,
         searchTitle: song.searchTitle,
         searchLang: song.searchLang,
         searchText: song.searchText,

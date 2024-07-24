@@ -4,7 +4,7 @@ import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
 import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/model/youtube_video/youtube_video.dart';
 import 'package:icoc/core/model/playlist.dart';
 import 'package:icoc/core/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -54,10 +54,10 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
   ) async {
     try {
       emit(const VideoState.loading());
-      final List<Resources>? resources =
+      final List<YoutubeVideo>? youtubeVideos =
           await videoRepository.fetchVideosFromPlaylist(event.playlistId);
-      if (resources != null && resources.isNotEmpty) {
-        emit(VideoState.getVideosFromPlaylistSuccess(resources));
+      if (youtubeVideos != null && youtubeVideos.isNotEmpty) {
+        emit(VideoState.getVideosFromPlaylistSuccess(youtubeVideos));
       } else {
         emit(VideoState.error(
             "Can't  load data... Please, check your internet connection and pull down to refresh!"
