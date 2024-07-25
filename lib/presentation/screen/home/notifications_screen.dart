@@ -43,11 +43,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 itemCount: notifications.length,
                 itemBuilder: (BuildContext context, index) {
                   return AnimationWrapper(
-                    child: NotificationCard(
-                      index: index,
-                      notification: notifications[index],
-                      onMarkAsRead: (String? id) => _markAsRead(id: id),
-                    ),
+                    child: notifications[index].notifications.isNotEmpty
+                        ? NotificationCard(
+                            index: index,
+                            notification: notifications[index],
+                            onMarkAsRead: (String? id) => _markAsRead(id: id),
+                          )
+                        : const SizedBox.shrink(),
                   );
                 },
               ),

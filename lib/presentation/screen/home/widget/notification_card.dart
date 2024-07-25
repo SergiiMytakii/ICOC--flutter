@@ -1,10 +1,10 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/core/model/notifications/notifications_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NotificationCard extends StatelessWidget {
   final NotificationsModel notification;
@@ -74,8 +74,8 @@ class NotificationCard extends StatelessWidget {
             if (notification.notifications.first.link != null &&
                 notification.notifications.first.link!.isNotEmpty)
               TextButton(
-                  onPressed: () => launchUrl(Uri.dataFromString(
-                      notification.notifications.first.link!)),
+                  onPressed: () =>
+                      context.go(notification.notifications.first.link!),
                   child:
                       const Text('Open', style: TextStyle(color: Colors.blue)))
           ]),
