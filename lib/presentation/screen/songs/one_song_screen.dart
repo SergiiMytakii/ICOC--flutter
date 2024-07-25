@@ -350,11 +350,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     final link =
         '$ICOC_WEB_PAGE/$SONGBOOK/$ONE_SONG_SCREEN/${widget.songId}/${tabController.length}?lang=$lang';
     final hint = 'Open in ICOC app:'.tr();
-    text = '''
-              $title\n
-              $description\n\n
-              $text\n\n
-              $hint $link''';
+    text = '$title\n$description\n\n$text\n\n$hint\n$link';
 
     Share.share(text);
   }

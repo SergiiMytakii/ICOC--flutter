@@ -121,11 +121,8 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
         '$ICOC_WEB_PAGE/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${widget.topicId}/$ONE_LESSON_SCREEN/${lesson.id}';
     final hint = 'Open in ICOC app:'.tr();
 
-    final text = '''
-              ${lesson.title}\n\n
-              ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
-              $hint\n
-              $link''';
+    final text =
+        '${lesson.title}\n\n${FormatTextHelper.extractFormattedText(lesson.text)}\n\n$hint\n$link';
 
     Share.share(text);
   }
