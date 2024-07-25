@@ -60,6 +60,7 @@ analyzer:
     avoid_function_literals_in_foreach_calls: ignore
     depend_on_referenced_packages: ignore
     curly_braces_in_flow_control_structures: ignore
+    invalid_annotation_target: ignore
   exclude: ignore
     - "**/*.g.dart"
     - "**/*.freezed.dart"

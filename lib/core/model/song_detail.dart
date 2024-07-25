@@ -1,14 +1,14 @@
 import 'dart:collection';
 
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/model/youtube_video/youtube_video.dart';
 
 class SongDetail {
   final int id;
   final Map? description;
   final Map title;
   final Map text;
-  final List<Resources>? resources;
   final Map? chords;
+  List<YoutubeVideo>? youtubeVideos;
   String? searchTitle;
   String? searchText;
   String? searchLang;
@@ -19,15 +19,12 @@ class SongDetail {
       this.description,
       required this.text,
       this.chords,
-      this.resources,
+      this.youtubeVideos,
       this.searchLang,
       this.searchText,
       this.searchTitle});
 
   factory SongDetail.fromJson(Map parsedJson, int id) {
-    // log.d(parsedJson);
-    // Logger().f(parsedJson['resources'].runtimeType);
-    // Logger().f(parsedJson['resources']);
     final title = parsedJson['title'] as Map;
     title.removeWhere(
       (key, value) => value == null,
@@ -49,9 +46,9 @@ class SongDetail {
       title: title,
       text: text,
       description: description,
-      resources: parsedJson['resources'] != null
-          ? List<Resources>.from(parsedJson['resources']
-              .map((resource) => Resources.fromJson(resource)))
+      youtubeVideos: parsedJson['resources'] != null
+          ? List<YoutubeVideo>.from(parsedJson['resources']
+              .map((resource) => YoutubeVideo.fromJson(resource)))
           : null,
       chords: chords,
     );
@@ -65,8 +62,8 @@ class SongDetail {
     if (description != null) {
       data['description'] = description;
     }
-    if (resources != null) {
-      data['resources'] = resources?.map((v) => v.toJson()).toList();
+    if (youtubeVideos != null) {
+      data['resources'] = youtubeVideos?.map((v) => v.toJson()).toList();
     }
     if (chords != null) {
       data['chords'] = chords;
@@ -79,7 +76,7 @@ class SongDetail {
     Map? description,
     Map? title,
     Map? text,
-    List<Resources>? resources,
+    List<YoutubeVideo>? youtubeVideos,
     Map? chords,
     String? searchTitle,
     String? searchText,
@@ -90,7 +87,7 @@ class SongDetail {
       description: description ?? this.description,
       title: title ?? this.title,
       text: text ?? this.text,
-      resources: resources ?? this.resources,
+      youtubeVideos: youtubeVideos ?? this.youtubeVideos,
       chords: chords ?? this.chords,
       searchTitle: searchTitle ?? this.searchTitle,
       searchText: searchText ?? this.searchText,
@@ -161,7 +158,7 @@ class SongDetail {
       description: description,
       text: filteredText,
       chords: chords,
-      resources: resources,
+      youtubeVideos: youtubeVideos,
       searchLang: searchLang,
       searchText: searchText,
       searchTitle: searchTitle,
@@ -175,14 +172,15 @@ class SongDetail {
       description: _orderByLanguageInMap(description, orderLanguages),
       text: _orderByLanguageInMap(text, orderLanguages),
       chords: _orderByLanguageInMap(chords, orderLanguages),
-      resources:
-          resources != null ? _sortResources(resources!, orderLanguages) : null,
+      youtubeVideos: youtubeVideos != null
+          ? _sortVideos(youtubeVideos!, orderLanguages)
+          : null,
     );
   }
 
-  List<Resources> _sortResources(
-      List<Resources> resources, List<String> orderLanguages) {
-    resources.sort((a, b) {
+  List<YoutubeVideo> _sortVideos(
+      List<YoutubeVideo> youtubeVideos, List<String> orderLanguages) {
+    youtubeVideos.sort((a, b) {
       final int indexA = orderLanguages.indexOf(a.lang);
       final int indexB = orderLanguages.indexOf(b.lang);
 
@@ -192,7 +190,7 @@ class SongDetail {
 
       return indexA.compareTo(indexB);
     });
-    return resources;
+    return youtubeVideos;
   }
 
   Map _orderByLanguageInMap(Map? map, List<String> orderLanguages) {

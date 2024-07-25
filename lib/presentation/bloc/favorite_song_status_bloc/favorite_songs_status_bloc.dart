@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 
 part 'favorite_songs_status_event.dart';
 part 'favorite_songs_status_state.dart';
-part 'favorite_songs_bloc.freezed.dart';
+part 'favorite_songs_status_bloc.freezed.dart';
 
 @singleton
 class FavoriteSongStatusBloc

@@ -1,14 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:icoc/constants.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/find_save_all_text_keys.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
 import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -105,7 +106,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   Future<List<SongDetail>> _searchByText(List<SongDetail> searchResult,
       String trimmedQuery, List<SongDetail> allSongs) async {
-    final List<String> orderLang = _getListOrderLangs();
+    final List<String> orderLang = await _getListOrderLangs();
     searchResult =
         await songsRepositoryImpl.getSearchResult(trimmedQuery, orderLang);
 
@@ -120,7 +121,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
         title: matchingSong.title,
         text: matchingSong.text,
         chords: matchingSong.chords,
-        resources: matchingSong.resources,
+        youtubeVideos: matchingSong.youtubeVideos,
         searchTitle: song.searchTitle,
         searchLang: song.searchLang,
         searchText: song.searchText,
@@ -130,9 +131,9 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     return filteredSongs;
   }
 
-  List<String> _getListOrderLangs() {
+  Future<List<String>> _getListOrderLangs() async {
     final allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+        getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
     final filtered =
         allLanguages.entries.where((element) => element.value == true);
     final List<String> orderLang = filtered.map((e) => e.key).toList();
@@ -141,7 +142,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 }
 
 Future<void> updateStoredLanguages(List<SongDetail> songs) async {
-  final locale = SharedPreferencesHelper.getString(
+  final locale = await getIt<LocalCache>().getString(
         StorageKeys.locale,
       ) ??
       'en';
@@ -150,15 +151,15 @@ Future<void> updateStoredLanguages(List<SongDetail> songs) async {
   putDeviceLangToFirstPlace(allTitleKeys, locale);
 
   final Map<String, dynamic> orderedAllLanguages =
-      SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+      getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
 
   allTitleKeys.forEach((String lang) {
     if (!orderedAllLanguages.containsKey(lang)) {
       orderedAllLanguages[lang] = lang == locale;
     }
   });
-  await SharedPreferencesHelper.saveMap(
-      StorageKeys.allSongsLanguages, orderedAllLanguages);
+  await getIt<LocalCache>()
+      .saveMap(StorageKeys.allSongsLanguages, orderedAllLanguages);
 }
 
 List<String> findAllTitleKeys(List<SongDetail> songs) {

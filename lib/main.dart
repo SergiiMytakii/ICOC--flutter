@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/presentation/bloc/bloc_observer.dart';
 import 'package:icoc/presentation/bloc/multibloc_provider.dart';
 import 'package:icoc/injection.dart';
@@ -19,7 +20,6 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/theme.dart';
 
 void main() async {
@@ -74,8 +74,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SharedPreferencesHelper.saveString(
-        StorageKeys.locale, context.locale.languageCode);
+    getIt<LocalCache>()
+        .saveString(StorageKeys.locale, context.locale.languageCode);
     return AdaptiveTheme(
       initial: savedThemeMode ?? AdaptiveThemeMode.dark,
       light: myLightTheme,

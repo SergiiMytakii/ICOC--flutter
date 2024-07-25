@@ -2,7 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
@@ -14,9 +14,7 @@ import 'package:logger/logger.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/resources.dart';
 import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_text_on_song_screen.dart';
@@ -94,8 +92,8 @@ class _OneSongScreenState extends State<OneSongScreen>
                     children: [
                       //adjust size text screen and player dynamicly
                       _tabBarBuilder(song),
-                      if (song.resources != null &&
-                          song.resources!.isNotEmpty &&
+                      if (song.youtubeVideos != null &&
+                          song.youtubeVideos!.isNotEmpty &&
                           !videoIsPlaying)
                         _buldVideoPreview(song),
                       if (videoIsPlaying) _miniPlayerBuilder(),
@@ -129,12 +127,12 @@ class _OneSongScreenState extends State<OneSongScreen>
       //here we handle case when received song from a deep link has a lang which is not active in app
       if (!tabsKeys.contains(widget.lang)) {
         final allLanguages =
-            SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+            getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
         allLanguages[widget.lang!] = true;
-        SharedPreferencesHelper.saveMap(
-                StorageKeys.allSongsLanguages, allLanguages)
-            .then((_) =>
-                getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
+        //save this lang in cache to make it active
+
+        getIt<LocalCache>()
+            .saveMap(StorageKeys.allSongsLanguages, allLanguages);
         return null;
       } else {
         // put the lang from the deep link to the first place
@@ -204,7 +202,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     );
   }
 
-  void _startPlayVideo(Resources resources, String videoId) async {
+  void _startPlayVideo(String videoId) async {
     youtubePlayerController = YoutubePlayerController();
     setState(() {
       videoIsPlaying = true;
@@ -299,9 +297,9 @@ class _OneSongScreenState extends State<OneSongScreen>
             height: 100,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: song.resources!
-                  .map((resource) =>
-                      VideoCard(resource: resource, onTap: _startPlayVideo))
+              children: song.youtubeVideos!
+                  .map((youtubeVideo) =>
+                      VideoCard(resource: youtubeVideo, onTap: _startPlayVideo))
                   .toList(),
             )),
       ],

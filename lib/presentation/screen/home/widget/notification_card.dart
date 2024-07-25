@@ -1,0 +1,92 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:icoc/constants.dart';
+import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/core/model/notifications/notifications_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class NotificationCard extends StatelessWidget {
+  final NotificationsModel notification;
+  final int index;
+  final Function(String?) onMarkAsRead;
+
+  const NotificationCard({
+    super.key,
+    required this.notification,
+    required this.index,
+    required this.onMarkAsRead,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          onTap: () => onMarkAsRead(notification.id),
+          contentPadding: const EdgeInsets.all(8),
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+            ),
+            child: CircleAvatar(
+              backgroundColor: !notification.isRead
+                  ? ScreenColors.songBook
+                  : Colors.transparent,
+              child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: !notification.isRead
+                            ? ScreenColors.songBook
+                            : Theme.of(context).primaryColor),
+                  ),
+                  child: const Center(child: Text('i'))),
+            ),
+          ),
+          title: Text(
+            notification.notifications.first.title,
+            style: AdaptiveTheme.of(context)
+                .theme
+                .textTheme
+                .bodyLarge!
+                .copyWith(
+                    color: getDividerColor(index)
+                        .withOpacity(notification.isRead ? 0.7 : 1)),
+          ),
+          subtitle:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            notification.notifications.first.text.trim().startsWith('<')
+                ? Html(data: notification.notifications.first.text)
+                : Text(
+                    notification.notifications.first.text,
+                    style: AdaptiveTheme.of(context)
+                        .theme
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(
+                            color: AdaptiveTheme.of(context)
+                                .theme
+                                .colorScheme
+                                .onSecondary
+                                .withOpacity(notification.isRead ? 0.6 : 1)),
+                  ),
+            if (notification.notifications.first.link != null &&
+                notification.notifications.first.link!.isNotEmpty)
+              TextButton(
+                  onPressed: () => launchUrl(Uri.dataFromString(
+                      notification.notifications.first.link!)),
+                  child:
+                      const Text('Open', style: TextStyle(color: Colors.blue)))
+          ]),
+          isThreeLine: true,
+        ),
+        Divider(
+          indent: 50,
+          color: getDividerColor(index),
+          thickness: 1.2,
+        ),
+      ],
+    );
+  }
+}

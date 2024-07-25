@@ -1,7 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/injection.dart';
 
 class AnimatedFilterIconButton extends StatefulWidget {
   final Function onTap;
@@ -26,19 +27,23 @@ class AnimatedFilterIconButton extends StatefulWidget {
 class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late bool shouldAnimate;
+  bool shouldAnimate = false;
 
+  @override
   @override
   void initState() {
     super.initState();
-    shouldAnimate =
-        SharedPreferencesHelper.getBool(widget.shouldAnimate) ?? true;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+    _initAnimation();
+  }
+
+  Future<void> _initAnimation() async {
+    shouldAnimate =
+        await getIt<LocalCache>().getBool(widget.shouldAnimate) ?? true;
     if (shouldAnimate || widget.shouldAnimateForever) {
-      print('animate');
       _controller.repeat(reverse: true);
     }
   }
@@ -82,7 +87,7 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
             tooltip: 'icon_button_actions_app_bar_filter'.tr(),
             onPressed: () {
               _controller.animateBack(0);
-              SharedPreferencesHelper.saveBool(widget.shouldAnimate, false);
+              getIt<LocalCache>().saveBool(widget.shouldAnimate, false);
               widget.onTap();
             },
           ),

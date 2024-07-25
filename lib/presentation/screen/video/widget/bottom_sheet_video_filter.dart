@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 
 class BottomSheetVideoFilter extends StatefulWidget {
   const BottomSheetVideoFilter({super.key});
@@ -17,11 +17,18 @@ class BottomSheetVideoFilter extends StatefulWidget {
 class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
   Map<String, dynamic> allLanguages = {};
   @override
+  @override
   void initState() {
-    allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.videosAllLanguages) ?? {};
-
     super.initState();
+    _initializeAllLanguages();
+  }
+
+  Future<void> _initializeAllLanguages() async {
+    final result =
+        await getIt<LocalCache>().getMap(StorageKeys.videosAllLanguages);
+    setState(() {
+      allLanguages = result ?? {};
+    });
   }
 
   @override
@@ -50,7 +57,7 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     color: ScreenColors.video,
                     label: allLanguages.keys.toList()[index],
                     callback: (Map<String, dynamic> activeLanguages) {
-                      SharedPreferencesHelper.saveMap(
+                      getIt<LocalCache>().saveMap(
                           StorageKeys.videosAllLanguages, activeLanguages);
                       getIt<VideoBloc>().add(const VideoEvent.listRequested());
                     },

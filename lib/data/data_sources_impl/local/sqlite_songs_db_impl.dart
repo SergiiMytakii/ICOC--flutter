@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:injectable/injectable.dart';
@@ -7,13 +8,15 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/core/model/song_detail.dart';
 
 @dev
 @prod
 @Injectable(as: LocalSongsDB)
 class SqliteSongsDbImpl implements LocalSongsDB {
+  final LocalCache localCache;
+  SqliteSongsDbImpl({required this.localCache});
+
   static Database? _db;
   static const String DB_NAME = 'Songs.db';
   static const String ID_SONG = 'id_song';
@@ -45,7 +48,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
     final String path = join((await getDatabasesPath()), DB_NAME);
     // await deleteDatabase(path); // - if we need to clean database
     final Map<String, dynamic> allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+        localCache.getMap(StorageKeys.allSongsLanguages) ?? {};
     if (allLanguages.isEmpty) {
       return null;
     }
@@ -54,7 +57,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
         allSongsTitleKeys.map((key) => '$key TEXT').join(', ');
 
     final List<String> allSongsTextKeys =
-        SharedPreferencesHelper.getList(StorageKeys.allSongsTextKeys) ?? [];
+        await localCache.getList(StorageKeys.allSongsTextKeys) ?? [];
     final String columnTextDefinitions =
         allSongsTextKeys.map((key) => '$key TEXT').join(', ');
     if (kDebugMode) {
