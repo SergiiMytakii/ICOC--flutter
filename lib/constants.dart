@@ -35,7 +35,8 @@ const String ICOC_WEB_PAGE = 'https://icoc.netlify.app';
 class StorageKeys {
   static const String orderByTitle = 'orderByTitle';
   static const String allSongsLanguages = 'allSongsLanguages';
-  static const String allSongsTextKeys = 'allSongsTextKeys';
+  static const String primaryLang = 'primaryLang';
+  static const String allSongsTextKeys = 'allSongsTextKeys'; //todo remove later
   static const String locale = 'locale';
   static const String fontSize = 'fontSize';
   static const String bibleStudyLanguages = 'bibleStudyLanguages';

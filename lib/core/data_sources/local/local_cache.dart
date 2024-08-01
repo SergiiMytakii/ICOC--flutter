@@ -2,7 +2,7 @@ import 'dart:async';
 
 abstract class LocalCache {
   FutureOr<void> saveString(String key, String value);
-  FutureOr<String?> getString(String key);
+  String? getString(String key);
   FutureOr<void> saveMap(String key, Map<String, dynamic> value);
   Map<String, dynamic>? getMap(String key);
   FutureOr<double?> getDouble(String key);
