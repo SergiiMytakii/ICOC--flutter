@@ -59,15 +59,6 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
               thickness: 1.5,
             ),
           ),
-          FittedBox(
-              child: Text(
-            'hint reorder lang'.tr(),
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(color: ScreenColors.songBook),
-            textAlign: TextAlign.center,
-          )),
           Expanded(
             // margin: EdgeInsets.only(top: 10),
             child: ReorderableListView.builder(

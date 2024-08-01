@@ -1,4 +1,5 @@
 import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/core/model/songs/song_model.dart';
 
 abstract class LocalSongsDB {
   Future<void> insertAllSongs(List<SongDetail> songs);
@@ -7,6 +8,6 @@ abstract class LocalSongsDB {
   Future<bool> deleteFromFavorites(int id);
   Future<bool> getFavoriteStatus(int id);
   Future<List<int>> getListFavorites();
-  Future<List<SongDetail>> getSearchResult(
+  Future<List<SongVersionLocal>> getSearchResult(
       String query, List<String> languagesToShow);
 }

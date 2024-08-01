@@ -21,8 +21,7 @@ SongModel _$SongModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SongModel {
   int get id => throw _privateConstructorUsedError;
-  Map<Languages, SongVersion> get songs => throw _privateConstructorUsedError;
-  Map<Languages, Chords>? get chords => throw _privateConstructorUsedError;
+  List<SongVersion> get songVersions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,10 +34,7 @@ abstract class $SongModelCopyWith<$Res> {
   factory $SongModelCopyWith(SongModel value, $Res Function(SongModel) then) =
       _$SongModelCopyWithImpl<$Res, SongModel>;
   @useResult
-  $Res call(
-      {int id,
-      Map<Languages, SongVersion> songs,
-      Map<Languages, Chords>? chords});
+  $Res call({int id, List<SongVersion> songVersions});
 }
 
 /// @nodoc
@@ -55,22 +51,17 @@ class _$SongModelCopyWithImpl<$Res, $Val extends SongModel>
   @override
   $Res call({
     Object? id = null,
-    Object? songs = null,
-    Object? chords = freezed,
+    Object? songVersions = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      songs: null == songs
-          ? _value.songs
-          : songs // ignore: cast_nullable_to_non_nullable
-              as Map<Languages, SongVersion>,
-      chords: freezed == chords
-          ? _value.chords
-          : chords // ignore: cast_nullable_to_non_nullable
-              as Map<Languages, Chords>?,
+      songVersions: null == songVersions
+          ? _value.songVersions
+          : songVersions // ignore: cast_nullable_to_non_nullable
+              as List<SongVersion>,
     ) as $Val);
   }
 }
@@ -83,10 +74,7 @@ abstract class _$$SongModelImplCopyWith<$Res>
       __$$SongModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id,
-      Map<Languages, SongVersion> songs,
-      Map<Languages, Chords>? chords});
+  $Res call({int id, List<SongVersion> songVersions});
 }
 
 /// @nodoc
@@ -101,22 +89,17 @@ class __$$SongModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? songs = null,
-    Object? chords = freezed,
+    Object? songVersions = null,
   }) {
     return _then(_$SongModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      songs: null == songs
-          ? _value._songs
-          : songs // ignore: cast_nullable_to_non_nullable
-              as Map<Languages, SongVersion>,
-      chords: freezed == chords
-          ? _value._chords
-          : chords // ignore: cast_nullable_to_non_nullable
-              as Map<Languages, Chords>?,
+      songVersions: null == songVersions
+          ? _value._songVersions
+          : songVersions // ignore: cast_nullable_to_non_nullable
+              as List<SongVersion>,
     ));
   }
 }
@@ -124,40 +107,28 @@ class __$$SongModelImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$SongModelImpl implements _SongModel {
+class _$SongModelImpl extends _SongModel {
   const _$SongModelImpl(
-      {required this.id,
-      required final Map<Languages, SongVersion> songs,
-      final Map<Languages, Chords>? chords})
-      : _songs = songs,
-        _chords = chords;
+      {required this.id, required final List<SongVersion> songVersions})
+      : _songVersions = songVersions,
+        super._();
 
   factory _$SongModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SongModelImplFromJson(json);
 
   @override
   final int id;
-  final Map<Languages, SongVersion> _songs;
+  final List<SongVersion> _songVersions;
   @override
-  Map<Languages, SongVersion> get songs {
-    if (_songs is EqualUnmodifiableMapView) return _songs;
+  List<SongVersion> get songVersions {
+    if (_songVersions is EqualUnmodifiableListView) return _songVersions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_songs);
-  }
-
-  final Map<Languages, Chords>? _chords;
-  @override
-  Map<Languages, Chords>? get chords {
-    final value = _chords;
-    if (value == null) return null;
-    if (_chords is EqualUnmodifiableMapView) return _chords;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
+    return EqualUnmodifiableListView(_songVersions);
   }
 
   @override
   String toString() {
-    return 'SongModel(id: $id, songs: $songs, chords: $chords)';
+    return 'SongModel(id: $id, songVersions: $songVersions)';
   }
 
   @override
@@ -166,17 +137,14 @@ class _$SongModelImpl implements _SongModel {
         (other.runtimeType == runtimeType &&
             other is _$SongModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            const DeepCollectionEquality().equals(other._songs, _songs) &&
-            const DeepCollectionEquality().equals(other._chords, _chords));
+            const DeepCollectionEquality()
+                .equals(other._songVersions, _songVersions));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      const DeepCollectionEquality().hash(_songs),
-      const DeepCollectionEquality().hash(_chords));
+      runtimeType, id, const DeepCollectionEquality().hash(_songVersions));
 
   @JsonKey(ignore: true)
   @override
@@ -192,11 +160,11 @@ class _$SongModelImpl implements _SongModel {
   }
 }
 
-abstract class _SongModel implements SongModel {
+abstract class _SongModel extends SongModel {
   const factory _SongModel(
       {required final int id,
-      required final Map<Languages, SongVersion> songs,
-      final Map<Languages, Chords>? chords}) = _$SongModelImpl;
+      required final List<SongVersion> songVersions}) = _$SongModelImpl;
+  const _SongModel._() : super._();
 
   factory _SongModel.fromJson(Map<String, dynamic> json) =
       _$SongModelImpl.fromJson;
@@ -204,9 +172,7 @@ abstract class _SongModel implements SongModel {
   @override
   int get id;
   @override
-  Map<Languages, SongVersion> get songs;
-  @override
-  Map<Languages, Chords>? get chords;
+  List<SongVersion> get songVersions;
   @override
   @JsonKey(ignore: true)
   _$$SongModelImplCopyWith<_$SongModelImpl> get copyWith =>
@@ -220,9 +186,10 @@ SongVersion _$SongVersionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SongVersion {
   int get id => throw _privateConstructorUsedError;
-  String get lang => throw _privateConstructorUsedError;
+  Languages get lang => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  bool get isChords => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   List<YoutubeVideo>? get youtubeVideos => throw _privateConstructorUsedError;
 
@@ -240,9 +207,10 @@ abstract class $SongVersionCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String lang,
+      Languages lang,
       String text,
       String title,
+      bool isChords,
       String? description,
       List<YoutubeVideo>? youtubeVideos});
 }
@@ -264,6 +232,7 @@ class _$SongVersionCopyWithImpl<$Res, $Val extends SongVersion>
     Object? lang = null,
     Object? text = null,
     Object? title = null,
+    Object? isChords = null,
     Object? description = freezed,
     Object? youtubeVideos = freezed,
   }) {
@@ -275,7 +244,7 @@ class _$SongVersionCopyWithImpl<$Res, $Val extends SongVersion>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -284,6 +253,10 @@ class _$SongVersionCopyWithImpl<$Res, $Val extends SongVersion>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      isChords: null == isChords
+          ? _value.isChords
+          : isChords // ignore: cast_nullable_to_non_nullable
+              as bool,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -306,9 +279,10 @@ abstract class _$$SongVersionImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String lang,
+      Languages lang,
       String text,
       String title,
+      bool isChords,
       String? description,
       List<YoutubeVideo>? youtubeVideos});
 }
@@ -328,6 +302,7 @@ class __$$SongVersionImplCopyWithImpl<$Res>
     Object? lang = null,
     Object? text = null,
     Object? title = null,
+    Object? isChords = null,
     Object? description = freezed,
     Object? youtubeVideos = freezed,
   }) {
@@ -339,7 +314,7 @@ class __$$SongVersionImplCopyWithImpl<$Res>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -348,6 +323,10 @@ class __$$SongVersionImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      isChords: null == isChords
+          ? _value.isChords
+          : isChords // ignore: cast_nullable_to_non_nullable
+              as bool,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -361,13 +340,15 @@ class __$$SongVersionImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$SongVersionImpl implements _SongVersion {
   const _$SongVersionImpl(
       {required this.id,
       required this.lang,
       required this.text,
       required this.title,
+      this.isChords = false,
       this.description,
       final List<YoutubeVideo>? youtubeVideos})
       : _youtubeVideos = youtubeVideos;
@@ -378,11 +359,14 @@ class _$SongVersionImpl implements _SongVersion {
   @override
   final int id;
   @override
-  final String lang;
+  final Languages lang;
   @override
   final String text;
   @override
   final String title;
+  @override
+  @JsonKey()
+  final bool isChords;
   @override
   final String? description;
   final List<YoutubeVideo>? _youtubeVideos;
@@ -397,7 +381,7 @@ class _$SongVersionImpl implements _SongVersion {
 
   @override
   String toString() {
-    return 'SongVersion(id: $id, lang: $lang, text: $text, title: $title, description: $description, youtubeVideos: $youtubeVideos)';
+    return 'SongVersion(id: $id, lang: $lang, text: $text, title: $title, isChords: $isChords, description: $description, youtubeVideos: $youtubeVideos)';
   }
 
   @override
@@ -409,6 +393,8 @@ class _$SongVersionImpl implements _SongVersion {
             (identical(other.lang, lang) || other.lang == lang) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.isChords, isChords) ||
+                other.isChords == isChords) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality()
@@ -417,7 +403,7 @@ class _$SongVersionImpl implements _SongVersion {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, lang, text, title,
+  int get hashCode => Object.hash(runtimeType, id, lang, text, title, isChords,
       description, const DeepCollectionEquality().hash(_youtubeVideos));
 
   @JsonKey(ignore: true)
@@ -437,9 +423,10 @@ class _$SongVersionImpl implements _SongVersion {
 abstract class _SongVersion implements SongVersion {
   const factory _SongVersion(
       {required final int id,
-      required final String lang,
+      required final Languages lang,
       required final String text,
       required final String title,
+      final bool isChords,
       final String? description,
       final List<YoutubeVideo>? youtubeVideos}) = _$SongVersionImpl;
 
@@ -449,11 +436,13 @@ abstract class _SongVersion implements SongVersion {
   @override
   int get id;
   @override
-  String get lang;
+  Languages get lang;
   @override
   String get text;
   @override
   String get title;
+  @override
+  bool get isChords;
   @override
   String? get description;
   @override
@@ -464,33 +453,36 @@ abstract class _SongVersion implements SongVersion {
       throw _privateConstructorUsedError;
 }
 
-Chords _$ChordsFromJson(Map<String, dynamic> json) {
-  return _Chords.fromJson(json);
+SongVersionLocal _$SongVersionLocalFromJson(Map<String, dynamic> json) {
+  return _SongVersionLocal.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Chords {
+mixin _$SongVersionLocal {
   int get id => throw _privateConstructorUsedError;
-  String get chords => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  String get lang => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ChordsCopyWith<Chords> get copyWith => throw _privateConstructorUsedError;
+  $SongVersionLocalCopyWith<SongVersionLocal> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ChordsCopyWith<$Res> {
-  factory $ChordsCopyWith(Chords value, $Res Function(Chords) then) =
-      _$ChordsCopyWithImpl<$Res, Chords>;
+abstract class $SongVersionLocalCopyWith<$Res> {
+  factory $SongVersionLocalCopyWith(
+          SongVersionLocal value, $Res Function(SongVersionLocal) then) =
+      _$SongVersionLocalCopyWithImpl<$Res, SongVersionLocal>;
   @useResult
-  $Res call({int id, String chords, String? description});
+  $Res call({int id, String lang, String text, String title});
 }
 
 /// @nodoc
-class _$ChordsCopyWithImpl<$Res, $Val extends Chords>
-    implements $ChordsCopyWith<$Res> {
-  _$ChordsCopyWithImpl(this._value, this._then);
+class _$SongVersionLocalCopyWithImpl<$Res, $Val extends SongVersionLocal>
+    implements $SongVersionLocalCopyWith<$Res> {
+  _$SongVersionLocalCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -501,134 +493,155 @@ class _$ChordsCopyWithImpl<$Res, $Val extends Chords>
   @override
   $Res call({
     Object? id = null,
-    Object? chords = null,
-    Object? description = freezed,
+    Object? lang = null,
+    Object? text = null,
+    Object? title = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      chords: null == chords
-          ? _value.chords
-          : chords // ignore: cast_nullable_to_non_nullable
+      lang: null == lang
+          ? _value.lang
+          : lang // ignore: cast_nullable_to_non_nullable
               as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$ChordsImplCopyWith<$Res> implements $ChordsCopyWith<$Res> {
-  factory _$$ChordsImplCopyWith(
-          _$ChordsImpl value, $Res Function(_$ChordsImpl) then) =
-      __$$ChordsImplCopyWithImpl<$Res>;
+abstract class _$$SongVersionLocalImplCopyWith<$Res>
+    implements $SongVersionLocalCopyWith<$Res> {
+  factory _$$SongVersionLocalImplCopyWith(_$SongVersionLocalImpl value,
+          $Res Function(_$SongVersionLocalImpl) then) =
+      __$$SongVersionLocalImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String chords, String? description});
+  $Res call({int id, String lang, String text, String title});
 }
 
 /// @nodoc
-class __$$ChordsImplCopyWithImpl<$Res>
-    extends _$ChordsCopyWithImpl<$Res, _$ChordsImpl>
-    implements _$$ChordsImplCopyWith<$Res> {
-  __$$ChordsImplCopyWithImpl(
-      _$ChordsImpl _value, $Res Function(_$ChordsImpl) _then)
+class __$$SongVersionLocalImplCopyWithImpl<$Res>
+    extends _$SongVersionLocalCopyWithImpl<$Res, _$SongVersionLocalImpl>
+    implements _$$SongVersionLocalImplCopyWith<$Res> {
+  __$$SongVersionLocalImplCopyWithImpl(_$SongVersionLocalImpl _value,
+      $Res Function(_$SongVersionLocalImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
-    Object? chords = null,
-    Object? description = freezed,
+    Object? lang = null,
+    Object? text = null,
+    Object? title = null,
   }) {
-    return _then(_$ChordsImpl(
+    return _then(_$SongVersionLocalImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      chords: null == chords
-          ? _value.chords
-          : chords // ignore: cast_nullable_to_non_nullable
+      lang: null == lang
+          ? _value.lang
+          : lang // ignore: cast_nullable_to_non_nullable
               as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ChordsImpl implements _Chords {
-  const _$ChordsImpl(
-      {required this.id, required this.chords, this.description});
+class _$SongVersionLocalImpl implements _SongVersionLocal {
+  const _$SongVersionLocalImpl(
+      {required this.id,
+      required this.lang,
+      required this.text,
+      required this.title});
 
-  factory _$ChordsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ChordsImplFromJson(json);
+  factory _$SongVersionLocalImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SongVersionLocalImplFromJson(json);
 
   @override
   final int id;
   @override
-  final String chords;
+  final String lang;
   @override
-  final String? description;
+  final String text;
+  @override
+  final String title;
 
   @override
   String toString() {
-    return 'Chords(id: $id, chords: $chords, description: $description)';
+    return 'SongVersionLocal(id: $id, lang: $lang, text: $text, title: $title)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ChordsImpl &&
+            other is _$SongVersionLocalImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.chords, chords) || other.chords == chords) &&
-            (identical(other.description, description) ||
-                other.description == description));
+            (identical(other.lang, lang) || other.lang == lang) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, chords, description);
+  int get hashCode => Object.hash(runtimeType, id, lang, text, title);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ChordsImplCopyWith<_$ChordsImpl> get copyWith =>
-      __$$ChordsImplCopyWithImpl<_$ChordsImpl>(this, _$identity);
+  _$$SongVersionLocalImplCopyWith<_$SongVersionLocalImpl> get copyWith =>
+      __$$SongVersionLocalImplCopyWithImpl<_$SongVersionLocalImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ChordsImplToJson(
+    return _$$SongVersionLocalImplToJson(
       this,
     );
   }
 }
 
-abstract class _Chords implements Chords {
-  const factory _Chords(
+abstract class _SongVersionLocal implements SongVersionLocal {
+  const factory _SongVersionLocal(
       {required final int id,
-      required final String chords,
-      final String? description}) = _$ChordsImpl;
+      required final String lang,
+      required final String text,
+      required final String title}) = _$SongVersionLocalImpl;
 
-  factory _Chords.fromJson(Map<String, dynamic> json) = _$ChordsImpl.fromJson;
+  factory _SongVersionLocal.fromJson(Map<String, dynamic> json) =
+      _$SongVersionLocalImpl.fromJson;
 
   @override
   int get id;
   @override
-  String get chords;
+  String get lang;
   @override
-  String? get description;
+  String get text;
+  @override
+  String get title;
   @override
   @JsonKey(ignore: true)
-  _$$ChordsImplCopyWith<_$ChordsImpl> get copyWith =>
+  _$$SongVersionLocalImplCopyWith<_$SongVersionLocalImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

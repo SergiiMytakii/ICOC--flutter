@@ -18,39 +18,33 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SongsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool useCache) songsRequested,
-    required TResult Function(String query) searchSongRequested,
+    required TResult Function() songsRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool useCache)? songsRequested,
-    TResult? Function(String query)? searchSongRequested,
+    TResult? Function()? songsRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool useCache)? songsRequested,
-    TResult Function(String query)? searchSongRequested,
+    TResult Function()? songsRequested,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsRequested value) songsRequested,
-    required TResult Function(SearchSongRequested value) searchSongRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsRequested value)? songsRequested,
-    TResult? Function(SearchSongRequested value)? searchSongRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsRequested value)? songsRequested,
-    TResult Function(SearchSongRequested value)? searchSongRequested,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -79,8 +73,6 @@ abstract class _$$SongsRequestedImplCopyWith<$Res> {
   factory _$$SongsRequestedImplCopyWith(_$SongsRequestedImpl value,
           $Res Function(_$SongsRequestedImpl) then) =
       __$$SongsRequestedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({bool useCache});
 }
 
 /// @nodoc
@@ -90,81 +82,51 @@ class __$$SongsRequestedImplCopyWithImpl<$Res>
   __$$SongsRequestedImplCopyWithImpl(
       _$SongsRequestedImpl _value, $Res Function(_$SongsRequestedImpl) _then)
       : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? useCache = null,
-  }) {
-    return _then(_$SongsRequestedImpl(
-      useCache: null == useCache
-          ? _value.useCache
-          : useCache // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$SongsRequestedImpl implements SongsRequested {
-  const _$SongsRequestedImpl({this.useCache = true});
-
-  @override
-  @JsonKey()
-  final bool useCache;
+  const _$SongsRequestedImpl();
 
   @override
   String toString() {
-    return 'SongsEvent.songsRequested(useCache: $useCache)';
+    return 'SongsEvent.songsRequested()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SongsRequestedImpl &&
-            (identical(other.useCache, useCache) ||
-                other.useCache == useCache));
+        (other.runtimeType == runtimeType && other is _$SongsRequestedImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, useCache);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SongsRequestedImplCopyWith<_$SongsRequestedImpl> get copyWith =>
-      __$$SongsRequestedImplCopyWithImpl<_$SongsRequestedImpl>(
-          this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool useCache) songsRequested,
-    required TResult Function(String query) searchSongRequested,
+    required TResult Function() songsRequested,
   }) {
-    return songsRequested(useCache);
+    return songsRequested();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool useCache)? songsRequested,
-    TResult? Function(String query)? searchSongRequested,
+    TResult? Function()? songsRequested,
   }) {
-    return songsRequested?.call(useCache);
+    return songsRequested?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool useCache)? songsRequested,
-    TResult Function(String query)? searchSongRequested,
+    TResult Function()? songsRequested,
     required TResult orElse(),
   }) {
     if (songsRequested != null) {
-      return songsRequested(useCache);
+      return songsRequested();
     }
     return orElse();
   }
@@ -173,7 +135,6 @@ class _$SongsRequestedImpl implements SongsRequested {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsRequested value) songsRequested,
-    required TResult Function(SearchSongRequested value) searchSongRequested,
   }) {
     return songsRequested(this);
   }
@@ -182,7 +143,6 @@ class _$SongsRequestedImpl implements SongsRequested {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsRequested value)? songsRequested,
-    TResult? Function(SearchSongRequested value)? searchSongRequested,
   }) {
     return songsRequested?.call(this);
   }
@@ -191,7 +151,6 @@ class _$SongsRequestedImpl implements SongsRequested {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsRequested value)? songsRequested,
-    TResult Function(SearchSongRequested value)? searchSongRequested,
     required TResult orElse(),
   }) {
     if (songsRequested != null) {
@@ -202,147 +161,7 @@ class _$SongsRequestedImpl implements SongsRequested {
 }
 
 abstract class SongsRequested implements SongsEvent {
-  const factory SongsRequested({final bool useCache}) = _$SongsRequestedImpl;
-
-  bool get useCache;
-  @JsonKey(ignore: true)
-  _$$SongsRequestedImplCopyWith<_$SongsRequestedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$SearchSongRequestedImplCopyWith<$Res> {
-  factory _$$SearchSongRequestedImplCopyWith(_$SearchSongRequestedImpl value,
-          $Res Function(_$SearchSongRequestedImpl) then) =
-      __$$SearchSongRequestedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String query});
-}
-
-/// @nodoc
-class __$$SearchSongRequestedImplCopyWithImpl<$Res>
-    extends _$SongsEventCopyWithImpl<$Res, _$SearchSongRequestedImpl>
-    implements _$$SearchSongRequestedImplCopyWith<$Res> {
-  __$$SearchSongRequestedImplCopyWithImpl(_$SearchSongRequestedImpl _value,
-      $Res Function(_$SearchSongRequestedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? query = null,
-  }) {
-    return _then(_$SearchSongRequestedImpl(
-      null == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SearchSongRequestedImpl implements SearchSongRequested {
-  const _$SearchSongRequestedImpl(this.query);
-
-  @override
-  final String query;
-
-  @override
-  String toString() {
-    return 'SongsEvent.searchSongRequested(query: $query)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SearchSongRequestedImpl &&
-            (identical(other.query, query) || other.query == query));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, query);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SearchSongRequestedImplCopyWith<_$SearchSongRequestedImpl> get copyWith =>
-      __$$SearchSongRequestedImplCopyWithImpl<_$SearchSongRequestedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(bool useCache) songsRequested,
-    required TResult Function(String query) searchSongRequested,
-  }) {
-    return searchSongRequested(query);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool useCache)? songsRequested,
-    TResult? Function(String query)? searchSongRequested,
-  }) {
-    return searchSongRequested?.call(query);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool useCache)? songsRequested,
-    TResult Function(String query)? searchSongRequested,
-    required TResult orElse(),
-  }) {
-    if (searchSongRequested != null) {
-      return searchSongRequested(query);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SongsRequested value) songsRequested,
-    required TResult Function(SearchSongRequested value) searchSongRequested,
-  }) {
-    return searchSongRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SongsRequested value)? songsRequested,
-    TResult? Function(SearchSongRequested value)? searchSongRequested,
-  }) {
-    return searchSongRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SongsRequested value)? songsRequested,
-    TResult Function(SearchSongRequested value)? searchSongRequested,
-    required TResult orElse(),
-  }) {
-    if (searchSongRequested != null) {
-      return searchSongRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SearchSongRequested implements SongsEvent {
-  const factory SearchSongRequested(final String query) =
-      _$SearchSongRequestedImpl;
-
-  String get query;
-  @JsonKey(ignore: true)
-  _$$SearchSongRequestedImplCopyWith<_$SearchSongRequestedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory SongsRequested() = _$SongsRequestedImpl;
 }
 
 /// @nodoc
@@ -351,7 +170,7 @@ mixin _$SongsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -359,7 +178,7 @@ mixin _$SongsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -367,7 +186,7 @@ mixin _$SongsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -457,7 +276,7 @@ class _$SongsInitialImpl implements SongsInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -468,7 +287,7 @@ class _$SongsInitialImpl implements SongsInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -479,7 +298,7 @@ class _$SongsInitialImpl implements SongsInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -571,7 +390,7 @@ class _$SongsLoadingStateImpl implements SongsLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -582,7 +401,7 @@ class _$SongsLoadingStateImpl implements SongsLoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -593,7 +412,7 @@ class _$SongsLoadingStateImpl implements SongsLoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -651,7 +470,7 @@ abstract class _$$GetSongsSuccessStateImplCopyWith<$Res> {
           $Res Function(_$GetSongsSuccessStateImpl) then) =
       __$$GetSongsSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<SongDetail> songs});
+  $Res call({List<SongModel> songs});
 }
 
 /// @nodoc
@@ -671,7 +490,7 @@ class __$$GetSongsSuccessStateImplCopyWithImpl<$Res>
       null == songs
           ? _value._songs
           : songs // ignore: cast_nullable_to_non_nullable
-              as List<SongDetail>,
+              as List<SongModel>,
     ));
   }
 }
@@ -679,12 +498,12 @@ class __$$GetSongsSuccessStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetSongsSuccessStateImpl implements GetSongsSuccessState {
-  const _$GetSongsSuccessStateImpl(final List<SongDetail> songs)
+  const _$GetSongsSuccessStateImpl(final List<SongModel> songs)
       : _songs = songs;
 
-  final List<SongDetail> _songs;
+  final List<SongModel> _songs;
   @override
-  List<SongDetail> get songs {
+  List<SongModel> get songs {
     if (_songs is EqualUnmodifiableListView) return _songs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_songs);
@@ -720,7 +539,7 @@ class _$GetSongsSuccessStateImpl implements GetSongsSuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return success(songs);
@@ -731,7 +550,7 @@ class _$GetSongsSuccessStateImpl implements GetSongsSuccessState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return success?.call(songs);
@@ -742,7 +561,7 @@ class _$GetSongsSuccessStateImpl implements GetSongsSuccessState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -791,10 +610,10 @@ class _$GetSongsSuccessStateImpl implements GetSongsSuccessState {
 }
 
 abstract class GetSongsSuccessState implements SongsState {
-  const factory GetSongsSuccessState(final List<SongDetail> songs) =
+  const factory GetSongsSuccessState(final List<SongModel> songs) =
       _$GetSongsSuccessStateImpl;
 
-  List<SongDetail> get songs;
+  List<SongModel> get songs;
   @JsonKey(ignore: true)
   _$$GetSongsSuccessStateImplCopyWith<_$GetSongsSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -867,7 +686,7 @@ class _$SongsErrorStateImpl implements SongsErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -878,7 +697,7 @@ class _$SongsErrorStateImpl implements SongsErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -889,7 +708,7 @@ class _$SongsErrorStateImpl implements SongsErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/core/helpers/count_song_tabs.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
+import 'package:icoc/core/model/songs/song_model.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/search_song_bloc/search_song_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:logger/logger.dart';
 
 import 'package:icoc/constants.dart';
-import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
-import 'package:icoc/core/model/song_detail.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
 class DataSearchResults extends StatefulWidget {
@@ -31,8 +30,12 @@ class _DataSearchResultsState extends State<DataSearchResults> {
 
   @override
   Widget build(BuildContext context) {
-    getIt<SongsBloc>().add(SongsEvent.searchSongRequested(widget.query));
-    return BlocBuilder<SongsBloc, SongsState>(
+    if (widget.query.contains(RegExp(r'[0-9]'))) {
+      getIt<SearchSongBloc>().add(SearchSongEvent.searchByNumber(widget.query));
+    } else {
+      getIt<SearchSongBloc>().add(SearchSongEvent.searchByText(widget.query));
+    }
+    return BlocBuilder<SearchSongBloc, SearchSongState>(
       builder: (context, state) {
         return state.maybeWhen(
           loading: () => SliverToBoxAdapter(child: Loading()),
@@ -52,8 +55,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   // returns TextSpan with hihglited words for title
-  List<TextSpan> title(SongDetail song, BuildContext context) {
-    final String rawText = song.searchTitle ?? '';
+  List<TextSpan> title(SongVersionLocal song, BuildContext context) {
+    final String rawText = song.title;
     final List<String> title = rawText.split(' ');
     //print(title);
     return title.map((word) {
@@ -69,8 +72,8 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   // returns TextSpan with hihglited words for text
-  List<TextSpan> text(SongDetail song, BuildContext context) {
-    final String rawText = song.searchText ?? '';
+  List<TextSpan> text(SongVersionLocal song, BuildContext context) {
+    final String rawText = song.text;
     // print(rawText);
 
     //remove html tags and parts of html tags
@@ -102,12 +105,11 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   Widget buildSongCardWithHighliting(
-      SongDetail song, BuildContext context, int index) {
+      SongVersionLocal song, BuildContext context, int index) {
     return Column(
       children: [
         ListTile(
-          onTap: () => context
-              .go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}/${countTabs(song)}'),
+          onTap: () => context.go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}/1'),
           horizontalTitleGap: 12,
           leading: Text(song.id.toString(),
               style: Theme.of(context).textTheme.titleSmall),

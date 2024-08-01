@@ -53,6 +53,8 @@ import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart'
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart'
     as _i20;
 import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart' as _i30;
+import 'package:icoc/presentation/bloc/search_song_bloc/search_song_bloc.dart'
+    as _i34;
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart' as _i32;
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart' as _i28;
 import 'package:injectable/injectable.dart' as _i2;
@@ -174,6 +176,8 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i32.SongsBloc(gh<_i26.SongsRepository>()));
     gh.singleton<_i33.FavoriteSongStatusBloc>(
         () => _i33.FavoriteSongStatusBloc(gh<_i26.SongsRepository>()));
+    gh.singleton<_i34.SearchSongBloc>(
+        () => _i34.SearchSongBloc(gh<_i26.SongsRepository>()));
     return this;
   }
 }

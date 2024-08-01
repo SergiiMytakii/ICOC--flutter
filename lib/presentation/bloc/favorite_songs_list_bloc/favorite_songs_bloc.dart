@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
+import 'package:icoc/core/model/songs/song_model.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -36,7 +37,7 @@ class FavoriteSongsListBloc
       final List<int> favoriteSongsIds =
           await songsRepositoryImpl.getFavoriteSongs();
       if (favoriteSongsIds.isNotEmpty) {
-        final List<SongDetail> songs = await songsRepositoryImpl.getSongs();
+        final List<SongModel> songs = await songsRepositoryImpl.getSongs();
         final favoriteSongs =
             songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
         final filteredSongs = await filterSongsByLang(favoriteSongs);

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:icoc/core/model/songs/song_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
@@ -227,11 +228,11 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 /* functions for full text search */
 
   @override
-  Future<List<SongDetail>> getSearchResult(
+  Future<List<SongVersionLocal>> getSearchResult(
       String query, List<String> languagesToShow) async {
     final Database? database = await db();
 
-    final List<SongDetail> songs = [];
+    final List<SongVersionLocal> songs = [];
     // log.i('query' + query);
     if (database != null)
     // search in titiles
@@ -249,13 +250,12 @@ class SqliteSongsDbImpl implements LocalSongsDB {
                   ''');
 
           for (Map map in searchInTitles) {
-            final SongDetail song = SongDetail(
-                id: map['id_song'],
-                searchTitle: map['title'],
-                searchText: map['text'],
-                searchLang: lang,
-                title: {},
-                text: {});
+            final SongVersionLocal song = SongVersionLocal(
+              id: map['id_song'],
+              title: map['title'],
+              text: map['text'],
+              lang: lang,
+            );
             songs.add(song);
           }
 
@@ -272,13 +272,12 @@ class SqliteSongsDbImpl implements LocalSongsDB {
                   ''');
 
           for (Map map in searhInTexts) {
-            final SongDetail song = SongDetail(
-                id: map['id_song'],
-                searchTitle: map['title'],
-                searchText: map['text'],
-                searchLang: lang,
-                title: {},
-                text: {});
+            final SongVersionLocal song = SongVersionLocal(
+              id: map['id_song'],
+              title: map['title'],
+              text: map['text'],
+              lang: lang,
+            );
             songs.add(song);
           }
         }

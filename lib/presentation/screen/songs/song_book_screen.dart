@@ -46,11 +46,11 @@ class _SongBookScreenState extends State<SongBookScreen> {
             return; // Do not refresh when scrolling up
           }
           if (query.isNotEmpty) {
-            _getSongs(useCache: false);
+            _getSongs();
             await Future.delayed(const Duration(milliseconds: 1000));
             _handleQuery(query);
           } else {
-            _getSongs(useCache: false);
+            _getSongs();
           }
         },
         child: CustomScrollView(
@@ -68,8 +68,8 @@ class _SongBookScreenState extends State<SongBookScreen> {
     );
   }
 
-  Future<void> _getSongs({bool useCache = true}) async {
-    getIt<SongsBloc>().add(SongsEvent.songsRequested(useCache: useCache));
+  Future<void> _getSongs() async {
+    getIt<SongsBloc>().add(const SongsEvent.songsRequested());
   }
 
   Future<void> _handleQuery(String val) async {

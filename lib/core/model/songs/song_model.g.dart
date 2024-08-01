@@ -9,23 +9,39 @@ part of 'song_model.dart';
 _$SongModelImpl _$$SongModelImplFromJson(Map<String, dynamic> json) =>
     _$SongModelImpl(
       id: (json['id'] as num).toInt(),
-      songs: (json['songs'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry($enumDecode(_$LanguagesEnumMap, k),
-            SongVersion.fromJson(e as Map<String, dynamic>)),
-      ),
-      chords: (json['chords'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry($enumDecode(_$LanguagesEnumMap, k),
-            Chords.fromJson(e as Map<String, dynamic>)),
-      ),
+      songVersions: (json['songVersions'] as List<dynamic>)
+          .map((e) => SongVersion.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$SongModelImplToJson(_$SongModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'songs': instance.songs
-          .map((k, e) => MapEntry(_$LanguagesEnumMap[k]!, e.toJson())),
-      'chords': instance.chords
-          ?.map((k, e) => MapEntry(_$LanguagesEnumMap[k]!, e.toJson())),
+      'songVersions': instance.songVersions.map((e) => e.toJson()).toList(),
+    };
+
+_$SongVersionImpl _$$SongVersionImplFromJson(Map<String, dynamic> json) =>
+    _$SongVersionImpl(
+      id: (json['id'] as num).toInt(),
+      lang: $enumDecode(_$LanguagesEnumMap, json['lang']),
+      text: json['text'] as String,
+      title: json['title'] as String,
+      isChords: json['isChords'] as bool? ?? false,
+      description: json['description'] as String?,
+      youtubeVideos: (json['youtubeVideos'] as List<dynamic>?)
+          ?.map((e) => YoutubeVideo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$SongVersionImplToJson(_$SongVersionImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'lang': _$LanguagesEnumMap[instance.lang]!,
+      'text': instance.text,
+      'title': instance.title,
+      'isChords': instance.isChords,
+      'description': instance.description,
+      'youtubeVideos': instance.youtubeVideos?.map((e) => e.toJson()).toList(),
     };
 
 const _$LanguagesEnumMap = {
@@ -65,37 +81,20 @@ const _$LanguagesEnumMap = {
   Languages.sr: 'sr',
 };
 
-_$SongVersionImpl _$$SongVersionImplFromJson(Map<String, dynamic> json) =>
-    _$SongVersionImpl(
+_$SongVersionLocalImpl _$$SongVersionLocalImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SongVersionLocalImpl(
       id: (json['id'] as num).toInt(),
       lang: json['lang'] as String,
       text: json['text'] as String,
       title: json['title'] as String,
-      description: json['description'] as String?,
-      youtubeVideos: (json['youtubeVideos'] as List<dynamic>?)
-          ?.map((e) => YoutubeVideo.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
-Map<String, dynamic> _$$SongVersionImplToJson(_$SongVersionImpl instance) =>
+Map<String, dynamic> _$$SongVersionLocalImplToJson(
+        _$SongVersionLocalImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'lang': instance.lang,
       'text': instance.text,
       'title': instance.title,
-      'description': instance.description,
-      'youtubeVideos': instance.youtubeVideos,
-    };
-
-_$ChordsImpl _$$ChordsImplFromJson(Map<String, dynamic> json) => _$ChordsImpl(
-      id: (json['id'] as num).toInt(),
-      chords: json['chords'] as String,
-      description: json['description'] as String?,
-    );
-
-Map<String, dynamic> _$$ChordsImplToJson(_$ChordsImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'chords': instance.chords,
-      'description': instance.description,
     };

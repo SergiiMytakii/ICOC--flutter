@@ -10,23 +10,35 @@ class SongModel with _$SongModel {
   @JsonSerializable(explicitToJson: true)
   const factory SongModel({
     required int id,
-    required Map<Languages, SongVersion> songs,
-    Map<Languages, Chords>? chords,
+    required List<SongVersion> songVersions,
   }) = _SongModel;
 
   factory SongModel.fromJson(Map<String, dynamic> json) =>
       _$SongModelFromJson(json);
 
-  static SongModel defaultSong() => const SongModel(id: 0, songs: {});
+  static SongModel defaultSong() => const SongModel(id: 0, songVersions: []);
+
+  List<Languages> getAllLangs() {
+    return songVersions.map((version) => version.lang).toSet().toList();
+  }
+
+  bool hasVideos() {
+    return songVersions
+        .any((version) => version.youtubeVideos?.isNotEmpty ?? false);
+  }
+
+  const SongModel._();
 }
 
 @freezed
 class SongVersion with _$SongVersion {
+  @JsonSerializable(explicitToJson: true)
   const factory SongVersion({
     required int id,
-    required String lang,
+    required Languages lang,
     required String text,
     required String title,
+    @Default(false) bool isChords,
     String? description,
     List<YoutubeVideo>? youtubeVideos,
   }) = _SongVersion;
@@ -36,12 +48,14 @@ class SongVersion with _$SongVersion {
 }
 
 @freezed
-class Chords with _$Chords {
-  const factory Chords({
+class SongVersionLocal with _$SongVersionLocal {
+  const factory SongVersionLocal({
     required int id,
-    required String chords,
-    String? description,
-  }) = _Chords;
+    required String lang,
+    required String text,
+    required String title,
+  }) = _SongVersionLocal;
 
-  factory Chords.fromJson(Map<String, dynamic> json) => _$ChordsFromJson(json);
+  factory SongVersionLocal.fromJson(Map<String, dynamic> json) =>
+      _$SongVersionLocalFromJson(json);
 }
