@@ -1,15 +1,17 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:icoc/constants.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/main.dart';
 
 class AnimatedFilterIconButton extends StatefulWidget {
   final Function onTap;
   final Color color;
   final String shouldAnimate;
   final bool shouldAnimateForever;
-  final String? firstLanguage;
+  final String? primaryLanguage;
 
   const AnimatedFilterIconButton(
       {super.key,
@@ -17,7 +19,7 @@ class AnimatedFilterIconButton extends StatefulWidget {
       required this.color,
       required this.shouldAnimate,
       this.shouldAnimateForever = false,
-      this.firstLanguage});
+      this.primaryLanguage});
 
   @override
   State<AnimatedFilterIconButton> createState() =>
@@ -61,7 +63,8 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
           child: IconButton(
             icon: Row(children: [
               Text(
-                widget.firstLanguage ?? context.locale.languageCode,
+                getIt<LocalCache>().getString(StorageKeys.primaryLang) ??
+                    locale,
                 style: TextStyle(
                   fontSize: 22,
                   color: ColorTween(

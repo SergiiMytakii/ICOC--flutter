@@ -1,15 +1,8 @@
-import 'dart:io';
-
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
-import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
-
 import 'package:icoc/constants.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 
@@ -23,10 +16,19 @@ class BottomSheetSongsFilter extends StatefulWidget {
 class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   bool orderByTitle = true;
   Map<String, dynamic> allLanguages = {};
+  String primaryLang = '';
+
+  bool get isOneActiveLang =>
+      allLanguages.entries.toList().where((entry) => entry.value).length == 1;
   @override
   void initState() {
+    primaryLang =
+        getIt<LocalCache>().getString(StorageKeys.primaryLang) ?? locale;
     allLanguages =
         getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
+
+    orderByTitle =
+        getIt<LocalCache>().getBool(StorageKeys.orderByTitle) ?? true;
 
     super.initState();
   }
@@ -80,6 +82,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                 itemBuilder: (context, index) {
                   final lang = allLanguages.keys.toList()[index];
                   final isActive = allLanguages.values.toList()[index];
+                  final isPrimary = primaryLang == lang;
                   return CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
                     secondary: isActive ? _primaryLangSwitch(lang) : null,
@@ -89,7 +92,13 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                     value: isActive,
                     key: ValueKey('$index'),
                     onChanged: (val) {
-                      allLanguages[lang] = val;
+                      allLanguages[lang] = val ?? false;
+                      if (isOneActiveLang) {
+                        primaryLang = lang;
+                      }
+                      if (!(val ?? false) && isPrimary)
+                        _setPrimaryAnotherLang();
+
                       _saveAndRefresh();
                     },
                   );
@@ -101,33 +110,32 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Widget _primaryLangSwitch(String label) {
-    final isPrimary =
-        (getIt<LocalCache>().getString(StorageKeys.primaryLang) ?? locale) ==
-            label;
     return Switch.adaptive(
-        value: isPrimary,
+        value: primaryLang == label,
         onChanged: (val) {
           setState(() {
             if (val) {
-              getIt<LocalCache>().saveString(StorageKeys.primaryLang, label);
+              primaryLang = label;
             } else {
               getIt<LocalCache>().removeValue(StorageKeys.primaryLang);
+              _setPrimaryAnotherLang();
             }
+            _saveAndRefresh();
           });
-          getIt<SongsBloc>().add(const SongsEvent.songsRequested());
         });
   }
 
   Future<void> _saveAndRefresh() async {
     await getIt<LocalCache>()
         .saveMap(StorageKeys.allSongsLanguages, allLanguages);
+    getIt<LocalCache>().saveString(StorageKeys.primaryLang, primaryLang);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
     setState(() {});
   }
 
   InkWell _sortButton(BuildContext context, String title, bool active) {
     const Color activeColor = ScreenColors.songBook;
-    final Color unActive = Theme.of(context).canvasColor;
+    final Color unActiveColor = Theme.of(context).canvasColor;
     return InkWell(
       onTap: () {
         setState(() {
@@ -139,14 +147,14 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
         height: 36,
         width: MediaQuery.of(context).size.width / 3,
         decoration: BoxDecoration(
-            color: active ? activeColor : unActive,
+            color: active ? activeColor : unActiveColor,
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             border: Border.all(color: activeColor)),
         child: Center(
           child: Text(
             title,
             style: TextStyle(
-                color: active ? unActive : activeColor,
+                color: active ? unActiveColor : activeColor,
                 fontWeight: FontWeight.bold),
           ),
         ),
@@ -157,5 +165,16 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   void _orderSongs(bool orderByTitle) async {
     await getIt<LocalCache>().saveBool(StorageKeys.orderByTitle, orderByTitle);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
+  }
+
+  void _setPrimaryAnotherLang() {
+    final activeLang = allLanguages.entries
+        .toList()
+        .firstWhere(
+          (entry) => entry.value,
+          orElse: () => MapEntry(locale, true),
+        )
+        .key;
+    primaryLang = activeLang;
   }
 }

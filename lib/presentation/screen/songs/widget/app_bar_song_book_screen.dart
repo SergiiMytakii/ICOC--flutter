@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/main.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
@@ -25,7 +26,6 @@ class SongBookAppbar extends StatefulWidget {
 
 class _SongBookAppbarState extends State<SongBookAppbar> {
   Map<String, dynamic>? allLanguages;
-  String firstLang = '';
   final GlobalKey tooltipKey = GlobalKey();
   bool _tooltipVisible = true;
 
@@ -36,7 +36,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
       Future.delayed(const Duration(seconds: 2))
           .then((_) => _showSelectLangBottomSheet());
     }
-    setFirstLang();
+
     showTooltip();
 
     super.initState();
@@ -58,27 +58,6 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
       });
       getIt<LocalCache>()
           .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
-    }
-  }
-
-  void setFirstLang() async {
-    //this needed to display primary language
-    final locale = await getIt<LocalCache>().getString(
-          StorageKeys.locale,
-        ) ??
-        'en';
-    allLanguages = getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ??
-        {locale: true};
-
-    allLanguages!.removeWhere((key, value) => value == false);
-    if (allLanguages!.isNotEmpty) {
-      setState(() {
-        firstLang = allLanguages!.keys.first;
-      });
-    } else {
-      setState(() {
-        firstLang = '';
-      });
     }
   }
 
@@ -110,21 +89,14 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             BlocBuilder<SongsBloc, SongsState>(
               builder: (context, state) {
                 final bool shouldAnimate = state.maybeWhen(
-                      success: (songs) => songs.isEmpty,
-                      orElse: () => false,
-                    ) ||
-                    firstLang == '';
-                return AnimatedFilterIconButton(
-                  shouldAnimateForever: shouldAnimate,
-                  firstLanguage: firstLang,
-                  shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
-                  color: ScreenColors.songBook,
-                  onTap: () => _showSelectLangBottomSheet().then(
-                    (value) => setState(() {
-                      setFirstLang();
-                    }),
-                  ),
+                  success: (songs) => songs.isEmpty,
+                  orElse: () => false,
                 );
+                return AnimatedFilterIconButton(
+                    shouldAnimateForever: shouldAnimate,
+                    shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
+                    color: ScreenColors.songBook,
+                    onTap: () => _showSelectLangBottomSheet());
               },
             ),
           ],

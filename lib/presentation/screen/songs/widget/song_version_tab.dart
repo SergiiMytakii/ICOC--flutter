@@ -119,7 +119,8 @@ class _SongVersionTabState extends State<SongVersionTab>
                         ),
                       )),
                 ),
-                if (widget.songVersion.youtubeVideos?.isNotEmpty ?? false)
+                if ((widget.songVersion.youtubeVideos?.isNotEmpty ?? false) &&
+                    !videoIsPlaying)
                   _buldVideoPreview(widget.songVersion.youtubeVideos!),
                 if (videoIsPlaying) _miniPlayerBuilder(),
               ],

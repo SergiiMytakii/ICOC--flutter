@@ -46,7 +46,7 @@ final GoRouter router = GoRouter(
                     return OneSongScreen(
                       songId: songId ?? '',
                       tabsCount: int.parse(tabsCount ?? '1'),
-                      lang: lang,
+                      primaryLang: lang,
                     );
                   },
                 ),
