@@ -1,17 +1,14 @@
 import 'package:bloc/bloc.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
-import 'package:icoc/core/helpers/find_save_all_text_keys.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
-import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
-import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/core/model/songs/song_model.dart';
 import 'package:icoc/core/repository/songs_repository.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'songs_event.dart';
@@ -24,157 +21,102 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     on<SongsEvent>((event, emit) async {
       await event.map(
         songsRequested: (e) => _onSongsRequested(e, emit),
-        searchSongRequested: (e) => _onSearchSongRequested(e, emit),
+        searchByNumber: (e) => _onSearchByNumber(e, emit),
+        searchByText: (e) => _onSearchByText(e, emit),
+        clearSearch: (e) => _onClearSearch(e, emit),
       );
     });
   }
 
   final SongsRepository songsRepositoryImpl;
-  bool sqliteBDisUpdated = false;
-  List<SongDetail> cache = [];
+  List<SongModel> allSongs = [];
 
   Future<void> _onSongsRequested(
-    SongsRequested event,
+    _SongsRequested event,
     Emitter<SongsState> emit,
   ) async {
     emit(const SongsState.loading());
     try {
-      final songs = await _fetchSongs(event.useCache);
-      await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-      emit(SongsState.success(songs));
+      final songs = await _fetchSongs();
+      if (songs.isNotEmpty) {
+        await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
+        allSongs = songs;
+        emit(SongsState.success(songs));
+      } else {
+        emit(const SongsState.empty());
+      }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(SongsState.error(error.toString()));
     }
   }
 
-  Future<void> _onSearchSongRequested(
-    SearchSongRequested event,
-    Emitter<SongsState> emit,
-  ) async {
+  Future<void> _onSearchByNumber(
+      _SearchSongByNumber event, Emitter<SongsState> emit) async {
+    emit(const SongsState.loading());
     try {
-      emit(const SongsState.loading());
-      final searchResults = await _searchSongs(event.query);
+      final songs =
+          allSongs.isNotEmpty ? allSongs : await songsRepositoryImpl.getSongs();
+      final searchResults = songs
+          .where((song) => song.id.toString() == event.query.trim())
+          .toList();
+
       emit(SongsState.success(searchResults));
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(SongsState.error(error.toString()));
+    } catch (e, stackTrace) {
+      emit(SongsState.error(e.toString()));
+      logError(e, stackTrace);
     }
   }
 
-  Future<List<SongDetail>> _fetchSongs(bool useCache) async {
-    List<SongDetail> songs = [];
-
-    if (cache.isEmpty || useCache == false) {
-      songs = await songsRepositoryImpl.getSongs();
-      if (songs.isNotEmpty) await updateStoredLanguages(songs);
-      cache = songs;
-    } else {
-      songs = cache;
-    }
-
-    await findAndSaveAllTextKeys(songs);
-    final filteredSongs = await filterSongsByLang(songs);
-    return await orderSongs(filteredSongs);
+  Future<void> _onClearSearch(
+      _SearchSongClear event, Emitter<SongsState> emit) async {
+    emit(const SongsState.initial());
   }
 
-  Future<List<SongDetail>> _searchSongs(String query) async {
-    final String trimmedQuery =
-        query.trim().replaceAll(RegExp(r'[^a-zA-Zа-яА-Яёієї0-9]+'), ' ');
-    final List<SongDetail> searchResult = [];
-    final allSongs =
-        cache.isEmpty ? await songsRepositoryImpl.getSongs() : cache;
-
-    if (trimmedQuery.contains(RegExp(r'[0-9]')) && trimmedQuery.length <= 3) {
-      return await _searchByNumber(allSongs, trimmedQuery);
-    } else {
-      return await _searchByText(searchResult, trimmedQuery, allSongs);
+  Future<void> _onSearchByText(
+      _SearchSongByText event, Emitter<SongsState> emit) async {
+    emit(const SongsState.loading());
+    try {
+      final List<SongVersionLocal> searchResult =
+          await songsRepositoryImpl.getSearchResult(event.query.trim());
+      emit(SongsState.searchSuccess(searchResult));
+    } catch (e, stackTrace) {
+      emit(SongsState.error(e.toString()));
+      logError(e, stackTrace);
     }
   }
 
-  Future<List<SongDetail>> _searchByNumber(
-      List<SongDetail> allSongs, String trimmedQuery) async {
-    List<SongDetail> filteredByNumber =
-        allSongs.where((song) => song.id.toString() == trimmedQuery).toList();
-    filteredByNumber = await filterSongsByLang(filteredByNumber);
-    filteredByNumber.forEach((song) {
-      song.searchText = song.text.values.first;
-      song.searchTitle = song.title.values.first;
-    });
-    return filteredByNumber;
-  }
+  Future<List<SongModel>> _fetchSongs() async {
+    List<SongModel> songs = [];
 
-  Future<List<SongDetail>> _searchByText(List<SongDetail> searchResult,
-      String trimmedQuery, List<SongDetail> allSongs) async {
-    final List<String> orderLang = await _getListOrderLangs();
-    searchResult =
-        await songsRepositoryImpl.getSearchResult(trimmedQuery, orderLang);
+    songs = await songsRepositoryImpl.getSongs();
+    await updateStoredLanguages(songs);
+    songs = await filterSongsByLang(songs);
 
-    final List<SongDetail> songs = searchResult.map((song) {
-      final SongDetail matchingSong = allSongs.firstWhere(
-        (element) => element.id == song.id,
-        orElse: () => SongDetail.defaultSong(),
-      );
-      return SongDetail(
-        id: matchingSong.id,
-        description: matchingSong.description,
-        title: matchingSong.title,
-        text: matchingSong.text,
-        chords: matchingSong.chords,
-        youtubeVideos: matchingSong.youtubeVideos,
-        searchTitle: song.searchTitle,
-        searchLang: song.searchLang,
-        searchText: song.searchText,
-      );
-    }).toList();
-    final List<SongDetail> filteredSongs = await filterSongsByLang(songs);
-    return filteredSongs;
-  }
-
-  Future<List<String>> _getListOrderLangs() async {
-    final allLanguages =
-        getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
-    final filtered =
-        allLanguages.entries.where((element) => element.value == true);
-    final List<String> orderLang = filtered.map((e) => e.key).toList();
-    return orderLang;
+    return await orderSongs(songs);
   }
 }
 
-Future<void> updateStoredLanguages(List<SongDetail> songs) async {
-  final locale = await getIt<LocalCache>().getString(
-        StorageKeys.locale,
-      ) ??
-      'en';
-  final List<String> allTitleKeys = findAllTitleKeys(songs);
-
-  putDeviceLangToFirstPlace(allTitleKeys, locale);
+Future<void> updateStoredLanguages(List<SongModel> songs) async {
+  final List<Languages> allLangs = findAllLangs(songs);
 
   final Map<String, dynamic> orderedAllLanguages =
       getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
 
-  allTitleKeys.forEach((String lang) {
-    if (!orderedAllLanguages.containsKey(lang)) {
-      orderedAllLanguages[lang] = lang == locale;
+  allLangs.forEach((Languages lang) {
+    if (!orderedAllLanguages.containsKey(lang.name)) {
+      orderedAllLanguages[lang.name] = lang.name == locale;
     }
   });
   await getIt<LocalCache>()
       .saveMap(StorageKeys.allSongsLanguages, orderedAllLanguages);
 }
 
-List<String> findAllTitleKeys(List<SongDetail> songs) {
-  final Set<String> allTitleKeys = {};
+List<Languages> findAllLangs(List<SongModel> songs) {
+  final Set<Languages> allLangs = {};
 
   songs.forEach((song) {
-    final keys = song.title.keys;
-    keys.forEach((key) {
-      if (key.toString().length > 2) {
-        Logger().e('Wrong key in title, songId ${song.id}');
-        FirebaseAnalytics.instance
-            .logEvent(name: 'Wrong key in title, songId ${song.id}');
-      }
-    });
-    allTitleKeys.addAll(song.getAllTitleKeys());
+    allLangs.addAll(song.getAllLangs());
   });
-  return allTitleKeys.toList();
+  return allLangs.toList();
 }

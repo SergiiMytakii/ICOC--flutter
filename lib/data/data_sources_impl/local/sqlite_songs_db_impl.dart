@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:icoc/core/model/songs/song_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
@@ -20,9 +21,11 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   static Database? _db;
   static const String DB_NAME = 'Songs.db';
   static const String ID_SONG = 'id_song';
-  static const String TABLE_TITLE = 'title';
-  static const String TABLE_TEXT = 'text';
+  static const String SONG_TITLE = 'title';
+  static const String SONG_TEXT = 'text';
+  static const String SONG_LANG = 'lang';
 
+  static const String TABLE_SONGS = 'songs';
   static const String TABLE_FAVORITES = 'favorites';
   static const String FAVORITE_STATUS = 'favoriteStatus';
 
@@ -47,31 +50,14 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   Future<Database?> initDB() async {
     final String path = join((await getDatabasesPath()), DB_NAME);
     // await deleteDatabase(path); // - if we need to clean database
-    final Map<String, dynamic> allLanguages =
-        localCache.getMap(StorageKeys.allSongsLanguages) ?? {};
-    if (allLanguages.isEmpty) {
-      return null;
-    }
-    final List<String> allSongsTitleKeys = allLanguages.keys.toList();
-    final String columnTitleDefinitions =
-        allSongsTitleKeys.map((key) => '$key TEXT').join(', ');
-
-    final List<String> allSongsTextKeys =
-        await localCache.getList(StorageKeys.allSongsTextKeys) ?? [];
-    final String columnTextDefinitions =
-        allSongsTextKeys.map((key) => '$key TEXT').join(', ');
-    if (kDebugMode) {
-      print(columnTitleDefinitions);
-      print(columnTextDefinitions);
-    }
 
     try {
-      return await openDatabase(path, version: 5,
+      return await openDatabase(path, version: 1,
           onCreate: (Database db, int version) async {
         await db.execute(
-            'CREATE VIRTUAL TABLE $TABLE_TITLE USING fts4 ( tokenize = unicode61, $ID_SONG INTEGER, $columnTitleDefinitions)');
-        await db.execute(
-            'CREATE VIRTUAL TABLE $TABLE_TEXT USING fts4 (tokenize = unicode61, $ID_SONG, $columnTextDefinitions)');
+            'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4 ( tokenize = unicode61, id INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
+        // await db.execute(
+        //     'CREATE VIRTUAL TABLE $TABLE_TEXT USING fts4 (tokenize = unicode61, $ID_SONG, SONG_TEXT TEXT)');
         await db.execute(
             'CREATE TABLE $TABLE_FAVORITES ($ID_SONG INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
         log.i(' !!!!databases hac been opened!!!!!');
@@ -85,49 +71,55 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 /* inserting songs into database */
 
   @override
-  Future<void> insertAllSongs(List<SongDetail> songs) async {
+  Future<bool> insertAllSongs(List<SongModel> songs) async {
     // Get a reference to the database.
     final Database? database = await db();
 
     //clean tables before inserting new data
+    await database?.delete(TABLE_SONGS);
     if (database != null) {
-      database.delete(TABLE_TITLE);
-      database.delete(TABLE_TEXT);
-
       try {
         await insertTitlesAndTexts(songs, database);
-      } on Exception catch (e, stackTrace) {
+      } catch (e, stackTrace) {
         logError(e, stackTrace);
         //on error we delete db and make a second try
-        final String path = join((await getDatabasesPath()), DB_NAME);
-        await deleteDatabase(path);
-        await FirebaseAnalytics.instance
-            .logEvent(name: 'Deleting DB and make second try to insert');
-        _db = null;
-        final Database? database = await db();
-        if (database != null) insertTitlesAndTexts(songs, database);
+        try {
+          final String path = join((await getDatabasesPath()), DB_NAME);
+          await deleteDatabase(path);
+          await FirebaseAnalytics.instance
+              .logEvent(name: 'Deleting DB and make second try to insert');
+          _db = null;
+          final Database? database = await db();
+          if (database != null) insertTitlesAndTexts(songs, database);
+        } catch (e, stackTrace) {
+          logError(e, stackTrace);
+          return false;
+        }
       }
     }
+    return true;
     // printSongsDBHead();
   }
 
   Future<void> insertTitlesAndTexts(
-      List<SongDetail> songs, Database database) async {
-    for (SongDetail song in songs) {
-      final Map<String, Object?> map = Map.from(song.title);
-      map[ID_SONG] = song.id;
-      await database.insert(
-        TABLE_TITLE,
-        map,
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      final Map<String, Object?> map2 = Map.from(song.text);
-      map2[ID_SONG] = song.id;
-      await database.insert(
-        TABLE_TEXT,
-        map2,
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+      List<SongModel> songs, Database database) async {
+    for (SongModel song in songs) {
+      for (var songVersion in song.songVersions) {
+        if (!songVersion.isChords) {
+          final Map<String, Object?> map = {
+            ID_SONG: song.id,
+            SONG_TITLE: songVersion.title,
+            SONG_TEXT: songVersion.text,
+            SONG_LANG: songVersion.lang.name,
+            // Add any other relevant fields from SongModel and VersionModel
+          };
+          await database.insert(
+            TABLE_SONGS,
+            map,
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+      }
     }
     log.i('HAS BEEN INSERTED SONGS:  ${await songsInLocalDB}');
   }
@@ -136,7 +128,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
     final Database? database = await db();
     if (database != null) {
       final List<Map<String, dynamic>> songs =
-          await database.query(TABLE_TITLE, columns: [ID_SONG]);
+          await database.query(TABLE_SONGS, columns: ['id']);
       return songs.length;
     } else {
       return 0;
@@ -147,7 +139,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   @override
   Future<void> printSongsDBHead() async {
     final Database? database = await db();
-    final List<Map<String, dynamic>> songs = await database!.query(TABLE_TITLE);
+    final List<Map<String, dynamic>> songs = await database!.query(TABLE_SONGS);
 
     for (int i = 0; i < 5; i++) {
       print(songs[i]);
@@ -227,61 +219,59 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 /* functions for full text search */
 
   @override
-  Future<List<SongDetail>> getSearchResult(
-      String query, List<String> languagesToShow) async {
+  Future<List<SongVersionLocal>> getSearchResult(
+    String query,
+  ) async {
     final Database? database = await db();
 
-    final List<SongDetail> songs = [];
+    final List<SongVersionLocal> songs = [];
     // log.i('query' + query);
     if (database != null)
     // search in titiles
     {
       try {
-        for (final lang in languagesToShow) {
-          final List<Map<String, dynamic>> searchInTitles =
-              await database.rawQuery('''
-                  SELECT $TABLE_TITLE.$ID_SONG,
-                  snippet($TABLE_TITLE, '[', ' ', '...') as title,
-                  $TABLE_TEXT.${lang}1 AS text
-                  FROM $TABLE_TITLE
-                  JOIN $TABLE_TEXT ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT.$ID_SONG
-                  WHERE $TABLE_TITLE.$lang MATCH '$query*'
+        final List<Map<String, dynamic>> searchInTitles =
+            await database.rawQuery('''
+                  SELECT $TABLE_SONGS.$ID_SONG,
+                  snippet($TABLE_SONGS, '[', ' ', '...') as title,
+                  $TABLE_SONGS.$SONG_TEXT AS text,
+                  $TABLE_SONGS.$SONG_LANG AS lang
+                  FROM $TABLE_SONGS
+                  WHERE $TABLE_SONGS.$SONG_TITLE MATCH '$query*'
                   ''');
 
-          for (Map map in searchInTitles) {
-            final SongDetail song = SongDetail(
-                id: map['id_song'],
-                searchTitle: map['title'],
-                searchText: map['text'],
-                searchLang: lang,
-                title: {},
-                text: {});
-            songs.add(song);
-          }
-
-          final List<Map<String, dynamic>> searhInTexts =
-              await database.rawQuery('''
-                
-                  SELECT $TABLE_TITLE.$ID_SONG,
-                  snippet($TABLE_TEXT, '[', ' ', '...') AS text,
-                  $TABLE_TITLE.$lang as title
-                  FROM $TABLE_TITLE
-                  JOIN $TABLE_TEXT ON $TABLE_TITLE.$ID_SONG = $TABLE_TEXT.$ID_SONG
-                  WHERE $TABLE_TEXT.${lang}1  MATCH '$query*'
-                  ORDER BY $TABLE_TITLE.$ID_SONG 
-                  ''');
-
-          for (Map map in searhInTexts) {
-            final SongDetail song = SongDetail(
-                id: map['id_song'],
-                searchTitle: map['title'],
-                searchText: map['text'],
-                searchLang: lang,
-                title: {},
-                text: {});
-            songs.add(song);
-          }
+        for (Map map in searchInTitles) {
+          final SongVersionLocal song = SongVersionLocal(
+            id: map['id_song'],
+            title: map['title'],
+            text: map['text'],
+            lang: map['lang'],
+          );
+          songs.add(song);
         }
+
+        final List<Map<String, dynamic>> searhInTexts =
+            await database.rawQuery('''
+                
+                  SELECT $TABLE_SONGS.$ID_SONG,
+                  snippet($TABLE_SONGS, '[', ' ', '...') as text,
+                  $TABLE_SONGS.$SONG_TITLE AS title,
+                  $TABLE_SONGS.$SONG_LANG AS lang
+                  FROM $TABLE_SONGS
+                  WHERE $TABLE_SONGS.$SONG_TEXT MATCH '$query*'
+                  ORDER BY $TABLE_SONGS.$ID_SONG 
+                  ''');
+
+        for (Map map in searhInTexts) {
+          final SongVersionLocal song = SongVersionLocal(
+            id: map['id_song'],
+            title: map['title'],
+            text: map['text'],
+            lang: map['lang'],
+          );
+          songs.add(song);
+        }
+
         return songs;
       } catch (e, stackTrace) {
         logError(e, stackTrace);

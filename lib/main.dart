@@ -22,6 +22,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/theme.dart';
 
+String locale = 'en';
 void main() async {
   runZonedGuarded(
     () async {
@@ -36,6 +37,10 @@ void main() async {
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
       FirebaseAnalytics.instance
           .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
+      locale = await getIt<LocalCache>().getString(
+            StorageKeys.locale,
+          ) ??
+          'en';
 
       runApp(
         EasyLocalization(

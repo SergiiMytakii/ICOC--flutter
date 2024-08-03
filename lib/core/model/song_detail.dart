@@ -219,6 +219,6 @@ class SongDetail {
 
   static SongDetail defaultSong() {
     return SongDetail(
-        id: 0, title: {'ru': 'default'}, text: {'ru1': 'default'});
+        id: 0, title: {}, text: {});
   }
 }

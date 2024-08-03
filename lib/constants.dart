@@ -35,7 +35,8 @@ const String ICOC_WEB_PAGE = 'https://icoc.netlify.app';
 class StorageKeys {
   static const String orderByTitle = 'orderByTitle';
   static const String allSongsLanguages = 'allSongsLanguages';
-  static const String allSongsTextKeys = 'allSongsTextKeys';
+  static const String primaryLang = 'primaryLang';
+  static const String allSongsTextKeys = 'allSongsTextKeys'; //todo remove later
   static const String locale = 'locale';
   static const String fontSize = 'fontSize';
   static const String bibleStudyLanguages = 'bibleStudyLanguages';
@@ -88,4 +89,41 @@ Map<String, String> languagesCodes = {
   // 'sr': 'Serbian',
 };
 
-enum FirebaseCollections { Songs, BibleStudy, Notifications, Video, Feedback }
+enum FirebaseCollections { SongsV2, BibleStudy, Notifications, Video, Feedback }
+
+enum Languages {
+  en,
+  et,
+  fr,
+  de,
+  bg,
+  it,
+  lv,
+  lt,
+  no,
+  pl,
+  ro,
+  ru,
+  es,
+  sv,
+  uk,
+  sk,
+  sl,
+  fi,
+  sq,
+  eu,
+  be,
+  bs,
+  ca,
+  hr,
+  cs,
+  da,
+  nl,
+  el,
+  hu,
+  ga,
+  lb,
+  mk,
+  pt,
+  sr
+}

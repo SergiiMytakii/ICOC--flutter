@@ -29,11 +29,10 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
 
   @override
   Future<QuerySnapshot> postToFirebase(
-      String collectionName, Map<String, String> data) async {
+      String collectionName, Map<String, dynamic> data) async {
     final CollectionReference collection = db.collection(collectionName);
-    final DocumentReference documentRef = collection.doc(
-      DateTime.now().toUtc().toString(),
-    );
+    log.f(data['id']);
+    final DocumentReference documentRef = collection.doc(data['id'].toString());
     await documentRef.set(data);
     final QuerySnapshot snapshot = await collection.get();
     return snapshot;

@@ -4,7 +4,7 @@ part of 'favorite_songs_bloc.dart';
 class FavoriteSongsState with _$FavoriteSongsState {
   const factory FavoriteSongsState.initial() = FavoriteSongsInitial;
   const factory FavoriteSongsState.loading() = FavoriteSongsLoadingState;
-  const factory FavoriteSongsState.success(List<SongDetail> songs) =
+  const factory FavoriteSongsState.success(List<SongModel> songs) =
       GetFavoriteSongsSuccessState;
   const factory FavoriteSongsState.error(String message) =
       FavoriteSongsErrorState;

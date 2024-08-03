@@ -137,6 +137,10 @@
     "will be displayed first": "kuvatakse esmalt",
     "Unfortunately, there isn't any content here in": "Kahjuks ei ole siin sisu", 
      "Add more languages in the filter.": "Lisa filtris veel keeli.",
-   "There are not any songs in": "Selles keeles pole ühtegi laulu"
+   "There are not any songs in": "Selles keeles pole ühtegi laulu",
+    "chords": "Akordid",
+    "Language": "Keel",
+    "Primary": "Esmane"
+
   }
   
