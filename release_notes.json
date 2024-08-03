@@ -1,62 +1,62 @@
 [ 
     {
         "language": "cs-CZ",
-        "text": "Opravy chyb."
+        "text": "Opravy chyb a vylepšení výkonu."
     },
     {
         "language": "no-NO",
-        "text": "Feilrettinger."
+        "text": "Feilrettinger og ytelsesforbedringer."
     },
     {
         "language": "en-US",
-        "text": "Bug fixes."
+        "text": "Bug fixes and performance improvements."
     },
     {
         "language": "de-DE",
-        "text": "Fehlerbehebungen."
+        "text": "Fehlerbehebungen und Leistungsverbesserungen."
     },
     {
         "language": "pl-PL",
-        "text": "Poprawki błędów."
+        "text": "Poprawki błędów i ulepszenia wydajności."
     },
     {
         "language": "ru-RU",
-        "text": "Исправление ошибок."
+        "text": "Исправление ошибок и улучшение производительности."
     },
     {
         "language": "fr-FR",
-        "text": "Corrections de bugs."
+        "text": "Corrections de bugs et améliorations des performances."
     },
     {
         "language": "it-IT",
-        "text": "Correzioni di bug."
+        "text": "Correzioni di bug e miglioramenti delle prestazioni."
     },
     {
         "language": "ro-RO",
-        "text": "Remedieri de erori."
+        "text": "Remedieri de erori și îmbunătățiri de performanță."
     },
     {
         "language": "ro",
-        "text": "Remedieri de erori."
+        "text": "Remedieri de erori și îmbunătățiri de performanță."
     },
     {
         "language": "uk-UA",
-        "text": "Виправлення помилок."
+        "text": "Виправлення помилок та покращення продуктивності."
     },
     {
         "language": "uk",
-        "text": "Виправлення помилок."
+        "text": "Виправлення помилок та покращення продуктивності."
     },
     {
         "language": "es-ES",
-        "text": "Corrección de errores."
+        "text": "Corrección de errores y mejoras de rendimiento."
     },
     {
         "language": "et",
-        "text": "Veaparandused."
+        "text": "Veaparandused ja jõudluse parandused."
     },
     {
         "language": "lv",
-        "text": "Kļūdu labojumi."
+        "text": "Kļūdu labojumi un veiktspējas uzlabojumi."
     }
 ]
