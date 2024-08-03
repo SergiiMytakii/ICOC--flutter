@@ -18,19 +18,19 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$NotificationsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String locale) listRequested,
+    required TResult Function() listRequested,
     required TResult Function(String? id) markAsReadRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String locale)? listRequested,
+    TResult? Function()? listRequested,
     TResult? Function(String? id)? markAsReadRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String locale)? listRequested,
+    TResult Function()? listRequested,
     TResult Function(String? id)? markAsReadRequested,
     required TResult orElse(),
   }) =>
@@ -83,8 +83,6 @@ abstract class _$$NotificationsListRequestedImplCopyWith<$Res> {
           _$NotificationsListRequestedImpl value,
           $Res Function(_$NotificationsListRequestedImpl) then) =
       __$$NotificationsListRequestedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String locale});
 }
 
 /// @nodoc
@@ -96,79 +94,55 @@ class __$$NotificationsListRequestedImplCopyWithImpl<$Res>
       _$NotificationsListRequestedImpl _value,
       $Res Function(_$NotificationsListRequestedImpl) _then)
       : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? locale = null,
-  }) {
-    return _then(_$NotificationsListRequestedImpl(
-      locale: null == locale
-          ? _value.locale
-          : locale // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$NotificationsListRequestedImpl implements NotificationsListRequested {
-  const _$NotificationsListRequestedImpl({required this.locale});
-
-  @override
-  final String locale;
+  const _$NotificationsListRequestedImpl();
 
   @override
   String toString() {
-    return 'NotificationsEvent.listRequested(locale: $locale)';
+    return 'NotificationsEvent.listRequested()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NotificationsListRequestedImpl &&
-            (identical(other.locale, locale) || other.locale == locale));
+            other is _$NotificationsListRequestedImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, locale);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$NotificationsListRequestedImplCopyWith<_$NotificationsListRequestedImpl>
-      get copyWith => __$$NotificationsListRequestedImplCopyWithImpl<
-          _$NotificationsListRequestedImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String locale) listRequested,
+    required TResult Function() listRequested,
     required TResult Function(String? id) markAsReadRequested,
   }) {
-    return listRequested(locale);
+    return listRequested();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String locale)? listRequested,
+    TResult? Function()? listRequested,
     TResult? Function(String? id)? markAsReadRequested,
   }) {
-    return listRequested?.call(locale);
+    return listRequested?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String locale)? listRequested,
+    TResult Function()? listRequested,
     TResult Function(String? id)? markAsReadRequested,
     required TResult orElse(),
   }) {
     if (listRequested != null) {
-      return listRequested(locale);
+      return listRequested();
     }
     return orElse();
   }
@@ -209,13 +183,7 @@ class _$NotificationsListRequestedImpl implements NotificationsListRequested {
 }
 
 abstract class NotificationsListRequested implements NotificationsEvent {
-  const factory NotificationsListRequested({required final String locale}) =
-      _$NotificationsListRequestedImpl;
-
-  String get locale;
-  @JsonKey(ignore: true)
-  _$$NotificationsListRequestedImplCopyWith<_$NotificationsListRequestedImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  const factory NotificationsListRequested() = _$NotificationsListRequestedImpl;
 }
 
 /// @nodoc
@@ -288,7 +256,7 @@ class _$NotificationMarkAsReadRequestedImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String locale) listRequested,
+    required TResult Function() listRequested,
     required TResult Function(String? id) markAsReadRequested,
   }) {
     return markAsReadRequested(id);
@@ -297,7 +265,7 @@ class _$NotificationMarkAsReadRequestedImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String locale)? listRequested,
+    TResult? Function()? listRequested,
     TResult? Function(String? id)? markAsReadRequested,
   }) {
     return markAsReadRequested?.call(id);
@@ -306,7 +274,7 @@ class _$NotificationMarkAsReadRequestedImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String locale)? listRequested,
+    TResult Function()? listRequested,
     TResult Function(String? id)? markAsReadRequested,
     required TResult orElse(),
   }) {

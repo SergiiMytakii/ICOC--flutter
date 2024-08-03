@@ -5,8 +5,10 @@ import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/model/notifications/notifications_model.dart';
 import 'package:icoc/core/repository/notifications_repository.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';
@@ -31,8 +33,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       final List<NotificationsModel> allNotifications =
           await notificationsRepository.getNotifications();
       final List<NotificationsModel> filteredNotifications =
-          filterNotificationsByLang(
-              event.locale, allNotifications.reversed.toList());
+          filterNotificationsByLang(allNotifications.reversed.toList());
       notifications = await checkAndMarkWhatIsRead(filteredNotifications);
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
@@ -80,12 +81,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 }
 
 List<NotificationsModel> filterNotificationsByLang(
-    String locale, List<NotificationsModel> notifications) {
-  //  notifications.forEach((notification)=> );
-
+    List<NotificationsModel> notifications) {
   final List<NotificationsModel> filteredNotifications = [];
 
-  notifications.map((notif) {
+  notifications.forEach((notif) {
     final engNotification = notif.notifications
         .where((notificationVersion) => notificationVersion.lang == 'en');
 
@@ -94,8 +93,10 @@ List<NotificationsModel> filterNotificationsByLang(
     if (notif.notifications.isEmpty && engNotification.isNotEmpty) {
       notif.notifications.add(engNotification.first);
     }
-    filteredNotifications.add(notif);
-  }).toList();
+    if (notif.notifications.isNotEmpty) {
+      filteredNotifications.add(notif);
+    }
+  });
 
   return filteredNotifications;
 }

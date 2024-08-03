@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
@@ -8,8 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/song_detail.dart';
 
 @dev
 @prod
@@ -56,8 +53,6 @@ class SqliteSongsDbImpl implements LocalSongsDB {
           onCreate: (Database db, int version) async {
         await db.execute(
             'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4 ( tokenize = unicode61, id INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
-        // await db.execute(
-        //     'CREATE VIRTUAL TABLE $TABLE_TEXT USING fts4 (tokenize = unicode61, $ID_SONG, SONG_TEXT TEXT)');
         await db.execute(
             'CREATE TABLE $TABLE_FAVORITES ($ID_SONG INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
         log.i(' !!!!databases hac been opened!!!!!');
@@ -69,16 +64,14 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   }
 
 /* inserting songs into database */
-
   @override
   Future<bool> insertAllSongs(List<SongModel> songs) async {
     // Get a reference to the database.
     final Database? database = await db();
-
     //clean tables before inserting new data
-    await database?.delete(TABLE_SONGS);
     if (database != null) {
       try {
+        await database.delete(TABLE_SONGS);
         await insertTitlesAndTexts(songs, database);
       } catch (e, stackTrace) {
         logError(e, stackTrace);
@@ -225,7 +218,6 @@ class SqliteSongsDbImpl implements LocalSongsDB {
     final Database? database = await db();
 
     final List<SongVersionLocal> songs = [];
-    // log.i('query' + query);
     if (database != null)
     // search in titiles
     {
