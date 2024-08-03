@@ -93,11 +93,10 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                     key: ValueKey('$index'),
                     onChanged: (val) {
                       allLanguages[lang] = val ?? false;
-                      if (isOneActiveLang) {
+                      if (val! && isOneActiveLang) {
                         primaryLang = lang;
                       }
-                      if (!(val ?? false) && isPrimary)
-                        _setPrimaryAnotherLang();
+                      if (!val && isPrimary) _setPrimaryAnotherLang();
 
                       _saveAndRefresh();
                     },

@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc/constants.dart';
 import 'package:icoc/core/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/main.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 

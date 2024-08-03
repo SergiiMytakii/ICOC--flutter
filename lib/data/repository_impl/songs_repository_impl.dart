@@ -38,14 +38,15 @@ class SongsRepositoryImpl implements SongsRepository {
   }
 
   @override
-  Future<void> insertAllSongsToLocalTable(List<SongDetail> songs) async {
-    await localDB.insertAllSongs(songs);
+  Future<bool> insertAllSongsToLocalTable(List<SongModel> songs) async {
+    return await localDB.insertAllSongs(songs);
   }
 
   @override
   Future<List<SongVersionLocal>> getSearchResult(
-      String query, List<String> orderLang) async {
-    return localDB.getSearchResult(query, orderLang);
+    String query,
+  ) async {
+    return localDB.getSearchResult(query);
   }
 
   @override

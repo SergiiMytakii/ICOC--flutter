@@ -1,56 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/core/model/songs/song_model.dart';
-import 'package:icoc/injection.dart';
-import 'package:icoc/presentation/bloc/search_song_bloc/search_song_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:logger/logger.dart';
-
 import 'package:icoc/constants.dart';
-import 'package:icoc/presentation/widget/loading.dart';
 
-class DataSearchResults extends StatefulWidget {
-  DataSearchResults(this.query, {super.key});
-  final String query;
-
-  @override
-  State<DataSearchResults> createState() => _DataSearchResultsState();
-}
-
-class _DataSearchResultsState extends State<DataSearchResults> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class DataSearchResults extends StatelessWidget {
+  DataSearchResults(this.songs, {super.key});
+  final List<SongVersionLocal> songs;
 
   final log = Logger();
 
   @override
   Widget build(BuildContext context) {
-    if (widget.query.contains(RegExp(r'[0-9]'))) {
-      getIt<SearchSongBloc>().add(SearchSongEvent.searchByNumber(widget.query));
-    } else {
-      getIt<SearchSongBloc>().add(SearchSongEvent.searchByText(widget.query));
-    }
-    return BlocBuilder<SearchSongBloc, SearchSongState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          loading: () => SliverToBoxAdapter(child: Loading()),
-          success: (songs) => SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return buildSongCardWithHighliting(
-                    songs[index], context, index);
-              },
-              childCount: songs.length,
-            ),
-          ),
-          orElse: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-        );
-      },
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return buildSongCardWithHighliting(songs[index], context, index);
+        },
+        childCount: songs.length,
+      ),
     );
   }
 
@@ -100,8 +71,7 @@ class _DataSearchResultsState extends State<DataSearchResults> {
   }
 
   String trimText(String word) {
-    final String word1 = word.replaceAll('[', '');
-    return word1;
+    return word.replaceAll('[', '');
   }
 
   Widget buildSongCardWithHighliting(

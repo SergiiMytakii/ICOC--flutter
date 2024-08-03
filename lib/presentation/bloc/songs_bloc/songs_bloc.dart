@@ -21,25 +21,68 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     on<SongsEvent>((event, emit) async {
       await event.map(
         songsRequested: (e) => _onSongsRequested(e, emit),
+        searchByNumber: (e) => _onSearchByNumber(e, emit),
+        searchByText: (e) => _onSearchByText(e, emit),
+        clearSearch: (e) => _onClearSearch(e, emit),
       );
     });
   }
 
   final SongsRepository songsRepositoryImpl;
-  bool sqliteBDisUpdated = false;
+  List<SongModel> allSongs = [];
 
   Future<void> _onSongsRequested(
-    SongsRequested event,
+    _SongsRequested event,
     Emitter<SongsState> emit,
   ) async {
     emit(const SongsState.loading());
     try {
       final songs = await _fetchSongs();
-      // await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-      emit(SongsState.success(songs));
+      if (songs.isNotEmpty) {
+        await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
+        allSongs = songs;
+        emit(SongsState.success(songs));
+      } else {
+        emit(const SongsState.empty());
+      }
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(SongsState.error(error.toString()));
+    }
+  }
+
+  Future<void> _onSearchByNumber(
+      _SearchSongByNumber event, Emitter<SongsState> emit) async {
+    emit(const SongsState.loading());
+    try {
+      final songs =
+          allSongs.isNotEmpty ? allSongs : await songsRepositoryImpl.getSongs();
+      final searchResults = songs
+          .where((song) => song.id.toString() == event.query.trim())
+          .toList();
+
+      emit(SongsState.success(searchResults));
+    } catch (e, stackTrace) {
+      emit(SongsState.error(e.toString()));
+      logError(e, stackTrace);
+    }
+  }
+
+  Future<void> _onClearSearch(
+      _SearchSongClear event, Emitter<SongsState> emit) async {
+    emit(const SongsState.initial());
+  }
+
+  Future<void> _onSearchByText(
+      _SearchSongByText event, Emitter<SongsState> emit) async {
+    emit(const SongsState.loading());
+    try {
+      final List<SongVersionLocal> searchResult =
+          await songsRepositoryImpl.getSearchResult(event.query.trim());
+      emit(SongsState.searchSuccess(searchResult));
+    } catch (e, stackTrace) {
+      emit(SongsState.error(e.toString()));
+      logError(e, stackTrace);
     }
   }
 
