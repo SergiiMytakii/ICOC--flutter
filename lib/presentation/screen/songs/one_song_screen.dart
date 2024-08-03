@@ -10,7 +10,7 @@ import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_b
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
-import 'package:icoc/presentation/widget/error_text_on_screen.dart';
+import 'package:icoc/presentation/widget/loading.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:icoc/constants.dart';
@@ -18,13 +18,11 @@ import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_version_tab.dart';
 
 class OneSongScreen extends StatefulWidget {
-  OneSongScreen(
-      {super.key, required this.songId, this.tabsCount = 1, this.primaryLang}) {
+  OneSongScreen({super.key, required this.songId, required this.primaryLang}) {
     WakelockPlus.enable();
   }
   final String songId;
-  final String? primaryLang;
-  final int tabsCount;
+  final String primaryLang;
 
   @override
   State<OneSongScreen> createState() => _OneSongScreenState();
@@ -33,6 +31,7 @@ class OneSongScreen extends StatefulWidget {
 class _OneSongScreenState extends State<OneSongScreen>
     with TickerProviderStateMixin {
   late TabController tabController;
+  SongModel? song;
 
   @override
   void initState() {
@@ -50,59 +49,74 @@ class _OneSongScreenState extends State<OneSongScreen>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: false,
-      child: BlocBuilder<SongsBloc, SongsState>(builder: (context, state) {
-        return state.maybeWhen(
-          success: (songs) {
-            final SongModel? song = _receiveAndPrepareSong(songs);
+        top: false,
+        child: Builder(builder: (context) {
+          final List<SongModel> allSongs = context.watch<SongsBloc>().allSongs;
+          song = _receiveAndPrepareSong(allSongs);
+          return song != null
+              ? DefaultTabController(
+                  length: song!.songVersions.length,
+                  child: Scaffold(
+                    appBar: _buildAppBar(context, song!),
+                    body: _tabBarBuilder(song!),
+                  ),
+                )
+              : _buildEmptyScreen();
+        }));
+  }
 
-            return song != null
-                ? DefaultTabController(
-                    length: song.songVersions.length,
-                    child: Scaffold(
-                      appBar: _buildAppBar(context, song),
-                      body: _tabBarBuilder(song),
-                    ),
-                  )
-                : const SizedBox.shrink();
-          },
-          error: (_) => const Scaffold(body: ErrorTextOnScreen()),
-          orElse: () => const SizedBox.shrink(),
-        );
-      }),
+  Scaffold _buildEmptyScreen() {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite_border),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.text_fields_outlined),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Loading(),
     );
   }
 
-  SongModel? _receiveAndPrepareSong(List<SongModel> songs) {
-    final SongModel song = songs.firstWhere(
+  SongModel? _receiveAndPrepareSong(List<SongModel> allSongs) {
+    if (allSongs.isEmpty) {
+      getIt<SongsBloc>().add(const SongsEvent.songsRequested());
+      return null;
+    }
+    final SongModel song = allSongs.firstWhere(
       (item) => item.id.toString() == widget.songId,
       orElse: SongModel.defaultSong,
     );
     tabController =
         TabController(length: song.songVersions.length, vsync: this);
 
-    if (widget.primaryLang != null) {
-      //here we handle case when received song from a deep link has a primaryLang which is not active in app
-      if (!song
-          .getAllLangs()
-          .contains(languagesToEnumMap[widget.primaryLang])) {
-        final allLanguages =
-            getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
-        allLanguages[widget.primaryLang!] = true;
-        //save this primaryLang in cache to make it active
-        getIt<LocalCache>()
-            .saveMap(StorageKeys.allSongsLanguages, allLanguages)
-            .then((_) =>
-                getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
+    //here we handle case when received song from a deep link has a primaryLang which is not active in app
+    if (!song.getAllLangs().contains(languagesToEnumMap[widget.primaryLang])) {
+      final allLanguages =
+          getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
+      allLanguages[widget.primaryLang] = true;
+      //save this primaryLang in cache to make it active
+      getIt<LocalCache>()
+          .saveMap(StorageKeys.allSongsLanguages, allLanguages)
+          .then(
+              (_) => getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
 
-        return null;
-      } else {
-        // open specific tab
-        final index = song
-            .getAllLangs()
-            .indexOf(languagesToEnumMap[widget.primaryLang] ?? Languages.en);
-        tabController.animateTo(index);
-      }
+      return null;
+    } else {
+      // open specific tab
+      final index = song
+          .getAllLangs()
+          .indexOf(languagesToEnumMap[widget.primaryLang] ?? Languages.en);
+      tabController.animateTo(index);
     }
 
     return song;
@@ -186,7 +200,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     text = FormatTextHelper.extractFormattedText(text);
 
     final link =
-        '$ICOC_WEB_PAGE/$SONGBOOK/$ONE_SONG_SCREEN/${widget.songId}/${tabController.length}?primaryLang=$primaryLang';
+        '$ICOC_WEB_PAGE/$SONGBOOK/$ONE_SONG_SCREEN/${widget.songId}?lang=$primaryLang';
     final hint = 'Open in ICOC app:'.tr();
     text = '$title\n$description\n\n$text\n\n$hint\n$link';
 

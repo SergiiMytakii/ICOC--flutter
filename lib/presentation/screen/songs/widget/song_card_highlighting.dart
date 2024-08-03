@@ -1,27 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
-import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/core/model/songs/song_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
-import 'package:logger/logger.dart';
 import 'package:icoc/constants.dart';
 
-class DataSearchResults extends StatelessWidget {
-  DataSearchResults(this.songs, {super.key});
-  final List<SongVersionLocal> songs;
-
-  final log = Logger();
+class SongCardWithHighlighting extends StatelessWidget {
+  SongCardWithHighlighting(
+      {super.key, required this.song, required this.dividerColor});
+  final SongVersionLocal song;
+  final Color dividerColor;
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (BuildContext context, int index) {
-          return buildSongCardWithHighliting(songs[index], context, index);
-        },
-        childCount: songs.length,
-      ),
+    return Column(
+      children: [
+        ListTile(
+          onTap: () => context
+              .go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}?lang=${song.lang}'),
+          horizontalTitleGap: 12,
+          leading: Text(song.id.toString(),
+              style: Theme.of(context).textTheme.titleSmall),
+          title: RichText(
+            text: TextSpan(
+                style: Theme.of(context).textTheme.titleLarge,
+                children: title(song, context)),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+          subtitle: RichText(
+            text: TextSpan(
+                style: Theme.of(context).textTheme.bodyMedium,
+                children: text(song, context)),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 4,
+          ),
+        ),
+        Divider(
+          indent: 50,
+          color: dividerColor,
+          thickness: 1.2,
+        )
+      ],
     );
   }
 
@@ -72,38 +92,5 @@ class DataSearchResults extends StatelessWidget {
 
   String trimText(String word) {
     return word.replaceAll('[', '');
-  }
-
-  Widget buildSongCardWithHighliting(
-      SongVersionLocal song, BuildContext context, int index) {
-    return Column(
-      children: [
-        ListTile(
-          onTap: () => context.go('/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}/1'),
-          horizontalTitleGap: 12,
-          leading: Text(song.id.toString(),
-              style: Theme.of(context).textTheme.titleSmall),
-          title: RichText(
-            text: TextSpan(
-                style: Theme.of(context).textTheme.titleLarge,
-                children: title(song, context)),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          subtitle: RichText(
-            text: TextSpan(
-                style: Theme.of(context).textTheme.bodyMedium,
-                children: text(song, context)),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 4,
-          ),
-        ),
-        Divider(
-          indent: 50,
-          color: getDividerColor(index),
-          thickness: 1.2,
-        )
-      ],
-    );
   }
 }

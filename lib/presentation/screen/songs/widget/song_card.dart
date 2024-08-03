@@ -47,7 +47,7 @@ class SongCard extends StatelessWidget {
             child: ListTile(
               onTap: (() {
                 context.go(
-                  '/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}/${song.songVersions.length}?lang=${songVersion.lang.name}',
+                  '/$SONGBOOK/$ONE_SONG_SCREEN/${song.id}?lang=${songVersion.lang.name}',
                 );
               }),
               horizontalTitleGap: 12,
