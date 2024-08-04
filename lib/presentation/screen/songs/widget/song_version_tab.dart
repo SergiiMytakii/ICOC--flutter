@@ -145,8 +145,8 @@ class _SongVersionTabState extends State<SongVersionTab>
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: youtubeVideos
-                  .map((youtubeVideo) =>
-                      VideoCard(resource: youtubeVideo, onTap: _startPlayVideo))
+                  .map((youtubeVideo) => VideoCard(
+                      youtubeVideo: youtubeVideo, onTap: _startPlayVideo))
                   .toList(),
             )),
       ],

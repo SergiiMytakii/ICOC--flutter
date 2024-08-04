@@ -9,9 +9,9 @@ import 'package:icoc/theme.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
-  const VideoCard({super.key, required this.resource, required this.onTap});
+  const VideoCard({super.key, required this.youtubeVideo, required this.onTap});
 
-  final YoutubeVideo resource;
+  final YoutubeVideo youtubeVideo;
   final Function onTap;
 
   @override
@@ -28,7 +28,7 @@ class _VideoCardState extends State<VideoCard> {
 
   @override
   Widget build(BuildContext context) {
-    videoId = getVideoId(context, widget.resource.link);
+    videoId = getVideoId(context, widget.youtubeVideo.link);
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -39,7 +39,7 @@ class _VideoCardState extends State<VideoCard> {
           child: Stack(
             children: [
               Image.network(
-                widget.resource.thumbnail ??
+                widget.youtubeVideo.thumbnail ??
                     YoutubePlayerController.getThumbnail(
                       videoId: videoId,
                     ),
@@ -57,7 +57,7 @@ class _VideoCardState extends State<VideoCard> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Text(
-                  widget.resource.lang,
+                  widget.youtubeVideo.lang,
                   style: const TextStyle(
                       color: ScreenColors.songBook,
                       fontSize: 16,
