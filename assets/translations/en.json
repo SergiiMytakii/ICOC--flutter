@@ -1,5 +1,7 @@
 {
-          "app_bar_title": "Song book",
+    "Show chords in another language"   :     "Show chords in another language"  ,   
+    "There are no chords available for the current language.": "There are no chords available for the current language.",
+    "app_bar_title": "Song book",
           "add_song": "Send text of the song and it will be here soon! ",
           "icon_button_actions_app_bar_filter":
               "Song languages and priority of their display",

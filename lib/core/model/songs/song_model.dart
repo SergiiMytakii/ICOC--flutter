@@ -27,6 +27,10 @@ class SongModel with _$SongModel {
         .any((version) => version.youtubeVideos?.isNotEmpty ?? false);
   }
 
+  bool hasChords() {
+    return songVersions.any((version) => version.isChords);
+  }
+
   const SongModel._();
 }
 

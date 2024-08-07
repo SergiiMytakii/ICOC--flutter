@@ -31,7 +31,6 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
   Future<QuerySnapshot> postToFirebase(
       String collectionName, Map<String, dynamic> data) async {
     final CollectionReference collection = db.collection(collectionName);
-    log.f(data['id']);
     final DocumentReference documentRef = collection.doc(data['id'].toString());
     await documentRef.set(data);
     final QuerySnapshot snapshot = await collection.get();

@@ -1,5 +1,6 @@
 {
-    "Open in ICOC app:": "Åpne i ICOC-appen:",
+    "Show chords in another language": "Vis akkorder på et annet språk",
+    "There are no chords available for the current language.": "Det er ingen akkorder tilgjengelig for det nåværende språket.",    "Open in ICOC app:": "Åpne i ICOC-appen:",
     "suggestion to get admin panel": "Ved å sende dette skjemaet, vil du sende en e-post til administratoren, som vil legge til sangen i appen. \n Hvis du imidlertid er i tilbedelsestjenesten og ønsker å legge til og redigere sanger selv, legg til i 'Tittel'-feltet: 'Jeg ønsker tilgang til admin-panelet.'",
 
     "app_bar_title": "Sangbok",

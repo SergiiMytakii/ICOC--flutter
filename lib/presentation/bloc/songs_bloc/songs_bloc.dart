@@ -30,6 +30,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   final SongsRepository songsRepositoryImpl;
   List<SongModel> allSongs = [];
+  List<SongModel> rawSongs = [];
 
   Future<void> _onSongsRequested(
     _SongsRequested event,
@@ -88,11 +89,9 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   Future<List<SongModel>> _fetchSongs() async {
     List<SongModel> songs = [];
-
-    songs = await songsRepositoryImpl.getSongs();
-    await updateStoredLanguages(songs);
-    songs = await filterSongsByLang(songs);
-
+    rawSongs = await songsRepositoryImpl.getSongs();
+    await updateStoredLanguages(rawSongs);
+    songs = await filterSongsByLang(rawSongs);
     return await orderSongs(songs);
   }
 }

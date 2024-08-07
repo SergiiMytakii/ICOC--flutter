@@ -10,6 +10,7 @@ import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_b
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/presentation/screen/songs/widget/no_chords_tab.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -32,6 +33,8 @@ class _OneSongScreenState extends State<OneSongScreen>
     with TickerProviderStateMixin {
   late TabController tabController;
   SongModel? song;
+  bool hasChords = true;
+  SongVersion? chords;
 
   @override
   void initState() {
@@ -53,12 +56,13 @@ class _OneSongScreenState extends State<OneSongScreen>
         child: Builder(builder: (context) {
           final List<SongModel> allSongs = context.watch<SongsBloc>().allSongs;
           song = _receiveAndPrepareSong(allSongs);
+
           return song != null
               ? DefaultTabController(
                   length: song!.songVersions.length,
                   child: Scaffold(
-                    appBar: _buildAppBar(context, song!),
-                    body: _tabBarBuilder(song!),
+                    appBar: _buildAppBar(context, song!, hasChords),
+                    body: _tabBarBuilder(song!, hasChords),
                   ),
                 )
               : _buildEmptyScreen();
@@ -96,8 +100,20 @@ class _OneSongScreenState extends State<OneSongScreen>
       (item) => item.id.toString() == widget.songId,
       orElse: SongModel.defaultSong,
     );
-    tabController =
-        TabController(length: song.songVersions.length, vsync: this);
+
+    if (!song.hasChords()) {
+      final SongModel rawSong = getIt<SongsBloc>().rawSongs.firstWhere(
+            (item) => item.id.toString() == widget.songId,
+            orElse: SongModel.defaultSong,
+          );
+      if (rawSong.hasChords()) {
+        hasChords = false;
+        chords = rawSong.songVersions.firstWhere((version) => version.isChords);
+      }
+    }
+
+    final tabsCount = song.songVersions.length + (hasChords ? 0 : 1);
+    tabController = TabController(length: tabsCount, vsync: this);
 
     //here we handle case when received song from a deep link has a primaryLang which is not active in app
     if (!song.getAllLangs().contains(languagesToEnumMap[widget.primaryLang])) {
@@ -122,10 +138,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     return song;
   }
 
-  AppBar _buildAppBar(
-    BuildContext context,
-    SongModel song,
-  ) {
+  AppBar _buildAppBar(BuildContext context, SongModel song, bool hasChords) {
     final fontSizeAdjust = FontSizeAdjustBottomSheet(
         context: context, color: ScreenColors.songBook);
 
@@ -135,7 +148,12 @@ class _OneSongScreenState extends State<OneSongScreen>
           Tab(
               text: songVersion.isChords
                   ? '${'chords'.tr()} ${songVersion.lang.name.tr().substring(0, 3)}'
-                  : songVersion.lang.name.tr().substring(0, 3))
+                  : songVersion.lang.name.tr().substring(0, 3)),
+        //suggest chords tab if no chords versions in current lang
+        if (!hasChords)
+          Tab(
+            text: 'chords'.tr(),
+          ),
       ]),
       elevation: 0,
       actions: [
@@ -178,7 +196,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     );
   }
 
-  TabBarView _tabBarBuilder(SongModel song) {
+  TabBarView _tabBarBuilder(SongModel song, bool hasChords) {
     return TabBarView(
       controller: tabController,
       children: [
@@ -186,6 +204,7 @@ class _OneSongScreenState extends State<OneSongScreen>
           SongVersionTab(
             songVersion: songVersion,
           ),
+        if (!hasChords && chords != null) ChordsTab(chords: chords!)
       ],
     );
   }

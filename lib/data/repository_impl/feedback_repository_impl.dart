@@ -25,6 +25,7 @@ class FeedbackRepositoryImpl extends FeedbackRepository {
   Future<List<Feedback>> insertFeedback(String name, String feedback) async {
     final QuerySnapshot snapshot = await firebaseDataSource
         .postToFirebase(FirebaseCollections.Feedback.name, {
+      'id': DateTime.now().toString(),
       'name': name,
       'text': feedback,
     });

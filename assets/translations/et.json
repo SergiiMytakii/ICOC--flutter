@@ -1,4 +1,7 @@
 {
+  "Show chords in another language": "Näita akorde teises keeles",
+  "There are no chords available for the current language.": "Praeguse keele jaoks pole akorde saadaval.",
+
   "suggestion to get admin panel": "Selle vormi saatmisega saadate e-kirja administraatorile, kes lisab laulu rakendusse. \n Kui olete aga ülistusteenistuses ja soovite ise laule lisada ja muuta, lisage 'Pealkiri' väljale: 'Soovin juurdepääsu administraatori paneelile.'",
 
     "Open in ICOC app:": "Ava ICOC rakenduses:",    "app_bar_title": "Lauluraamat",

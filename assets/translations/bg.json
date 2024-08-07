@@ -1,5 +1,8 @@
 {
-    "Open in ICOC app:": "Отвори в приложението ICOC:", 
+  "Show chords in another language": "Покажи акордите на друг език",
+  "There are no chords available for the current language.": "Няма налични акорди за текущия език.",
+
+  "Open in ICOC app:": "Отвори в приложението ICOC:", 
     "app_bar_title": "Песенник",
     "add_song": "Изпратете текста на песента и скоро тя ще се появи тук!",
     "icon_button_actions_app_bar_filter": "Езици на песните и тяхната приоритетност",
