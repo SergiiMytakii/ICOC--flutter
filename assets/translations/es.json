@@ -1,5 +1,7 @@
 {
-  "Show chords in another language": "Mostrar acordes en otro idioma",
+  "Responce from developer:": "Respuesta del desarrollador:",
+  "Please enter your name": "Por favor, ingrese su nombre",
+  "Please enter your feedback": "Por favor, ingrese sus comentarios",  "Show chords in another language": "Mostrar acordes en otro idioma",
   "There are no chords available for the current language.": "No hay acordes disponibles para el idioma actual.",
 
   "suggestion to get admin panel": "Al enviar este formulario, enviará un correo electrónico al administrador, quien agregará la canción a la aplicación. \n Sin embargo, si está en el ministerio de adoración y desea agregar y editar canciones por sí mismo, agregue en el campo 'Título': 'Quiero acceso al panel de administración.'",

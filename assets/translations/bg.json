@@ -1,4 +1,7 @@
-{
+{ 
+  "Responce from developer:": "Отговор от разработчика:",
+  "Please enter your name": "Моля, въведете вашето име",
+  "Please enter your feedback": "Моля, въведете вашия отзив", 
   "Show chords in another language": "Покажи акордите на друг език",
   "There are no chords available for the current language.": "Няма налични акорди за текущия език.",
 

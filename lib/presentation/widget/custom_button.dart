@@ -16,7 +16,7 @@ class CustomButton extends StatelessWidget {
     return SizedBox(
       height: 40,
       child: Container(
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(0),
         decoration: BoxDecoration(
           color: color ?? const Color(0xff6a4c93),
           borderRadius: BorderRadius.circular(4),
@@ -25,6 +25,7 @@ class CustomButton extends StatelessWidget {
           padding: const EdgeInsets.all(2),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
+              elevation: 0,
               backgroundColor: color ?? const Color(0xff6a4c93),
               textStyle:
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

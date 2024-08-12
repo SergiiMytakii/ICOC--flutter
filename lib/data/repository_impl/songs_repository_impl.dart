@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
-import 'package:icoc/core/helpers/convert_languages_enum.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:injectable/injectable.dart';
-
-import 'package:icoc/domain/model/song_detail.dart';
 import 'package:icoc/domain/repository/songs_repository.dart';
 
 @dev
@@ -65,58 +62,5 @@ class SongsRepositoryImpl implements SongsRepository {
   @override
   Future<bool> getFavoriteSongStatus(int id) {
     return localDB.getFavoriteStatus(id);
-  }
-}
-
-List<SongModel> songmodels = [];
-void _convertSongsToV2(
-    QuerySnapshot snapshot, FirebaseDataSource firebaseDataSource) async {
-  final List<SongDetail> songs = snapshot.docs.map(
-    (doc) {
-      final Map data = doc.data() as Map;
-      final song = SongDetail.fromJson(data, int.parse(doc.id));
-
-      song.text.removeWhere((key, value) => value.isEmpty);
-      song.title.removeWhere((key, value) => value.isEmpty);
-      song.description?.removeWhere((key, value) => value.isEmpty);
-
-      final List<SongVersion> versions = [];
-
-      for (MapEntry x in song.text.entries) {
-        versions.add(SongVersion(
-            id: song.id,
-            lang: languagesToEnumMap[x.key.toString().substring(0, 2)]!,
-            text: x.value ?? '',
-            title: song.title[x.key.toString().substring(0, 2)] ?? '',
-            description:
-                song.description?[x.key.toString().substring(0, 2)] ?? '',
-            youtubeVideos: song.youtubeVideos
-                ?.where((item) => item.lang == x.key.toString().substring(0, 2))
-                .toList()));
-      }
-      if (song.chords != null) {
-        for (MapEntry x in song.chords!.entries) {
-          versions.add(SongVersion(
-              id: song.id,
-              lang: Languages.en,
-              text: x.value,
-              title: '',
-              isChords: true));
-        }
-      }
-      final SongModel songModel = SongModel(
-        id: int.parse(doc.id),
-        songVersions: versions,
-      );
-
-      songmodels.add(songModel);
-
-      return song;
-    },
-  ).toList();
-
-  for (final song in songmodels) {
-    final data = song.toJson();
-    firebaseDataSource.postToFirebase('SongsV2', data);
   }
 }
