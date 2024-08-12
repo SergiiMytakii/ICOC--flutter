@@ -1,6 +1,6 @@
-import 'package:icoc/domain/model/feedback.dart';
+import 'package:icoc/domain/model/feedback/feedback_model.dart';
 
 abstract class FeedbackRepository {
-  Future<List<Feedback>> getFeedbackList();
-  Future<List<Feedback>> insertFeedback(String name, String feedback);
+  Future<List<FeedbackModel>> getFeedbackList();
+  Future<List<FeedbackModel>> insertFeedback(String name, String feedback);
 }

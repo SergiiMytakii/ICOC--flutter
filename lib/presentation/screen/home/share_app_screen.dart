@@ -115,6 +115,9 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                               style: const TextStyle(color: Colors.white),
                             ),
                           )),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       CustomButton(
                           onPressed: () => setState(() {
                                 if (store == 'google_play') {

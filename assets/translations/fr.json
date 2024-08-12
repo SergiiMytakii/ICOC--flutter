@@ -1,5 +1,7 @@
-{
-  "Show chords in another language": "Afficher les accords dans une autre langue",
+{ 
+  "Responce from developer:": "Réponse du développeur :",
+  "Please enter your name": "Veuillez entrer votre nom",
+  "Please enter your feedback": "Veuillez entrer vos commentaires",  "Show chords in another language": "Afficher les accords dans une autre langue",
   "There are no chords available for the current language.": "Il n'y a pas d'accords disponibles pour la langue actuelle.",
 
   "suggestion to get admin panel": "En envoyant ce formulaire, vous enverrez un e-mail à l'administrateur, qui ajoutera le chant à l'application. \n Cependant, si vous faites partie du ministère de la louange et souhaitez ajouter et modifier des chants par vous-même, ajoutez dans le champ 'Titre' : 'Je souhaite avoir accès au panneau d'administration.'",

@@ -333,7 +333,8 @@ mixin _$FeedbackState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Feedback> feedbacks) getFeedbackListSuccess,
+    required TResult Function(List<FeedbackModel> feedbacks)
+        getFeedbackListSuccess,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -341,7 +342,7 @@ mixin _$FeedbackState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult? Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -349,7 +350,7 @@ mixin _$FeedbackState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -441,7 +442,8 @@ class _$FeedbackInitialImpl implements FeedbackInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Feedback> feedbacks) getFeedbackListSuccess,
+    required TResult Function(List<FeedbackModel> feedbacks)
+        getFeedbackListSuccess,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -452,7 +454,7 @@ class _$FeedbackInitialImpl implements FeedbackInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult? Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -463,7 +465,7 @@ class _$FeedbackInitialImpl implements FeedbackInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -558,7 +560,8 @@ class _$FeedbackLoadingStateImpl implements FeedbackLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Feedback> feedbacks) getFeedbackListSuccess,
+    required TResult Function(List<FeedbackModel> feedbacks)
+        getFeedbackListSuccess,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -569,7 +572,7 @@ class _$FeedbackLoadingStateImpl implements FeedbackLoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult? Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -580,7 +583,7 @@ class _$FeedbackLoadingStateImpl implements FeedbackLoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -641,7 +644,7 @@ abstract class _$$GetFeedbackListSuccessStateImplCopyWith<$Res> {
           $Res Function(_$GetFeedbackListSuccessStateImpl) then) =
       __$$GetFeedbackListSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Feedback> feedbacks});
+  $Res call({List<FeedbackModel> feedbacks});
 }
 
 /// @nodoc
@@ -662,7 +665,7 @@ class __$$GetFeedbackListSuccessStateImplCopyWithImpl<$Res>
       null == feedbacks
           ? _value._feedbacks
           : feedbacks // ignore: cast_nullable_to_non_nullable
-              as List<Feedback>,
+              as List<FeedbackModel>,
     ));
   }
 }
@@ -670,12 +673,12 @@ class __$$GetFeedbackListSuccessStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetFeedbackListSuccessStateImpl implements GetFeedbackListSuccessState {
-  const _$GetFeedbackListSuccessStateImpl(final List<Feedback> feedbacks)
+  const _$GetFeedbackListSuccessStateImpl(final List<FeedbackModel> feedbacks)
       : _feedbacks = feedbacks;
 
-  final List<Feedback> _feedbacks;
+  final List<FeedbackModel> _feedbacks;
   @override
-  List<Feedback> get feedbacks {
+  List<FeedbackModel> get feedbacks {
     if (_feedbacks is EqualUnmodifiableListView) return _feedbacks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_feedbacks);
@@ -711,7 +714,8 @@ class _$GetFeedbackListSuccessStateImpl implements GetFeedbackListSuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Feedback> feedbacks) getFeedbackListSuccess,
+    required TResult Function(List<FeedbackModel> feedbacks)
+        getFeedbackListSuccess,
     required TResult Function(String message) error,
   }) {
     return getFeedbackListSuccess(feedbacks);
@@ -722,7 +726,7 @@ class _$GetFeedbackListSuccessStateImpl implements GetFeedbackListSuccessState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult? Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult? Function(String message)? error,
   }) {
     return getFeedbackListSuccess?.call(feedbacks);
@@ -733,7 +737,7 @@ class _$GetFeedbackListSuccessStateImpl implements GetFeedbackListSuccessState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -784,10 +788,10 @@ class _$GetFeedbackListSuccessStateImpl implements GetFeedbackListSuccessState {
 }
 
 abstract class GetFeedbackListSuccessState implements FeedbackState {
-  const factory GetFeedbackListSuccessState(final List<Feedback> feedbacks) =
-      _$GetFeedbackListSuccessStateImpl;
+  const factory GetFeedbackListSuccessState(
+      final List<FeedbackModel> feedbacks) = _$GetFeedbackListSuccessStateImpl;
 
-  List<Feedback> get feedbacks;
+  List<FeedbackModel> get feedbacks;
   @JsonKey(ignore: true)
   _$$GetFeedbackListSuccessStateImplCopyWith<_$GetFeedbackListSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -860,7 +864,8 @@ class _$FeedbackErrorStateImpl implements FeedbackErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Feedback> feedbacks) getFeedbackListSuccess,
+    required TResult Function(List<FeedbackModel> feedbacks)
+        getFeedbackListSuccess,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -871,7 +876,7 @@ class _$FeedbackErrorStateImpl implements FeedbackErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult? Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -882,7 +887,7 @@ class _$FeedbackErrorStateImpl implements FeedbackErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Feedback> feedbacks)? getFeedbackListSuccess,
+    TResult Function(List<FeedbackModel> feedbacks)? getFeedbackListSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
