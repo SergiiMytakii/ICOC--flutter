@@ -1,7 +1,10 @@
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/convert_languages_enum.dart';
+
 class BibleStudy {
   String topic;
   String subtopic;
-  String lang;
+  Languages lang;
   int id;
   List<Lesson> lessons;
   BibleStudy(
@@ -10,13 +13,13 @@ class BibleStudy {
       required this.id,
       required this.subtopic,
       required this.lang});
-  static BibleStudy defaultBibleStudy =
-      BibleStudy(lessons: [], topic: '', id: 0, subtopic: '', lang: 'en');
+  static BibleStudy defaultBibleStudy = BibleStudy(
+      lessons: [], topic: '', id: 0, subtopic: '', lang: Languages.defaultLang);
   Map<String, dynamic> toJson() {
     return {
       'topic': topic,
       'subtopic': subtopic,
-      'lang': lang,
+      'lang': lang.name,
       'id': id,
       'lessons': {
         for (var lesson in lessons) lesson.id.toString(): lesson.toJson()
@@ -33,7 +36,7 @@ class BibleStudy {
       topic: json['topic'] as String,
       id: json['id'] as int,
       subtopic: json['subtopic'] as String,
-      lang: json['lang'] as String,
+      lang: languagesToEnumMap[json['lang']] as Languages,
     );
   }
 }

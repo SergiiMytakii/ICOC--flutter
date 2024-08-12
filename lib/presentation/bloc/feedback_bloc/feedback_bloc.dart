@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/feedback.dart';
-import 'package:icoc/core/repository/feedback_repository.dart';
+import 'package:icoc/domain/model/feedback.dart';
+import 'package:icoc/domain/repository/feedback_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

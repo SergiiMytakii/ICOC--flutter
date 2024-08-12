@@ -1,4 +1,4 @@
-import 'package:icoc/core/model/notifications/notifications_model.dart';
+import 'package:icoc/domain/model/notifications/notifications_model.dart';
 
 abstract class NotificationsRepository {
   Future<List<NotificationsModel>> getNotifications();

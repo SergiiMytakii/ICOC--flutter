@@ -1,8 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
-import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';

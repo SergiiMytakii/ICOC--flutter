@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/notifications/notifications_model.dart';
-import 'package:icoc/core/repository/notifications_repository.dart';
+import 'package:icoc/domain/model/notifications/notifications_model.dart';
+import 'package:icoc/domain/repository/notifications_repository.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';

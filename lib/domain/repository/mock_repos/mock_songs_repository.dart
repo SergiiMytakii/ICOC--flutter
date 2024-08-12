@@ -1,5 +1,4 @@
-import 'package:icoc/core/repository/songs_repository.dart';
-import 'package:injectable/injectable.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:mockito/mockito.dart';
 
 // @test

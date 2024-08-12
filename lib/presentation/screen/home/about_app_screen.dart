@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 

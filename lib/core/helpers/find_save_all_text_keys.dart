@@ -1,7 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
-import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/model/song_detail.dart';
 import 'package:icoc/injection.dart';
 import 'package:logger/logger.dart';
 

@@ -20,7 +20,7 @@ YoutubeVideo _$YoutubeVideoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$YoutubeVideo {
-  String get lang => throw _privateConstructorUsedError;
+  Languages get lang => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String get link => throw _privateConstructorUsedError;
   String? get thumbnail => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $YoutubeVideoCopyWith<$Res> {
       _$YoutubeVideoCopyWithImpl<$Res, YoutubeVideo>;
   @useResult
   $Res call(
-      {String lang,
+      {Languages lang,
       String? title,
       String link,
       String? thumbnail,
@@ -78,7 +78,7 @@ class _$YoutubeVideoCopyWithImpl<$Res, $Val extends YoutubeVideo>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -120,7 +120,7 @@ abstract class _$$YoutubeVideoImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String lang,
+      {Languages lang,
       String? title,
       String link,
       String? thumbnail,
@@ -154,7 +154,7 @@ class __$$YoutubeVideoImplCopyWithImpl<$Res>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -205,7 +205,7 @@ class _$YoutubeVideoImpl extends _YoutubeVideo {
       _$$YoutubeVideoImplFromJson(json);
 
   @override
-  final String lang;
+  final Languages lang;
   @override
   final String? title;
   @override
@@ -266,7 +266,7 @@ class _$YoutubeVideoImpl extends _YoutubeVideo {
 
 abstract class _YoutubeVideo extends YoutubeVideo {
   const factory _YoutubeVideo(
-      {required final String lang,
+      {required final Languages lang,
       required final String? title,
       required final String link,
       final String? thumbnail,
@@ -280,7 +280,7 @@ abstract class _YoutubeVideo extends YoutubeVideo {
       _$YoutubeVideoImpl.fromJson;
 
   @override
-  String get lang;
+  Languages get lang;
   @override
   String? get title;
   @override

@@ -24,7 +24,7 @@
   * https://github.com/SergiiMytakii/icoc_admin_pannel
 
 # Dev Notes
-* To enable injectable generation run:  flutter packages pub run build_runner watch --delete-conflicting-outputs
+* To enable injectable generation run:  dart run build_runner watch --delete-conflicting-outputs
 * For Codemagic:  Before Pull Request with dev delete Podfile.loc to avoid a build crash in Codemagic.
 * To test deep links on IOS simulator:  xcrun simctl openurl booted your-app-scheme://your-deep-link-path
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_card_highlighting.dart';

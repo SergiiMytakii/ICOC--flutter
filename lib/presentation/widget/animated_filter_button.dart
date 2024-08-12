@@ -1,8 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
 
@@ -43,8 +43,7 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
   }
 
   Future<void> _initAnimation() async {
-    shouldAnimate =
-        await getIt<LocalCache>().getBool(widget.shouldAnimate) ?? true;
+    shouldAnimate = getIt<LocalCache>().getBool(widget.shouldAnimate) ?? true;
     if (shouldAnimate || widget.shouldAnimateForever) {
       _controller.repeat(reverse: true);
     }
@@ -63,8 +62,7 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
           child: IconButton(
             icon: Row(children: [
               Text(
-                getIt<LocalCache>().getString(StorageKeys.primaryLang) ??
-                    locale,
+                widget.primaryLanguage ?? locale,
                 style: TextStyle(
                   fontSize: 22,
                   color: ColorTween(

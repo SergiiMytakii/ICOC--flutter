@@ -1,5 +1,5 @@
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/youtube_video/youtube_video.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'song_model.freezed.dart';
@@ -19,7 +19,7 @@ class SongModel with _$SongModel {
   static SongModel defaultSong() => const SongModel(id: 0, songVersions: []);
 
   List<Languages> getAllLangs() {
-    return songVersions.map((version) => version.lang).toSet().toList();
+    return songVersions.map((version) => version.lang).toList();
   }
 
   bool hasVideos() {

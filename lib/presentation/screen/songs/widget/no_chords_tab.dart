@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/presentation/screen/songs/song_book_screen.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_version_tab.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';

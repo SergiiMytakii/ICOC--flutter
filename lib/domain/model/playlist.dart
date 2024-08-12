@@ -1,7 +1,10 @@
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/convert_languages_enum.dart';
+
 class Playlist {
   final int id;
   final String title;
-  final String lang;
+  final Languages lang;
   final String description;
   final String playlistId;
 
@@ -17,7 +20,7 @@ class Playlist {
     return {
       'id': id,
       'title': title,
-      'lang': lang,
+      'lang': lang.name,
       'description': description,
       'playlistId': playlistId,
     };
@@ -27,7 +30,7 @@ class Playlist {
     return Playlist(
       id: json['id'] as int,
       title: json['title'] as String,
-      lang: json['lang'] as String,
+      lang: languagesToEnumMap[json['lang']] as Languages,
       description: json['description'] as String,
       playlistId: json['playlistId'] as String,
     );

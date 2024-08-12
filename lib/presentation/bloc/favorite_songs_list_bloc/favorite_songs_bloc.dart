@@ -2,12 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
-import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import 'package:icoc/core/model/song_detail.dart';
 
 part 'favorite_songs_event.dart';
 part 'favorite_songs_state.dart';
@@ -17,8 +16,10 @@ part 'favorite_songs_bloc.freezed.dart';
 class FavoriteSongsListBloc
     extends Bloc<FavoriteSongsEvent, FavoriteSongsState> {
   final SongsRepository songsRepositoryImpl;
+  final SongsUserLanguagesHandler songsUserLanguagesHandler;
 
-  FavoriteSongsListBloc(this.songsRepositoryImpl)
+  FavoriteSongsListBloc(
+      this.songsRepositoryImpl, this.songsUserLanguagesHandler)
       : super(const FavoriteSongsState.initial()) {
     on<FavoriteSongsEvent>((event, emit) async {
       await event.map(
@@ -40,8 +41,10 @@ class FavoriteSongsListBloc
         final List<SongModel> songs = await songsRepositoryImpl.getSongs();
         final favoriteSongs =
             songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
-        final filteredSongs = await filterSongsByLang(favoriteSongs);
-        final orderedSongs = await orderSongs(filteredSongs);
+        final filteredSongs =
+            await filterSongsByLang(favoriteSongs, songsUserLanguagesHandler);
+        final orderedSongs =
+            await orderSongs(filteredSongs, songsUserLanguagesHandler);
         emit(FavoriteSongsState.success(orderedSongs));
       } else {
         emit(const FavoriteSongsState.success([]));

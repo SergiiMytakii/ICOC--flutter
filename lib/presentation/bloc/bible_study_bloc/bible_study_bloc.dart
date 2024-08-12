@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/helpers/set_device_lang_as_primary.dart';
-import 'package:icoc/core/model/bible_study.dart';
-import 'package:icoc/core/repository/bible_study_repository.dart';
-import 'package:icoc/injection.dart';
+import 'package:icoc/domain/model/bible_study.dart';
+import 'package:icoc/domain/repository/bible_study_repository.dart';
+import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,8 +16,9 @@ part 'bible_study_bloc.freezed.dart';
 @singleton
 class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   final BibleStudyRepository bibleStudyRepository;
-
-  BibleStudyBloc(this.bibleStudyRepository)
+  final BibleStudyUserLanguagesHandler bibleStudyUserLanguagesHandler;
+  List<BibleStudy> allTopics = [];
+  BibleStudyBloc(this.bibleStudyRepository, this.bibleStudyUserLanguagesHandler)
       : super(const BibleStudyState.initial()) {
     on<BibleStudyEvent>((event, emit) async {
       await event.map(
@@ -33,10 +33,11 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     try {
       emit(const BibleStudyState.loading());
-      final List<BibleStudy> topics =
-          await bibleStudyRepository.getBibleStudyList();
-      if (topics.isNotEmpty) {
-        final List<BibleStudy> filteredTopics = await filterByLanguages(topics);
+      allTopics = await bibleStudyRepository.getBibleStudyList();
+      if (allTopics.isNotEmpty) {
+        await updateStoredLanguages(allTopics, bibleStudyUserLanguagesHandler);
+        final List<BibleStudy> filteredTopics =
+            await filterByLanguages(allTopics, bibleStudyUserLanguagesHandler);
         emit(BibleStudyState.success(filteredTopics));
       } else {
         emit(BibleStudyState.error(
@@ -50,39 +51,36 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   }
 }
 
-Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics) async {
-  final locale = await getIt<LocalCache>().getString(
-        StorageKeys.locale,
-      ) ??
-      'en';
+Future<void> updateStoredLanguages(List<BibleStudy> bibleStudies,
+    BibleStudyUserLanguagesHandler bibleStudyUserLanguagesHandler) async {
+  final List<Languages> allLangsFrombibleStudies =
+      bibleStudies.map((bibleStudy) => bibleStudy.lang).toSet().toList();
 
-  final Map<String, dynamic> storedLanguages =
-      getIt<LocalCache>().getMap(StorageKeys.bibleStudyLanguages) ?? {};
-  //set keeps only unique values
-  final Set<String> allKeys = {};
-  topics.forEach((topic) => allKeys.add(topic.lang));
-
-  putDeviceLangToFirstPlace(allKeys.toList(), locale);
-
-  allKeys.forEach((String lang) {
-    if (!storedLanguages.containsKey(lang)) {
-      storedLanguages[lang] = lang == locale;
+//add all new langs and set all new langs to false and locale lang to true
+  allLangsFrombibleStudies.forEach((Languages lang) async {
+    if (!bibleStudyUserLanguagesHandler.languages.containsKey(lang.name)) {
+      await bibleStudyUserLanguagesHandler.addLanguage(
+          lang.name, lang.name == locale);
     }
   });
-  getIt<LocalCache>().saveMap(StorageKeys.bibleStudyLanguages, storedLanguages);
+}
 
-  final filteredTopics = topics.where((topic) {
-    return storedLanguages.entries
-        .any((element) => element.value == true && element.key == topic.lang);
-  }).toList();
+Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics,
+    BibleStudyUserLanguagesHandler bibleStudyUserLanguagesHandler) async {
+  final activeLanguages = bibleStudyUserLanguagesHandler.getActiveLanguages();
+
+  final filteredTopics = topics
+      .where((topic) => activeLanguages.contains(topic.lang.name))
+      .toList();
 
   filteredTopics.sort((a, b) {
-    if (a.lang == locale && b.lang != locale) {
-      return -1; // 'en' should come before any other lang
-    } else if (a.lang != locale && b.lang == locale) {
-      return 1; // Any other lang should come after 'en'
+    if (a.lang.name == locale && b.lang.name != locale) {
+      return -1; // put primary lang first
+    } else if (a.lang.name != locale && b.lang.name == locale) {
+      return 1;
     } else {
-      return a.lang.compareTo(b.lang); // Sort other langs alphabetically
+      return a.lang.name
+          .compareTo(b.lang.name); // Sort other langs alphabetically
     }
   });
   return filteredTopics;

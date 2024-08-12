@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 

@@ -1,12 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
-import 'package:icoc/core/repository/songs_repository.dart';
-import 'package:icoc/injection.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,7 +16,8 @@ part 'songs_bloc.freezed.dart';
 
 @singleton
 class SongsBloc extends Bloc<SongsEvent, SongsState> {
-  SongsBloc(this.songsRepositoryImpl) : super(const SongsState.initial()) {
+  SongsBloc(this.songsRepositoryImpl, this.songsUserLanguagesHandler)
+      : super(const SongsState.initial()) {
     on<SongsEvent>((event, emit) async {
       await event.map(
         songsRequested: (e) => _onSongsRequested(e, emit),
@@ -29,6 +29,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   }
 
   final SongsRepository songsRepositoryImpl;
+  final SongsUserLanguagesHandler songsUserLanguagesHandler;
   List<SongModel> allSongs = [];
   List<SongModel> rawSongs = [];
 
@@ -36,6 +37,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     _SongsRequested event,
     Emitter<SongsState> emit,
   ) async {
+    print('bloc ${songsUserLanguagesHandler.hashCode}');
     emit(const SongsState.loading());
     try {
       final songs = await _fetchSongs();
@@ -90,25 +92,23 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   Future<List<SongModel>> _fetchSongs() async {
     List<SongModel> songs = [];
     rawSongs = await songsRepositoryImpl.getSongs();
-    await updateStoredLanguages(rawSongs);
-    songs = await filterSongsByLang(rawSongs);
-    return await orderSongs(songs);
+    await updateStoredLanguages(rawSongs, songsUserLanguagesHandler);
+    songs = await filterSongsByLang(rawSongs, songsUserLanguagesHandler);
+    return await orderSongs(songs, songsUserLanguagesHandler);
   }
 }
 
-Future<void> updateStoredLanguages(List<SongModel> songs) async {
-  final List<Languages> allLangs = findAllLangs(songs);
+Future<void> updateStoredLanguages(List<SongModel> songs,
+    SongsUserLanguagesHandler songsUserLanguagesHandler) async {
+  final List<Languages> allLangsFromSongs = findAllLangs(songs);
 
-  final Map<String, dynamic> orderedAllLanguages =
-      getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
-
-  allLangs.forEach((Languages lang) {
-    if (!orderedAllLanguages.containsKey(lang.name)) {
-      orderedAllLanguages[lang.name] = lang.name == locale;
+//add all new langs and set all new langs to false and locale lang to true
+  allLangsFromSongs.forEach((Languages lang) async {
+    if (!songsUserLanguagesHandler.languages.containsKey(lang.name)) {
+      await songsUserLanguagesHandler.addLanguage(
+          lang.name, lang.name == locale);
     }
   });
-  await getIt<LocalCache>()
-      .saveMap(StorageKeys.allSongsLanguages, orderedAllLanguages);
 }
 
 List<Languages> findAllLangs(List<SongModel> songs) {

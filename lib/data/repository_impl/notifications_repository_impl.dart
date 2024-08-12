@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
-import 'package:icoc/core/model/notifications/notifications_model.dart';
-import 'package:icoc/core/repository/notifications_repository.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/domain/model/notifications/notifications_model.dart';
+import 'package:icoc/domain/repository/notifications_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @dev

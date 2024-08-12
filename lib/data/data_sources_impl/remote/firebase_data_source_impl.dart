@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 
 @dev
 @prod

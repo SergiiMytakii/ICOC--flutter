@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:icoc/core/model/song_detail.dart';
-import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/domain/model/song_detail.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart' as i;
 import 'package:mockito/mockito.dart';

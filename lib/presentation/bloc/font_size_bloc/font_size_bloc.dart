@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 part 'font_size_event.dart';
 part 'font_size_state.dart';

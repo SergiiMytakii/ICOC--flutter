@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_db_data_source.dart';
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/local/local_db_data_source.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/core/helpers/convert_languages_enum.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:icoc/core/model/song_detail.dart';
-import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/domain/model/song_detail.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 
 @dev
 @prod

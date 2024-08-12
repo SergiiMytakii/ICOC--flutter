@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 class NoContentWarning extends StatelessWidget {
   const NoContentWarning({

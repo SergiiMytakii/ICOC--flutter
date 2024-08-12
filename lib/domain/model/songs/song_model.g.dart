@@ -79,6 +79,7 @@ const _$LanguagesEnumMap = {
   Languages.mk: 'mk',
   Languages.pt: 'pt',
   Languages.sr: 'sr',
+  Languages.defaultLang: 'defaultLang',
 };
 
 _$SongVersionLocalImpl _$$SongVersionLocalImplFromJson(

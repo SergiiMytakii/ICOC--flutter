@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
@@ -24,14 +25,14 @@ class SongBookAppbar extends StatefulWidget {
 }
 
 class _SongBookAppbarState extends State<SongBookAppbar> {
-  Map<String, dynamic>? allLanguages;
+  final SongsUserLanguagesHandler songsUserLanguagesHandler =
+      getIt<SongsUserLanguagesHandler>();
   final GlobalKey tooltipKey = GlobalKey();
   bool _tooltipVisible = true;
 
   @override
   void initState() {
-    allLanguages = getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages);
-    if (allLanguages == null) {
+    if (songsUserLanguagesHandler.languages.isEmpty) {
       Future.delayed(const Duration(seconds: 2))
           .then((_) => _showSelectLangBottomSheet());
     }
@@ -95,6 +96,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
                     shouldAnimateForever: shouldAnimate,
                     shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
                     color: ScreenColors.songBook,
+                    primaryLanguage: songsUserLanguagesHandler.primaryLang,
                     onTap: () => _showSelectLangBottomSheet());
               },
             ),
