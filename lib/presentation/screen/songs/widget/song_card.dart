@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 class SongCard extends StatelessWidget {
   final SongModel song;

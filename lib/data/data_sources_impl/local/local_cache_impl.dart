@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:injectable/injectable.dart';
 
 @dev

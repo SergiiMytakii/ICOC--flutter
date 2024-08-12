@@ -1,4 +1,4 @@
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 
 abstract class LocalSongsDB {
   Future<bool> insertAllSongs(List<SongModel> songs);

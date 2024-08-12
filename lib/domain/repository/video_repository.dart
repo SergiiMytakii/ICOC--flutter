@@ -1,5 +1,5 @@
-import 'package:icoc/core/model/youtube_video/youtube_video.dart';
-import 'package:icoc/core/model/playlist.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
+import 'package:icoc/domain/model/playlist.dart';
 
 abstract class VideoRepository {
   Future<List<Playlist>> getVideoList();

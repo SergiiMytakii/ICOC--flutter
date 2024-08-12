@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/core/model/q&a_model.dart';
+import 'package:icoc/domain/model/q&a_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/routes/routes_with_transitions.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';

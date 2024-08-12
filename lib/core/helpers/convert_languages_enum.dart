@@ -1,4 +1,4 @@
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 const languagesToEnumMap = {
   'en': Languages.en,

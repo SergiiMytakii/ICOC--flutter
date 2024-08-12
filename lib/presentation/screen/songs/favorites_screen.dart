@@ -7,7 +7,7 @@ import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_b
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/screen/songs/widget/slide_actions.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_card.dart';
 

@@ -7,7 +7,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:icoc/presentation/widget/custom_button.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 class ShareAppScreen extends StatefulWidget {
   const ShareAppScreen({super.key});

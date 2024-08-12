@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
-import 'package:icoc/core/model/youtube_video/youtube_video.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';

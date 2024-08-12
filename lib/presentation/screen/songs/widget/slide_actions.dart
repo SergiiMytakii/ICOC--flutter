@@ -6,7 +6,7 @@ import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 class DeleteFromFavorites extends StatelessWidget {
   DeleteFromFavorites({

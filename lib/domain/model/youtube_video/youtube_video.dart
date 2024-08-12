@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:icoc/core/constants.dart';
 
 part 'youtube_video.freezed.dart';
 part 'youtube_video.g.dart';
@@ -6,7 +7,7 @@ part 'youtube_video.g.dart';
 @freezed
 class YoutubeVideo with _$YoutubeVideo {
   const factory YoutubeVideo({
-    required String lang,
+    required Languages lang,
     required String? title,
     required String link,
     String? thumbnail,
@@ -23,13 +24,17 @@ class YoutubeVideo with _$YoutubeVideo {
 
   static YoutubeVideo defaultVideo() {
     return const YoutubeVideo(
-        lang: '', title: '', link: '', thumbnail: '', artist: '');
+        lang: Languages.defaultLang,
+        title: '',
+        link: '',
+        thumbnail: '',
+        artist: '');
   }
 
   factory YoutubeVideo.fromJsonYoutubePlaylists(Map json) {
     //log.w(json);
     return YoutubeVideo(
-        lang: '',
+        lang: Languages.defaultLang,
         title: json['title'],
         link: json['resourceId']['videoId'],
         thumbnail: json['thumbnails'] != null

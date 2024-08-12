@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 class BottomSheetBibleStudyFilter extends StatefulWidget {
   const BottomSheetBibleStudyFilter({super.key});
@@ -17,12 +17,10 @@ class BottomSheetBibleStudyFilter extends StatefulWidget {
 
 class _BottomSheetBibleStudyFilterState
     extends State<BottomSheetBibleStudyFilter> {
-  Map<String, dynamic> allLanguages = {};
+  final bibleStudyUserLanguagesHandler =
+      getIt<BibleStudyUserLanguagesHandler>();
   @override
   void initState() {
-    allLanguages =
-        getIt<LocalCache>().getMap(StorageKeys.bibleStudyLanguages) ?? {};
-
     super.initState();
   }
 
@@ -44,14 +42,16 @@ class _BottomSheetBibleStudyFilterState
           ),
           Expanded(
             child: ListView(
-              children: List.generate(allLanguages.length, (index) {
+              children: List.generate(
+                  bibleStudyUserLanguagesHandler.languages.length, (index) {
                 return MyCheckboxListTile(
-                    allLanguages: allLanguages,
+                    allLanguages: bibleStudyUserLanguagesHandler.languages,
                     color: ScreenColors.bibleStudy,
-                    label: allLanguages.keys.toList()[index],
-                    callback: (Map<String, dynamic> activeLanguages) {
-                      getIt<LocalCache>().saveMap(
-                          StorageKeys.bibleStudyLanguages, activeLanguages);
+                    label: bibleStudyUserLanguagesHandler.languages.keys
+                        .toList()[index],
+                    callback: (Map<String, dynamic> activeLanguages) async {
+                      await bibleStudyUserLanguagesHandler
+                          .saveAllLanguages(activeLanguages);
                       getIt<BibleStudyBloc>()
                           .add(const BibleStudyEvent.listRequested());
                     },

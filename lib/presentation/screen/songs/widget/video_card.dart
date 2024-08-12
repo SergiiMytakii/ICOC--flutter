@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/youtube_video/youtube_video.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/theme.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
@@ -57,7 +57,7 @@ class _VideoCardState extends State<VideoCard> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Text(
-                  widget.youtubeVideo.lang,
+                  widget.youtubeVideo.lang.name,
                   style: const TextStyle(
                       color: ScreenColors.songBook,
                       fontSize: 16,

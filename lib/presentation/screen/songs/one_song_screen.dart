@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/convert_languages_enum.dart';
-import 'package:icoc/core/model/songs/song_model.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
@@ -14,7 +15,7 @@ import 'package:icoc/presentation/screen/songs/widget/no_chords_tab.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/screen/songs/widget/song_version_tab.dart';
 
@@ -100,7 +101,7 @@ class _OneSongScreenState extends State<OneSongScreen>
       (item) => item.id.toString() == widget.songId,
       orElse: SongModel.defaultSong,
     );
-
+//if no chords in the current language show chords in another language if available
     if (!song.hasChords()) {
       final SongModel rawSong = getIt<SongsBloc>().rawSongs.firstWhere(
             (item) => item.id.toString() == widget.songId,
@@ -115,17 +116,12 @@ class _OneSongScreenState extends State<OneSongScreen>
     final tabsCount = song.songVersions.length + (hasChords ? 0 : 1);
     tabController = TabController(length: tabsCount, vsync: this);
 
-    //here we handle case when received song from a deep link has a primaryLang which is not active in app
+    //handle case when received song from a deep link has a primaryLang which is not active in app
     if (!song.getAllLangs().contains(languagesToEnumMap[widget.primaryLang])) {
-      final allLanguages =
-          getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
-      allLanguages[widget.primaryLang] = true;
-      //save this primaryLang in cache to make it active
-      getIt<LocalCache>()
-          .saveMap(StorageKeys.allSongsLanguages, allLanguages)
+      getIt<SongsUserLanguagesHandler>()
+          .addLanguage(widget.primaryLang, true)
           .then(
               (_) => getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
-
       return null;
     } else {
       // open specific tab

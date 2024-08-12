@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/core/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 
 class BottomSheetSongsFilter extends StatefulWidget {
@@ -18,15 +19,11 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Map<String, dynamic> allLanguages = {};
   String primaryLang = '';
 
-  bool get isOneActiveLang =>
-      allLanguages.entries.toList().where((entry) => entry.value).length == 1;
+  final songsUserLanguagesHandler = getIt<SongsUserLanguagesHandler>();
   @override
   void initState() {
-    primaryLang =
-        getIt<LocalCache>().getString(StorageKeys.primaryLang) ?? locale;
-    allLanguages =
-        getIt<LocalCache>().getMap(StorageKeys.allSongsLanguages) ?? {};
-
+    allLanguages = songsUserLanguagesHandler.languages;
+    primaryLang = songsUserLanguagesHandler.primaryLang;
     orderByTitle =
         getIt<LocalCache>().getBool(StorageKeys.orderByTitle) ?? true;
 
@@ -93,10 +90,12 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
                     key: ValueKey('$index'),
                     onChanged: (val) {
                       allLanguages[lang] = val ?? false;
-                      if (val! && isOneActiveLang) {
+                      if (val! && songsUserLanguagesHandler.isOneActiveLang) {
                         primaryLang = lang;
                       }
-                      if (!val && isPrimary) _setPrimaryAnotherLang();
+                      if (!val && isPrimary) {
+                        primaryLang = songsUserLanguagesHandler.primaryLang;
+                      }
 
                       _saveAndRefresh();
                     },
@@ -116,8 +115,7 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
             if (val) {
               primaryLang = label;
             } else {
-              getIt<LocalCache>().removeValue(StorageKeys.primaryLang);
-              _setPrimaryAnotherLang();
+              primaryLang = songsUserLanguagesHandler.primaryLang;
             }
             _saveAndRefresh();
           });
@@ -125,9 +123,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   }
 
   Future<void> _saveAndRefresh() async {
-    await getIt<LocalCache>()
-        .saveMap(StorageKeys.allSongsLanguages, allLanguages);
-    getIt<LocalCache>().saveString(StorageKeys.primaryLang, primaryLang);
+    await songsUserLanguagesHandler.saveAllLanguages(allLanguages);
+    await songsUserLanguagesHandler.updatePrimaryLanguage(primaryLang);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
     setState(() {});
   }
@@ -164,16 +161,5 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   void _orderSongs(bool orderByTitle) async {
     await getIt<LocalCache>().saveBool(StorageKeys.orderByTitle, orderByTitle);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
-  }
-
-  void _setPrimaryAnotherLang() {
-    final activeLang = allLanguages.entries
-        .toList()
-        .firstWhere(
-          (entry) => entry.value,
-          orElse: () => MapEntry(locale, true),
-        )
-        .key;
-    primaryLang = activeLang;
   }
 }

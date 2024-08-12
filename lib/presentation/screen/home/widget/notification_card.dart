@@ -2,9 +2,9 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
-import 'package:icoc/core/model/notifications/notifications_model.dart';
+import 'package:icoc/domain/model/notifications/notifications_model.dart';
 
 class NotificationCard extends StatelessWidget {
   final NotificationsModel notification;

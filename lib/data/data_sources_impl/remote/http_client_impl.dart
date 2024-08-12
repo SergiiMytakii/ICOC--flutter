@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:icoc/core/data_sources/remote/http_client.dart';
+import 'package:icoc/domain/data_sources/remote/http_client.dart';
 import 'package:injectable/injectable.dart';
 
 @dev

@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:icoc/core/model/youtube_video/youtube_video.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 
 class SongDetail {
   final int id;
@@ -181,8 +181,8 @@ class SongDetail {
   List<YoutubeVideo> _sortVideos(
       List<YoutubeVideo> youtubeVideos, List<String> orderLanguages) {
     youtubeVideos.sort((a, b) {
-      final int indexA = orderLanguages.indexOf(a.lang);
-      final int indexB = orderLanguages.indexOf(b.lang);
+      final int indexA = orderLanguages.indexOf(a.lang.name);
+      final int indexB = orderLanguages.indexOf(b.lang.name);
 
       // If either language is not in orderLanguages, move it to the end
       if (indexA == -1) return 1;
@@ -218,7 +218,6 @@ class SongDetail {
   }
 
   static SongDetail defaultSong() {
-    return SongDetail(
-        id: 0, title: {}, text: {});
+    return SongDetail(id: 0, title: {}, text: {});
   }
 }

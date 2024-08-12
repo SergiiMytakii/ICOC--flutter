@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icoc/core/data_sources/remote/http_client.dart';
+import 'package:icoc/domain/data_sources/remote/http_client.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/youtube_video/youtube_video.dart';
-import 'package:icoc/core/model/playlist.dart';
-import 'package:icoc/core/repository/video_repository.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
+import 'package:icoc/domain/model/playlist.dart';
+import 'package:icoc/domain/repository/video_repository.dart';
 
 @dev
 @prod
