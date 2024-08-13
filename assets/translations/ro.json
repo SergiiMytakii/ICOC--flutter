@@ -1,5 +1,7 @@
 {
-    "Open in ICOC app:": "Deschide în aplicația ICOC:",
+    "Responce from developer:": "Răspuns de la dezvoltator:",
+    "Please enter your name": "Vă rugăm să introduceți numele dvs.",
+    "Please enter your feedback": "Vă rugăm să introduceți feedback-ul dvs.",    "Open in ICOC app:": "Deschide în aplicația ICOC:",
     "suggestion to get admin panel": "Prin trimiterea acestui formular, veți trimite un e-mail administratorului, care va adăuga cântecul în aplicație. \n Cu toate acestea, dacă sunteți în slujba de închinare și doriți să adăugați și să editați cântece singur, adăugați în câmpul 'Titlu': 'Doresc acces la panoul de administrare.'",
 
     "app_bar_title": "Cartea Cântecelor",
@@ -138,7 +140,11 @@
   "will be displayed first": "va fi afișat primul",
   "Unfortunately, there isn't any content here in": "Din păcate, nu există niciun conținut aici în",
    "Add more languages in the filter.": "Adăugați mai multe limbi în filtru.",
-   "There are not any songs in": "Nu există nicio melodie în"
+   "There are not any songs in": "Nu există nicio melodie în",
+  "chords": "Acorduri",
+  "Language": "Limba",
+  "Primary": "Principal"
+
   
   }
   

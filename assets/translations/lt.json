@@ -1,4 +1,8 @@
-{
+{"Responce from developer:": "Atsakymas iš kūrėjo:",
+"Please enter your name": "Įveskite savo vardą",
+"Please enter your feedback": "Įveskite savo atsiliepimą",  "Show chords in another language": "Rodyti akordus kita kalba",
+  "There are no chords available for the current language.": "Šiai kalbai akordų nėra.",
+
   "suggestion to get admin panel": "Siųsdami šią formą, išsiųsite el. laišką administratoriui, kuris pridės dainą į programėlę. \n Tačiau jei esate garbinimo tarnystėje ir norite patys pridėti bei redaguoti dainas, į laukelį 'Pavadinimas' įrašykite: 'Noriu prieigos prie administratoriaus skydelio.'",
 
   "Open in ICOC app:": "Atidaryti ICOC programėlėje:",
@@ -138,6 +142,10 @@
     "will be displayed first": "bus rodomas pirmoji",
     "Unfortunately, there isn't any content here in": "Deja, čia nėra jokio turinio",
       "Add more languages in the filter.": "Pridėkite daugiau kalbų filtre.",
-   "There are not any songs in": "Nėra dainų šia kalba"
+   "There are not any songs in": "Nėra dainų šia kalba",
+  "chords": "Akordai",
+  "Language": "Kalba",
+  "Primary": "Pagrindinė"
+
   }
   

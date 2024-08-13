@@ -7,6 +7,6 @@ class VideoState with _$VideoState {
   const factory VideoState.getVideoListSuccess(List<Playlist> topics) =
       GetVideoListSuccessState;
   const factory VideoState.getVideosFromPlaylistSuccess(
-      List<Resources> resources) = GetVideosFromPlaylistSuccessState;
+      List<YoutubeVideo> youtubeVideos) = GetVideosFromPlaylistSuccessState;
   const factory VideoState.error(String message) = VideoErrorState;
 }

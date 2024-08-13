@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
@@ -23,28 +25,27 @@ class SongBookAppbar extends StatefulWidget {
 }
 
 class _SongBookAppbarState extends State<SongBookAppbar> {
-  Map<String, dynamic>? allLanguages;
-  String firstLang = '';
+  final SongsUserLanguagesHandler songsUserLanguagesHandler =
+      getIt<SongsUserLanguagesHandler>();
   final GlobalKey tooltipKey = GlobalKey();
   bool _tooltipVisible = true;
 
   @override
   void initState() {
-    allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages);
-    if (allLanguages == null) {
+    if (songsUserLanguagesHandler.languages.isEmpty) {
       Future.delayed(const Duration(seconds: 2))
           .then((_) => _showSelectLangBottomSheet());
     }
-    setFirstLang();
+
     showTooltip();
 
     super.initState();
   }
 
-  void showTooltip() {
+  void showTooltip() async {
     final double tooltipShown =
-        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+        await getIt<LocalCache>().getDouble(StorageKeys.shouldShowTooltip) ??
+            0.0;
     if (tooltipShown < 4.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
@@ -55,30 +56,8 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             });
         });
       });
-      SharedPreferencesHelper.saveDouble(
-          StorageKeys.shouldShowTooltip, tooltipShown + 1);
-    }
-  }
-
-  void setFirstLang() {
-    //this needed to display primary language
-    final locale = SharedPreferencesHelper.getString(
-          StorageKeys.locale,
-        ) ??
-        'en';
-    allLanguages =
-        SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ??
-            {locale: true};
-
-    allLanguages!.removeWhere((key, value) => value == false);
-    if (allLanguages!.isNotEmpty) {
-      setState(() {
-        firstLang = allLanguages!.keys.first;
-      });
-    } else {
-      setState(() {
-        firstLang = '';
-      });
+      getIt<LocalCache>()
+          .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
   }
 
@@ -110,21 +89,15 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             BlocBuilder<SongsBloc, SongsState>(
               builder: (context, state) {
                 final bool shouldAnimate = state.maybeWhen(
-                      success: (songs) => songs.isEmpty,
-                      orElse: () => false,
-                    ) ||
-                    firstLang == '';
-                return AnimatedFilterIconButton(
-                  shouldAnimateForever: shouldAnimate,
-                  firstLanguage: firstLang,
-                  shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
-                  color: ScreenColors.songBook,
-                  onTap: () => _showSelectLangBottomSheet().then(
-                    (value) => setState(() {
-                      setFirstLang();
-                    }),
-                  ),
+                  success: (songs) => songs.isEmpty,
+                  orElse: () => false,
                 );
+                return AnimatedFilterIconButton(
+                    shouldAnimateForever: shouldAnimate,
+                    shouldAnimate: StorageKeys.shouldSongsFilterAnimate,
+                    color: ScreenColors.songBook,
+                    primaryLanguage: songsUserLanguagesHandler.primaryLang,
+                    onTap: () => _showSelectLangBottomSheet());
               },
             ),
           ],

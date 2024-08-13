@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
-import 'package:icoc/core/data_sources/local/local_q_and_a_db_data_source.dart';
-import 'package:icoc/core/model/q&a_model.dart';
-import 'package:icoc/core/repository/q&a_repository.dart';
+import 'package:icoc/domain/data_sources/local/local_q_and_a_db_data_source.dart';
+import 'package:icoc/domain/model/q&a/q&a_model.dart';
+import 'package:icoc/domain/repository/q&a_repository.dart';
 
 @dev
 @prod

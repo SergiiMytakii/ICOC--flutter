@@ -3,12 +3,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
-import 'package:icoc/core/model/bible_study.dart';
+import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
@@ -50,10 +51,16 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           loading: () => Scaffold(
             body: CustomRefreshIndicator(onRefresh: _getBibleStudyList),
           ),
-          success: (topics) => Scaffold(
-            appBar: _buildAppbar(context, topics),
-            body: _buildBody(topics),
-          ),
+          success: (topics) {
+            if (topics.isEmpty) {
+              Future.delayed(const Duration(seconds: 3))
+                  .then((_) => _showLangFilter(context));
+            }
+            return Scaffold(
+              appBar: _buildAppbar(context, topics),
+              body: _buildBody(topics),
+            );
+          },
           error: (message) => Scaffold(
             body: RefreshIndicator.adaptive(
               onRefresh: _getBibleStudyList,
@@ -92,25 +99,31 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
               ),
             ),
             AnimatedFilterIconButton(
-              shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-              shouldAnimateForever: topics.isEmpty,
-              onTap: () => showModalBottomSheet(
-                scrollControlDisabledMaxHeightRatio: 2,
-                context: context,
-                backgroundColor: Colors.transparent,
-                builder: (BuildContext context) {
-                  return ModalBottomSheet(
-                    height: MediaQuery.of(context).size.height / 1.5,
-                    blurBackground: false,
-                    child: const BottomSheetBibleStudyFilter(),
-                  );
-                },
-              ),
-              color: ScreenColors.bibleStudy,
-            ),
+                shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+                shouldAnimateForever: topics.isEmpty,
+                onTap: () => _showLangFilter(context),
+                color: ScreenColors.bibleStudy,
+                primaryLanguage: getIt<BibleStudyUserLanguagesHandler>()
+                    .getActiveLanguages()
+                    .firstOrNull),
           ],
         )
       ],
+    );
+  }
+
+  Future<dynamic> _showLangFilter(BuildContext context) {
+    return showModalBottomSheet(
+      scrollControlDisabledMaxHeightRatio: 2,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return ModalBottomSheet(
+          height: MediaQuery.of(context).size.height / 1.5,
+          blurBackground: false,
+          child: const BottomSheetBibleStudyFilter(),
+        );
+      },
     );
   }
 
@@ -164,9 +177,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
     );
   }
 
-  void showTooltip() {
+  void showTooltip() async {
     final double tooltipShown =
-        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+        await getIt<LocalCache>().getDouble(StorageKeys.shouldShowTooltip) ??
+            0.0;
     if (tooltipShown < 5.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
@@ -178,8 +192,8 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           }
         });
       });
-      SharedPreferencesHelper.saveDouble(
-          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+      getIt<LocalCache>()
+          .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
   }
 }

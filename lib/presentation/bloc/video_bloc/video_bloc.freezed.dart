@@ -323,7 +323,7 @@ mixin _$VideoState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
-    required TResult Function(List<Resources> resources)
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
     required TResult Function(String message) error,
   }) =>
@@ -333,7 +333,8 @@ mixin _$VideoState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult? Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -342,7 +343,8 @@ mixin _$VideoState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -440,7 +442,7 @@ class _$VideoInitialImpl implements VideoInitial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
-    required TResult Function(List<Resources> resources)
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
     required TResult Function(String message) error,
   }) {
@@ -453,7 +455,8 @@ class _$VideoInitialImpl implements VideoInitial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult? Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -465,7 +468,8 @@ class _$VideoInitialImpl implements VideoInitial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -565,7 +569,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
-    required TResult Function(List<Resources> resources)
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
     required TResult Function(String message) error,
   }) {
@@ -578,7 +582,8 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult? Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -590,7 +595,8 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -726,7 +732,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
-    required TResult Function(List<Resources> resources)
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
     required TResult Function(String message) error,
   }) {
@@ -739,7 +745,8 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult? Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult? Function(String message)? error,
   }) {
     return getVideoListSuccess?.call(topics);
@@ -751,7 +758,8 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -823,7 +831,7 @@ abstract class _$$GetVideosFromPlaylistSuccessStateImplCopyWith<$Res> {
           $Res Function(_$GetVideosFromPlaylistSuccessStateImpl) then) =
       __$$GetVideosFromPlaylistSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Resources> resources});
+  $Res call({List<YoutubeVideo> youtubeVideos});
 }
 
 /// @nodoc
@@ -839,13 +847,13 @@ class __$$GetVideosFromPlaylistSuccessStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? resources = null,
+    Object? youtubeVideos = null,
   }) {
     return _then(_$GetVideosFromPlaylistSuccessStateImpl(
-      null == resources
-          ? _value._resources
-          : resources // ignore: cast_nullable_to_non_nullable
-              as List<Resources>,
+      null == youtubeVideos
+          ? _value._youtubeVideos
+          : youtubeVideos // ignore: cast_nullable_to_non_nullable
+              as List<YoutubeVideo>,
     ));
   }
 }
@@ -854,20 +862,21 @@ class __$$GetVideosFromPlaylistSuccessStateImplCopyWithImpl<$Res>
 
 class _$GetVideosFromPlaylistSuccessStateImpl
     implements GetVideosFromPlaylistSuccessState {
-  const _$GetVideosFromPlaylistSuccessStateImpl(final List<Resources> resources)
-      : _resources = resources;
+  const _$GetVideosFromPlaylistSuccessStateImpl(
+      final List<YoutubeVideo> youtubeVideos)
+      : _youtubeVideos = youtubeVideos;
 
-  final List<Resources> _resources;
+  final List<YoutubeVideo> _youtubeVideos;
   @override
-  List<Resources> get resources {
-    if (_resources is EqualUnmodifiableListView) return _resources;
+  List<YoutubeVideo> get youtubeVideos {
+    if (_youtubeVideos is EqualUnmodifiableListView) return _youtubeVideos;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_resources);
+    return EqualUnmodifiableListView(_youtubeVideos);
   }
 
   @override
   String toString() {
-    return 'VideoState.getVideosFromPlaylistSuccess(resources: $resources)';
+    return 'VideoState.getVideosFromPlaylistSuccess(youtubeVideos: $youtubeVideos)';
   }
 
   @override
@@ -876,12 +885,12 @@ class _$GetVideosFromPlaylistSuccessStateImpl
         (other.runtimeType == runtimeType &&
             other is _$GetVideosFromPlaylistSuccessStateImpl &&
             const DeepCollectionEquality()
-                .equals(other._resources, _resources));
+                .equals(other._youtubeVideos, _youtubeVideos));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_resources));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_youtubeVideos));
 
   @JsonKey(ignore: true)
   @override
@@ -897,11 +906,11 @@ class _$GetVideosFromPlaylistSuccessStateImpl
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
-    required TResult Function(List<Resources> resources)
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
     required TResult Function(String message) error,
   }) {
-    return getVideosFromPlaylistSuccess(resources);
+    return getVideosFromPlaylistSuccess(youtubeVideos);
   }
 
   @override
@@ -910,10 +919,11 @@ class _$GetVideosFromPlaylistSuccessStateImpl
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult? Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult? Function(String message)? error,
   }) {
-    return getVideosFromPlaylistSuccess?.call(resources);
+    return getVideosFromPlaylistSuccess?.call(youtubeVideos);
   }
 
   @override
@@ -922,12 +932,13 @@ class _$GetVideosFromPlaylistSuccessStateImpl
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (getVideosFromPlaylistSuccess != null) {
-      return getVideosFromPlaylistSuccess(resources);
+      return getVideosFromPlaylistSuccess(youtubeVideos);
     }
     return orElse();
   }
@@ -979,10 +990,10 @@ class _$GetVideosFromPlaylistSuccessStateImpl
 
 abstract class GetVideosFromPlaylistSuccessState implements VideoState {
   const factory GetVideosFromPlaylistSuccessState(
-          final List<Resources> resources) =
+          final List<YoutubeVideo> youtubeVideos) =
       _$GetVideosFromPlaylistSuccessStateImpl;
 
-  List<Resources> get resources;
+  List<YoutubeVideo> get youtubeVideos;
   @JsonKey(ignore: true)
   _$$GetVideosFromPlaylistSuccessStateImplCopyWith<
           _$GetVideosFromPlaylistSuccessStateImpl>
@@ -1057,7 +1068,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
-    required TResult Function(List<Resources> resources)
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
     required TResult Function(String message) error,
   }) {
@@ -1070,7 +1081,8 @@ class _$VideoErrorStateImpl implements VideoErrorState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult? Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -1082,7 +1094,8 @@ class _$VideoErrorStateImpl implements VideoErrorState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
-    TResult Function(List<Resources> resources)? getVideosFromPlaylistSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

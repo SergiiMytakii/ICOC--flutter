@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 
 @dev
 @prod
@@ -29,11 +29,9 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
 
   @override
   Future<QuerySnapshot> postToFirebase(
-      String collectionName, Map<String, String> data) async {
+      String collectionName, Map<String, dynamic> data) async {
     final CollectionReference collection = db.collection(collectionName);
-    final DocumentReference documentRef = collection.doc(
-      DateTime.now().toUtc().toString(),
-    );
+    final DocumentReference documentRef = collection.doc(data['id'].toString());
     await documentRef.set(data);
     final QuerySnapshot snapshot = await collection.get();
     return snapshot;

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/q&a_model.dart';
-import 'package:icoc/core/repository/q&a_repository.dart';
+import 'package:icoc/domain/model/q&a/q&a_model.dart';
+import 'package:icoc/domain/repository/q&a_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

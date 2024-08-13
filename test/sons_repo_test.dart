@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:icoc/core/model/song_detail.dart';
-import 'package:icoc/core/repository/songs_repository.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
+import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart' as i;
 import 'package:mockito/mockito.dart';
@@ -15,8 +15,8 @@ void main() {
       final mockSongsRepository = getIt<SongsRepository>();
       // Arrange
       final expectedSongs = [
-        SongDetail(id: 1, title: {'en': 'Song 1'}, text: {'en1': 'Lyrics 1'}),
-        SongDetail(id: 2, title: {'en': 'Song 2'}, text: {'en1': 'Lyrics 2'}),
+        const SongModel(id: 1, songVersions: []),
+        const SongModel(id: 2, songVersions: []),
       ];
       when(mockSongsRepository.getSongs())
           .thenAnswer((_) async => Future.value(expectedSongs));

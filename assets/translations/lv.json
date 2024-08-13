@@ -1,4 +1,9 @@
 {
+  "Responce from developer:": "Atbilde no izstrādātāja:",
+  "Please enter your name": "Lūdzu, ievadiet savu vārdu",
+  "Please enter your feedback": "Lūdzu, ievadiet savu atsauksmi",  "Show chords in another language": "Rādīt akordus citā valodā",
+  "There are no chords available for the current language.": "Pašreizējai valodai nav pieejamu akordu.",
+
     "Open in ICOC app:": "Atvērt ICOC lietotnē:",
     "suggestion to get admin panel": "Nosūtot šo veidlapu, jūs nosūtīsiet e-pastu administratoram, kurš pievienos dziesmu lietotnei. \n Tomēr, ja esat pielūgsmes kalpošanā un vēlaties pats pievienot un rediģēt dziesmas, pievienojiet 'Nosaukuma' laukā: 'Es vēlos piekļuvi administratora panelim.'",
 
@@ -138,6 +143,10 @@
     "will be displayed first": "tiks parādīts pirmais",
     "Unfortunately, there isn't any content here in": "Diemžēl šeit nav satura",
       "Add more languages in the filter.": "Pievienojiet vairāk valodu filtrā.",
-  "There are not any songs in": "Šajā valodā nav nevienas dziesmas"
+  "There are not any songs in": "Šajā valodā nav nevienas dziesmas",
+  "chords": "Akordi",
+  "Language": "Valoda",
+  "Primary": "Primārā"
+
     }
   

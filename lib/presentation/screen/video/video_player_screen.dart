@@ -3,7 +3,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -53,8 +53,8 @@ class _VideoPlayerState extends State<VideoPlayer> {
             child: BlocBuilder<VideoBloc, VideoState>(
               builder: (context, state) {
                 return state.maybeWhen(
-                  getVideosFromPlaylistSuccess: (resources) {
-                    final resource = resources.firstWhere(
+                  getVideosFromPlaylistSuccess: (youtubeVideos) {
+                    final youtubeVideo = youtubeVideos.firstWhere(
                         (item) => item.link.contains(widget.videoId));
                     return Scaffold(
                         backgroundColor:
@@ -62,13 +62,13 @@ class _VideoPlayerState extends State<VideoPlayer> {
                         appBar: AppBar(
                           centerTitle: true,
                           title: Text(
-                            resource.title ?? '',
+                            youtubeVideo.title ?? '',
                             maxLines: 2,
                             style: const TextStyle(fontSize: 12),
                           ),
                         ),
                         body: Column(
-                          children: [player, currentVideoInfo(resource)],
+                          children: [player, currentVideoInfo(youtubeVideo)],
                         ));
                   },
                   error: (message) => const Scaffold(body: ErrorTextOnScreen()),
@@ -80,12 +80,12 @@ class _VideoPlayerState extends State<VideoPlayer> {
         });
   }
 
-  Widget currentVideoInfo(Resources resource) {
+  Widget currentVideoInfo(YoutubeVideo youtubeVideo) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(resource.description ?? '',
+          child: Text(youtubeVideo.description ?? '',
               style: AdaptiveTheme.of(context).theme.textTheme.bodyMedium),
         ),
       ),

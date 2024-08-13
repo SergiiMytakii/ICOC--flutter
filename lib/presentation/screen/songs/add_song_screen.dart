@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
 class AddSongScreen extends StatefulWidget {

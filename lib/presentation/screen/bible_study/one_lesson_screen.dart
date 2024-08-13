@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/bible_study.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
@@ -52,10 +52,8 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
           loading: () =>
               const Scaffold(body: Center(child: CircularProgressIndicator())),
           success: (topics) {
-            final topic = topics
-                .firstWhere((item) => item.id == int.parse(widget.topicId));
-            final lesson = topic.lessons
-                .firstWhere((item) => item.id == int.parse(widget.lessonId));
+            final lesson = _receiveLesson(topics);
+
             return Scaffold(
               appBar: AppBar(
                 title: Text(
@@ -121,12 +119,20 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
         '$ICOC_WEB_PAGE/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${widget.topicId}/$ONE_LESSON_SCREEN/${lesson.id}';
     final hint = 'Open in ICOC app:'.tr();
 
-    final text = '''
-              ${lesson.title}\n\n
-              ${FormatTextHelper.extractFormattedText(lesson.text)}\n\n
-              $hint\n
-              $link''';
+    final text =
+        '${lesson.title}\n\n${FormatTextHelper.extractFormattedText(lesson.text)}\n\n$hint\n$link';
 
     Share.share(text);
+  }
+
+  Lesson _receiveLesson(List<BibleStudy> topics) {
+    final topic = topics.firstWhere(
+      (item) => item.id == int.parse(widget.topicId),
+      orElse: () => BibleStudy.defaultBibleStudy,
+    );
+    return topic.lessons.firstWhere(
+      (item) => item.id == int.parse(widget.lessonId),
+      orElse: () => Lesson.defaultLesson,
+    );
   }
 }

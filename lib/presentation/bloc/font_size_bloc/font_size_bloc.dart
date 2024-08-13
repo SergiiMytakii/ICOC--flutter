@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/injection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/constants.dart';
 
 part 'font_size_event.dart';
 part 'font_size_state.dart';
@@ -23,11 +24,10 @@ class FontSizeBloc extends Bloc<FontSizeEvent, FontSizeState> {
       requested: (fontSize) async {
         if (fontSize == null) {
           final double storedFontSize =
-              SharedPreferencesHelper.getDouble(StorageKeys.fontSize) ?? 14;
+              await getIt<LocalCache>().getDouble(StorageKeys.fontSize) ?? 14;
           emit(FontSizeState.success(fontSize: storedFontSize));
         } else {
-          await SharedPreferencesHelper.saveDouble(
-              StorageKeys.fontSize, fontSize);
+          await getIt<LocalCache>().saveDouble(StorageKeys.fontSize, fontSize);
           emit(FontSizeState.success(fontSize: fontSize));
         }
       },

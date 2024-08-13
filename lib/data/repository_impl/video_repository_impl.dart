@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icoc/core/data_sources/remote/http_client.dart';
+import 'package:icoc/domain/data_sources/remote/http_client.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/resources.dart';
-import 'package:icoc/core/model/playlist.dart';
-import 'package:icoc/core/repository/video_repository.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
+import 'package:icoc/domain/model/playlist/playlist.dart';
+import 'package:icoc/domain/repository/video_repository.dart';
 
 @dev
 @prod
@@ -27,7 +27,7 @@ class VideoRepositoryImpl extends VideoRepository {
   }
 
   @override
-  Future<List<Resources>?> fetchVideosFromPlaylist(String playlistId) async {
+  Future<List<YoutubeVideo>?> fetchVideosFromPlaylist(String playlistId) async {
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -44,10 +44,10 @@ class VideoRepositoryImpl extends VideoRepository {
         final List<dynamic> videosJson = data['items'];
 
         // Fetch first eight playlists from uploads playlist
-        final List<Resources> playlists = [];
+        final List<YoutubeVideo> playlists = [];
         videosJson.forEach(
           (json) => playlists.add(
-            Resources.fromJsonYoutobePlaylists(json['snippet']),
+            YoutubeVideo.fromJsonYoutubePlaylists(json['snippet']),
           ),
         );
         return playlists;

@@ -45,8 +45,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     Future.delayed(Duration.zero).then((value) {
       rateApp(context);
-      getIt<NotificationsBloc>().add(NotificationsEvent.listRequested(
-          locale: context.locale.languageCode));
+      getIt<NotificationsBloc>().add(const NotificationsEvent.listRequested());
     });
 
     _menuAnimationController = AnimationController(

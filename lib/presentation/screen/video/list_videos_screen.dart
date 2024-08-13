@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
@@ -23,7 +23,7 @@ class _ListVideosState extends State<ListVideosScreen> {
   double minHeight = 60;
   double controlsPanelHeight = 0;
 
-  Resources selectedVideo = Resources.defaultResource();
+  YoutubeVideo selectedVideo = YoutubeVideo.defaultVideo();
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Videos Screen');
@@ -53,19 +53,19 @@ class _ListVideosState extends State<ListVideosScreen> {
         body: BlocBuilder<VideoBloc, VideoState>(
           builder: (context, state) {
             return state.maybeWhen(
-              getVideosFromPlaylistSuccess: (resources) {
+              getVideosFromPlaylistSuccess: (youtubeVideos) {
                 return RefreshIndicator.adaptive(
                   onRefresh: () => _getVideosList(),
                   child: ListView.builder(
                     cacheExtent: 0,
-                    itemBuilder: (context, index) => resources.isNotEmpty
+                    itemBuilder: (context, index) => youtubeVideos.isNotEmpty
                         ? AnimationWrapper(
                             child: VideoCard(
-                              resources: resources[index],
+                              youtubeVideos: youtubeVideos[index],
                             ),
                           )
                         : Container(height: 200),
-                    itemCount: resources.length,
+                    itemCount: youtubeVideos.length,
                   ),
                 );
               },

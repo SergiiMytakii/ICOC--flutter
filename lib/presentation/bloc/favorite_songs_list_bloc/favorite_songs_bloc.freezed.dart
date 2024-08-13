@@ -174,7 +174,7 @@ mixin _$FavoriteSongsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -182,7 +182,7 @@ mixin _$FavoriteSongsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -190,7 +190,7 @@ mixin _$FavoriteSongsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -281,7 +281,7 @@ class _$FavoriteSongsInitialImpl implements FavoriteSongsInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -292,7 +292,7 @@ class _$FavoriteSongsInitialImpl implements FavoriteSongsInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -303,7 +303,7 @@ class _$FavoriteSongsInitialImpl implements FavoriteSongsInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -399,7 +399,7 @@ class _$FavoriteSongsLoadingStateImpl implements FavoriteSongsLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -410,7 +410,7 @@ class _$FavoriteSongsLoadingStateImpl implements FavoriteSongsLoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -421,7 +421,7 @@ class _$FavoriteSongsLoadingStateImpl implements FavoriteSongsLoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -480,7 +480,7 @@ abstract class _$$GetFavoriteSongsSuccessStateImplCopyWith<$Res> {
           $Res Function(_$GetFavoriteSongsSuccessStateImpl) then) =
       __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<SongDetail> songs});
+  $Res call({List<SongModel> songs});
 }
 
 /// @nodoc
@@ -502,7 +502,7 @@ class __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>
       null == songs
           ? _value._songs
           : songs // ignore: cast_nullable_to_non_nullable
-              as List<SongDetail>,
+              as List<SongModel>,
     ));
   }
 }
@@ -511,12 +511,12 @@ class __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>
 
 class _$GetFavoriteSongsSuccessStateImpl
     implements GetFavoriteSongsSuccessState {
-  const _$GetFavoriteSongsSuccessStateImpl(final List<SongDetail> songs)
+  const _$GetFavoriteSongsSuccessStateImpl(final List<SongModel> songs)
       : _songs = songs;
 
-  final List<SongDetail> _songs;
+  final List<SongModel> _songs;
   @override
-  List<SongDetail> get songs {
+  List<SongModel> get songs {
     if (_songs is EqualUnmodifiableListView) return _songs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_songs);
@@ -552,7 +552,7 @@ class _$GetFavoriteSongsSuccessStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return success(songs);
@@ -563,7 +563,7 @@ class _$GetFavoriteSongsSuccessStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return success?.call(songs);
@@ -574,7 +574,7 @@ class _$GetFavoriteSongsSuccessStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -623,10 +623,10 @@ class _$GetFavoriteSongsSuccessStateImpl
 }
 
 abstract class GetFavoriteSongsSuccessState implements FavoriteSongsState {
-  const factory GetFavoriteSongsSuccessState(final List<SongDetail> songs) =
+  const factory GetFavoriteSongsSuccessState(final List<SongModel> songs) =
       _$GetFavoriteSongsSuccessStateImpl;
 
-  List<SongDetail> get songs;
+  List<SongModel> get songs;
   @JsonKey(ignore: true)
   _$$GetFavoriteSongsSuccessStateImplCopyWith<
           _$GetFavoriteSongsSuccessStateImpl>
@@ -703,7 +703,7 @@ class _$FavoriteSongsErrorStateImpl implements FavoriteSongsErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<SongDetail> songs) success,
+    required TResult Function(List<SongModel> songs) success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -714,7 +714,7 @@ class _$FavoriteSongsErrorStateImpl implements FavoriteSongsErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<SongDetail> songs)? success,
+    TResult? Function(List<SongModel> songs)? success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -725,7 +725,7 @@ class _$FavoriteSongsErrorStateImpl implements FavoriteSongsErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<SongDetail> songs)? success,
+    TResult Function(List<SongModel> songs)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

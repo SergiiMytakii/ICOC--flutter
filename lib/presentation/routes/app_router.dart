@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/core/model/q&a_model.dart';
+import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/routes/routes_with_transitions.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
@@ -37,16 +37,14 @@ final GoRouter router = GoRouter(
                   const MyBottomNavigationBar(),
               routes: [
                 GoRoute(
-                  path: '$ONE_SONG_SCREEN/:songId/:tabsCount',
+                  path: '$ONE_SONG_SCREEN/:songId',
                   builder: (BuildContext context, GoRouterState state) {
                     final songId = state.pathParameters['songId'];
-                    final tabsCount = state.pathParameters['tabsCount'];
                     final lang = state.uri.queryParameters['lang'];
 
                     return OneSongScreen(
                       songId: songId ?? '',
-                      tabsCount: int.parse(tabsCount ?? '1'),
-                      lang: lang,
+                      primaryLang: lang ?? 'en',
                     );
                   },
                 ),

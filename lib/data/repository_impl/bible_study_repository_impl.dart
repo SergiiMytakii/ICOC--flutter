@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/data_sources/remote/firebase_data_source.dart';
-import 'package:icoc/core/model/bible_study.dart';
-import 'package:icoc/core/repository/bible_study_repository.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
+import 'package:icoc/domain/model/bible_study/bible_study.dart';
+import 'package:icoc/domain/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @dev
@@ -15,7 +15,7 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   @override
   Future getBibleStudyList() async {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-      FirebaseCollections.BibleStudy.name,
+      FirebaseCollections.BibleStudyV2.name,
     );
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
       final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;

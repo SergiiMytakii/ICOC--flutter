@@ -7,7 +7,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:icoc/presentation/widget/custom_button.dart';
 
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
 
 class ShareAppScreen extends StatefulWidget {
   const ShareAppScreen({super.key});
@@ -115,6 +115,9 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                               style: const TextStyle(color: Colors.white),
                             ),
                           )),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       CustomButton(
                           onPressed: () => setState(() {
                                 if (store == 'google_play') {

@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
 class GeneralSettingsScreen extends StatefulWidget {
@@ -102,7 +103,7 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                   return ListTile(
                                     onTap: () async {
                                       await context.setLocale(Locale(language));
-                                      SharedPreferencesHelper.saveString(
+                                      getIt<LocalCache>().saveString(
                                           StorageKeys.locale, language);
                                       FirebaseAnalytics.instance.logEvent(
                                           name: 'change language',

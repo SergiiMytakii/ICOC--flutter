@@ -1,4 +1,9 @@
 {
+  "Responce from developer:": "Risposta dallo sviluppatore:",
+  "Please enter your name": "Per favore inserisci il tuo nome",
+  "Please enter your feedback": "Per favore inserisci il tuo feedback",  "Show chords in another language": "Mostra accordi in un'altra lingua",
+  "There are no chords available for the current language.": "Non ci sono accordi disponibili per la lingua corrente.",
+
   "suggestion to get admin panel": "Inviando questo modulo, invierai un'email all'amministratore, che aggiungerà la canzone all'app. \n Tuttavia, se fai parte del ministero di adorazione e desideri aggiungere e modificare le canzoni da solo, aggiungi nel campo 'Titolo': 'Voglio accesso al pannello di amministrazione.'",
 
     "Open in ICOC app:": "Apri nell'app ICOC:",    "app_bar_title": "Libro delle canzoni",
@@ -137,6 +142,10 @@
   "will be displayed first": "sarà visualizzato per primo",
   "Unfortunately, there isn't any content here in": "Purtroppo non c'è contenuto qui in",
    "Add more languages in the filter.": "Aggiungi altre lingue nel filtro.",
-  "There are not any songs in": "Non ci sono canzoni in"
+  "There are not any songs in": "Non ci sono canzoni in",
+  "chords": "Accordi",
+  "Language": "Lingua",
+  "Primary": "Principale"
+
   }
   

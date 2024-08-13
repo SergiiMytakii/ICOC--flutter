@@ -2,12 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc/constants.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/core/model/playlist.dart';
+import 'package:icoc/domain/model/playlist/playlist.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
@@ -45,6 +46,10 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
       builder: (context, state) {
         return state.maybeWhen(
           getVideoListSuccess: (topics) {
+            if (topics.isEmpty) {
+              Future.delayed(const Duration(seconds: 3))
+                  .then((_) => _showLangFilter(context));
+            }
             cache = topics;
             return Scaffold(
                 appBar: _buildAppBar(context, topics.isEmpty),
@@ -101,21 +106,28 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
             AnimatedFilterIconButton(
                 shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
                 shouldAnimateForever: shoudFilterAnimate,
-                onTap: () => showModalBottomSheet(
-                    scrollControlDisabledMaxHeightRatio: 2,
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (BuildContext context) {
-                      return ModalBottomSheet(
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          blurBackground: false,
-                          child: const BottomSheetVideoFilter());
-                    }),
-                color: ScreenColors.video),
+                onTap: () => _showLangFilter(context),
+                color: ScreenColors.video,
+                primaryLanguage: getIt<VideosUserLanguagesHandler>()
+                    .getActiveLanguages()
+                    .firstOrNull),
           ],
         )
       ],
     );
+  }
+
+  Future<dynamic> _showLangFilter(BuildContext context) {
+    return showModalBottomSheet(
+        scrollControlDisabledMaxHeightRatio: 2,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return ModalBottomSheet(
+              height: MediaQuery.of(context).size.height / 1.5,
+              blurBackground: false,
+              child: const BottomSheetVideoFilter());
+        });
   }
 
   Widget _buildBody(List<Playlist> topics) {
@@ -164,9 +176,10 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
     );
   }
 
-  void showTooltip() {
+  void showTooltip() async {
     final double tooltipShown =
-        SharedPreferencesHelper.getDouble(StorageKeys.shouldShowTooltip) ?? 0.0;
+        await getIt<LocalCache>().getDouble(StorageKeys.shouldShowTooltip) ??
+            0.0;
     if (tooltipShown < 4.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
         (tooltipKey2.currentState as TooltipState).ensureTooltipVisible();
@@ -177,8 +190,8 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
             });
         });
       });
-      SharedPreferencesHelper.saveDouble(
-          StorageKeys.shouldShowTooltip, tooltipShown + 1);
+      getIt<LocalCache>()
+          .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
   }
 }

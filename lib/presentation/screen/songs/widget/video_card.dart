@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/theme.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
-  const VideoCard({super.key, required this.resource, required this.onTap});
+  const VideoCard({super.key, required this.youtubeVideo, required this.onTap});
 
-  final Resources resource;
+  final YoutubeVideo youtubeVideo;
   final Function onTap;
 
   @override
@@ -28,18 +28,18 @@ class _VideoCardState extends State<VideoCard> {
 
   @override
   Widget build(BuildContext context) {
-    videoId = getVideoId(context, widget.resource.link);
+    videoId = getVideoId(context, widget.youtubeVideo.link);
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.white)),
         child: GestureDetector(
-          onTap: () => widget.onTap(widget.resource, videoId),
+          onTap: () => widget.onTap(videoId),
           child: Stack(
             children: [
               Image.network(
-                widget.resource.thumbnail ??
+                widget.youtubeVideo.thumbnail ??
                     YoutubePlayerController.getThumbnail(
                       videoId: videoId,
                     ),
@@ -57,7 +57,7 @@ class _VideoCardState extends State<VideoCard> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Text(
-                  widget.resource.lang,
+                  widget.youtubeVideo.lang.name,
                   style: const TextStyle(
                       color: ScreenColors.songBook,
                       fontSize: 16,

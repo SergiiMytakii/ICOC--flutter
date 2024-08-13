@@ -1,25 +1,37 @@
 //order songs by id or by title
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
+import 'package:icoc/injection.dart';
 
-Future<List<SongDetail>> orderSongs(List<SongDetail> songs) async {
+Future<List<SongModel>> orderSongs(
+    List<SongModel> songs, SongsUserLanguagesHandler songsUserLanguages) async {
   final bool orderByTitle =
-      SharedPreferencesHelper.getBool(StorageKeys.orderByTitle) ?? true;
+      getIt<LocalCache>().getBool(StorageKeys.orderByTitle) ?? true;
+  final primaryLang = songsUserLanguages.primaryLang;
   if (orderByTitle) {
     songs.sort((a, b) {
-      final String a1 = a.title.entries.first.value;
-      final String b1 = b.title.entries.first.value;
-      if (a1.toLowerCase().startsWith('і') &&
-          !b1.toLowerCase().startsWith('і')) {
-        //todo trying to handle ukranian 'i'... needs to be improved
-        return 1;
-      } else if (!a1.toLowerCase().startsWith('і') &&
-          b1.toLowerCase().startsWith('і')) {
+      // Put songs with primary language version first
+      if (a.songVersions.first.lang.name == primaryLang &&
+          b.songVersions.first.lang.name != primaryLang) {
         return -1;
-      } else {
-        return a1.compareTo(b1);
+      } else if (a.songVersions.first.lang.name != primaryLang &&
+          b.songVersions.first.lang.name == primaryLang) {
+        return 1;
       }
+
+      final String a1 = a.songVersions.first.title
+          .toLowerCase()
+          .replaceAll('і',
+              'и') //replace ukrainian letters with russian to avoid incorrect sorting
+          .replaceAll('є', 'е');
+      final String b1 = b.songVersions.first.title
+          .toLowerCase()
+          .replaceAll('і', 'и')
+          .replaceAll('є', 'е');
+
+      return a1.compareTo(b1);
     });
   } else {
     songs.sort((a, b) => a.id.compareTo(b.id));

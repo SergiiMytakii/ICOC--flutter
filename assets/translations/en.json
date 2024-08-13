@@ -1,5 +1,10 @@
 {
-          "app_bar_title": "Song book",
+    "Responce from developer:": "Responce from developer:",
+    "Please enter your name": "Please enter your name",
+    "Please enter your feedback": "Please enter your feedback",
+    "Show chords in another language"   :     "Show chords in another language"  ,   
+    "There are no chords available for the current language.": "There are no chords available for the current language.",
+    "app_bar_title": "Song book",
           "add_song": "Send text of the song and it will be here soon! ",
           "icon_button_actions_app_bar_filter":
               "Song languages and priority of their display",
@@ -149,6 +154,7 @@
            "Add more languages in the filter.": "Add more languages in the filter.",
             "There are not any songs in": "There are not any songs in",
             "Open in ICOC app:": "Open in ICOC app:",
-            "suggestion to get admin panel": "By sending this form, you will send an email to the administrator, who will add the song to the app. \n However, if you are in the worship ministry and want to add and edit songs by yourself, add in the 'Title' field: 'I want access to the admin panel.'"
-        
-        }
+            "suggestion to get admin panel": "By sending this form, you will send an email to the administrator, who will add the song to the app. \n However, if you are in the worship ministry and want to add and edit songs by yourself, add in the 'Title' field: 'I want access to the admin panel.'",
+        "chords": "Chords",
+        "Language": "Language",
+        "Primary": "Primary"        }

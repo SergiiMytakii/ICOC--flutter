@@ -1,4 +1,9 @@
 {
+  "Responce from developer:": "Ответ от разработчика:",
+  "Please enter your name": "Пожалуйста, введите ваше имя",
+  "Please enter your feedback": "Пожалуйста, введите ваш отзыв",  "Show chords in another language": "Показать аккорды на другом языке",
+  "There are no chords available for the current language.": "Для текущего языка аккорды недоступны.",
+
   "Open in ICOC app:": "Открыть в приложении ICOC:",
   "suggestion to get admin panel": "Отправляя эту форму, вы отправите email администратору, который добавит песню в приложение. \n Однако, если вы участвуете в служении прославления и хотите самостоятельно добавлять и редактировать песни, добавьте в поле 'Название': 'Я хочу получить доступ к панели администратора.'",
 
@@ -155,6 +160,10 @@
   "will be displayed first": "будет отображаться первым",
   "Unfortunately, there isn't any content here in": "К сожалению, здесь нет никакого контента на",
     "Add more languages in the filter.": "Добавьте больше языков в фильтр.",
-  "There are not any songs in": "Нет доступных песен на"
+  "There are not any songs in": "Нет доступных песен на",
+  "chords": "Аккорды",
+  "Language": "Язык",
+  "Primary": "Основной"
+
           
         }

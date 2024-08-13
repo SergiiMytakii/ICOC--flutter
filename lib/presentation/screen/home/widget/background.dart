@@ -23,19 +23,21 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
   @override
   void initState() {
     backgroundIndex = random.nextInt(10) + 1;
-
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2000),
     )..repeat();
 
     _rotationAnimation = Tween<double>(
-      begin: 0,
-      end: -pi * 2, // One full rotation
+      //initialy rotate background image every launch randomely
+      begin: pi / 2 * random.nextInt(5),
+      end: -pi * 2,
     ).animate(_controller);
+
     DateTime lastCometLaunchTime =
         DateTime.now().subtract(const Duration(seconds: 3));
     _controller.addListener(() {
+      // randonly launch comets
       final i = (_controller.value * 1000).toInt() % 3;
       if (i == 0) {
         final now = DateTime.now();
@@ -93,16 +95,13 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
           scale: 2.3,
           child: RotationTransition(
             turns: _rotationAnimation,
-            child: Transform.rotate(
-              angle: pi / 2 * random.nextInt(5),
-              child: Image.asset(
-                'assets/images/space/space$backgroundIndex.jpg',
-                cacheWidth: screenSize.width.toInt(),
-                cacheHeight: screenSize.height.toInt(),
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            child: Image.asset(
+              'assets/images/space/space$backgroundIndex.jpg',
+              cacheWidth: screenSize.width.toInt(),
+              cacheHeight: screenSize.height.toInt(),
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
         ),

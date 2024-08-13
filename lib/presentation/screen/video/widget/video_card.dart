@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/model/resources.dart';
+import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -10,10 +10,10 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 class VideoCard extends StatefulWidget {
   const VideoCard({
     super.key,
-    required this.resources,
+    required this.youtubeVideos,
   });
 
-  final Resources resources;
+  final YoutubeVideo youtubeVideos;
 
   @override
   State<VideoCard> createState() => _VideoCardState();
@@ -27,11 +27,12 @@ class _VideoCardState extends State<VideoCard> {
   }
 
   void getVideoId(BuildContext context) {
-    if (widget.resources.link.isNotEmpty &&
-        widget.resources.link.contains('yout')) {
+    if (widget.youtubeVideos.link.isNotEmpty &&
+        widget.youtubeVideos.link.contains('yout')) {
       try {
         videoId =
-            YoutubePlayerController.convertUrlToId(widget.resources.link) ?? '';
+            YoutubePlayerController.convertUrlToId(widget.youtubeVideos.link) ??
+                '';
       } on Exception catch (e, stackTrace) {
         showToast(
             context: context,
@@ -40,7 +41,7 @@ class _VideoCardState extends State<VideoCard> {
         logError(e, stackTrace);
       }
     } else {
-      videoId = widget.resources.link;
+      videoId = widget.youtubeVideos.link;
       // log.v(videoId);
     }
   }
@@ -49,19 +50,19 @@ class _VideoCardState extends State<VideoCard> {
   Widget build(BuildContext context) {
     getVideoId(context);
     // log.i('with to lirics  ' + widget.withToLyrics.toString());
-    return widget.resources.thumbnail != null
+    return widget.youtubeVideos.thumbnail != null
         ? Column(
             children: [
               InkWell(
                 onTap: () {
                   context.go(
-                    '/$VIDEO/$LIST_VIDEOS_SCREEN/${widget.resources.playlistId}/$VIDEO_PLAYER/$videoId',
+                    '/$VIDEO/$LIST_VIDEOS_SCREEN/${widget.youtubeVideos.playlistId}/$VIDEO_PLAYER/$videoId',
                   );
                 },
                 child: Container(
                   width: double.maxFinite,
                   child: Image.network(
-                    widget.resources.thumbnail!,
+                    widget.youtubeVideos.thumbnail!,
                     height: MediaQuery.of(context).size.width / 16 * 9,
                     fit: BoxFit.fitWidth,
                   ),
@@ -74,7 +75,7 @@ class _VideoCardState extends State<VideoCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(widget.resources.title ?? '',
+                      child: Text(widget.youtubeVideos.title ?? '',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium!),

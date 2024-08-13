@@ -1,22 +1,32 @@
-import 'package:icoc/constants.dart';
-import 'package:icoc/core/helpers/shared_preferences_helper.dart';
-import 'package:icoc/core/model/song_detail.dart';
+import 'package:icoc/domain/model/songs/song_model.dart';
+import 'package:icoc/core/user_languages.dart';
 
-Future<List<SongDetail>> filterSongsByLang(List<SongDetail> songs) async {
-  //keys represent languages
-  //values show should lang be displayed or not
-  final Map<String, dynamic> allLanguages =
-      SharedPreferencesHelper.getMap(StorageKeys.allSongsLanguages) ?? {};
+Future<List<SongModel>> filterSongsByLang(
+    List<SongModel> songs, SongsUserLanguagesHandler songsUserLanguages) async {
+  final activeLanguages = songsUserLanguages.getActiveLanguages();
+  songs = songs.map((song) {
+    final mutableSongVersions = List<SongVersion>.from(song.songVersions);
+    mutableSongVersions.removeWhere(
+        (songVersion) => !activeLanguages.contains(songVersion.lang.name));
+    final primaryLang = songsUserLanguages.primaryLang;
+    //order songsVersions put primary language to the first place, chos to the end of list
+    mutableSongVersions.sort((a, b) {
+      if (a.isChords && !b.isChords) {
+        return 1;
+      } else if (!a.isChords && b.isChords) {
+        return -1;
+      } else if (a.lang.name == primaryLang && b.lang.name != primaryLang) {
+        return -1;
+      } else if (a.lang.name != primaryLang && b.lang.name == primaryLang) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return song.copyWith(songVersions: mutableSongVersions);
+  }).toList();
 
-  // SharedPreferencesHelper.removeValue('orderLanguages');
-  final Map<String, dynamic> newMap = Map.from(allLanguages);
-  newMap.removeWhere((key, value) => value == false);
+  songs.removeWhere((song) => song.songVersions.isEmpty);
 
-  final List<SongDetail> filteredAndOrderedSongs = songs
-      .map((song) => song.filterAndOrderLanguages(newMap.keys.toList()))
-      .toList();
-  final result = filteredAndOrderedSongs
-      .where((song) => song.title.isNotEmpty && song.text.isNotEmpty)
-      .toList();
-  return result;
+  return songs;
 }
