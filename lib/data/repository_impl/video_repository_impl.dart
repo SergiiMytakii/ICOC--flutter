@@ -8,7 +8,7 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
-import 'package:icoc/domain/model/playlist.dart';
+import 'package:icoc/domain/model/playlist/playlist.dart';
 import 'package:icoc/domain/repository/video_repository.dart';
 
 @dev

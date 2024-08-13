@@ -7,7 +7,7 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/handle_divider_color.dart';
-import 'package:icoc/domain/model/bible_study.dart';
+import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
