@@ -1,4 +1,4 @@
-import 'package:icoc/domain/model/q&a_model.dart';
+import 'package:icoc/domain/model/q&a/q&a_model.dart';
 
 abstract class LocalQandAdB {
   Future<List<QandAModel>> getAnsvers();

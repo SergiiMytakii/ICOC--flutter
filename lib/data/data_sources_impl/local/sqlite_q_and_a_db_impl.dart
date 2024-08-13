@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:icoc/domain/data_sources/local/local_q_and_a_db_data_source.dart';
-import 'package:icoc/domain/model/q&a_model.dart';
+import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';

@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/domain/model/bible_study.dart';
+import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/domain/repository/bible_study_repository.dart';
 import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';
