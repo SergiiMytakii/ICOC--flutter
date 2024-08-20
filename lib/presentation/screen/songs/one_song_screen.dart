@@ -117,7 +117,9 @@ class _OneSongScreenState extends State<OneSongScreen>
     tabController = TabController(length: tabsCount, vsync: this);
 
     //handle case when received song from a deep link has a primaryLang which is not active in app
-    if (!song.getAllLangs().contains(languagesToEnumMap[widget.primaryLang])) {
+    if (!song
+        .getAllLangs()
+        .contains(convertLanguagesEnum(widget.primaryLang))) {
       getIt<SongsUserLanguagesHandler>()
           .addLanguage(widget.primaryLang, true)
           .then(
@@ -125,9 +127,8 @@ class _OneSongScreenState extends State<OneSongScreen>
       return null;
     } else {
       // open specific tab
-      final index = song
-          .getAllLangs()
-          .indexOf(languagesToEnumMap[widget.primaryLang] ?? Languages.en);
+      final index =
+          song.getAllLangs().indexOf(convertLanguagesEnum(widget.primaryLang));
       tabController.animateTo(index);
     }
 

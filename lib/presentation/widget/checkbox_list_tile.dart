@@ -13,6 +13,7 @@ class MyCheckboxListTile extends StatefulWidget {
   final Widget? trailingIcon;
   final Function callback;
   final Map<String, dynamic> allLanguages;
+  final bool onlyOneActiveLangAllowed;
 
   // ignore: use_key_in_widget_constructors
   MyCheckboxListTile(
@@ -20,6 +21,7 @@ class MyCheckboxListTile extends StatefulWidget {
       required this.label,
       required this.key,
       this.trailingIcon,
+      this.onlyOneActiveLangAllowed = false,
       required this.callback,
       required this.color});
 
@@ -46,10 +48,21 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         secondary: widget.trailingIcon,
         onChanged: (val) {
-          setState(() {
-            widget.allLanguages[widget.label] = val;
-            widget.callback(widget.allLanguages);
-          });
+          if (val != null) {
+            if (widget.onlyOneActiveLangAllowed) {
+              setState(() {
+                for (var lang in widget.allLanguages.keys) {
+                  widget.allLanguages[lang] = false;
+                }
+                widget.allLanguages[widget.label] = val;
+              });
+            } else {
+              setState(() {
+                widget.allLanguages[widget.label] = val;
+              });
+            }
+          }
+          widget.callback(widget.allLanguages);
           if (widget.allLanguages.values.every((element) => element == false)) {
             showToast(
                 context: context,

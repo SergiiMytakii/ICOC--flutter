@@ -64,7 +64,7 @@ class _QuestionsAndAnswersState extends State<QuestionsAndAnswers> {
                               ListTile(
                                 leading: Text(
                                   articles[index].id.toString(),
-                                  style: Theme.of(context).textTheme.titleLarge,
+                                  style: Theme.of(context).textTheme.titleSmall,
                                 ),
                                 title: Text(
                                   articles[index].title,

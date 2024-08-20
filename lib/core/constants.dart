@@ -40,6 +40,7 @@ class StorageKeys {
   static const String locale = 'locale';
   static const String fontSize = 'fontSize';
   static const String bibleStudyLanguages = 'bibleStudyLanguages';
+  static const String qAndALanguages = 'qAndALanguages';
   static const String notifications = 'notifications';
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
@@ -94,8 +95,10 @@ enum FirebaseCollections {
   BibleStudy,
   BibleStudyV2,
   Notifications,
+  QandA,
   Video,
-  Feedback
+  Feedback,
+  QandALangs
 }
 
 enum Languages {

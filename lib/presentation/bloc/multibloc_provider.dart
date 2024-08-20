@@ -37,7 +37,9 @@ class MyMultiblocProvider extends StatelessWidget {
           create: (BuildContext context) => getIt<BibleStudyBloc>(),
         ),
         BlocProvider<QandABloc>(
-          create: (BuildContext context) => getIt<QandABloc>(),
+          create: (BuildContext context) =>
+              getIt<QandABloc>()..add(const QandAEvent.getLangs()),
+          lazy: false,
         ),
         BlocProvider<NotificationsBloc>(
           create: (BuildContext context) => getIt<NotificationsBloc>(),
