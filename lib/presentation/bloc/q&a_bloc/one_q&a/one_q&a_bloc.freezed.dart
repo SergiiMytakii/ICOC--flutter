@@ -238,6 +238,7 @@ mixin _$OneQandAState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() translating,
     required TResult Function(QandAModel article) success,
     required TResult Function(String message) error,
   }) =>
@@ -246,6 +247,7 @@ mixin _$OneQandAState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? translating,
     TResult? Function(QandAModel article)? success,
     TResult? Function(String message)? error,
   }) =>
@@ -254,6 +256,7 @@ mixin _$OneQandAState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? translating,
     TResult Function(QandAModel article)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -263,6 +266,7 @@ mixin _$OneQandAState {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Translating value) translating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) =>
@@ -271,6 +275,7 @@ mixin _$OneQandAState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Translating value)? translating,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) =>
@@ -279,6 +284,7 @@ mixin _$OneQandAState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Translating value)? translating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -344,6 +350,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() translating,
     required TResult Function(QandAModel article) success,
     required TResult Function(String message) error,
   }) {
@@ -355,6 +362,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? translating,
     TResult? Function(QandAModel article)? success,
     TResult? Function(String message)? error,
   }) {
@@ -366,6 +374,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? translating,
     TResult Function(QandAModel article)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -381,6 +390,7 @@ class _$InitialImpl implements _Initial {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Translating value) translating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -392,6 +402,7 @@ class _$InitialImpl implements _Initial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Translating value)? translating,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -403,6 +414,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Translating value)? translating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -458,6 +470,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() translating,
     required TResult Function(QandAModel article) success,
     required TResult Function(String message) error,
   }) {
@@ -469,6 +482,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? translating,
     TResult? Function(QandAModel article)? success,
     TResult? Function(String message)? error,
   }) {
@@ -480,6 +494,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? translating,
     TResult Function(QandAModel article)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -495,6 +510,7 @@ class _$LoadingImpl implements _Loading {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Translating value) translating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -506,6 +522,7 @@ class _$LoadingImpl implements _Loading {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Translating value)? translating,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -517,6 +534,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Translating value)? translating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -530,6 +548,126 @@ class _$LoadingImpl implements _Loading {
 
 abstract class _Loading implements OneQandAState {
   const factory _Loading() = _$LoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$TranslatingImplCopyWith<$Res> {
+  factory _$$TranslatingImplCopyWith(
+          _$TranslatingImpl value, $Res Function(_$TranslatingImpl) then) =
+      __$$TranslatingImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$TranslatingImplCopyWithImpl<$Res>
+    extends _$OneQandAStateCopyWithImpl<$Res, _$TranslatingImpl>
+    implements _$$TranslatingImplCopyWith<$Res> {
+  __$$TranslatingImplCopyWithImpl(
+      _$TranslatingImpl _value, $Res Function(_$TranslatingImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$TranslatingImpl implements _Translating {
+  const _$TranslatingImpl();
+
+  @override
+  String toString() {
+    return 'OneQandAState.translating()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$TranslatingImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() translating,
+    required TResult Function(QandAModel article) success,
+    required TResult Function(String message) error,
+  }) {
+    return translating();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? translating,
+    TResult? Function(QandAModel article)? success,
+    TResult? Function(String message)? error,
+  }) {
+    return translating?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? translating,
+    TResult Function(QandAModel article)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (translating != null) {
+      return translating();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Translating value) translating,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+  }) {
+    return translating(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Translating value)? translating,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
+  }) {
+    return translating?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Translating value)? translating,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (translating != null) {
+      return translating(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Translating implements OneQandAState {
+  const factory _Translating() = _$TranslatingImpl;
 }
 
 /// @nodoc
@@ -608,6 +746,7 @@ class _$SuccessImpl implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() translating,
     required TResult Function(QandAModel article) success,
     required TResult Function(String message) error,
   }) {
@@ -619,6 +758,7 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? translating,
     TResult? Function(QandAModel article)? success,
     TResult? Function(String message)? error,
   }) {
@@ -630,6 +770,7 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? translating,
     TResult Function(QandAModel article)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -645,6 +786,7 @@ class _$SuccessImpl implements _Success {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Translating value) translating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -656,6 +798,7 @@ class _$SuccessImpl implements _Success {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Translating value)? translating,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -667,6 +810,7 @@ class _$SuccessImpl implements _Success {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Translating value)? translating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -753,6 +897,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() translating,
     required TResult Function(QandAModel article) success,
     required TResult Function(String message) error,
   }) {
@@ -764,6 +909,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? translating,
     TResult? Function(QandAModel article)? success,
     TResult? Function(String message)? error,
   }) {
@@ -775,6 +921,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? translating,
     TResult Function(QandAModel article)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -790,6 +937,7 @@ class _$ErrorImpl implements _Error {
   TResult map<TResult extends Object?>({
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
+    required TResult Function(_Translating value) translating,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -801,6 +949,7 @@ class _$ErrorImpl implements _Error {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
+    TResult? Function(_Translating value)? translating,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -812,6 +961,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
+    TResult Function(_Translating value)? translating,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),

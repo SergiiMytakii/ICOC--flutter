@@ -14,6 +14,7 @@ import 'package:icoc/presentation/bloc/q&a_bloc/one_q&a/one_q&a_bloc.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
+import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -66,6 +67,20 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
           return state.when(
             initial: () => const SizedBox(),
             loading: () => CustomRefreshIndicator(onRefresh: _getArticle),
+            translating: () => Container(
+              padding: const EdgeInsets.all(16),
+              height: 700,
+              child: Column(
+                children: [
+                  Loading(),
+                  Text(
+                    'We are translating the article... It takes a bit more time'
+                        .tr(),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
             success: (article) => SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: BlocBuilder<FontSizeBloc, FontSizeState>(

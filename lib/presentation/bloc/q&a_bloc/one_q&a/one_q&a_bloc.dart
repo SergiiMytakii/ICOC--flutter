@@ -38,10 +38,12 @@ class OneQandABloc extends Bloc<OneQandAEvent, OneQandAState> {
       } else {
         if (article.link != null) {
           final QandAModel articleWithContent =
+              //get article content from www.douglasjacoby.com
               await qandARepository.getArticleContent(article);
           if (article.lang == Languages.en.name) {
             emit(OneQandAState.success(articleWithContent));
           } else {
+            emit(const OneQandAState.translating());
             final translatedArticle = await qandARepository
                 .translateArticleContent(articleWithContent);
             emit(OneQandAState.success(translatedArticle));
