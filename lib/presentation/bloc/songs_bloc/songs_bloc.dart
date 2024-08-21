@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:icoc/core/errors/failures.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
@@ -37,37 +38,44 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     _SongsRequested event,
     Emitter<SongsState> emit,
   ) async {
-    print('bloc ${songsUserLanguagesHandler.hashCode}');
     emit(const SongsState.loading());
-    try {
-      final songs = await _fetchSongs();
-      if (songs.isNotEmpty) {
-        await songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-        allSongs = songs;
-        emit(SongsState.success(songs));
-      } else {
-        emit(const SongsState.empty());
-      }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(SongsState.error(error.toString()));
-    }
+    final result = await _fetchSongs();
+    result.fold(
+      (failure) {
+        emit(SongsState.error(failure.toUserFriendlyMessage()));
+      },
+      (songs) {
+        if (songs.isNotEmpty) {
+          allSongs = songs;
+          emit(SongsState.success(songs));
+        } else {
+          emit(const SongsState.empty());
+        }
+      },
+    );
   }
 
   Future<void> _onSearchByNumber(
       _SearchSongByNumber event, Emitter<SongsState> emit) async {
     emit(const SongsState.loading());
-    try {
-      final songs =
-          allSongs.isNotEmpty ? allSongs : await songsRepositoryImpl.getSongs();
-      final searchResults = songs
+    if (allSongs.isNotEmpty) {
+      final searchResults = allSongs
           .where((song) => song.id.toString() == event.query.trim())
           .toList();
-
       emit(SongsState.success(searchResults));
-    } catch (e, stackTrace) {
-      emit(SongsState.error(e.toString()));
-      logError(e, stackTrace);
+    } else {
+      final result = await songsRepositoryImpl.getSongs();
+      result.fold(
+        (failure) {
+          emit(SongsState.error(failure.toUserFriendlyMessage()));
+        },
+        (songs) {
+          final searchResults = songs
+              .where((song) => song.id.toString() == event.query.trim())
+              .toList();
+          emit(SongsState.success(searchResults));
+        },
+      );
     }
   }
 
@@ -79,22 +87,32 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   Future<void> _onSearchByText(
       _SearchSongByText event, Emitter<SongsState> emit) async {
     emit(const SongsState.loading());
-    try {
-      final List<SongVersionLocal> searchResult =
-          await songsRepositoryImpl.getSearchResult(event.query.trim());
-      emit(SongsState.searchSuccess(searchResult));
-    } catch (e, stackTrace) {
-      emit(SongsState.error(e.toString()));
-      logError(e, stackTrace);
-    }
+    final result =
+        await songsRepositoryImpl.getSearchResult(event.query.trim());
+    result.fold(
+      (failure) {
+        emit(SongsState.error(failure.toUserFriendlyMessage()));
+      },
+      (searchResult) {
+        emit(SongsState.searchSuccess(searchResult));
+      },
+    );
   }
 
-  Future<List<SongModel>> _fetchSongs() async {
-    List<SongModel> songs = [];
-    rawSongs = await songsRepositoryImpl.getSongs();
-    await updateStoredLanguages(rawSongs, songsUserLanguagesHandler);
-    songs = await filterSongsByLang(rawSongs, songsUserLanguagesHandler);
-    return await orderSongs(songs, songsUserLanguagesHandler);
+  Future<Either<Failure, List<SongModel>>> _fetchSongs() async {
+    final result = await songsRepositoryImpl.getSongs();
+    return result.fold(
+      (failure) => Left(failure),
+      (songs) async {
+        rawSongs = songs;
+        await updateStoredLanguages(rawSongs, songsUserLanguagesHandler);
+        final filteredSongs =
+            await filterSongsByLang(rawSongs, songsUserLanguagesHandler);
+        final orderedSongs =
+            await orderSongs(filteredSongs, songsUserLanguagesHandler);
+        return Right(orderedSongs);
+      },
+    );
   }
 }
 
@@ -102,20 +120,19 @@ Future<void> updateStoredLanguages(List<SongModel> songs,
     SongsUserLanguagesHandler songsUserLanguagesHandler) async {
   final List<Languages> allLangsFromSongs = findAllLangs(songs);
 
-//add all new langs and set all new langs to false and locale lang to true
-  allLangsFromSongs.forEach((Languages lang) async {
+  for (final lang in allLangsFromSongs) {
     if (!songsUserLanguagesHandler.languages.containsKey(lang.name)) {
       await songsUserLanguagesHandler.addLanguage(
           lang.name, lang.name == locale);
     }
-  });
+  }
 }
 
 List<Languages> findAllLangs(List<SongModel> songs) {
   final Set<Languages> allLangs = {};
 
-  songs.forEach((song) {
+  for (final song in songs) {
     allLangs.addAll(song.getAllLangs());
-  });
+  }
   return allLangs.toList();
 }

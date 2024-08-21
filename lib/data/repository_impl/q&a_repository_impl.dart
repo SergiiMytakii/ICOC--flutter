@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/errors/failures.dart';
 import 'package:icoc/core/helpers/convert_languages_enum.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/data_sources/remote/ai_data_source.dart';
@@ -10,6 +11,7 @@ import 'package:html/parser.dart' show parse;
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/domain/repository/q&a_repository.dart';
 import 'package:langchain/langchain.dart';
+import 'package:dartz/dartz.dart';
 
 @dev
 @prod
@@ -21,44 +23,58 @@ class QandARepositoryImpl extends QandARepository {
   QandARepositoryImpl(
       this.firebaseDataSource, this.aiDataSource, this.httpClientImpl);
   @override
-  Future<List<QandAModel>> getArticles(
+  Future<Either<Failure, List<QandAModel>>> getArticles(
       {Languages? lang, OrderEnum? order}) async {
-    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-        FirebaseCollections.QandA.name,
-        filters: lang != null ? {'lang': lang.name} : null,
-        orderBy: {'id': order == null ? true : order == OrderEnum.descending});
-    final List<QandAModel> articles = snapshot.docs.map(
-      (doc) {
-        final article =
-            QandAModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
+    try {
+      final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
+          FirebaseCollections.QandA.name,
+          filters: lang != null ? {'lang': lang.name} : null,
+          orderBy: {
+            'id': order == null ? true : order == OrderEnum.descending
+          });
+      final List<QandAModel> articles = snapshot.docs.map(
+        (doc) {
+          final article =
+              QandAModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
 
-        return article;
-      },
-    ).toList();
+          return article;
+        },
+      ).toList();
 
-    return articles;
+      // return Right(articles);
+      return const Left(Failure.serverError());
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.serverError());
+    }
   }
 
   @override
-  Future<List<Languages>> getAllLangs() async {
-    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-      FirebaseCollections.QandALangs.name,
-    );
-    final List<Languages> langs = [];
+  Future<Either<Failure, List<Languages>>> getAllLangs() async {
+    try {
+      final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
+        FirebaseCollections.QandALangs.name,
+      );
+      final List<Languages> langs = [];
 
-    snapshot.docs.forEach((doc) {
-      final langsMap = doc.data() as Map<String, dynamic>;
-      print(langsMap.toString());
-      for (final lang in langsMap['QandAlangs']) {
-        langs.add(convertLanguagesEnum(lang));
-      }
-    });
+      snapshot.docs.forEach((doc) {
+        final langsMap = doc.data() as Map<String, dynamic>;
+        print(langsMap.toString());
+        for (final lang in langsMap['QandAlangs']) {
+          langs.add(convertLanguagesEnum(lang));
+        }
+      });
 
-    return langs;
+      return Right(langs);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.serverError());
+    }
   }
 
   @override
-  Future<QandAModel> getArticleContent(QandAModel article) async {
+  Future<Either<Failure, QandAModel>> getArticleContent(
+      QandAModel article) async {
     try {
       final response = await httpClientImpl.get(Uri.parse(article.link!),
           headers: {'Content-Type': 'text/html'});
@@ -102,22 +118,23 @@ class QandARepositoryImpl extends QandARepository {
             .map((element) => element.text.trim())
             .join('\n\n');
 
-        return article.copyWith(
-            answer: answer, question: question, youtubeLink: mediaLink);
+        return Right(article.copyWith(
+            answer: answer, question: question, youtubeLink: mediaLink));
       } else {
         final message =
             'Error fetching article content: ${response.statusCode},${response.body}';
         logError(message, null);
-        throw Exception(message);
+        return const Left(Failure.notFound());
       }
     } catch (e, stackTrace) {
       logError(e, stackTrace);
-      throw Exception('Error fetching article content: $e');
+      return const Left(Failure.networkError());
     }
   }
 
   @override
-  Future<QandAModel> translateArticleContent(QandAModel article) async {
+  Future<Either<Failure, QandAModel>> translateArticleContent(
+      QandAModel article) async {
     try {
       final outputTemplate = {
         'question': 'translated question',
@@ -148,7 +165,7 @@ class QandARepositoryImpl extends QandARepository {
           question: res['question'].toString(),
           answer: res['answer'].toString());
 
-      firebaseDataSource.updateToFirebase(
+      await firebaseDataSource.updateToFirebase(
           collectionName: FirebaseCollections.QandA.name,
           documentPath: article.documentRef,
           data: {
@@ -156,10 +173,11 @@ class QandARepositoryImpl extends QandARepository {
             'answer': article.answer,
             'youtubeLink': article.youtubeLink
           });
+
+      return Right(article);
     } catch (e, stackTrace) {
       logError(e, stackTrace);
-      throw Exception('Error translating article content: $e');
+      return const Left(Failure.openAiError());
     }
-    return article;
   }
 }

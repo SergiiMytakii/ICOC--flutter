@@ -21,7 +21,6 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
 
   QandABloc(this.qandARepository, this.qandAUserLanguagesHandler)
       : super(const QandAState.initial()) {
-    print('QandABloc initialized');
     on<QandAEvent>((event, emit) async {
       await event.when(
         getLangs: () => _onGetLangs(emit),
@@ -35,15 +34,17 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
     OrderEnum? order,
     Emitter<QandAState> emit,
   ) async {
-    try {
-      emit(const QandAState.loading());
-      Languages lang = Languages.defaultLang;
-      if (qandAUserLanguagesHandler.getActiveLanguages().isNotEmpty) {
-        lang = convertLanguagesEnum(
-            qandAUserLanguagesHandler.getActiveLanguages().first);
-      }
-      final List<QandAModel> articles =
-          await qandARepository.getArticles(lang: lang, order: order);
+    emit(const QandAState.loading());
+    Languages lang = Languages.defaultLang;
+    if (qandAUserLanguagesHandler.getActiveLanguages().isNotEmpty) {
+      lang = convertLanguagesEnum(
+          qandAUserLanguagesHandler.getActiveLanguages().first);
+    }
+    final result = await qandARepository.getArticles(lang: lang, order: order);
+
+    result.fold(
+        (falure) => emit(QandAState.error(falure.toUserFriendlyMessage())),
+        (articles) {
       if (articles.isEmpty) {
         emit(const QandAState.empty());
       } else if (query != null && query.isNotEmpty) {
@@ -66,17 +67,16 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
         }
         emit(QandAState.success(articles));
       }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(QandAState.error(error.toString()));
-    }
+    });
   }
 
   Future<void> _onGetLangs(
     Emitter<QandAState> emit,
   ) async {
-    try {
-      langs = await qandARepository.getAllLangs();
+    final result = await qandARepository.getAllLangs();
+    result.fold(
+        (failure) => emit(QandAState.error(failure.toUserFriendlyMessage())),
+        (langs) async {
       for (final lang in langs) {
         //add all new langs and set all new langs to false and locale lang to true
 
@@ -85,9 +85,6 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
               lang.name, lang.name == locale);
         }
       }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(QandAState.error(error.toString()));
-    }
+    });
   }
 }

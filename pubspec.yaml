@@ -18,6 +18,7 @@ dependencies:
   cloud_firestore: ^5.1.0
   country_flags: ^2.2.0
   cupertino_icons: ^1.0.3
+  dartz: ^0.10.1
   easy_localization: ^3.0.3
   firebase_analytics: ^11.2.0
   firebase_core: ^3.2.0

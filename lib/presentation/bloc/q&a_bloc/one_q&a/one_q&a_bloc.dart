@@ -7,6 +7,8 @@ import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/domain/repository/q&a_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dartz/dartz.dart';
+import 'package:icoc/core/errors/failures.dart';
 
 part 'one_q&a_event.dart';
 part 'one_q&a_state.dart';
@@ -31,30 +33,34 @@ class OneQandABloc extends Bloc<OneQandAEvent, OneQandAState> {
     QandAModel article,
     Emitter<OneQandAState> emit,
   ) async {
-    try {
-      emit(const OneQandAState.loading());
-      if (article.question.isNotEmpty && article.answer.isNotEmpty) {
-        emit(OneQandAState.success(article));
-      } else {
-        if (article.link != null) {
-          final QandAModel articleWithContent =
-              //get article content from www.douglasjacoby.com
-              await qandARepository.getArticleContent(article);
+    emit(const OneQandAState.loading());
+    if (article.question.isNotEmpty && article.answer.isNotEmpty) {
+      emit(OneQandAState.success(article));
+    } else {
+      if (article.link != null) {
+        final Either<Failure, QandAModel> result =
+            await qandARepository.getArticleContent(article);
+
+        result.fold((failure) => emit(OneQandAState.error(failure.toString())),
+            (articleWithContent) async {
           if (article.lang == Languages.en.name) {
             emit(OneQandAState.success(articleWithContent));
           } else {
             emit(const OneQandAState.translating());
-            final translatedArticle = await qandARepository
-                .translateArticleContent(articleWithContent);
-            emit(OneQandAState.success(translatedArticle));
+            final Either<Failure, QandAModel> translationResult =
+                await qandARepository
+                    .translateArticleContent(articleWithContent);
+
+            translationResult.fold(
+                (failure) => emit(OneQandAState.error(failure.toString())),
+                (translatedArticle) =>
+                    emit(OneQandAState.success(translatedArticle)));
           }
-        } else {
-          emit(OneQandAState.error('Article content not found'.tr()));
-        }
+        });
+      } else {
+        logError('Article link not provided', null);
+        emit(OneQandAState.error('Article content not found'.tr()));
       }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(OneQandAState.error(error.toString()));
     }
   }
 }

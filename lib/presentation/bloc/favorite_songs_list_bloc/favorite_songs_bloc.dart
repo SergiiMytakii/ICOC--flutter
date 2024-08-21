@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
@@ -33,25 +32,34 @@ class FavoriteSongsListBloc
     Emitter<FavoriteSongsState> emit,
   ) async {
     emit(const FavoriteSongsState.loading());
+    final favoriteSongsResult = await songsRepositoryImpl.getFavoriteSongs();
+    favoriteSongsResult.fold(
+      (failure) {
+        emit(FavoriteSongsState.error(failure.toUserFriendlyMessage()));
+      },
+      (favoriteSongsIds) async {
+        if (favoriteSongsIds.isNotEmpty) {
+          final songsResult = await songsRepositoryImpl.getSongs();
 
-    try {
-      final List<int> favoriteSongsIds =
-          await songsRepositoryImpl.getFavoriteSongs();
-      if (favoriteSongsIds.isNotEmpty) {
-        final List<SongModel> songs = await songsRepositoryImpl.getSongs();
-        final favoriteSongs =
-            songs.where((song) => favoriteSongsIds.contains(song.id)).toList();
-        final filteredSongs =
-            await filterSongsByLang(favoriteSongs, songsUserLanguagesHandler);
-        final orderedSongs =
-            await orderSongs(filteredSongs, songsUserLanguagesHandler);
-        emit(FavoriteSongsState.success(orderedSongs));
-      } else {
-        emit(const FavoriteSongsState.success([]));
-      }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(FavoriteSongsState.error(error.toString()));
-    }
+          songsResult.fold(
+            (failure) {
+              emit(FavoriteSongsState.error(failure.toUserFriendlyMessage()));
+            },
+            (songs) async {
+              final favoriteSongs = songs
+                  .where((song) => favoriteSongsIds.contains(song.id))
+                  .toList();
+              final filteredSongs = await filterSongsByLang(
+                  favoriteSongs, songsUserLanguagesHandler);
+              final orderedSongs =
+                  await orderSongs(filteredSongs, songsUserLanguagesHandler);
+              emit(FavoriteSongsState.success(orderedSongs));
+            },
+          );
+        } else {
+          emit(const FavoriteSongsState.success([]));
+        }
+      },
+    );
   }
 }
