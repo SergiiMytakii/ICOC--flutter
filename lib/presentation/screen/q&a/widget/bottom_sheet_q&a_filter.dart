@@ -50,7 +50,9 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
                       await qAndAUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
                       getIt<QandABloc>().add(const QandAEvent.requested());
+                      setState(() {});
                     },
+                    onlyOneActiveLangAllowed: true,
                     key: ValueKey('$index'));
               }),
             ),

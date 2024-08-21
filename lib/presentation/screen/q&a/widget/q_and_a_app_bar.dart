@@ -88,30 +88,13 @@ class _QandAAppbarState extends State<QandAAppbar> {
           ),
         ),
         AnimatedFilterIconButton(
-            shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-            shouldAnimateForever:
-                getIt<QandAUserLanguagesHandler>().languages.isEmpty,
-            onTap: () => _showLangFilter(context),
-            color: ScreenColors.bibleStudy,
-            primaryLanguage: getIt<QandAUserLanguagesHandler>()
-                .getActiveLanguages()
-                .firstOrNull),
+          shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
+          shouldAnimateForever:
+              getIt<QandAUserLanguagesHandler>().languages.isEmpty,
+          onTap: () => showLangFilter(context),
+          color: ScreenColors.bibleStudy,
+        ),
       ],
-    );
-  }
-
-  Future<dynamic> _showLangFilter(BuildContext context) {
-    return showModalBottomSheet(
-      scrollControlDisabledMaxHeightRatio: 2,
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return ModalBottomSheet(
-          height: MediaQuery.of(context).size.height / 1.5,
-          blurBackground: false,
-          child: const BottomSheetQandAFilter(),
-        );
-      },
     );
   }
 
@@ -134,4 +117,19 @@ class _QandAAppbarState extends State<QandAAppbar> {
           .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
   }
+}
+
+Future<dynamic> showLangFilter(BuildContext context) {
+  return showModalBottomSheet(
+    scrollControlDisabledMaxHeightRatio: 2,
+    context: context,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      return ModalBottomSheet(
+        height: MediaQuery.of(context).size.height / 1.5,
+        blurBackground: false,
+        child: const BottomSheetQandAFilter(),
+      );
+    },
+  );
 }

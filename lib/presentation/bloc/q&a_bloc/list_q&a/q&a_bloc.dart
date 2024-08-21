@@ -46,8 +46,11 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
       );
 
       if (query != null) {
-        final filteredArticles =
-            articles.where((element) => element.title.contains(query)).toList();
+        final filteredArticles = articles
+            .where((element) => element.title
+                .toLowerCase()
+                .contains(query.toLowerCase().trim()))
+            .toList();
         emit(QandAState.success(filteredArticles));
       } else {
         emit(QandAState.success(articles));
