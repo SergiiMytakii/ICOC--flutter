@@ -90,7 +90,7 @@ class _QandAAppbarState extends State<QandAAppbar> {
         AnimatedFilterIconButton(
           shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
           shouldAnimateForever:
-              getIt<QandAUserLanguagesHandler>().languages.isEmpty,
+              getIt<QandAUserLanguagesHandler>().getActiveLanguages().isEmpty,
           onTap: () => showLangFilter(context),
           color: ScreenColors.bibleStudy,
         ),

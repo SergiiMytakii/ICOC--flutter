@@ -40,8 +40,9 @@ class OneQandABloc extends Bloc<OneQandAEvent, OneQandAState> {
       if (article.link != null) {
         final Either<Failure, QandAModel> result =
             await qandARepository.getArticleContent(article);
-
-        result.fold((failure) => emit(OneQandAState.error(failure.toString())),
+        return result.fold(
+            (failure) =>
+                emit(OneQandAState.error(failure.toUserFriendlyMessage())),
             (articleWithContent) async {
           if (article.lang == Languages.en.name) {
             emit(OneQandAState.success(articleWithContent));
@@ -51,8 +52,9 @@ class OneQandABloc extends Bloc<OneQandAEvent, OneQandAState> {
                 await qandARepository
                     .translateArticleContent(articleWithContent);
 
-            translationResult.fold(
-                (failure) => emit(OneQandAState.error(failure.toString())),
+            return translationResult.fold(
+                (failure) =>
+                    emit(OneQandAState.error(failure.toUserFriendlyMessage())),
                 (translatedArticle) =>
                     emit(OneQandAState.success(translatedArticle)));
           }

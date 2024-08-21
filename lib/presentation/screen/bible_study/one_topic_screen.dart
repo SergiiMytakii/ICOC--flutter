@@ -76,6 +76,7 @@ class OneTopicScreen extends StatelessWidget {
                 : CustomRefreshIndicator(onRefresh: _getBibleStudyList);
           },
           error: (message) => const Scaffold(body: ErrorTextOnScreen()),
+          empty: () => const SizedBox.shrink(),
         );
       },
     );

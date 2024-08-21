@@ -42,7 +42,7 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
     }
     final result = await qandARepository.getArticles(lang: lang, order: order);
 
-    result.fold(
+    return result.fold(
         (falure) => emit(QandAState.error(falure.toUserFriendlyMessage())),
         (articles) {
       if (articles.isEmpty) {
@@ -74,7 +74,7 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
     Emitter<QandAState> emit,
   ) async {
     final result = await qandARepository.getAllLangs();
-    result.fold(
+    return result.fold(
         (failure) => emit(QandAState.error(failure.toUserFriendlyMessage())),
         (langs) async {
       for (final lang in langs) {

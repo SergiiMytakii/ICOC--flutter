@@ -33,7 +33,7 @@ class FavoriteSongStatusBloc
     emit(const FavoriteSongStatusState.loading());
     final Either<Failure, bool> result =
         await songsRepositoryImpl.getFavoriteSongStatus(event.id);
-    result.fold(
+    return result.fold(
       (failure) => emit(FavoriteSongStatusState.error(
           message: failure.toUserFriendlyMessage())),
       (isFavorite) =>
@@ -48,7 +48,7 @@ class FavoriteSongStatusBloc
     emit(const FavoriteSongStatusState.loading());
     final Either<Failure, bool> result =
         await songsRepositoryImpl.setFavoriteSong(event.id, event.isFavorite);
-    result.fold(
+    return result.fold(
       (failure) => emit(FavoriteSongStatusState.error(
           message: failure.toUserFriendlyMessage())),
       (success) {

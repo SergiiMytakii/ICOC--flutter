@@ -33,7 +33,7 @@ class FavoriteSongsListBloc
   ) async {
     emit(const FavoriteSongsState.loading());
     final favoriteSongsResult = await songsRepositoryImpl.getFavoriteSongs();
-    favoriteSongsResult.fold(
+    return favoriteSongsResult.fold(
       (failure) {
         emit(FavoriteSongsState.error(failure.toUserFriendlyMessage()));
       },
@@ -41,7 +41,7 @@ class FavoriteSongsListBloc
         if (favoriteSongsIds.isNotEmpty) {
           final songsResult = await songsRepositoryImpl.getSongs();
 
-          songsResult.fold(
+          return songsResult.fold(
             (failure) {
               emit(FavoriteSongsState.error(failure.toUserFriendlyMessage()));
             },

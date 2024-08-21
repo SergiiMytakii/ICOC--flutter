@@ -32,7 +32,6 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
 
   @override
   void initState() {
-    _getBibleStudyList();
     showTooltip();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Bible Study');
     super.initState();
@@ -44,25 +43,26 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BibleStudyBloc, BibleStudyState>(
-      builder: (context, state) {
-        return state.when(
-          initial: () => const SizedBox(),
-          loading: () => Scaffold(
-            body: CustomRefreshIndicator(onRefresh: _getBibleStudyList),
-          ),
-          success: (topics) {
-            if (topics.isEmpty) {
+    return Scaffold(
+      appBar: _buildAppbar(),
+      body: BlocBuilder<BibleStudyBloc, BibleStudyState>(
+        builder: (context, state) {
+          return state.when(
+            initial: () {
+              _getBibleStudyList();
+              return const SizedBox();
+            },
+            loading: () => Scaffold(
+              body: CustomRefreshIndicator(onRefresh: _getBibleStudyList),
+            ),
+            empty: () {
               Future.delayed(const Duration(seconds: 3))
                   .then((_) => _showLangFilter(context));
-            }
-            return Scaffold(
-              appBar: _buildAppbar(context, topics),
-              body: _buildBody(topics),
-            );
-          },
-          error: (message) => Scaffold(
-            body: RefreshIndicator.adaptive(
+
+              return const NoContentWarning();
+            },
+            success: (topics) => _buildBody(topics),
+            error: (message) => RefreshIndicator.adaptive(
               onRefresh: _getBibleStudyList,
               child: ListView(
                 children: [
@@ -70,13 +70,13 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
-  AppBar _buildAppbar(BuildContext context, List<BibleStudy> topics) {
+  AppBar _buildAppbar() {
     return AppBar(
       title: Text(
         'drawer_first_principles'.tr(),
@@ -100,8 +100,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
             ),
             AnimatedFilterIconButton(
                 shouldAnimate: StorageKeys.shouldBibleStudyFilterAnimate,
-                shouldAnimateForever: topics.isEmpty,
                 onTap: () => _showLangFilter(context),
+                shouldAnimateForever: getIt<BibleStudyUserLanguagesHandler>()
+                    .getActiveLanguages()
+                    .isEmpty,
                 color: ScreenColors.bibleStudy,
                 primaryLanguage: getIt<BibleStudyUserLanguagesHandler>()
                     .getActiveLanguages()

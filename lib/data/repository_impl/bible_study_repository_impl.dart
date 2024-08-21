@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/errors/failures.dart';
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/domain/repository/bible_study_repository.dart';
@@ -12,15 +15,21 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   final FirebaseDataSource firebaseDataSource;
 
   BibleStudyRepositoryImpl({required this.firebaseDataSource});
+
   @override
-  Future getBibleStudyList() async {
-    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-      FirebaseCollections.BibleStudyV2.name,
-    );
-    final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return BibleStudy.fromJson(data);
-    }).toList();
-    return bibleStudies;
+  Future<Either<Failure, List<BibleStudy>>> getBibleStudyList() async {
+    try {
+      final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
+        FirebaseCollections.BibleStudyV2.name,
+      );
+      final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return BibleStudy.fromJson(data);
+      }).toList();
+      return Right(bibleStudies);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.serverError());
+    }
   }
 }

@@ -40,7 +40,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   ) async {
     emit(const SongsState.loading());
     final result = await _fetchSongs();
-    result.fold(
+    return result.fold(
       (failure) {
         emit(SongsState.error(failure.toUserFriendlyMessage()));
       },
@@ -65,7 +65,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       emit(SongsState.success(searchResults));
     } else {
       final result = await songsRepositoryImpl.getSongs();
-      result.fold(
+      return result.fold(
         (failure) {
           emit(SongsState.error(failure.toUserFriendlyMessage()));
         },
@@ -89,7 +89,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     emit(const SongsState.loading());
     final result =
         await songsRepositoryImpl.getSearchResult(event.query.trim());
-    result.fold(
+    return result.fold(
       (failure) {
         emit(SongsState.error(failure.toUserFriendlyMessage()));
       },

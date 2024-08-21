@@ -26,13 +26,11 @@ class ListTopicsScreen extends StatefulWidget {
 }
 
 class _ListTopicsScreenState extends State<ListTopicsScreen> {
-  List<Playlist>? cache;
   final GlobalKey tooltipKey2 = GlobalKey();
   bool _tooltipVisible = true;
   @override
   void initState() {
     showTooltip();
-    _getTopicsList();
     super.initState();
   }
 
@@ -42,24 +40,26 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VideoBloc, VideoState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          getVideoListSuccess: (topics) {
-            if (topics.isEmpty) {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: BlocBuilder<VideoBloc, VideoState>(
+        builder: (context, state) {
+          return state.when(
+            initial: () {
+              _getTopicsList();
+              return const SizedBox.shrink();
+            },
+            empty: () {
               Future.delayed(const Duration(seconds: 3))
-                  .then((_) => _showLangFilter(context));
-            }
-            cache = topics;
-            return Scaffold(
-                appBar: _buildAppBar(context, topics.isEmpty),
-                body: _buildBody(topics));
-          },
-          loading: () {
-            return CustomRefreshIndicator(onRefresh: () => _getTopicsList());
-          },
-          error: (message) {
-            return Scaffold(
+                  .then((_) => _showLangFilter());
+              return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: const NoContentWarning());
+            },
+            getVideoListSuccess: (playlists) => _buildBody(playlists),
+            loading: () =>
+                CustomRefreshIndicator(onRefresh: () => _getTopicsList()),
+            error: (message) => Scaffold(
               body: RefreshIndicator.adaptive(
                   onRefresh: _getTopicsList,
                   child: ListView(
@@ -67,21 +67,16 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                       ErrorTextOnScreen(message: message),
                     ],
                   )),
-            );
-          },
-          orElse: () {
-            return cache != null
-                ? Scaffold(
-                    appBar: _buildAppBar(context, false),
-                    body: _buildBody(cache!))
-                : const SizedBox();
-          },
-        );
-      },
+            ),
+            getVideosFromPlaylistSuccess: (_) =>
+                _buildBody(getIt<VideoBloc>().playlists),
+          );
+        },
+      ),
     );
   }
 
-  AppBar _buildAppBar(BuildContext context, bool shoudFilterAnimate) {
+  AppBar _buildAppBar() {
     return AppBar(
       title: Text(
         'Playlist'.tr(),
@@ -105,8 +100,10 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
             ),
             AnimatedFilterIconButton(
                 shouldAnimate: StorageKeys.shouldVideoFilterAnimate,
-                shouldAnimateForever: shoudFilterAnimate,
-                onTap: () => _showLangFilter(context),
+                shouldAnimateForever: getIt<VideosUserLanguagesHandler>()
+                    .getActiveLanguages()
+                    .isEmpty,
+                onTap: () => _showLangFilter(),
                 color: ScreenColors.video,
                 primaryLanguage: getIt<VideosUserLanguagesHandler>()
                     .getActiveLanguages()
@@ -117,7 +114,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
     );
   }
 
-  Future<dynamic> _showLangFilter(BuildContext context) {
+  Future<dynamic> _showLangFilter() {
     return showModalBottomSheet(
         scrollControlDisabledMaxHeightRatio: 2,
         context: context,
@@ -130,13 +127,13 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
         });
   }
 
-  Widget _buildBody(List<Playlist> topics) {
+  Widget _buildBody(List<Playlist> playlists) {
     return RefreshIndicator.adaptive(
       onRefresh: _getTopicsList,
-      child: topics.isNotEmpty
+      child: playlists.isNotEmpty
           ? ListView.builder(
               cacheExtent: 0,
-              itemCount: topics.length,
+              itemCount: playlists.length,
               itemBuilder: (context, index) {
                 return AnimationWrapper(
                   child: Column(
@@ -146,21 +143,21 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
                           width: 40,
                         ),
                         title: Text(
-                          topics[index].title,
+                          playlists[index].title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         subtitle: Text(
-                          topics[index].description,
+                          playlists[index].description,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () => context.go(
-                            '/$VIDEO/$LIST_VIDEOS_SCREEN/${topics[index].playlistId}',
-                            extra: topics[index].title),
+                            '/$VIDEO/$LIST_VIDEOS_SCREEN/${playlists[index].playlistId}',
+                            extra: playlists[index].title),
                       ),
                       Divider(
                         indent: 50,

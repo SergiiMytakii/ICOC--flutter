@@ -44,7 +44,6 @@ class _SongBookScreenState extends State<SongBookScreen> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: RefreshIndicator.adaptive(
-        color: Colors.transparent,
         edgeOffset: 130,
         onRefresh: _onRefresh,
         child: CustomScrollView(

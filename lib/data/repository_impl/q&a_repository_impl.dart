@@ -40,9 +40,7 @@ class QandARepositoryImpl extends QandARepository {
           return article;
         },
       ).toList();
-
-      // return Right(articles);
-      return const Left(Failure.serverError());
+      return Right(articles);
     } catch (e, stackTrace) {
       logError(e, stackTrace);
       return const Left(Failure.serverError());

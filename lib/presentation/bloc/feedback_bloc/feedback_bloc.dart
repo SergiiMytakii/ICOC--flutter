@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/model/feedback/feedback_model.dart';
 import 'package:icoc/domain/repository/feedback_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -24,26 +23,20 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   }
 
   Future<void> _onFeedbackListRequested(Emitter<FeedbackState> emit) async {
-    try {
-      emit(const FeedbackState.loading());
-      final List<FeedbackModel> feedbacks =
-          await feedbackRepository.getFeedbackList();
-      emit(FeedbackState.getFeedbackListSuccess(feedbacks));
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(FeedbackState.error(error.toString()));
-    }
+    emit(const FeedbackState.loading());
+    final result = await feedbackRepository.getFeedbackList();
+    return result.fold(
+      (failure) => emit(FeedbackState.error(failure.toUserFriendlyMessage())),
+      (feedbacks) => emit(FeedbackState.getFeedbackListSuccess(feedbacks)),
+    );
   }
 
   Future<void> _onInsertFeedbackRequested(
       String feedback, String name, Emitter<FeedbackState> emit) async {
-    try {
-      final List<FeedbackModel> feedbacks =
-          await feedbackRepository.insertFeedback(name, feedback);
-      emit(FeedbackState.getFeedbackListSuccess(feedbacks));
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(FeedbackState.error(error.toString()));
-    }
+    final result = await feedbackRepository.insertFeedback(name, feedback);
+    return result.fold(
+      (failure) => emit(FeedbackState.error(failure.toUserFriendlyMessage())),
+      (feedbacks) => emit(FeedbackState.getFeedbackListSuccess(feedbacks)),
+    );
   }
 }
