@@ -1,7 +1,15 @@
 {
+  "Question:": "Pytanie:",
+  "Answer:": "Odpowiedź:",
+  "Date:": "Data:",
+  "Author:": "Autor:",
+  "Translated by:": "Przetłumaczone przez:",
+  "Source:": "Źródło:",
+  "We are translating the article... It takes a bit more time": "Tłumaczymy artykuł... To zajmie trochę więcej czasu",  
   "Responce from developer:": "Odpowiedź od dewelopera:",
   "Please enter your name": "Proszę podać swoje imię",
-  "Please enter your feedback": "Proszę wprowadzić swoją opinię",  "Show chords in another language": "Pokaż akordy w innym języku",
+  "Please enter your feedback": "Proszę wprowadzić swoją opinię", 
+   "Show chords in another language": "Pokaż akordy w innym języku",
   "There are no chords available for the current language.": "Brak dostępnych akordów dla bieżącego języka.",
 
     "Open in ICOC app:": "Otwórz w aplikacji ICOC:",

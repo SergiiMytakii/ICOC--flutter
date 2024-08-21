@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 
 class MenuItem {
   final String title;

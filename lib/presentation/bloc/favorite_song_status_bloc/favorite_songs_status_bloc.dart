@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:icoc/core/errors/failures.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/repository/songs_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -28,33 +30,30 @@ class FavoriteSongStatusBloc
     FavoriteSongStatusRequested event,
     Emitter<FavoriteSongStatusState> emit,
   ) async {
-    try {
-      emit(const FavoriteSongStatusState.loading());
-      final bool isFavorite =
-          await songsRepositoryImpl.getFavoriteSongStatus(event.id);
-      emit(FavoriteSongStatusState.success(isFavorite: isFavorite));
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(FavoriteSongStatusState.error(message: error.toString()));
-    }
+    emit(const FavoriteSongStatusState.loading());
+    final Either<Failure, bool> result =
+        await songsRepositoryImpl.getFavoriteSongStatus(event.id);
+    return result.fold(
+      (failure) => emit(FavoriteSongStatusState.error(
+          message: failure.toUserFriendlyMessage())),
+      (isFavorite) =>
+          emit(FavoriteSongStatusState.success(isFavorite: isFavorite)),
+    );
   }
 
   Future<void> _onSetFavoriteSongStatusRequested(
     SetFavoriteSongStatusRequested event,
     Emitter<FavoriteSongStatusState> emit,
   ) async {
-    try {
-      emit(const FavoriteSongStatusState.loading());
-      final result =
-          await songsRepositoryImpl.setFavoriteSong(event.id, event.isFavorite);
-      if (result) {
+    emit(const FavoriteSongStatusState.loading());
+    final Either<Failure, bool> result =
+        await songsRepositoryImpl.setFavoriteSong(event.id, event.isFavorite);
+    return result.fold(
+      (failure) => emit(FavoriteSongStatusState.error(
+          message: failure.toUserFriendlyMessage())),
+      (success) {
         emit(FavoriteSongStatusState.success(isFavorite: event.isFavorite));
-      } else {
-        emit(FavoriteSongStatusState.error(message: 'Error'.tr()));
-      }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(FavoriteSongStatusState.error(message: error.toString()));
-    }
+      },
+    );
   }
 }

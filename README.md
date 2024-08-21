@@ -17,6 +17,7 @@
   * Firebase as a backend (RealTime DB, Storage, Crashlytics, Analytics).
   * Offline full-text search with SQLite virtual tables
   * Multilanguage support.
+  * translation to other languages using ChatGpt
 
 # Admin panel
   * implemented the admin panel to manage content
@@ -24,9 +25,26 @@
   * https://github.com/SergiiMytakii/icoc_admin_pannel
 
 # Dev Notes
-* To enable injectable generation run:  dart run build_runner watch --delete-conflicting-outputs
+* To enable injectable generation run:$ dart run build_runner watch --delete-conflicting-outputs
 * For Codemagic:  Before Pull Request with dev delete Podfile.loc to avoid a build crash in Codemagic.
-* To test deep links on IOS simulator:  xcrun simctl openurl booted your-app-scheme://your-deep-link-path
+* To test deep links on IOS simulator:$  xcrun simctl openurl booted your-app-scheme://your-deep-link-path
+* To run app:$ flutter run --dart-define=openAIKey=your_open_ai_key
+* To run in debug mode set your launch.json file: 
+    {
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "icoc-flutter",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "openAIKey=..."
+      ]
+    }
+  ]
+}
 
 
 

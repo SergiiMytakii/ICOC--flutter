@@ -322,6 +322,7 @@ mixin _$VideoState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
     required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
@@ -332,6 +333,7 @@ mixin _$VideoState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
     TResult? Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -342,6 +344,7 @@ mixin _$VideoState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
     TResult Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -353,6 +356,7 @@ mixin _$VideoState {
   TResult map<TResult extends Object?>({
     required TResult Function(VideoInitial value) initial,
     required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
     required TResult Function(GetVideoListSuccessState value)
         getVideoListSuccess,
     required TResult Function(GetVideosFromPlaylistSuccessState value)
@@ -364,6 +368,7 @@ mixin _$VideoState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideoInitial value)? initial,
     TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
     TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult? Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -374,6 +379,7 @@ mixin _$VideoState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideoInitial value)? initial,
     TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
     TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -441,6 +447,7 @@ class _$VideoInitialImpl implements VideoInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
     required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
@@ -454,6 +461,7 @@ class _$VideoInitialImpl implements VideoInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
     TResult? Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -467,6 +475,7 @@ class _$VideoInitialImpl implements VideoInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
     TResult Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -484,6 +493,7 @@ class _$VideoInitialImpl implements VideoInitial {
   TResult map<TResult extends Object?>({
     required TResult Function(VideoInitial value) initial,
     required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
     required TResult Function(GetVideoListSuccessState value)
         getVideoListSuccess,
     required TResult Function(GetVideosFromPlaylistSuccessState value)
@@ -498,6 +508,7 @@ class _$VideoInitialImpl implements VideoInitial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideoInitial value)? initial,
     TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
     TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult? Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -511,6 +522,7 @@ class _$VideoInitialImpl implements VideoInitial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideoInitial value)? initial,
     TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
     TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -568,6 +580,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
     required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
@@ -581,6 +594,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
     TResult? Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -594,6 +608,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
     TResult Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -611,6 +626,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
   TResult map<TResult extends Object?>({
     required TResult Function(VideoInitial value) initial,
     required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
     required TResult Function(GetVideoListSuccessState value)
         getVideoListSuccess,
     required TResult Function(GetVideosFromPlaylistSuccessState value)
@@ -625,6 +641,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideoInitial value)? initial,
     TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
     TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult? Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -638,6 +655,7 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideoInitial value)? initial,
     TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
     TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -653,6 +671,139 @@ class _$VideoLoadingStateImpl implements VideoLoadingState {
 
 abstract class VideoLoadingState implements VideoState {
   const factory VideoLoadingState() = _$VideoLoadingStateImpl;
+}
+
+/// @nodoc
+abstract class _$$VideoEmptyStateImplCopyWith<$Res> {
+  factory _$$VideoEmptyStateImplCopyWith(_$VideoEmptyStateImpl value,
+          $Res Function(_$VideoEmptyStateImpl) then) =
+      __$$VideoEmptyStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$VideoEmptyStateImplCopyWithImpl<$Res>
+    extends _$VideoStateCopyWithImpl<$Res, _$VideoEmptyStateImpl>
+    implements _$$VideoEmptyStateImplCopyWith<$Res> {
+  __$$VideoEmptyStateImplCopyWithImpl(
+      _$VideoEmptyStateImpl _value, $Res Function(_$VideoEmptyStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$VideoEmptyStateImpl implements VideoEmptyState {
+  const _$VideoEmptyStateImpl();
+
+  @override
+  String toString() {
+    return 'VideoState.empty()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$VideoEmptyStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() empty,
+    required TResult Function(List<Playlist> topics) getVideoListSuccess,
+    required TResult Function(List<YoutubeVideo> youtubeVideos)
+        getVideosFromPlaylistSuccess,
+    required TResult Function(String message) error,
+  }) {
+    return empty();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? empty,
+    TResult? Function(List<Playlist> topics)? getVideoListSuccess,
+    TResult? Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
+    TResult? Function(String message)? error,
+  }) {
+    return empty?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? empty,
+    TResult Function(List<Playlist> topics)? getVideoListSuccess,
+    TResult Function(List<YoutubeVideo> youtubeVideos)?
+        getVideosFromPlaylistSuccess,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(VideoInitial value) initial,
+    required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
+    required TResult Function(GetVideoListSuccessState value)
+        getVideoListSuccess,
+    required TResult Function(GetVideosFromPlaylistSuccessState value)
+        getVideosFromPlaylistSuccess,
+    required TResult Function(VideoErrorState value) error,
+  }) {
+    return empty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(VideoInitial value)? initial,
+    TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
+    TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
+    TResult? Function(GetVideosFromPlaylistSuccessState value)?
+        getVideosFromPlaylistSuccess,
+    TResult? Function(VideoErrorState value)? error,
+  }) {
+    return empty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(VideoInitial value)? initial,
+    TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
+    TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
+    TResult Function(GetVideosFromPlaylistSuccessState value)?
+        getVideosFromPlaylistSuccess,
+    TResult Function(VideoErrorState value)? error,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class VideoEmptyState implements VideoState {
+  const factory VideoEmptyState() = _$VideoEmptyStateImpl;
 }
 
 /// @nodoc
@@ -731,6 +882,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
     required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
@@ -744,6 +896,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
     TResult? Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -757,6 +910,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
     TResult Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -774,6 +928,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
   TResult map<TResult extends Object?>({
     required TResult Function(VideoInitial value) initial,
     required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
     required TResult Function(GetVideoListSuccessState value)
         getVideoListSuccess,
     required TResult Function(GetVideosFromPlaylistSuccessState value)
@@ -788,6 +943,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideoInitial value)? initial,
     TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
     TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult? Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -801,6 +957,7 @@ class _$GetVideoListSuccessStateImpl implements GetVideoListSuccessState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideoInitial value)? initial,
     TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
     TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -905,6 +1062,7 @@ class _$GetVideosFromPlaylistSuccessStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
     required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
@@ -918,6 +1076,7 @@ class _$GetVideosFromPlaylistSuccessStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
     TResult? Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -931,6 +1090,7 @@ class _$GetVideosFromPlaylistSuccessStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
     TResult Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -948,6 +1108,7 @@ class _$GetVideosFromPlaylistSuccessStateImpl
   TResult map<TResult extends Object?>({
     required TResult Function(VideoInitial value) initial,
     required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
     required TResult Function(GetVideoListSuccessState value)
         getVideoListSuccess,
     required TResult Function(GetVideosFromPlaylistSuccessState value)
@@ -962,6 +1123,7 @@ class _$GetVideosFromPlaylistSuccessStateImpl
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideoInitial value)? initial,
     TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
     TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult? Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -975,6 +1137,7 @@ class _$GetVideosFromPlaylistSuccessStateImpl
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideoInitial value)? initial,
     TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
     TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -1067,6 +1230,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<Playlist> topics) getVideoListSuccess,
     required TResult Function(List<YoutubeVideo> youtubeVideos)
         getVideosFromPlaylistSuccess,
@@ -1080,6 +1244,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<Playlist> topics)? getVideoListSuccess,
     TResult? Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -1093,6 +1258,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<Playlist> topics)? getVideoListSuccess,
     TResult Function(List<YoutubeVideo> youtubeVideos)?
         getVideosFromPlaylistSuccess,
@@ -1110,6 +1276,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
   TResult map<TResult extends Object?>({
     required TResult Function(VideoInitial value) initial,
     required TResult Function(VideoLoadingState value) loading,
+    required TResult Function(VideoEmptyState value) empty,
     required TResult Function(GetVideoListSuccessState value)
         getVideoListSuccess,
     required TResult Function(GetVideosFromPlaylistSuccessState value)
@@ -1124,6 +1291,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideoInitial value)? initial,
     TResult? Function(VideoLoadingState value)? loading,
+    TResult? Function(VideoEmptyState value)? empty,
     TResult? Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult? Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,
@@ -1137,6 +1305,7 @@ class _$VideoErrorStateImpl implements VideoErrorState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideoInitial value)? initial,
     TResult Function(VideoLoadingState value)? loading,
+    TResult Function(VideoEmptyState value)? empty,
     TResult Function(GetVideoListSuccessState value)? getVideoListSuccess,
     TResult Function(GetVideosFromPlaylistSuccessState value)?
         getVideosFromPlaylistSuccess,

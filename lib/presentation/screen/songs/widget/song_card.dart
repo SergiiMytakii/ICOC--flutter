@@ -6,7 +6,7 @@ import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 
 import 'package:icoc/core/constants.dart';

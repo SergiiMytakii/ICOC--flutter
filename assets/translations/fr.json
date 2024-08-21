@@ -1,5 +1,12 @@
 { 
-  "Responce from developer:": "Réponse du développeur :",
+  "Question:": "Question :",
+  "Answer:": "Réponse :",
+  "Date:": "Date :",
+  "Author:": "Auteur :",
+  "Translated by:": "Traduit par :",
+  "Source:": "Source :",
+  "We are translating the article... It takes a bit more time": "Nous traduisons l'article... Cela prend un peu plus de temps" ,
+   "Responce from developer:": "Réponse du développeur :",
   "Please enter your name": "Veuillez entrer votre nom",
   "Please enter your feedback": "Veuillez entrer vos commentaires",  "Show chords in another language": "Afficher les accords dans une autre langue",
   "There are no chords available for the current language.": "Il n'y a pas d'accords disponibles pour la langue actuelle.",

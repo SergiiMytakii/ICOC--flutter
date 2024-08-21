@@ -1,4 +1,10 @@
-{
+{ "Question:": "Question:",
+    "Answer:": "Answer:",
+    "Date:": "Date:",
+    "Author:": "Author:",
+    "Translated by:": "Translated by:",
+    "Source:": "Source:",
+    "We are translating the article... It takes a bit more time": "We are translating the article... It takes a bit more time",
     "Responce from developer:": "Responce from developer:",
     "Please enter your name": "Please enter your name",
     "Please enter your feedback": "Please enter your feedback",

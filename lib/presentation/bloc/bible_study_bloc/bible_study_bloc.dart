@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/user_languages.dart';
-import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/domain/repository/bible_study_repository.dart';
 import 'package:icoc/main.dart';
@@ -31,23 +29,22 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
     BibleStudyListRequested event,
     Emitter<BibleStudyState> emit,
   ) async {
-    try {
-      emit(const BibleStudyState.loading());
-      allTopics = await bibleStudyRepository.getBibleStudyList();
-      if (allTopics.isNotEmpty) {
+    emit(const BibleStudyState.loading());
+    final result = await bibleStudyRepository.getBibleStudyList();
+    return result.fold(
+      (failure) => emit(BibleStudyState.error(failure.toUserFriendlyMessage())),
+      (topics) async {
+        allTopics = topics;
         await updateStoredLanguages(allTopics, bibleStudyUserLanguagesHandler);
         final List<BibleStudy> filteredTopics =
             await filterByLanguages(allTopics, bibleStudyUserLanguagesHandler);
-        emit(BibleStudyState.success(filteredTopics));
-      } else {
-        emit(BibleStudyState.error(
-            "Can't  load data... Please, check your internet connection and pull down to refresh!"
-                .tr()));
-      }
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(BibleStudyState.error(error.toString()));
-    }
+        if (filteredTopics.isNotEmpty) {
+          emit(BibleStudyState.success(filteredTopics));
+        } else {
+          emit(const BibleStudyState.empty());
+        }
+      },
+    );
   }
 }
 
@@ -56,13 +53,12 @@ Future<void> updateStoredLanguages(List<BibleStudy> bibleStudies,
   final List<Languages> allLangsFrombibleStudies =
       bibleStudies.map((bibleStudy) => bibleStudy.lang).toSet().toList();
 
-//add all new langs and set all new langs to false and locale lang to true
-  allLangsFrombibleStudies.forEach((Languages lang) async {
+  for (final lang in allLangsFrombibleStudies) {
     if (!bibleStudyUserLanguagesHandler.languages.containsKey(lang.name)) {
       await bibleStudyUserLanguagesHandler.addLanguage(
           lang.name, lang.name == locale);
     }
-  });
+  }
 }
 
 Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics,

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
@@ -8,7 +9,7 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
 import 'package:injectable/injectable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
+import 'package:icoc/core/errors/failures.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';
@@ -28,18 +29,22 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     NotificationsListRequested event,
     Emitter<NotificationsState> emit,
   ) async {
-    try {
-      emit(const NotificationsState.loading());
-      final List<NotificationsModel> allNotifications =
-          await notificationsRepository.getNotifications();
-      final List<NotificationsModel> filteredNotifications =
-          filterNotificationsByLang(allNotifications.reversed.toList());
-      notifications = await checkAndMarkWhatIsRead(filteredNotifications);
-      emit(NotificationsState.success(notifications));
-    } catch (error, stackTrace) {
-      logError(error, stackTrace);
-      emit(NotificationsState.error(error.toString()));
-    }
+    emit(const NotificationsState.loading());
+    final Either<Failure, List<NotificationsModel>> result =
+        await notificationsRepository.getNotifications();
+    return result.fold(
+      (failure) =>
+          emit(NotificationsState.error(failure.toUserFriendlyMessage())),
+      (allNotifications) {
+        final List<NotificationsModel> filteredNotifications =
+            filterNotificationsByLang(allNotifications.reversed.toList());
+        checkAndMarkWhatIsRead(filteredNotifications)
+            .then((markedNotifications) {
+          notifications = markedNotifications;
+          emit(NotificationsState.success(notifications));
+        });
+      },
+    );
   }
 
   Future<void> _onNotificationMarkAsReadRequested(
@@ -75,7 +80,8 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
-      emit(NotificationsState.error(error.toString()));
+      emit(NotificationsState.error(
+          const Failure.unknown().toUserFriendlyMessage()));
     }
   }
 }

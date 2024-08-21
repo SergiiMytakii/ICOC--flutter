@@ -16,42 +16,43 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$QandAEvent {
-  String? get query => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, OrderEnum? order) requested,
+    required TResult Function() getLangs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, OrderEnum? order)? requested,
+    TResult? Function()? getLangs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, OrderEnum? order)? requested,
+    TResult Function()? getLangs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(QandARequested value) requested,
+    required TResult Function(QandGetLangs value) getLangs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandGetLangs value)? getLangs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QandARequested value)? requested,
+    TResult Function(QandGetLangs value)? getLangs,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $QandAEventCopyWith<QandAEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -60,8 +61,6 @@ abstract class $QandAEventCopyWith<$Res> {
   factory $QandAEventCopyWith(
           QandAEvent value, $Res Function(QandAEvent) then) =
       _$QandAEventCopyWithImpl<$Res, QandAEvent>;
-  @useResult
-  $Res call({String? query});
 }
 
 /// @nodoc
@@ -73,30 +72,15 @@ class _$QandAEventCopyWithImpl<$Res, $Val extends QandAEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? query = freezed,
-  }) {
-    return _then(_value.copyWith(
-      query: freezed == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$QandARequestedImplCopyWith<$Res>
-    implements $QandAEventCopyWith<$Res> {
+abstract class _$$QandARequestedImplCopyWith<$Res> {
   factory _$$QandARequestedImplCopyWith(_$QandARequestedImpl value,
           $Res Function(_$QandARequestedImpl) then) =
       __$$QandARequestedImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String? query});
+  $Res call({String? query, OrderEnum? order});
 }
 
 /// @nodoc
@@ -111,12 +95,17 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? query = freezed,
+    Object? order = freezed,
   }) {
     return _then(_$QandARequestedImpl(
       query: freezed == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String?,
+      order: freezed == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as OrderEnum?,
     ));
   }
 }
@@ -124,14 +113,16 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$QandARequestedImpl implements QandARequested {
-  const _$QandARequestedImpl({this.query});
+  const _$QandARequestedImpl({this.query, this.order});
 
   @override
   final String? query;
+  @override
+  final OrderEnum? order;
 
   @override
   String toString() {
-    return 'QandAEvent.requested(query: $query)';
+    return 'QandAEvent.requested(query: $query, order: $order)';
   }
 
   @override
@@ -139,11 +130,12 @@ class _$QandARequestedImpl implements QandARequested {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$QandARequestedImpl &&
-            (identical(other.query, query) || other.query == query));
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.order, order) || other.order == order));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, query);
+  int get hashCode => Object.hash(runtimeType, query, order);
 
   @JsonKey(ignore: true)
   @override
@@ -155,27 +147,30 @@ class _$QandARequestedImpl implements QandARequested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, OrderEnum? order) requested,
+    required TResult Function() getLangs,
   }) {
-    return requested(query);
+    return requested(query, order);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, OrderEnum? order)? requested,
+    TResult? Function()? getLangs,
   }) {
-    return requested?.call(query);
+    return requested?.call(query, order);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, OrderEnum? order)? requested,
+    TResult Function()? getLangs,
     required TResult orElse(),
   }) {
     if (requested != null) {
-      return requested(query);
+      return requested(query, order);
     }
     return orElse();
   }
@@ -184,6 +179,7 @@ class _$QandARequestedImpl implements QandARequested {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(QandARequested value) requested,
+    required TResult Function(QandGetLangs value) getLangs,
   }) {
     return requested(this);
   }
@@ -192,6 +188,7 @@ class _$QandARequestedImpl implements QandARequested {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandGetLangs value)? getLangs,
   }) {
     return requested?.call(this);
   }
@@ -200,6 +197,7 @@ class _$QandARequestedImpl implements QandARequested {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QandARequested value)? requested,
+    TResult Function(QandGetLangs value)? getLangs,
     required TResult orElse(),
   }) {
     if (requested != null) {
@@ -210,14 +208,116 @@ class _$QandARequestedImpl implements QandARequested {
 }
 
 abstract class QandARequested implements QandAEvent {
-  const factory QandARequested({final String? query}) = _$QandARequestedImpl;
+  const factory QandARequested({final String? query, final OrderEnum? order}) =
+      _$QandARequestedImpl;
 
-  @override
   String? get query;
-  @override
+  OrderEnum? get order;
   @JsonKey(ignore: true)
   _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$QandGetLangsImplCopyWith<$Res> {
+  factory _$$QandGetLangsImplCopyWith(
+          _$QandGetLangsImpl value, $Res Function(_$QandGetLangsImpl) then) =
+      __$$QandGetLangsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$QandGetLangsImplCopyWithImpl<$Res>
+    extends _$QandAEventCopyWithImpl<$Res, _$QandGetLangsImpl>
+    implements _$$QandGetLangsImplCopyWith<$Res> {
+  __$$QandGetLangsImplCopyWithImpl(
+      _$QandGetLangsImpl _value, $Res Function(_$QandGetLangsImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$QandGetLangsImpl implements QandGetLangs {
+  const _$QandGetLangsImpl();
+
+  @override
+  String toString() {
+    return 'QandAEvent.getLangs()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$QandGetLangsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, OrderEnum? order) requested,
+    required TResult Function() getLangs,
+  }) {
+    return getLangs();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query, OrderEnum? order)? requested,
+    TResult? Function()? getLangs,
+  }) {
+    return getLangs?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, OrderEnum? order)? requested,
+    TResult Function()? getLangs,
+    required TResult orElse(),
+  }) {
+    if (getLangs != null) {
+      return getLangs();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandARequested value) requested,
+    required TResult Function(QandGetLangs value) getLangs,
+  }) {
+    return getLangs(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandGetLangs value)? getLangs,
+  }) {
+    return getLangs?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandARequested value)? requested,
+    TResult Function(QandGetLangs value)? getLangs,
+    required TResult orElse(),
+  }) {
+    if (getLangs != null) {
+      return getLangs(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QandGetLangs implements QandAEvent {
+  const factory QandGetLangs() = _$QandGetLangsImpl;
 }
 
 /// @nodoc
@@ -226,6 +326,7 @@ mixin _$QandAState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
     required TResult Function(String message) error,
   }) =>
@@ -234,6 +335,7 @@ mixin _$QandAState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
     TResult? Function(String message)? error,
   }) =>
@@ -242,6 +344,7 @@ mixin _$QandAState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -249,24 +352,27 @@ mixin _$QandAState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitial value) initial,
+    required TResult Function(QandAInitialState value) initial,
     required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
     required TResult Function(QandAErrorState value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitial value)? initial,
+    TResult? Function(QandAInitialState value)? initial,
     TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
     TResult? Function(QandAErrorState value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitial value)? initial,
+    TResult Function(QandAInitialState value)? initial,
     TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
@@ -293,25 +399,25 @@ class _$QandAStateCopyWithImpl<$Res, $Val extends QandAState>
 }
 
 /// @nodoc
-abstract class _$$QandAInitialImplCopyWith<$Res> {
-  factory _$$QandAInitialImplCopyWith(
-          _$QandAInitialImpl value, $Res Function(_$QandAInitialImpl) then) =
-      __$$QandAInitialImplCopyWithImpl<$Res>;
+abstract class _$$QandAInitialStateImplCopyWith<$Res> {
+  factory _$$QandAInitialStateImplCopyWith(_$QandAInitialStateImpl value,
+          $Res Function(_$QandAInitialStateImpl) then) =
+      __$$QandAInitialStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$QandAInitialImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$QandAInitialImpl>
-    implements _$$QandAInitialImplCopyWith<$Res> {
-  __$$QandAInitialImplCopyWithImpl(
-      _$QandAInitialImpl _value, $Res Function(_$QandAInitialImpl) _then)
+class __$$QandAInitialStateImplCopyWithImpl<$Res>
+    extends _$QandAStateCopyWithImpl<$Res, _$QandAInitialStateImpl>
+    implements _$$QandAInitialStateImplCopyWith<$Res> {
+  __$$QandAInitialStateImplCopyWithImpl(_$QandAInitialStateImpl _value,
+      $Res Function(_$QandAInitialStateImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$QandAInitialImpl implements QandAInitial {
-  const _$QandAInitialImpl();
+class _$QandAInitialStateImpl implements QandAInitialState {
+  const _$QandAInitialStateImpl();
 
   @override
   String toString() {
@@ -321,7 +427,7 @@ class _$QandAInitialImpl implements QandAInitial {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$QandAInitialImpl);
+        (other.runtimeType == runtimeType && other is _$QandAInitialStateImpl);
   }
 
   @override
@@ -332,6 +438,7 @@ class _$QandAInitialImpl implements QandAInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
     required TResult Function(String message) error,
   }) {
@@ -343,6 +450,7 @@ class _$QandAInitialImpl implements QandAInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
     TResult? Function(String message)? error,
   }) {
@@ -354,6 +462,7 @@ class _$QandAInitialImpl implements QandAInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -367,8 +476,9 @@ class _$QandAInitialImpl implements QandAInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitial value) initial,
+    required TResult Function(QandAInitialState value) initial,
     required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
     required TResult Function(QandAErrorState value) error,
   }) {
@@ -378,8 +488,9 @@ class _$QandAInitialImpl implements QandAInitial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitial value)? initial,
+    TResult? Function(QandAInitialState value)? initial,
     TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
     TResult? Function(QandAErrorState value)? error,
   }) {
@@ -389,8 +500,9 @@ class _$QandAInitialImpl implements QandAInitial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitial value)? initial,
+    TResult Function(QandAInitialState value)? initial,
     TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
@@ -402,8 +514,8 @@ class _$QandAInitialImpl implements QandAInitial {
   }
 }
 
-abstract class QandAInitial implements QandAState {
-  const factory QandAInitial() = _$QandAInitialImpl;
+abstract class QandAInitialState implements QandAState {
+  const factory QandAInitialState() = _$QandAInitialStateImpl;
 }
 
 /// @nodoc
@@ -446,6 +558,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
     required TResult Function(String message) error,
   }) {
@@ -457,6 +570,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
     TResult? Function(String message)? error,
   }) {
@@ -468,6 +582,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -481,8 +596,9 @@ class _$QandALoadingStateImpl implements QandALoadingState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitial value) initial,
+    required TResult Function(QandAInitialState value) initial,
     required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
     required TResult Function(QandAErrorState value) error,
   }) {
@@ -492,8 +608,9 @@ class _$QandALoadingStateImpl implements QandALoadingState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitial value)? initial,
+    TResult? Function(QandAInitialState value)? initial,
     TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
     TResult? Function(QandAErrorState value)? error,
   }) {
@@ -503,8 +620,9 @@ class _$QandALoadingStateImpl implements QandALoadingState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitial value)? initial,
+    TResult Function(QandAInitialState value)? initial,
     TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
@@ -518,6 +636,126 @@ class _$QandALoadingStateImpl implements QandALoadingState {
 
 abstract class QandALoadingState implements QandAState {
   const factory QandALoadingState() = _$QandALoadingStateImpl;
+}
+
+/// @nodoc
+abstract class _$$QandAEmptyStateImplCopyWith<$Res> {
+  factory _$$QandAEmptyStateImplCopyWith(_$QandAEmptyStateImpl value,
+          $Res Function(_$QandAEmptyStateImpl) then) =
+      __$$QandAEmptyStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$QandAEmptyStateImplCopyWithImpl<$Res>
+    extends _$QandAStateCopyWithImpl<$Res, _$QandAEmptyStateImpl>
+    implements _$$QandAEmptyStateImplCopyWith<$Res> {
+  __$$QandAEmptyStateImplCopyWithImpl(
+      _$QandAEmptyStateImpl _value, $Res Function(_$QandAEmptyStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$QandAEmptyStateImpl implements QandAEmptyState {
+  const _$QandAEmptyStateImpl();
+
+  @override
+  String toString() {
+    return 'QandAState.empty()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$QandAEmptyStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() empty,
+    required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(String message) error,
+  }) {
+    return empty();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? empty,
+    TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(String message)? error,
+  }) {
+    return empty?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? empty,
+    TResult Function(List<QandAModel> articles)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandAInitialState value) initial,
+    required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
+    required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(QandAErrorState value) error,
+  }) {
+    return empty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandAInitialState value)? initial,
+    TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
+    TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(QandAErrorState value)? error,
+  }) {
+    return empty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandAInitialState value)? initial,
+    TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
+    TResult Function(GetQandASuccessState value)? success,
+    TResult Function(QandAErrorState value)? error,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QandAEmptyState implements QandAState {
+  const factory QandAEmptyState() = _$QandAEmptyStateImpl;
 }
 
 /// @nodoc
@@ -595,6 +833,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
     required TResult Function(String message) error,
   }) {
@@ -606,6 +845,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
     TResult? Function(String message)? error,
   }) {
@@ -617,6 +857,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -630,8 +871,9 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitial value) initial,
+    required TResult Function(QandAInitialState value) initial,
     required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
     required TResult Function(QandAErrorState value) error,
   }) {
@@ -641,8 +883,9 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitial value)? initial,
+    TResult? Function(QandAInitialState value)? initial,
     TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
     TResult? Function(QandAErrorState value)? error,
   }) {
@@ -652,8 +895,9 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitial value)? initial,
+    TResult Function(QandAInitialState value)? initial,
     TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
@@ -742,6 +986,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
     required TResult Function(String message) error,
   }) {
@@ -753,6 +998,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
     TResult? Function(String message)? error,
   }) {
@@ -764,6 +1010,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -777,8 +1024,9 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitial value) initial,
+    required TResult Function(QandAInitialState value) initial,
     required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
     required TResult Function(QandAErrorState value) error,
   }) {
@@ -788,8 +1036,9 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitial value)? initial,
+    TResult? Function(QandAInitialState value)? initial,
     TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
     TResult? Function(QandAErrorState value)? error,
   }) {
@@ -799,8 +1048,9 @@ class _$QandAErrorStateImpl implements QandAErrorState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitial value)? initial,
+    TResult Function(QandAInitialState value)? initial,
     TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),

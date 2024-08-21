@@ -1,4 +1,13 @@
+
+
 { 
+  "Question:": "Въпрос:",
+  "Answer:": "Отговор:",
+  "Date:": "Дата:",
+  "Author:": "Автор:",
+  "Translated by:": "Преведено от:",
+  "Source:": "Източник:",
+  "We are translating the article... It takes a bit more time": "Превеждаме статията... Това отнема малко повече време",
   "Responce from developer:": "Отговор от разработчика:",
   "Please enter your name": "Моля, въведете вашето име",
   "Please enter your feedback": "Моля, въведете вашия отзив", 

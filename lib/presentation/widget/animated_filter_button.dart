@@ -61,19 +61,20 @@ class _AnimatedFilterIconButtonState extends State<AnimatedFilterIconButton>
           scale: scaleFactor,
           child: IconButton(
             icon: Row(children: [
-              Text(
-                widget.primaryLanguage ?? locale,
-                style: TextStyle(
-                  fontSize: 22,
-                  color: ColorTween(
-                          begin: AdaptiveTheme.of(context)
-                              .theme
-                              .colorScheme
-                              .onSurface,
-                          end: widget.color)
-                      .evaluate(_controller),
+              if (widget.primaryLanguage != null)
+                Text(
+                  widget.primaryLanguage!,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: ColorTween(
+                            begin: AdaptiveTheme.of(context)
+                                .theme
+                                .colorScheme
+                                .onSurface,
+                            end: widget.color)
+                        .evaluate(_controller),
+                  ),
                 ),
-              ),
               Icon(
                 Icons.filter_alt_outlined,
                 color: ColorTween(

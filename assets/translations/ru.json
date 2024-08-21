@@ -1,4 +1,13 @@
 {
+    
+      "Question:": "Вопрос:",
+      "Answer:": "Ответ:",
+      "Date:": "Дата:",
+      "Author:": "Автор:",
+      "Translated by:": "Перевод:",
+      "Source:": "Источник:",
+      "We are translating the article... It takes a bit more time": "Мы переводим статью... Это займет немного времени",
+    
   "Responce from developer:": "Ответ от разработчика:",
   "Please enter your name": "Пожалуйста, введите ваше имя",
   "Please enter your feedback": "Пожалуйста, введите ваш отзыв",  "Show chords in another language": "Показать аккорды на другом языке",

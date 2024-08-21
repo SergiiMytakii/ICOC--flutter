@@ -8,6 +8,7 @@ import 'package:icoc/presentation/screen/video/widget/video_card.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
+import 'package:icoc/presentation/widget/no_content_warning.dart';
 
 class ListVideosScreen extends StatefulWidget {
   final String playlistId;
@@ -51,36 +52,36 @@ class _ListVideosState extends State<ListVideosScreen> {
           title: Text(widget.playlistName ?? ''),
         ),
         body: BlocBuilder<VideoBloc, VideoState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-              getVideosFromPlaylistSuccess: (youtubeVideos) {
-                return RefreshIndicator.adaptive(
-                  onRefresh: () => _getVideosList(),
-                  child: ListView.builder(
-                    cacheExtent: 0,
-                    itemBuilder: (context, index) => youtubeVideos.isNotEmpty
-                        ? AnimationWrapper(
-                            child: VideoCard(
-                              youtubeVideos: youtubeVideos[index],
-                            ),
-                          )
-                        : Container(height: 200),
-                    itemCount: youtubeVideos.length,
+          builder: (context, state) => state.maybeWhen(
+            empty: () => const NoContentWarning(),
+            getVideosFromPlaylistSuccess: (youtubeVideos) {
+              return ListView.builder(
+                cacheExtent: 0,
+                itemBuilder: (context, index) => AnimationWrapper(
+                  child: VideoCard(
+                    youtubeVideos: youtubeVideos[index],
                   ),
-                );
-              },
-              loading: () {
-                return CustomRefreshIndicator(
-                    onRefresh: () => _getVideosList());
-              },
-              error: (message) {
-                return ErrorTextOnScreen(message: message);
-              },
-              orElse: () => const SizedBox.shrink(),
-            );
-          },
+                ),
+                itemCount: youtubeVideos.length,
+              );
+            },
+            loading: () =>
+                CustomRefreshIndicator(onRefresh: () => _getVideosList()),
+            error: (message) => _buildErrorWidget(message),
+            orElse: () => const SizedBox.shrink(),
+          ),
         ),
       ),
     );
+  }
+
+  RefreshIndicator _buildErrorWidget(String message) {
+    return RefreshIndicator.adaptive(
+        onRefresh: () => _getVideosList(),
+        child: ListView(
+          children: [
+            ErrorTextOnScreen(message: message),
+          ],
+        ));
   }
 }

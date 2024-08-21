@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/domain/model/notifications/notifications_model.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 
 class NotificationIcon extends StatelessWidget {
   NotificationIcon({super.key});

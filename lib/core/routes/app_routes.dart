@@ -5,6 +5,7 @@ const ONE_SONG_SCREEN = 'songs';
 const ADD_SONG_SCREEN = 'addsong';
 
 const Q_AND_ANSVERS = 'qanda';
+const Q_AND_A_VIDEO_PLAYER = 'qandavideoplayer';
 const ONE_Q_AND_A_SCREEN = 'oneqanda';
 
 const VIDEO = 'video';

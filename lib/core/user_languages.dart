@@ -64,6 +64,33 @@ class BibleStudyUserLanguagesHandler extends UserLanguagesHandler {
 @dev
 @prod
 @singleton
+class QandAUserLanguagesHandler extends UserLanguagesHandler {
+  QandAUserLanguagesHandler(super._localCache) {
+    languages.addAll(_localCache.getMap(StorageKeys.qAndALanguages) ?? {});
+  }
+
+  @override
+  Future<void> addLanguage(String lang, bool isActive) async {
+    super.addLanguage(lang, isActive);
+    _localCache.saveMap(StorageKeys.qAndALanguages, languages);
+  }
+
+  @override
+  Future<void> updateLanguage(String lang, bool isActive) async {
+    super.updateLanguage(lang, isActive);
+    _localCache.saveMap(StorageKeys.qAndALanguages, languages);
+  }
+
+  @override
+  Future<void> saveAllLanguages(Map<String, dynamic> updatedLanguages) async {
+    super.saveAllLanguages(updatedLanguages);
+    await _localCache.saveMap(StorageKeys.qAndALanguages, updatedLanguages);
+  }
+}
+
+@dev
+@prod
+@singleton
 class VideosUserLanguagesHandler extends UserLanguagesHandler {
   VideosUserLanguagesHandler(super._localCache) {
     languages.addAll(_localCache.getMap(StorageKeys.videosAllLanguages) ?? {});

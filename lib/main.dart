@@ -15,7 +15,7 @@ import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/presentation/bloc/bloc_observer.dart';
 import 'package:icoc/presentation/bloc/multibloc_provider.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/presentation/routes/app_router.dart';
+import 'package:icoc/core/routes/app_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -23,6 +23,8 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/theme.dart';
 
 String locale = 'en';
+// ignore: prefer_const_declarations
+final openAIKey = const String.fromEnvironment('openAIKey');
 void main() async {
   runZonedGuarded(
     () async {
@@ -37,7 +39,7 @@ void main() async {
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
       FirebaseAnalytics.instance
           .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
-      locale = await getIt<LocalCache>().getString(
+      locale = getIt<LocalCache>().getString(
             StorageKeys.locale,
           ) ??
           'en';
