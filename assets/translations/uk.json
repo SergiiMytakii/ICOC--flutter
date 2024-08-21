@@ -1,4 +1,13 @@
 { 
+    
+      "Question:": "Питання:",
+      "Answer:": "Відповідь:",
+      "Date:": "Дата:",
+      "Author:": "Автор:",
+      "Translated by:": "Переклад:",
+      "Source:": "Джерело:",
+      "We are translating the article... It takes a bit more time": "Ми перекладаємо статтю... Це займе ще трохи часу.",
+    
   "Responce from developer:": "Відповідь від розробника:",
   "Please enter your name": "Будь ласка, введіть ваше ім'я",
   "Please enter your feedback": "Будь ласка, введіть ваш відгук",  "Show chords in another language": "Показати акорди іншою мовою",

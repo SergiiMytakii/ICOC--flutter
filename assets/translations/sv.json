@@ -1,4 +1,13 @@
 { 
+  
+    "Question:": "Fråga:",
+    "Answer:": "Svar:",
+    "Date:": "Datum:",
+    "Author:": "Författare:",
+    "Translated by:": "Översatt av:",
+    "Source:": "Källa:",
+    "We are translating the article... It takes a bit more time": "Vi översätter artikeln... Det tar lite längre tid",
+  
   "Responce from developer:": "Svar från utvecklaren:",
   "Please enter your name": "Vänligen ange ditt namn",
   "Please enter your feedback": "Vänligen ange din feedback",  "Show chords in another language": "Visa ackord på ett annat språk",

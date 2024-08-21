@@ -2,7 +2,7 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 
 abstract class QandARepository {
-  Future<List<QandAModel>> getArticles({Languages? lang, String? query});
+  Future<List<QandAModel>> getArticles({Languages? lang, OrderEnum? order});
 
   Future<List<Languages>> getAllLangs();
 

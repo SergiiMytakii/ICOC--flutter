@@ -23,6 +23,8 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/theme.dart';
 
 String locale = 'en';
+// ignore: prefer_const_declarations
+final openAIKey = const String.fromEnvironment('openAIKey');
 void main() async {
   runZonedGuarded(
     () async {
@@ -37,7 +39,7 @@ void main() async {
       final savedThemeMode = await AdaptiveTheme.getThemeMode();
       FirebaseAnalytics.instance
           .logAppOpen(callOptions: AnalyticsCallOptions(global: true));
-      locale = await getIt<LocalCache>().getString(
+      locale = getIt<LocalCache>().getString(
             StorageKeys.locale,
           ) ??
           'en';

@@ -1,5 +1,11 @@
 {
-  "Responce from developer:": "Vastus arendajalt:",
+  "Question:": "Küsimus:",
+  "Answer:": "Vastus:",
+  "Date:": "Kuupäev:",
+  "Author:": "Autor:",
+  "Translated by:": "Tõlkinud:",
+  "Source:": "Allikas:",
+  "We are translating the article... It takes a bit more time": "Tõlgime artiklit... See võtab natuke rohkem aega",  "Responce from developer:": "Vastus arendajalt:",
   "Please enter your name": "Palun sisestage oma nimi",
   "Please enter your feedback": "Palun sisestage oma tagasiside",
 

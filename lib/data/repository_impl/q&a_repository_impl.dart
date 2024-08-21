@@ -21,12 +21,12 @@ class QandARepositoryImpl extends QandARepository {
   QandARepositoryImpl(
       this.firebaseDataSource, this.aiDataSource, this.httpClientImpl);
   @override
-  Future<List<QandAModel>> getArticles({Languages? lang, String? query}) async {
+  Future<List<QandAModel>> getArticles(
+      {Languages? lang, OrderEnum? order}) async {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
         FirebaseCollections.QandA.name,
         filters: lang != null ? {'lang': lang.name} : null,
-        search: query != null ? {'id': query} : null,
-        orderBy: {'id': true});
+        orderBy: {'id': order == null ? true : order == OrderEnum.descending});
     final List<QandAModel> articles = snapshot.docs.map(
       (doc) {
         final article =
@@ -144,8 +144,9 @@ class QandARepositoryImpl extends QandARepository {
         ''');
       final res = await aiDataSource.getAiResponse(promptTemplate, query);
 
-      article =
-          article.copyWith(question: res['question'], answer: res['answer']);
+      article = article.copyWith(
+          question: res['question'].toString(),
+          answer: res['answer'].toString());
 
       firebaseDataSource.updateToFirebase(
           collectionName: FirebaseCollections.QandA.name,

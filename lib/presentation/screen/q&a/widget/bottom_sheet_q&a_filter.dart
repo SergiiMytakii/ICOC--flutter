@@ -28,13 +28,40 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
       height: MediaQuery.of(context).size.height / 1.6,
       child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_downward),
+                onPressed: () {
+                  getIt<QandABloc>().add(
+                      const QandAEvent.requested(order: OrderEnum.descending));
+                },
+                tooltip: 'Sort articles descending'.tr(),
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_upward),
+                onPressed: () {
+                  getIt<QandABloc>().add(
+                      const QandAEvent.requested(order: OrderEnum.ascending));
+                },
+                tooltip: 'Sort articles ascending'.tr(),
+              ),
+              IconButton(
+                icon: const Icon(Icons.shuffle),
+                onPressed: () {
+                  getIt<QandABloc>()
+                      .add(const QandAEvent.requested(order: OrderEnum.random));
+                },
+                tooltip: 'Shuffle'.tr(),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
-            child: Center(
-              child: Text(
-                'Filter languages'.tr(),
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+            child: Text(
+              'Filter languages'.tr(),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Expanded(

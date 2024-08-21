@@ -18,19 +18,19 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$QandAEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, OrderEnum? order) requested,
     required TResult Function() getLangs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, OrderEnum? order)? requested,
     TResult? Function()? getLangs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, OrderEnum? order)? requested,
     TResult Function()? getLangs,
     required TResult orElse(),
   }) =>
@@ -80,7 +80,7 @@ abstract class _$$QandARequestedImplCopyWith<$Res> {
           $Res Function(_$QandARequestedImpl) then) =
       __$$QandARequestedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? query});
+  $Res call({String? query, OrderEnum? order});
 }
 
 /// @nodoc
@@ -95,12 +95,17 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? query = freezed,
+    Object? order = freezed,
   }) {
     return _then(_$QandARequestedImpl(
       query: freezed == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String?,
+      order: freezed == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as OrderEnum?,
     ));
   }
 }
@@ -108,14 +113,16 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$QandARequestedImpl implements QandARequested {
-  const _$QandARequestedImpl({this.query});
+  const _$QandARequestedImpl({this.query, this.order});
 
   @override
   final String? query;
+  @override
+  final OrderEnum? order;
 
   @override
   String toString() {
-    return 'QandAEvent.requested(query: $query)';
+    return 'QandAEvent.requested(query: $query, order: $order)';
   }
 
   @override
@@ -123,11 +130,12 @@ class _$QandARequestedImpl implements QandARequested {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$QandARequestedImpl &&
-            (identical(other.query, query) || other.query == query));
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.order, order) || other.order == order));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, query);
+  int get hashCode => Object.hash(runtimeType, query, order);
 
   @JsonKey(ignore: true)
   @override
@@ -139,30 +147,30 @@ class _$QandARequestedImpl implements QandARequested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, OrderEnum? order) requested,
     required TResult Function() getLangs,
   }) {
-    return requested(query);
+    return requested(query, order);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, OrderEnum? order)? requested,
     TResult? Function()? getLangs,
   }) {
-    return requested?.call(query);
+    return requested?.call(query, order);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, OrderEnum? order)? requested,
     TResult Function()? getLangs,
     required TResult orElse(),
   }) {
     if (requested != null) {
-      return requested(query);
+      return requested(query, order);
     }
     return orElse();
   }
@@ -200,9 +208,11 @@ class _$QandARequestedImpl implements QandARequested {
 }
 
 abstract class QandARequested implements QandAEvent {
-  const factory QandARequested({final String? query}) = _$QandARequestedImpl;
+  const factory QandARequested({final String? query, final OrderEnum? order}) =
+      _$QandARequestedImpl;
 
   String? get query;
+  OrderEnum? get order;
   @JsonKey(ignore: true)
   _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -246,7 +256,7 @@ class _$QandGetLangsImpl implements QandGetLangs {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, OrderEnum? order) requested,
     required TResult Function() getLangs,
   }) {
     return getLangs();
@@ -255,7 +265,7 @@ class _$QandGetLangsImpl implements QandGetLangs {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, OrderEnum? order)? requested,
     TResult? Function()? getLangs,
   }) {
     return getLangs?.call();
@@ -264,7 +274,7 @@ class _$QandGetLangsImpl implements QandGetLangs {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, OrderEnum? order)? requested,
     TResult Function()? getLangs,
     required TResult orElse(),
   }) {

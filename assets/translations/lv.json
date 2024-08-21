@@ -1,5 +1,12 @@
 {
-  "Responce from developer:": "Atbilde no izstrādātāja:",
+  "Question:": "Jautājums:",
+  "Answer:": "Atbilde:",
+  "Date:": "Datums:",
+  "Author:": "Autors:",
+  "Translated by:": "Tulkojis:",
+  "Source:": "Avots:",
+  "We are translating the article... It takes a bit more time": "Mēs tulkojam rakstu... Tas aizņem nedaudz vairāk laika",
+    "Responce from developer:": "Atbilde no izstrādātāja:",
   "Please enter your name": "Lūdzu, ievadiet savu vārdu",
   "Please enter your feedback": "Lūdzu, ievadiet savu atsauksmi",  "Show chords in another language": "Rādīt akordus citā valodā",
   "There are no chords available for the current language.": "Pašreizējai valodai nav pieejamu akordu.",

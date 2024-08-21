@@ -1,4 +1,13 @@
 { 
+  
+    "Question:": "Frage:",
+    "Answer:": "Antwort:",
+    "Date:": "Datum:",
+    "Author:": "Autor:",
+    "Translated by:": "Übersetzt von:",
+    "Source:": "Quelle:",
+    "We are translating the article... It takes a bit more time": "Wir übersetzen den Artikel... Es dauert etwas länger",
+  
   "Responce from developer:": "Antwort vom Entwickler:",
   "Please enter your name": "Bitte geben Sie Ihren Namen ein",
   "Please enter your feedback": "Bitte geben Sie Ihr Feedback ein",  "Show chords in another language": "Akkorde in einer anderen Sprache anzeigen",

@@ -25,13 +25,14 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
     on<QandAEvent>((event, emit) async {
       await event.when(
         getLangs: () => _onGetLangs(emit),
-        requested: (query) => _onQandARequested(query, emit),
+        requested: (query, order) => _onQandARequested(query, order, emit),
       );
     });
   }
 
   Future<void> _onQandARequested(
     String? query,
+    OrderEnum? order,
     Emitter<QandAState> emit,
   ) async {
     try {
@@ -41,9 +42,8 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
         lang = convertLanguagesEnum(
             qandAUserLanguagesHandler.getActiveLanguages().first);
       }
-      final List<QandAModel> articles = await qandARepository.getArticles(
-        lang: lang,
-      );
+      final List<QandAModel> articles =
+          await qandARepository.getArticles(lang: lang, order: order);
       if (articles.isEmpty) {
         emit(const QandAState.empty());
       } else if (query != null && query.isNotEmpty) {
@@ -56,8 +56,14 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
                 .contains(query.toLowerCase().trim());
           }
         }).toList();
+        if (order == OrderEnum.random) {
+          filteredArticles.shuffle();
+        }
         emit(QandAState.success(filteredArticles));
       } else {
+        if (order == OrderEnum.random) {
+          articles.shuffle();
+        }
         emit(QandAState.success(articles));
       }
     } catch (error, stackTrace) {

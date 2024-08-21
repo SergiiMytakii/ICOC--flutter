@@ -101,6 +101,8 @@ enum FirebaseCollections {
   QandALangs
 }
 
+enum OrderEnum { ascending, descending, random }
+
 enum Languages {
   en,
   et,
