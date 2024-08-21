@@ -9,6 +9,7 @@ part of 'q&a_model.dart';
 _$QandAModelImpl _$$QandAModelImplFromJson(Map<String, dynamic> json) =>
     _$QandAModelImpl(
       id: (json['id'] as num).toInt(),
+      documentRef: json['documentRef'] as String,
       title: json['title'] as String,
       question: json['question'] as String,
       answer: json['answer'] as String,

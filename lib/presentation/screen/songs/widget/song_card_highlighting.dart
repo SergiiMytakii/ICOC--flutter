@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/core/constants.dart';
 
 class SongCardWithHighlighting extends StatelessWidget {

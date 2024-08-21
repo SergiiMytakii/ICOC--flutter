@@ -15,7 +15,7 @@ import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/presentation/bloc/bloc_observer.dart';
 import 'package:icoc/presentation/bloc/multibloc_provider.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/presentation/routes/app_router.dart';
+import 'package:icoc/core/routes/app_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';

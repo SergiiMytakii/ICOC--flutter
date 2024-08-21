@@ -10,7 +10,7 @@ import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/songs/widget/no_chords_tab.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:share_plus/share_plus.dart';

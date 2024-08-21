@@ -36,23 +36,21 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
   ) async {
     try {
       if (query != null) emit(const QandAState.loading());
-
-      final lang = qandAUserLanguagesHandler.getActiveLanguages().first;
-
+      Languages lang = Languages.defaultLang;
+      if (qandAUserLanguagesHandler.getActiveLanguages().isNotEmpty) {
+        lang = convertLanguagesEnum(
+            qandAUserLanguagesHandler.getActiveLanguages().first);
+      }
       final List<QandAModel> articles = await qandARepository.getArticles(
-        lang: convertLanguagesEnum(lang),
+        lang: lang,
       );
-      if (articles.isNotEmpty) {
-        if (query != null) {
-          final filteredArticles = articles
-              .where((element) => element.title.contains(query))
-              .toList();
-          emit(QandAState.success(filteredArticles));
-        } else {
-          emit(QandAState.success(articles));
-        }
+
+      if (query != null) {
+        final filteredArticles =
+            articles.where((element) => element.title.contains(query)).toList();
+        emit(QandAState.success(filteredArticles));
       } else {
-        emit(const QandAState.error(''));
+        emit(QandAState.success(articles));
       }
     } catch (error, stackTrace) {
       logError(error, stackTrace);

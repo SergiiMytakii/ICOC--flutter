@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/toast.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 

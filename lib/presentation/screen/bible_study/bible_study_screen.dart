@@ -11,7 +11,7 @@ import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/screen/bible_study/widget/bottom_sheet_bible_study_filter.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';

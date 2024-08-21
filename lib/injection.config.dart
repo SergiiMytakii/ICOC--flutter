@@ -21,13 +21,13 @@ import 'package:icoc/data/data_sources_impl/remote/firebase_data_source_impl.dar
 import 'package:icoc/data/data_sources_impl/remote/http_client_impl.dart'
     as _i5;
 import 'package:icoc/data/repository_impl/bible_study_repository_impl.dart'
-    as _i21;
+    as _i19;
 import 'package:icoc/data/repository_impl/feedback_repository_impl.dart'
     as _i25;
 import 'package:icoc/data/repository_impl/notifications_repository_impl.dart'
     as _i23;
-import 'package:icoc/data/repository_impl/q&a_repository_impl.dart' as _i17;
-import 'package:icoc/data/repository_impl/songs_repository_impl.dart' as _i19;
+import 'package:icoc/data/repository_impl/q&a_repository_impl.dart' as _i21;
+import 'package:icoc/data/repository_impl/songs_repository_impl.dart' as _i17;
 import 'package:icoc/data/repository_impl/video_repository_impl.dart' as _i27;
 import 'package:icoc/domain/data_sources/local/local_cache.dart' as _i8;
 import 'package:icoc/domain/data_sources/local/local_db_data_source.dart'
@@ -38,14 +38,14 @@ import 'package:icoc/domain/data_sources/remote/ai_data_source.dart' as _i12;
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart'
     as _i14;
 import 'package:icoc/domain/data_sources/remote/http_client.dart' as _i4;
-import 'package:icoc/domain/repository/bible_study_repository.dart' as _i20;
+import 'package:icoc/domain/repository/bible_study_repository.dart' as _i18;
 import 'package:icoc/domain/repository/feedback_repository.dart' as _i24;
 import 'package:icoc/domain/repository/notifications_repository.dart' as _i22;
-import 'package:icoc/domain/repository/q&a_repository.dart' as _i16;
-import 'package:icoc/domain/repository/songs_repository.dart' as _i18;
+import 'package:icoc/domain/repository/q&a_repository.dart' as _i20;
+import 'package:icoc/domain/repository/songs_repository.dart' as _i16;
 import 'package:icoc/domain/repository/video_repository.dart' as _i26;
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart'
-    as _i36;
+    as _i37;
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart'
     as _i30;
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart'
@@ -56,7 +56,9 @@ import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart'
     as _i3;
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart'
     as _i29;
-import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart' as _i35;
+import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart' as _i36;
+import 'package:icoc/presentation/bloc/q&a_bloc/one_q&a/one_q&a_bloc.dart'
+    as _i35;
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart' as _i32;
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart' as _i34;
 import 'package:injectable/injectable.dart' as _i2;
@@ -118,18 +120,8 @@ extension GetItInjectableX on _i1.GetIt {
         _prod,
       },
     );
-    gh.factory<_i16.QandARepository>(
-      () => _i17.QandARepositoryImpl(
-        gh<_i14.FirebaseDataSource>(),
-        gh<_i12.AiDataSource>(),
-      ),
-      registerFor: {
-        _dev,
-        _prod,
-      },
-    );
-    gh.factory<_i18.SongsRepository>(
-      () => _i19.SongsRepositoryImpl(
+    gh.factory<_i16.SongsRepository>(
+      () => _i17.SongsRepositoryImpl(
         firebaseDataSource: gh<_i14.FirebaseDataSource>(),
         localDB: gh<_i10.LocalSongsDB>(),
       ),
@@ -138,9 +130,20 @@ extension GetItInjectableX on _i1.GetIt {
         _prod,
       },
     );
-    gh.factory<_i20.BibleStudyRepository>(
-      () => _i21.BibleStudyRepositoryImpl(
+    gh.factory<_i18.BibleStudyRepository>(
+      () => _i19.BibleStudyRepositoryImpl(
           firebaseDataSource: gh<_i14.FirebaseDataSource>()),
+      registerFor: {
+        _dev,
+        _prod,
+      },
+    );
+    gh.factory<_i20.QandARepository>(
+      () => _i21.QandARepositoryImpl(
+        gh<_i14.FirebaseDataSource>(),
+        gh<_i12.AiDataSource>(),
+        gh<_i4.HttpClient>(),
+      ),
       registerFor: {
         _dev,
         _prod,
@@ -201,13 +204,13 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i29.NotificationsBloc>(
         () => _i29.NotificationsBloc(gh<_i22.NotificationsRepository>()));
     gh.singleton<_i30.FavoriteSongStatusBloc>(
-        () => _i30.FavoriteSongStatusBloc(gh<_i18.SongsRepository>()));
+        () => _i30.FavoriteSongStatusBloc(gh<_i16.SongsRepository>()));
     gh.singleton<_i31.FavoriteSongsListBloc>(() => _i31.FavoriteSongsListBloc(
-          gh<_i18.SongsRepository>(),
+          gh<_i16.SongsRepository>(),
           gh<_i28.SongsUserLanguagesHandler>(),
         ));
     gh.singleton<_i32.SongsBloc>(() => _i32.SongsBloc(
-          gh<_i18.SongsRepository>(),
+          gh<_i16.SongsRepository>(),
           gh<_i28.SongsUserLanguagesHandler>(),
         ));
     gh.singleton<_i33.FeedbackBloc>(
@@ -216,12 +219,16 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i26.VideoRepository>(),
           gh<_i28.VideosUserLanguagesHandler>(),
         ));
-    gh.singleton<_i35.QandABloc>(() => _i35.QandABloc(
-          gh<_i16.QandARepository>(),
+    gh.singleton<_i35.OneQandABloc>(() => _i35.OneQandABloc(
+          gh<_i20.QandARepository>(),
           gh<_i28.QandAUserLanguagesHandler>(),
         ));
-    gh.singleton<_i36.BibleStudyBloc>(() => _i36.BibleStudyBloc(
-          gh<_i20.BibleStudyRepository>(),
+    gh.singleton<_i36.QandABloc>(() => _i36.QandABloc(
+          gh<_i20.QandARepository>(),
+          gh<_i28.QandAUserLanguagesHandler>(),
+        ));
+    gh.singleton<_i37.BibleStudyBloc>(() => _i37.BibleStudyBloc(
+          gh<_i18.BibleStudyRepository>(),
           gh<_i28.BibleStudyUserLanguagesHandler>(),
         ));
     return this;

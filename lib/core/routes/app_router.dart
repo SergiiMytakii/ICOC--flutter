@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
-import 'package:icoc/presentation/routes/routes_with_transitions.dart';
+import 'package:icoc/core/routes/app_routes.dart';
+import 'package:icoc/core/routes/routes_with_transitions.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_topic_screen.dart';
@@ -15,6 +15,7 @@ import 'package:icoc/presentation/screen/home/share_app_screen.dart';
 import 'package:icoc/presentation/screen/home/terms_of_use_screen.dart';
 import 'package:icoc/presentation/screen/q&a/one_q&a_screen.dart';
 import 'package:icoc/presentation/screen/q&a/q&a_screen.dart';
+import 'package:icoc/presentation/screen/q&a/widget/video_player.dart';
 import 'package:icoc/presentation/screen/songs/add_song_screen.dart';
 import 'package:icoc/presentation/screen/songs/one_song_screen.dart';
 import 'package:icoc/presentation/screen/songs/widget/bottom_navigation_bar.dart';
@@ -66,12 +67,19 @@ final GoRouter router = GoRouter(
                     return OneQandAScreen(article: article);
                   },
                 ),
+                VerticalSlideGoRoute(
+                  path: '$Q_AND_A_VIDEO_PLAYER/:videoId',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final videoId = state.pathParameters['videoId'];
+                    return QandAVideoPlayer(videoId: videoId ?? '');
+                  },
+                ),
               ]),
 
           FadeGoRoute(
               path: BIBLE_STUDY,
               builder: (BuildContext context, GoRouterState state) =>
-                  BibleStudyScreen(),
+                  const BibleStudyScreen(),
               routes: [
                 GoRoute(
                     path: '$ONE_TOPIC_SCREEN/:topicId',

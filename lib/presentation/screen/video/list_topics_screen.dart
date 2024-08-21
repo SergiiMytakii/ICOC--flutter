@@ -9,7 +9,7 @@ import 'package:icoc/core/helpers/handle_divider_color.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/domain/model/playlist/playlist.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/video/widget/bottom_sheet_video_filter.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';

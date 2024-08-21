@@ -8,7 +8,7 @@ import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';

@@ -7,7 +7,7 @@ import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/animation_wrapper.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';

@@ -9,6 +9,7 @@ part 'q&a_model.g.dart';
 class QandAModel with _$QandAModel {
   factory QandAModel(
       {required int id,
+      @JsonKey(includeToJson: false) required String documentRef,
       required String title,
       required String question,
       required String answer,
@@ -22,6 +23,6 @@ class QandAModel with _$QandAModel {
       String? youtubeLink,
       List<String>? tags}) = _QandAModel;
 
-  factory QandAModel.fromJson(Map<String, dynamic> json) =>
-      _$QandAModelFromJson(json);
+  factory QandAModel.fromJson(Map<String, dynamic> json, String documentRef) =>
+      _$QandAModelFromJson(json..addAll({'documentRef': documentRef}));
 }

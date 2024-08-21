@@ -6,7 +6,8 @@ import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_b
 import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
-import 'package:icoc/presentation/bloc/q&a_bloc/q&a_bloc.dart';
+import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
+import 'package:icoc/presentation/bloc/q&a_bloc/one_q&a/one_q&a_bloc.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/injection.dart';
@@ -41,6 +42,8 @@ class MyMultiblocProvider extends StatelessWidget {
               getIt<QandABloc>()..add(const QandAEvent.getLangs()),
           lazy: false,
         ),
+        BlocProvider<OneQandABloc>(
+            create: (BuildContext context) => getIt<OneQandABloc>()),
         BlocProvider<NotificationsBloc>(
           create: (BuildContext context) => getIt<NotificationsBloc>(),
         ),

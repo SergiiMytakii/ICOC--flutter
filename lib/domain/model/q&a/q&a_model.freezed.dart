@@ -21,6 +21,8 @@ QandAModel _$QandAModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$QandAModel {
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false)
+  String get documentRef => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get question => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
@@ -48,6 +50,7 @@ abstract class $QandAModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
+      @JsonKey(includeToJson: false) String documentRef,
       String title,
       String question,
       String answer,
@@ -76,6 +79,7 @@ class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
   @override
   $Res call({
     Object? id = null,
+    Object? documentRef = null,
     Object? title = null,
     Object? question = null,
     Object? answer = null,
@@ -94,6 +98,10 @@ class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      documentRef: null == documentRef
+          ? _value.documentRef
+          : documentRef // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -156,6 +164,7 @@ abstract class _$$QandAModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
+      @JsonKey(includeToJson: false) String documentRef,
       String title,
       String question,
       String answer,
@@ -182,6 +191,7 @@ class __$$QandAModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? documentRef = null,
     Object? title = null,
     Object? question = null,
     Object? answer = null,
@@ -200,6 +210,10 @@ class __$$QandAModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      documentRef: null == documentRef
+          ? _value.documentRef
+          : documentRef // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -257,6 +271,7 @@ class __$$QandAModelImplCopyWithImpl<$Res>
 class _$QandAModelImpl implements _QandAModel {
   _$QandAModelImpl(
       {required this.id,
+      @JsonKey(includeToJson: false) required this.documentRef,
       required this.title,
       required this.question,
       required this.answer,
@@ -276,6 +291,9 @@ class _$QandAModelImpl implements _QandAModel {
 
   @override
   final int id;
+  @override
+  @JsonKey(includeToJson: false)
+  final String documentRef;
   @override
   final String title;
   @override
@@ -310,7 +328,7 @@ class _$QandAModelImpl implements _QandAModel {
 
   @override
   String toString() {
-    return 'QandAModel(id: $id, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
+    return 'QandAModel(id: $id, documentRef: $documentRef, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
   }
 
   @override
@@ -319,6 +337,8 @@ class _$QandAModelImpl implements _QandAModel {
         (other.runtimeType == runtimeType &&
             other is _$QandAModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.documentRef, documentRef) ||
+                other.documentRef == documentRef) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.question, question) ||
                 other.question == question) &&
@@ -341,6 +361,7 @@ class _$QandAModelImpl implements _QandAModel {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      documentRef,
       title,
       question,
       answer,
@@ -371,6 +392,7 @@ class _$QandAModelImpl implements _QandAModel {
 abstract class _QandAModel implements QandAModel {
   factory _QandAModel(
       {required final int id,
+      @JsonKey(includeToJson: false) required final String documentRef,
       required final String title,
       required final String question,
       required final String answer,
@@ -389,6 +411,9 @@ abstract class _QandAModel implements QandAModel {
 
   @override
   int get id;
+  @override
+  @JsonKey(includeToJson: false)
+  String get documentRef;
   @override
   String get title;
   @override
