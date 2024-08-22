@@ -46,12 +46,9 @@ class FavoriteSongsListBloc
               emit(FavoriteSongsState.error(failure.toUserFriendlyMessage()));
             },
             (songs) async {
-              final start = DateTime.now();
               final favoriteSongs = songs
                   .where((song) => favoriteSongsIds.contains(song.id))
                   .toList();
-              final diff = DateTime.now().difference(start).inMicroseconds;
-              print(diff.toString());
               final filteredSongs = await filterSongsByLang(
                   favoriteSongs, songsUserLanguagesHandler);
               final orderedSongs =
