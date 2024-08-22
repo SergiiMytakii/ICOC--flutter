@@ -1,5 +1,12 @@
 {
   
+      "serverError": "Serverfeil. Vennligst sjekk internettforbindelsen din og prøv igjen.",
+      "networkError": "Nettverksfeil. Vennligst sjekk internettforbindelsen din.",
+      "notFound": "Den forespurte ressursen ble ikke funnet.",
+      "unknown": "En ukjent feil oppstod. Vennligst prøv igjen senere. Hvis feilen vedvarer, vennligst kontakt utvikleren.",
+      "openAiError": "ChatGPT-feil. Vennligst prøv igjen senere.",
+      "internal": "Intern appfeil. Vennligst prøv igjen senere. Hvis feilen vedvarer, vennligst kontakt utvikleren.",
+  
       "Question:": "Spørsmål:",
       "Answer:": "Svar:",
       "Date:": "Dato:",

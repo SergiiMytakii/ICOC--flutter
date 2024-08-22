@@ -1,5 +1,13 @@
 { 
   
+    "serverError": "Serverfehler. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
+    "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Internetverbindung.",
+    "notFound": "Die angeforderte Ressource wurde nicht gefunden.",
+    "unknown": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut. Wenn der Fehler weiterhin besteht, kontaktieren Sie bitte den Entwickler.",
+    "openAiError": "ChatGPT-Fehler. Bitte versuchen Sie es später erneut.",
+    "internal": "Interner App-Fehler. Bitte versuchen Sie es später erneut. Wenn der Fehler weiterhin besteht, kontaktieren Sie bitte den Entwickler.",
+  
+  
     "Question:": "Frage:",
     "Answer:": "Antwort:",
     "Date:": "Datum:",

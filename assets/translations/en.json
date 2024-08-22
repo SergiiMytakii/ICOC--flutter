@@ -1,4 +1,13 @@
-{ "Question:": "Question:",
+{ 
+"serverError": "Server error. Please check your internet connection and try again.",
+    "networkError": "Network error. Please check your internet connection.",
+    "notFound": "The requested resource was not found.",
+    "unknown": "An unknown error occurred. Please try again later. If the error persists, please contact the developer.",
+    "openAiError": "ChatGpt error. Please try again later.",
+    "internal": "Internal app error. Please try again later. If the error persists, please contact the developer.",
+    
+
+"Question:": "Question:",
     "Answer:": "Answer:",
     "Date:": "Date:",
     "Author:": "Author:",

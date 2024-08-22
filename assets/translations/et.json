@@ -1,4 +1,12 @@
 {
+  
+    "serverError": "Serveri viga. Palun kontrollige oma internetiühendust ja proovige uuesti.",
+    "networkError": "Võrgu viga. Palun kontrollige oma internetiühendust.",
+    "notFound": "Soovitud ressurssi ei leitud.",
+    "unknown": "Tekkis tundmatu viga. Palun proovige hiljem uuesti. Kui viga püsib, võtke ühendust arendajaga.",
+    "openAiError": "ChatGPT viga. Palun proovige hiljem uuesti.",
+    "internal": "Rakenduse sisemine viga. Palun proovige hiljem uuesti. Kui viga püsib, võtke ühendust arendajaga.",
+  
   "Question:": "Küsimus:",
   "Answer:": "Vastus:",
   "Date:": "Kuupäev:",

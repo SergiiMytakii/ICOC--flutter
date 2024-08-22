@@ -1,4 +1,12 @@
 {
+  
+    "serverError": "Errore del server. Controlla la tua connessione internet e riprova.",
+    "networkError": "Errore di rete. Controlla la tua connessione internet.",
+    "notFound": "La risorsa richiesta non è stata trovata.",
+    "unknown": "Si è verificato un errore sconosciuto. Riprova più tardi. Se l'errore persiste, contatta lo sviluppatore.",
+    "openAiError": "Errore di ChatGpt. Riprova più tardi.",
+    "internal": "Errore interno dell'app. Riprova più tardi. Se l'errore persiste, contatta lo sviluppatore.",
+  
   "Question:": "Domanda:",
   "Answer:": "Risposta:",
   "Date:": "Data:",

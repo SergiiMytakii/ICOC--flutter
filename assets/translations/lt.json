@@ -1,4 +1,12 @@
 {
+  
+    "serverError": "Serverio klaida. Patikrinkite interneto ryšį ir bandykite dar kartą.",
+    "networkError": "Tinklo klaida. Patikrinkite interneto ryšį.",
+    "notFound": "Prašomas išteklius nerastas.",
+    "unknown": "Įvyko nežinoma klaida. Bandykite dar kartą vėliau. Jei klaida išlieka, susisiekite su kūrėju.",
+    "openAiError": "ChatGPT klaida. Bandykite dar kartą vėliau.",
+    "internal": "Vidinė programos klaida. Bandykite dar kartą vėliau. Jei klaida išlieka, susisiekite su kūrėju.",
+  
   "Question:": "Klausimas:",
   "Answer:": "Atsakymas:",
   "Date:": "Data:",

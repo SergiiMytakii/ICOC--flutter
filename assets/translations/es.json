@@ -1,4 +1,12 @@
 {
+  
+    "serverError": "Error del servidor. Por favor, compruebe su conexión a internet e inténtelo de nuevo.",
+    "networkError": "Error de red. Por favor, compruebe su conexión a internet.",
+    "notFound": "No se encontró el recurso solicitado.",
+    "unknown": "Ha ocurrido un error desconocido. Por favor, inténtelo de nuevo más tarde. Si el error persiste, contacte al desarrollador.",
+    "openAiError": "Error de ChatGPT. Por favor, inténtelo de nuevo más tarde.",
+    "internal": "Error interno de la aplicación. Por favor, inténtelo de nuevo más tarde. Si el error persiste, contacte al desarrollador.",
+  
   "Question:": "Pregunta:",
   "Answer:": "Respuesta:",
   "Date:": "Fecha:",

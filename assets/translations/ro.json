@@ -1,4 +1,12 @@
 { 
+  
+    "serverError": "Eroare de server. Vă rugăm să verificați conexiunea la internet și să încercați din nou.",
+    "networkError": "Eroare de rețea. Vă rugăm să verificați conexiunea la internet.",
+    "notFound": "Resursa solicitată nu a fost găsită.",
+    "unknown": "A apărut o eroare necunoscută. Vă rugăm să încercați din nou mai târziu. Dacă eroarea persistă, vă rugăm să contactați dezvoltatorul.",
+    "openAiError": "Eroare ChatGPT. Vă rugăm să încercați din nou mai târziu.",
+    "internal": "Eroare internă a aplicației. Vă rugăm să încercați din nou mai târziu. Dacă eroarea persistă, vă rugăm să contactați dezvoltatorul.",
+  
   "Question:": "Întrebare:",
   "Answer:": "Răspuns:",
   "Date:": "Data:",

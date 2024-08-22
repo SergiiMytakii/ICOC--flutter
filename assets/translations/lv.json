@@ -1,4 +1,12 @@
 {
+  
+    "serverError": "Servera kļūda. Lūdzu, pārbaudiet interneta savienojumu un mēģiniet vēlreiz.",
+    "networkError": "Tīkla kļūda. Lūdzu, pārbaudiet interneta savienojumu.",
+    "notFound": "Pieprasītais resurss netika atrasts.",
+    "unknown": "Radās nezināma kļūda. Lūdzu, mēģiniet vēlreiz vēlāk. Ja kļūda atkārtojas, lūdzu, sazinieties ar izstrādātāju.",
+    "openAiError": "ChatGPT kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.",
+    "internal": "Iekšēja lietotnes kļūda. Lūdzu, mēģiniet vēlreiz vēlāk. Ja kļūda atkārtojas, lūdzu, sazinieties ar izstrādātāju.",
+  
   "Question:": "Jautājums:",
   "Answer:": "Atbilde:",
   "Date:": "Datums:",
