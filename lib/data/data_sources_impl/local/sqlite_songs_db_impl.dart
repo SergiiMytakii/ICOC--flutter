@@ -195,17 +195,16 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   }
 
   @override
-  Future<List<int>> getListFavorites() async {
+  Future<Set<int>> getListFavorites() async {
     final Database? database = await db();
     if (database != null) {
       final List<Map<String, dynamic>> items =
           await database.query(TABLE_FAVORITES, columns: [ID_SONG]);
-      final List<int> songsIds =
-          items.map((e) => e.values.first as int).toList();
+      final Set<int> songsIds = items.map((e) => e.values.first as int).toSet();
 
       return songsIds;
     } else {
-      return [];
+      return {};
     }
   }
 

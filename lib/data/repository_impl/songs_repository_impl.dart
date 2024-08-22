@@ -63,7 +63,7 @@ class SongsRepositoryImpl implements SongsRepository {
   }
 
   @override
-  Future<Either<Failure, List<int>>> getFavoriteSongs() async {
+  Future<Either<Failure, Set<int>>> getFavoriteSongs() async {
     try {
       final result = await localDB.getListFavorites();
       return Right(result);
