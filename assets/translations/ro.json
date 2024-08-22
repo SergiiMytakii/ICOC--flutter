@@ -1,5 +1,20 @@
-{
-    "Responce from developer:": "Răspuns de la dezvoltator:",
+{ 
+  
+    "serverError": "Eroare de server. Vă rugăm să verificați conexiunea la internet și să încercați din nou.",
+    "networkError": "Eroare de rețea. Vă rugăm să verificați conexiunea la internet.",
+    "notFound": "Resursa solicitată nu a fost găsită.",
+    "unknown": "A apărut o eroare necunoscută. Vă rugăm să încercați din nou mai târziu. Dacă eroarea persistă, vă rugăm să contactați dezvoltatorul.",
+    "openAiError": "Eroare ChatGPT. Vă rugăm să încercați din nou mai târziu.",
+    "internal": "Eroare internă a aplicației. Vă rugăm să încercați din nou mai târziu. Dacă eroarea persistă, vă rugăm să contactați dezvoltatorul.",
+  
+  "Question:": "Întrebare:",
+  "Answer:": "Răspuns:",
+  "Date:": "Data:",
+  "Author:": "Autor:",
+  "Translated by:": "Tradus de:",
+  "Source:": "Sursă:",
+  "We are translating the article... It takes a bit more time": "Traducem articolul... Durează puțin mai mult timp" ,
+     "Responce from developer:": "Răspuns de la dezvoltator:",
     "Please enter your name": "Vă rugăm să introduceți numele dvs.",
     "Please enter your feedback": "Vă rugăm să introduceți feedback-ul dvs.",    "Open in ICOC app:": "Deschide în aplicația ICOC:",
     "suggestion to get admin panel": "Prin trimiterea acestui formular, veți trimite un e-mail administratorului, care va adăuga cântecul în aplicație. \n Cu toate acestea, dacă sunteți în slujba de închinare și doriți să adăugați și să editați cântece singur, adăugați în câmpul 'Titlu': 'Doresc acces la panoul de administrare.'",

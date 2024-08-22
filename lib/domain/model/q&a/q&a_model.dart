@@ -1,16 +1,28 @@
-// ignore_for_file: file_names
+// ignore_for_file: non_constant_identifier_names
 
-class QandAModel {
-  int id;
-  String title;
-  String text;
-  String date;
-  String photo;
-  QandAModel({
-    required this.id,
-    required this.title,
-    required this.text,
-    required this.date,
-    required this.photo,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'q&a_model.freezed.dart';
+part 'q&a_model.g.dart';
+
+@freezed
+class QandAModel with _$QandAModel {
+  factory QandAModel(
+      {required int id,
+      @JsonKey(includeToJson: false) required String documentRef,
+      required String title,
+      required String question,
+      required String answer,
+      required String lang,
+      String? date,
+      String? author,
+      String? link,
+      String? image,
+      String? source,
+      String? translatedBy,
+      String? youtubeLink,
+      List<String>? tags}) = _QandAModel;
+
+  factory QandAModel.fromJson(Map<String, dynamic> json, String documentRef) =>
+      _$QandAModelFromJson(json..addAll({'documentRef': documentRef}));
 }

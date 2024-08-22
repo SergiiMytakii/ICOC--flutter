@@ -1,4 +1,20 @@
-{"Responce from developer:": "Atsakymas iš kūrėjo:",
+{
+  
+    "serverError": "Serverio klaida. Patikrinkite interneto ryšį ir bandykite dar kartą.",
+    "networkError": "Tinklo klaida. Patikrinkite interneto ryšį.",
+    "notFound": "Prašomas išteklius nerastas.",
+    "unknown": "Įvyko nežinoma klaida. Bandykite dar kartą vėliau. Jei klaida išlieka, susisiekite su kūrėju.",
+    "openAiError": "ChatGPT klaida. Bandykite dar kartą vėliau.",
+    "internal": "Vidinė programos klaida. Bandykite dar kartą vėliau. Jei klaida išlieka, susisiekite su kūrėju.",
+  
+  "Question:": "Klausimas:",
+  "Answer:": "Atsakymas:",
+  "Date:": "Data:",
+  "Author:": "Autorius:",
+  "Translated by:": "Išvertė:",
+  "Source:": "Šaltinis:",
+  "We are translating the article... It takes a bit more time": "Verčiame straipsnį... Tai užtruks šiek tiek ilgiau",
+    "Responce from developer:": "Atsakymas iš kūrėjo:",
 "Please enter your name": "Įveskite savo vardą",
 "Please enter your feedback": "Įveskite savo atsiliepimą",  "Show chords in another language": "Rodyti akordus kita kalba",
   "There are no chords available for the current language.": "Šiai kalbai akordų nėra.",

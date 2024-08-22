@@ -10,7 +10,7 @@ import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/songs/widget/no_chords_tab.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:share_plus/share_plus.dart';
@@ -117,7 +117,9 @@ class _OneSongScreenState extends State<OneSongScreen>
     tabController = TabController(length: tabsCount, vsync: this);
 
     //handle case when received song from a deep link has a primaryLang which is not active in app
-    if (!song.getAllLangs().contains(languagesToEnumMap[widget.primaryLang])) {
+    if (!song
+        .getAllLangs()
+        .contains(convertLanguagesEnum(widget.primaryLang))) {
       getIt<SongsUserLanguagesHandler>()
           .addLanguage(widget.primaryLang, true)
           .then(
@@ -125,9 +127,8 @@ class _OneSongScreenState extends State<OneSongScreen>
       return null;
     } else {
       // open specific tab
-      final index = song
-          .getAllLangs()
-          .indexOf(languagesToEnumMap[widget.primaryLang] ?? Languages.en);
+      final index =
+          song.getAllLangs().indexOf(convertLanguagesEnum(widget.primaryLang));
       tabController.animateTo(index);
     }
 

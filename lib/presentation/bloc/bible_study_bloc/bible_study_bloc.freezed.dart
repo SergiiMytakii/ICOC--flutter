@@ -173,6 +173,7 @@ mixin _$BibleStudyState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<BibleStudy> topics) success,
     required TResult Function(String message) error,
   }) =>
@@ -181,6 +182,7 @@ mixin _$BibleStudyState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<BibleStudy> topics)? success,
     TResult? Function(String message)? error,
   }) =>
@@ -189,6 +191,7 @@ mixin _$BibleStudyState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<BibleStudy> topics)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -198,6 +201,7 @@ mixin _$BibleStudyState {
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyInitial value) initial,
     required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
     required TResult Function(GetBibleStudyListSuccessState value) success,
     required TResult Function(BibleStudyErrorState value) error,
   }) =>
@@ -206,6 +210,7 @@ mixin _$BibleStudyState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyInitial value)? initial,
     TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
     TResult? Function(GetBibleStudyListSuccessState value)? success,
     TResult? Function(BibleStudyErrorState value)? error,
   }) =>
@@ -214,6 +219,7 @@ mixin _$BibleStudyState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyInitial value)? initial,
     TResult Function(BibleStudyLoadingState value)? loading,
+    TResult Function(BibleStudyEmptyState value)? empty,
     TResult Function(GetBibleStudyListSuccessState value)? success,
     TResult Function(BibleStudyErrorState value)? error,
     required TResult orElse(),
@@ -279,6 +285,7 @@ class _$BibleStudyInitialImpl implements BibleStudyInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<BibleStudy> topics) success,
     required TResult Function(String message) error,
   }) {
@@ -290,6 +297,7 @@ class _$BibleStudyInitialImpl implements BibleStudyInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<BibleStudy> topics)? success,
     TResult? Function(String message)? error,
   }) {
@@ -301,6 +309,7 @@ class _$BibleStudyInitialImpl implements BibleStudyInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<BibleStudy> topics)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -316,6 +325,7 @@ class _$BibleStudyInitialImpl implements BibleStudyInitial {
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyInitial value) initial,
     required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
     required TResult Function(GetBibleStudyListSuccessState value) success,
     required TResult Function(BibleStudyErrorState value) error,
   }) {
@@ -327,6 +337,7 @@ class _$BibleStudyInitialImpl implements BibleStudyInitial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyInitial value)? initial,
     TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
     TResult? Function(GetBibleStudyListSuccessState value)? success,
     TResult? Function(BibleStudyErrorState value)? error,
   }) {
@@ -338,6 +349,7 @@ class _$BibleStudyInitialImpl implements BibleStudyInitial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyInitial value)? initial,
     TResult Function(BibleStudyLoadingState value)? loading,
+    TResult Function(BibleStudyEmptyState value)? empty,
     TResult Function(GetBibleStudyListSuccessState value)? success,
     TResult Function(BibleStudyErrorState value)? error,
     required TResult orElse(),
@@ -396,6 +408,7 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<BibleStudy> topics) success,
     required TResult Function(String message) error,
   }) {
@@ -407,6 +420,7 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<BibleStudy> topics)? success,
     TResult? Function(String message)? error,
   }) {
@@ -418,6 +432,7 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<BibleStudy> topics)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -433,6 +448,7 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyInitial value) initial,
     required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
     required TResult Function(GetBibleStudyListSuccessState value) success,
     required TResult Function(BibleStudyErrorState value) error,
   }) {
@@ -444,6 +460,7 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyInitial value)? initial,
     TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
     TResult? Function(GetBibleStudyListSuccessState value)? success,
     TResult? Function(BibleStudyErrorState value)? error,
   }) {
@@ -455,6 +472,7 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyInitial value)? initial,
     TResult Function(BibleStudyLoadingState value)? loading,
+    TResult Function(BibleStudyEmptyState value)? empty,
     TResult Function(GetBibleStudyListSuccessState value)? success,
     TResult Function(BibleStudyErrorState value)? error,
     required TResult orElse(),
@@ -468,6 +486,127 @@ class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
 
 abstract class BibleStudyLoadingState implements BibleStudyState {
   const factory BibleStudyLoadingState() = _$BibleStudyLoadingStateImpl;
+}
+
+/// @nodoc
+abstract class _$$BibleStudyEmptyStateImplCopyWith<$Res> {
+  factory _$$BibleStudyEmptyStateImplCopyWith(_$BibleStudyEmptyStateImpl value,
+          $Res Function(_$BibleStudyEmptyStateImpl) then) =
+      __$$BibleStudyEmptyStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$BibleStudyEmptyStateImplCopyWithImpl<$Res>
+    extends _$BibleStudyStateCopyWithImpl<$Res, _$BibleStudyEmptyStateImpl>
+    implements _$$BibleStudyEmptyStateImplCopyWith<$Res> {
+  __$$BibleStudyEmptyStateImplCopyWithImpl(_$BibleStudyEmptyStateImpl _value,
+      $Res Function(_$BibleStudyEmptyStateImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$BibleStudyEmptyStateImpl implements BibleStudyEmptyState {
+  const _$BibleStudyEmptyStateImpl();
+
+  @override
+  String toString() {
+    return 'BibleStudyState.empty()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BibleStudyEmptyStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() empty,
+    required TResult Function(List<BibleStudy> topics) success,
+    required TResult Function(String message) error,
+  }) {
+    return empty();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? empty,
+    TResult? Function(List<BibleStudy> topics)? success,
+    TResult? Function(String message)? error,
+  }) {
+    return empty?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? empty,
+    TResult Function(List<BibleStudy> topics)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(BibleStudyInitial value) initial,
+    required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
+    required TResult Function(GetBibleStudyListSuccessState value) success,
+    required TResult Function(BibleStudyErrorState value) error,
+  }) {
+    return empty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(BibleStudyInitial value)? initial,
+    TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
+    TResult? Function(GetBibleStudyListSuccessState value)? success,
+    TResult? Function(BibleStudyErrorState value)? error,
+  }) {
+    return empty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(BibleStudyInitial value)? initial,
+    TResult Function(BibleStudyLoadingState value)? loading,
+    TResult Function(BibleStudyEmptyState value)? empty,
+    TResult Function(GetBibleStudyListSuccessState value)? success,
+    TResult Function(BibleStudyErrorState value)? error,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class BibleStudyEmptyState implements BibleStudyState {
+  const factory BibleStudyEmptyState() = _$BibleStudyEmptyStateImpl;
 }
 
 /// @nodoc
@@ -549,6 +688,7 @@ class _$GetBibleStudyListSuccessStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<BibleStudy> topics) success,
     required TResult Function(String message) error,
   }) {
@@ -560,6 +700,7 @@ class _$GetBibleStudyListSuccessStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<BibleStudy> topics)? success,
     TResult? Function(String message)? error,
   }) {
@@ -571,6 +712,7 @@ class _$GetBibleStudyListSuccessStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<BibleStudy> topics)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -586,6 +728,7 @@ class _$GetBibleStudyListSuccessStateImpl
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyInitial value) initial,
     required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
     required TResult Function(GetBibleStudyListSuccessState value) success,
     required TResult Function(BibleStudyErrorState value) error,
   }) {
@@ -597,6 +740,7 @@ class _$GetBibleStudyListSuccessStateImpl
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyInitial value)? initial,
     TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
     TResult? Function(GetBibleStudyListSuccessState value)? success,
     TResult? Function(BibleStudyErrorState value)? error,
   }) {
@@ -608,6 +752,7 @@ class _$GetBibleStudyListSuccessStateImpl
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyInitial value)? initial,
     TResult Function(BibleStudyLoadingState value)? loading,
+    TResult Function(BibleStudyEmptyState value)? empty,
     TResult Function(GetBibleStudyListSuccessState value)? success,
     TResult Function(BibleStudyErrorState value)? error,
     required TResult orElse(),
@@ -698,6 +843,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
+    required TResult Function() empty,
     required TResult Function(List<BibleStudy> topics) success,
     required TResult Function(String message) error,
   }) {
@@ -709,6 +855,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
+    TResult? Function()? empty,
     TResult? Function(List<BibleStudy> topics)? success,
     TResult? Function(String message)? error,
   }) {
@@ -720,6 +867,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
+    TResult Function()? empty,
     TResult Function(List<BibleStudy> topics)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -735,6 +883,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyInitial value) initial,
     required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
     required TResult Function(GetBibleStudyListSuccessState value) success,
     required TResult Function(BibleStudyErrorState value) error,
   }) {
@@ -746,6 +895,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyInitial value)? initial,
     TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
     TResult? Function(GetBibleStudyListSuccessState value)? success,
     TResult? Function(BibleStudyErrorState value)? error,
   }) {
@@ -757,6 +907,7 @@ class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyInitial value)? initial,
     TResult Function(BibleStudyLoadingState value)? loading,
+    TResult Function(BibleStudyEmptyState value)? empty,
     TResult Function(GetBibleStudyListSuccessState value)? success,
     TResult Function(BibleStudyErrorState value)? error,
     required TResult orElse(),

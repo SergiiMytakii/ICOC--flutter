@@ -8,7 +8,7 @@ import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
@@ -48,68 +48,65 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     return BlocBuilder<BibleStudyBloc, BibleStudyState>(
       builder: (context, state) {
         return state.when(
-          initial: () => const Scaffold(body: SizedBox()),
-          loading: () =>
-              const Scaffold(body: Center(child: CircularProgressIndicator())),
-          success: (topics) {
-            final lesson = _receiveLesson(topics);
-
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  lesson.title,
-                  style: const TextStyle(fontSize: 14),
+            initial: () => const Scaffold(body: SizedBox()),
+            loading: () => const Scaffold(
+                body: Center(child: CircularProgressIndicator())),
+            success: (topics) {
+              final lesson = _receiveLesson(topics);
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    lesson.title,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  centerTitle: true,
+                  actions: [
+                    IconButton(
+                      tooltip: 'Share'.tr(),
+                      icon: const Icon(Icons.share),
+                      onPressed: () => _share(lesson),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.text_fields_outlined),
+                      onPressed: () => fontSozeAdjust.bottomSheet(),
+                    ),
+                  ],
                 ),
-                centerTitle: true,
-                actions: [
-                  IconButton(
-                    tooltip: 'Share'.tr(),
-                    icon: const Icon(Icons.share),
-                    onPressed: () => _share(lesson),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.text_fields_outlined),
-                    onPressed: () => fontSozeAdjust.bottomSheet(),
-                  ),
-                ],
-              ),
-              body: SingleChildScrollView(
-                child: SelectionArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: BlocBuilder<FontSizeBloc, FontSizeState>(
-                      builder: (context, fontState) {
-                        return fontState.maybeWhen(
-                          success: (fontSize) => ScaleText(
-                            fontSize: fontSize ?? 14,
-                            child: html.Html(
-                              data: lesson.text,
-                              onLinkTap: (url, __, ___) {
-                                launchUrl(Uri.parse(url ?? ''));
-                              },
-                              style: {
-                                'body': html.Style(
-                                    fontSize: html.FontSize(fontSize ?? 14)),
-                                'h5': html.Style(
-                                    fontSize: html.FontSize(fontSize ?? 14)),
-                                'p': html.Style(
-                                    fontSize: html.FontSize(fontSize ?? 14)),
-                              },
+                body: SingleChildScrollView(
+                  child: SelectionArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: BlocBuilder<FontSizeBloc, FontSizeState>(
+                        builder: (context, fontState) {
+                          return fontState.maybeWhen(
+                            success: (fontSize) => ScaleText(
+                              fontSize: fontSize ?? 14,
+                              child: html.Html(
+                                data: lesson.text,
+                                onLinkTap: (url, __, ___) {
+                                  launchUrl(Uri.parse(url ?? ''));
+                                },
+                                style: {
+                                  'body': html.Style(
+                                      fontSize: html.FontSize(fontSize ?? 14)),
+                                  'h5': html.Style(
+                                      fontSize: html.FontSize(fontSize ?? 14)),
+                                  'p': html.Style(
+                                      fontSize: html.FontSize(fontSize ?? 14)),
+                                },
+                              ),
                             ),
-                          ),
-                          orElse: () => const SizedBox(),
-                        );
-                      },
+                            orElse: () => const SizedBox(),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-          error: (message) => Scaffold(
-            body: ErrorTextOnScreen(message: message),
-          ),
-        );
+              );
+            },
+            error: (message) => ErrorTextOnScreen(message: message),
+            empty: () => const SizedBox.shrink());
       },
     );
   }

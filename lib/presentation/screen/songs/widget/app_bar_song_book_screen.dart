@@ -12,7 +12,7 @@ import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
-import 'package:icoc/presentation/routes/app_routes.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/presentation/screen/songs/widget/bottom_sheet_song_filter.dart';
 
 class SongBookAppbar extends StatefulWidget {
@@ -25,20 +25,17 @@ class SongBookAppbar extends StatefulWidget {
 }
 
 class _SongBookAppbarState extends State<SongBookAppbar> {
-  final SongsUserLanguagesHandler songsUserLanguagesHandler =
-      getIt<SongsUserLanguagesHandler>();
+  final songsUserLanguagesHandler = getIt<SongsUserLanguagesHandler>();
   final GlobalKey tooltipKey = GlobalKey();
   bool _tooltipVisible = true;
 
   @override
   void initState() {
-    if (songsUserLanguagesHandler.languages.isEmpty) {
-      Future.delayed(const Duration(seconds: 2))
+    if (songsUserLanguagesHandler.getActiveLanguages().isEmpty) {
+      Future.delayed(const Duration(seconds: 3))
           .then((_) => _showSelectLangBottomSheet());
     }
-
     showTooltip();
-
     super.initState();
   }
 
@@ -89,7 +86,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             BlocBuilder<SongsBloc, SongsState>(
               builder: (context, state) {
                 final bool shouldAnimate = state.maybeWhen(
-                  success: (songs) => songs.isEmpty,
+                  empty: () => true,
                   orElse: () => false,
                 );
                 return AnimatedFilterIconButton(

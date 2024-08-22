@@ -1,4 +1,20 @@
 {
+  
+      "serverError": "Serverfeil. Vennligst sjekk internettforbindelsen din og prøv igjen.",
+      "networkError": "Nettverksfeil. Vennligst sjekk internettforbindelsen din.",
+      "notFound": "Den forespurte ressursen ble ikke funnet.",
+      "unknown": "En ukjent feil oppstod. Vennligst prøv igjen senere. Hvis feilen vedvarer, vennligst kontakt utvikleren.",
+      "openAiError": "ChatGPT-feil. Vennligst prøv igjen senere.",
+      "internal": "Intern appfeil. Vennligst prøv igjen senere. Hvis feilen vedvarer, vennligst kontakt utvikleren.",
+  
+      "Question:": "Spørsmål:",
+      "Answer:": "Svar:",
+      "Date:": "Dato:",
+      "Author:": "Forfatter:",
+      "Translated by:": "Oversatt av:",
+      "Source:": "Kilde:",
+      "We are translating the article... It takes a bit more time": "Vi oversetter artikkelen... Det tar litt mer tid",
+  
     "Responce from developer:": "Svar fra utvikler:",
     "Please enter your name": "Vennligst skriv inn navnet ditt",
     "Please enter your feedback": "Vennligst skriv inn tilbakemeldingen din",    "Show chords in another language": "Vis akkorder på et annet språk",

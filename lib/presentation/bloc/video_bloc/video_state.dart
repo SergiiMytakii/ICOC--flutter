@@ -4,6 +4,7 @@ part of 'video_bloc.dart';
 class VideoState with _$VideoState {
   const factory VideoState.initial() = VideoInitial;
   const factory VideoState.loading() = VideoLoadingState;
+  const factory VideoState.empty() = VideoEmptyState;
   const factory VideoState.getVideoListSuccess(List<Playlist> topics) =
       GetVideoListSuccessState;
   const factory VideoState.getVideosFromPlaylistSuccess(

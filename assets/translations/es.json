@@ -1,5 +1,19 @@
 {
-  "Responce from developer:": "Respuesta del desarrollador:",
+  
+    "serverError": "Error del servidor. Por favor, compruebe su conexión a internet e inténtelo de nuevo.",
+    "networkError": "Error de red. Por favor, compruebe su conexión a internet.",
+    "notFound": "No se encontró el recurso solicitado.",
+    "unknown": "Ha ocurrido un error desconocido. Por favor, inténtelo de nuevo más tarde. Si el error persiste, contacte al desarrollador.",
+    "openAiError": "Error de ChatGPT. Por favor, inténtelo de nuevo más tarde.",
+    "internal": "Error interno de la aplicación. Por favor, inténtelo de nuevo más tarde. Si el error persiste, contacte al desarrollador.",
+  
+  "Question:": "Pregunta:",
+  "Answer:": "Respuesta:",
+  "Date:": "Fecha:",
+  "Author:": "Autor:",
+  "Translated by:": "Traducido por:",
+  "Source:": "Fuente:",
+  "We are translating the article... It takes a bit more time": "Estamos traduciendo el artículo... Tomará un poco más de tiempo",  "Responce from developer:": "Respuesta del desarrollador:",
   "Please enter your name": "Por favor, ingrese su nombre",
   "Please enter your feedback": "Por favor, ingrese sus comentarios",  "Show chords in another language": "Mostrar acordes en otro idioma",
   "There are no chords available for the current language.": "No hay acordes disponibles para el idioma actual.",

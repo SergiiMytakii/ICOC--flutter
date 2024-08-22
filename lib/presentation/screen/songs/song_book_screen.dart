@@ -29,7 +29,6 @@ class _SongBookScreenState extends State<SongBookScreen> {
   @override
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
-    _getSongs();
     _scrollController = ScrollController();
     super.initState();
   }
@@ -44,7 +43,6 @@ class _SongBookScreenState extends State<SongBookScreen> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: RefreshIndicator.adaptive(
-        color: Colors.transparent,
         edgeOffset: 130,
         onRefresh: _onRefresh,
         child: CustomScrollView(
@@ -58,7 +56,10 @@ class _SongBookScreenState extends State<SongBookScreen> {
             BlocBuilder<SongsBloc, SongsState>(
               builder: (context, state) {
                 return state.when(
-                  initial: () => const SliverToBoxAdapter(),
+                  initial: () {
+                    _getSongs();
+                    return const SliverToBoxAdapter();
+                  },
                   loading: () => _buildLoading(),
                   success: (songs) => _buildSongList(songs),
                   empty: () => _buildEmptyWarning(context),

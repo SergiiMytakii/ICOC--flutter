@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 
+//to refresh when loading stack
 class CustomRefreshIndicator extends StatefulWidget {
   final Function onRefresh;
   const CustomRefreshIndicator(
@@ -24,12 +25,12 @@ class _CustomRefreshIndicatorState extends State<CustomRefreshIndicator> {
         }
       },
       child: Container(
-        height: 700,
+        height: MediaQuery.of(context).size.height,
         child: RefreshIndicator.adaptive(
           child: ListView(
             children: [
               Opacity(opacity: opacity, child: Loading()),
-              widget.child ?? Container(),
+              widget.child ?? const SizedBox(),
             ],
           ),
           onRefresh: () async {

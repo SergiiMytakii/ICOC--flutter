@@ -1,11 +1,15 @@
 import 'package:flutter/services.dart';
+import 'package:html/parser.dart';
+import 'package:icoc/data/data_sources_impl/remote/firebase_data_source_impl.dart';
 import 'package:icoc/domain/data_sources/local/local_q_and_a_db_data_source.dart';
+import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
+import 'package:html/parser.dart' show parse;
 
 @dev
 @prod
@@ -19,7 +23,6 @@ class SqliteQandAdbImpl implements LocalQandAdB {
   static const String TEXT = 'text';
   static const String DATE = 'date';
   static const String PICTURE = 'picture';
-
   final log = Logger();
 
   /* get refetence to the DB and initialasing DB */
@@ -54,18 +57,15 @@ class SqliteQandAdbImpl implements LocalQandAdB {
   @override
   Future<List<QandAModel>> getAnsvers() async {
     final Database? database = await db;
+    if (database == null) {
+      throw Exception('Database not initialized');
+    }
 
-    final List<Map<String, dynamic>> items = await database!.query(
+    final List<Map<String, dynamic>> items = await database.query(
       TABLE_ANSVERS,
     );
-
     final List<QandAModel> ansvers = items.map((item) {
-      return QandAModel(
-          id: item['UUID'],
-          title: item['title'],
-          text: item['text'],
-          date: item['date'],
-          photo: item['photo']);
+      return QandAModel.fromJson(item, '');
     }).toList();
 
     return ansvers;

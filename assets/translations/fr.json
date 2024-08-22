@@ -1,5 +1,20 @@
 { 
-  "Responce from developer:": "Réponse du développeur :",
+  
+    "serverError": "Erreur serveur. Veuillez vérifier votre connexion internet et réessayer.",
+    "networkError": "Erreur réseau. Veuillez vérifier votre connexion internet.",
+    "notFound": "La ressource demandée n'a pas été trouvée.",
+    "unknown": "Une erreur inconnue s'est produite. Veuillez réessayer plus tard. Si l'erreur persiste, veuillez contacter le développeur.",
+    "openAiError": "Erreur ChatGPT. Veuillez réessayer plus tard.",
+    "internal": "Erreur interne de l'application. Veuillez réessayer plus tard. Si l'erreur persiste, veuillez contacter le développeur.",
+  
+  "Question:": "Question :",
+  "Answer:": "Réponse :",
+  "Date:": "Date :",
+  "Author:": "Auteur :",
+  "Translated by:": "Traduit par :",
+  "Source:": "Source :",
+  "We are translating the article... It takes a bit more time": "Nous traduisons l'article... Cela prend un peu plus de temps" ,
+   "Responce from developer:": "Réponse du développeur :",
   "Please enter your name": "Veuillez entrer votre nom",
   "Please enter your feedback": "Veuillez entrer vos commentaires",  "Show chords in another language": "Afficher les accords dans une autre langue",
   "There are no chords available for the current language.": "Il n'y a pas d'accords disponibles pour la langue actuelle.",

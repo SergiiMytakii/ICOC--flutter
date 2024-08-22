@@ -1,4 +1,20 @@
 { 
+  
+      "serverError": "Serverfel. Kontrollera din internetanslutning och försök igen.",
+      "networkError": "Nätverksfel. Kontrollera din internetanslutning.",
+      "notFound": "Den begärda resursen hittades inte.",
+      "unknown": "Ett okänt fel inträffade. Försök igen senare. Om felet kvarstår, vänligen kontakta utvecklaren.",
+      "openAiError": "ChatGPT-fel. Försök igen senare.",
+      "internal": "Internt appfel. Försök igen senare. Om felet kvarstår, vänligen kontakta utvecklaren.",
+  
+    "Question:": "Fråga:",
+    "Answer:": "Svar:",
+    "Date:": "Datum:",
+    "Author:": "Författare:",
+    "Translated by:": "Översatt av:",
+    "Source:": "Källa:",
+    "We are translating the article... It takes a bit more time": "Vi översätter artikeln... Det tar lite längre tid",
+  
   "Responce from developer:": "Svar från utvecklaren:",
   "Please enter your name": "Vänligen ange ditt namn",
   "Please enter your feedback": "Vänligen ange din feedback",  "Show chords in another language": "Visa ackord på ett annat språk",

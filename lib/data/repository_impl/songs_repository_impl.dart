@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/errors/failures.dart';
+import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
@@ -17,50 +20,80 @@ class SongsRepositoryImpl implements SongsRepository {
     required this.firebaseDataSource,
     required this.localDB,
   });
+
   @override
-  Future<List<SongModel>> getSongs() async {
-    final QuerySnapshot snapshot = await firebaseDataSource
-        .getFromFirebase(FirebaseCollections.SongsV2.name);
-    // .getFromFirebase('Songs');
-    final List<SongModel> songs = snapshot.docs.map(
-      (doc) {
-        return SongModel.fromJson(doc.data() as Map<String, dynamic>);
-      },
-    ).toList();
-
-    // insert into SongsV2
-    // _convertSongsToV2(snapshot, firebaseDataSource);
-
-    return songs;
+  Future<Either<Failure, List<SongModel>>> getSongs() async {
+    try {
+      final QuerySnapshot snapshot = await firebaseDataSource
+          .getFromFirebase(FirebaseCollections.SongsV2.name);
+      final List<SongModel> songs = snapshot.docs.map(
+        (doc) {
+          return SongModel.fromJson(doc.data() as Map<String, dynamic>);
+        },
+      ).toList();
+      return Right(songs);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.serverError());
+    }
   }
 
   @override
-  Future<bool> insertAllSongsToLocalTable(List<SongModel> songs) async {
-    return await localDB.insertAllSongs(songs);
+  Future<Either<Failure, bool>> insertAllSongsToLocalTable(
+      List<SongModel> songs) async {
+    try {
+      final result = await localDB.insertAllSongs(songs);
+      return Right(result);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.internal());
+    }
   }
 
   @override
-  Future<List<SongVersionLocal>> getSearchResult(
-    String query,
-  ) async {
-    return localDB.getSearchResult(query);
+  Future<Either<Failure, List<SongVersionLocal>>> getSearchResult(
+      String query) async {
+    try {
+      final result = await localDB.getSearchResult(query);
+      return Right(result);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.internal());
+    }
   }
 
   @override
-  Future<List<int>> getFavoriteSongs() {
-    return localDB.getListFavorites();
+  Future<Either<Failure, List<int>>> getFavoriteSongs() async {
+    try {
+      final result = await localDB.getListFavorites();
+      return Right(result);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.internal());
+    }
   }
 
   @override
-  Future<bool> setFavoriteSong(int id, bool isFavorite) {
-    if (isFavorite)
-      return localDB.addToFavorites(id);
-    else
-      return localDB.deleteFromFavorites(id);
+  Future<Either<Failure, bool>> setFavoriteSong(int id, bool isFavorite) async {
+    try {
+      final result = isFavorite
+          ? await localDB.addToFavorites(id)
+          : await localDB.deleteFromFavorites(id);
+      return Right(result);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.internal());
+    }
   }
 
   @override
-  Future<bool> getFavoriteSongStatus(int id) {
-    return localDB.getFavoriteStatus(id);
+  Future<Either<Failure, bool>> getFavoriteSongStatus(int id) async {
+    try {
+      final result = await localDB.getFavoriteStatus(id);
+      return Right(result);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.internal());
+    }
   }
 }
