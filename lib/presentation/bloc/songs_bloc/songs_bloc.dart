@@ -47,6 +47,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       (songs) {
         if (songs.isNotEmpty) {
           allSongs = songs;
+          songsRepositoryImpl.insertAllSongsToLocalTable(songs);
           emit(SongsState.success(songs));
         } else {
           emit(const SongsState.empty());

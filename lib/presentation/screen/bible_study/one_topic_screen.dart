@@ -97,7 +97,7 @@ class OneTopicScreen extends StatelessWidget {
             );
       },
     );
-    final List<String> activeLanguages =
+    final activeLanguages =
         getIt<BibleStudyUserLanguagesHandler>().getActiveLanguages();
     if (!activeLanguages.contains(bibleStudy.lang.name) &&
         bibleStudy.lang != Languages.defaultLang) {

@@ -1,5 +1,10 @@
 {
   
+    "Feedbacks": "Comentarios",
+    "Sort articles descending": "Ordenar artículos descendente",
+    "Sort articles ascending": "Ordenar artículos ascendente",
+    "Shuffle": "Aleatorio",
+  
     "serverError": "Error del servidor. Por favor, compruebe su conexión a internet e inténtelo de nuevo.",
     "networkError": "Error de red. Por favor, compruebe su conexión a internet.",
     "notFound": "No se encontró el recurso solicitado.",
@@ -150,7 +155,6 @@
   "Write your feedback here...": "Escribe tus comentarios aquí...",
   "Submit Feedback": "Enviar comentarios",
   "Your name": "Tu nombre",
-  "Say Thank you!": "Di Gracias!",
   "To the top": "Mover arriba en la lista",
     "To the bottom": "Mover abajo en la lista",
     "*Language on the top": "*Idioma en la parte superior",

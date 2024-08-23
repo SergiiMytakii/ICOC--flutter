@@ -60,7 +60,7 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
         if (order == OrderEnum.random) {
           filteredArticles.shuffle();
         }
-        emit(QandAState.success(filteredArticles));
+        emit(QandAState.searchSuccess(filteredArticles));
       } else {
         if (order == OrderEnum.random) {
           articles.shuffle();

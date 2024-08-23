@@ -1,5 +1,10 @@
 {
   
+    "Feedbacks": "Atsiliepimai",
+    "Sort articles descending": "Rūšiuoti straipsnius mažėjančia tvarka",
+    "Sort articles ascending": "Rūšiuoti straipsnius didėjančia tvarka",
+    "Shuffle": "Maišyti",
+  
     "serverError": "Serverio klaida. Patikrinkite interneto ryšį ir bandykite dar kartą.",
     "networkError": "Tinklo klaida. Patikrinkite interneto ryšį.",
     "notFound": "Prašomas išteklius nerastas.",
@@ -151,7 +156,6 @@
   "Write your feedback here...": "Rašykite savo atsiliepimus čia...",
   "Submit Feedback": "Pateikti atsiliepimą",
   "Your name": "Jūsų vardas",
-  "Say Thank you!": "Pasakykite Ačiū!",
   "To the top": "Pereiti į sąrašo viršų",
     "To the bottom": "Pereiti į sąrašo apačią",
     "*Language on the top": "*Kalba viršuje",
