@@ -1,4 +1,10 @@
 { 
+ 
+    "Sort articles descending": "Sort articles descending",
+    "Sort articles ascending": "Sort articles ascending",
+    "Shuffle": "Shuffle",
+
+    
 "serverError": "Server error. Please check your internet connection and try again.",
     "networkError": "Network error. Please check your internet connection.",
     "notFound": "The requested resource was not found.",
@@ -144,7 +150,7 @@
           "Write your feedback here...": "Write your feedback here...",
           "Submit Feedback": "Submit Feedback",
           "Your name": "Your name",
-          "Say Thank you!": "Say thank you!",
+          "Feedbacks": "Feedbacks",
           "en": "English",
           "et": "Estonian",
           "fr": "French",

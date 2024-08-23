@@ -30,7 +30,7 @@ class HomeScreenMenuItems {
         Icons.play_arrow,
         VIDEO,
       ),
-      MenuItem('Say Thank you!', ScreenColors.general, Icons.thumb_up_alt,
+      MenuItem('Feedbacks', ScreenColors.general, Icons.thumb_up_alt,
           FEEDBACK_SCREEN),
     ];
   }

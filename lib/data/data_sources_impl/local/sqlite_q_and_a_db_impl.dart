@@ -11,9 +11,9 @@ import 'package:path/path.dart';
 import 'dart:io' as io;
 import 'package:html/parser.dart' show parse;
 
-@dev
-@prod
-@Injectable(as: LocalQandAdB)
+// @dev
+// @prod
+// @Injectable(as: LocalQandAdB)
 class SqliteQandAdbImpl implements LocalQandAdB {
   static Database? _db;
   static const String DB_NAME = 'ansver.db';

@@ -4,7 +4,7 @@ description: icoc
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 
-version: 5.9.0+37
+version: 5.9.1+38
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -74,7 +74,7 @@ flutter:
 
   assets:
     - assets/translations/
-    - assets/db/ansver.db
+    - assets/
     - assets/images/
     - assets/images/space/
   

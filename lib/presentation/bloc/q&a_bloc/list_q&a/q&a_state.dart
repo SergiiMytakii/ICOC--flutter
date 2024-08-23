@@ -7,5 +7,7 @@ class QandAState with _$QandAState {
   const factory QandAState.empty() = QandAEmptyState;
   const factory QandAState.success(List<QandAModel> articles) =
       GetQandASuccessState;
+  const factory QandAState.searchSuccess(List<QandAModel> articles) =
+      SearchQandASuccessState;
   const factory QandAState.error(String message) = QandAErrorState;
 }

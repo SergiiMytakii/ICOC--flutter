@@ -1,5 +1,10 @@
 {
   
+    "Feedbacks": "Opinie",
+    "Sort articles descending": "Sortuj artykuły malejąco",
+    "Sort articles ascending": "Sortuj artykuły rosnąco",
+    "Shuffle": "Losowo",
+  
     "serverError": "Błąd serwera. Sprawdź połączenie internetowe i spróbuj ponownie.",
     "networkError": "Błąd sieci. Sprawdź swoje połączenie internetowe.",
     "notFound": "Żądany zasób nie został znaleziony.",
@@ -152,7 +157,6 @@
   "Write your feedback here...": "Napisz swoją opinię tutaj...",
   "Submit Feedback": "Prześlij opinię",
   "Your name": "Twoje imię",
-  "Say Thank you!": "Powiedz Dziękuję!",
   "To the top": "Przenieś na górę listy",
   "To the bottom":"Przenieś na dół listy",
   "*Language on the top": "*Język na górze",

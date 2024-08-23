@@ -328,6 +328,7 @@ mixin _$QandAState {
     required TResult Function() loading,
     required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -337,6 +338,7 @@ mixin _$QandAState {
     TResult? Function()? loading,
     TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -346,6 +348,7 @@ mixin _$QandAState {
     TResult Function()? loading,
     TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -356,6 +359,7 @@ mixin _$QandAState {
     required TResult Function(QandALoadingState value) loading,
     required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
     required TResult Function(QandAErrorState value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -365,6 +369,7 @@ mixin _$QandAState {
     TResult? Function(QandALoadingState value)? loading,
     TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
     TResult? Function(QandAErrorState value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -374,6 +379,7 @@ mixin _$QandAState {
     TResult Function(QandALoadingState value)? loading,
     TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
   }) =>
@@ -440,6 +446,7 @@ class _$QandAInitialStateImpl implements QandAInitialState {
     required TResult Function() loading,
     required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -452,6 +459,7 @@ class _$QandAInitialStateImpl implements QandAInitialState {
     TResult? Function()? loading,
     TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -464,6 +472,7 @@ class _$QandAInitialStateImpl implements QandAInitialState {
     TResult Function()? loading,
     TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -480,6 +489,7 @@ class _$QandAInitialStateImpl implements QandAInitialState {
     required TResult Function(QandALoadingState value) loading,
     required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
     required TResult Function(QandAErrorState value) error,
   }) {
     return initial(this);
@@ -492,6 +502,7 @@ class _$QandAInitialStateImpl implements QandAInitialState {
     TResult? Function(QandALoadingState value)? loading,
     TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
     TResult? Function(QandAErrorState value)? error,
   }) {
     return initial?.call(this);
@@ -504,6 +515,7 @@ class _$QandAInitialStateImpl implements QandAInitialState {
     TResult Function(QandALoadingState value)? loading,
     TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
   }) {
@@ -560,6 +572,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
     required TResult Function() loading,
     required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -572,6 +585,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
     TResult? Function()? loading,
     TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -584,6 +598,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
     TResult Function()? loading,
     TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -600,6 +615,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
     required TResult Function(QandALoadingState value) loading,
     required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
     required TResult Function(QandAErrorState value) error,
   }) {
     return loading(this);
@@ -612,6 +628,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
     TResult? Function(QandALoadingState value)? loading,
     TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
     TResult? Function(QandAErrorState value)? error,
   }) {
     return loading?.call(this);
@@ -624,6 +641,7 @@ class _$QandALoadingStateImpl implements QandALoadingState {
     TResult Function(QandALoadingState value)? loading,
     TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
   }) {
@@ -680,6 +698,7 @@ class _$QandAEmptyStateImpl implements QandAEmptyState {
     required TResult Function() loading,
     required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
     required TResult Function(String message) error,
   }) {
     return empty();
@@ -692,6 +711,7 @@ class _$QandAEmptyStateImpl implements QandAEmptyState {
     TResult? Function()? loading,
     TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
     TResult? Function(String message)? error,
   }) {
     return empty?.call();
@@ -704,6 +724,7 @@ class _$QandAEmptyStateImpl implements QandAEmptyState {
     TResult Function()? loading,
     TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -720,6 +741,7 @@ class _$QandAEmptyStateImpl implements QandAEmptyState {
     required TResult Function(QandALoadingState value) loading,
     required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
     required TResult Function(QandAErrorState value) error,
   }) {
     return empty(this);
@@ -732,6 +754,7 @@ class _$QandAEmptyStateImpl implements QandAEmptyState {
     TResult? Function(QandALoadingState value)? loading,
     TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
     TResult? Function(QandAErrorState value)? error,
   }) {
     return empty?.call(this);
@@ -744,6 +767,7 @@ class _$QandAEmptyStateImpl implements QandAEmptyState {
     TResult Function(QandALoadingState value)? loading,
     TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
   }) {
@@ -835,6 +859,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
     required TResult Function() loading,
     required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
     required TResult Function(String message) error,
   }) {
     return success(articles);
@@ -847,6 +872,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
     TResult? Function()? loading,
     TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
     TResult? Function(String message)? error,
   }) {
     return success?.call(articles);
@@ -859,6 +885,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
     TResult Function()? loading,
     TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -875,6 +902,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
     required TResult Function(QandALoadingState value) loading,
     required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
     required TResult Function(QandAErrorState value) error,
   }) {
     return success(this);
@@ -887,6 +915,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
     TResult? Function(QandALoadingState value)? loading,
     TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
     TResult? Function(QandAErrorState value)? error,
   }) {
     return success?.call(this);
@@ -899,6 +928,7 @@ class _$GetQandASuccessStateImpl implements GetQandASuccessState {
     TResult Function(QandALoadingState value)? loading,
     TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
   }) {
@@ -916,6 +946,174 @@ abstract class GetQandASuccessState implements QandAState {
   List<QandAModel> get articles;
   @JsonKey(ignore: true)
   _$$GetQandASuccessStateImplCopyWith<_$GetQandASuccessStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SearchQandASuccessStateImplCopyWith<$Res> {
+  factory _$$SearchQandASuccessStateImplCopyWith(
+          _$SearchQandASuccessStateImpl value,
+          $Res Function(_$SearchQandASuccessStateImpl) then) =
+      __$$SearchQandASuccessStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<QandAModel> articles});
+}
+
+/// @nodoc
+class __$$SearchQandASuccessStateImplCopyWithImpl<$Res>
+    extends _$QandAStateCopyWithImpl<$Res, _$SearchQandASuccessStateImpl>
+    implements _$$SearchQandASuccessStateImplCopyWith<$Res> {
+  __$$SearchQandASuccessStateImplCopyWithImpl(
+      _$SearchQandASuccessStateImpl _value,
+      $Res Function(_$SearchQandASuccessStateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? articles = null,
+  }) {
+    return _then(_$SearchQandASuccessStateImpl(
+      null == articles
+          ? _value._articles
+          : articles // ignore: cast_nullable_to_non_nullable
+              as List<QandAModel>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SearchQandASuccessStateImpl implements SearchQandASuccessState {
+  const _$SearchQandASuccessStateImpl(final List<QandAModel> articles)
+      : _articles = articles;
+
+  final List<QandAModel> _articles;
+  @override
+  List<QandAModel> get articles {
+    if (_articles is EqualUnmodifiableListView) return _articles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_articles);
+  }
+
+  @override
+  String toString() {
+    return 'QandAState.searchSuccess(articles: $articles)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SearchQandASuccessStateImpl &&
+            const DeepCollectionEquality().equals(other._articles, _articles));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_articles));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SearchQandASuccessStateImplCopyWith<_$SearchQandASuccessStateImpl>
+      get copyWith => __$$SearchQandASuccessStateImplCopyWithImpl<
+          _$SearchQandASuccessStateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() empty,
+    required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
+    required TResult Function(String message) error,
+  }) {
+    return searchSuccess(articles);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? empty,
+    TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
+    TResult? Function(String message)? error,
+  }) {
+    return searchSuccess?.call(articles);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? empty,
+    TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (searchSuccess != null) {
+      return searchSuccess(articles);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandAInitialState value) initial,
+    required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
+    required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
+    required TResult Function(QandAErrorState value) error,
+  }) {
+    return searchSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandAInitialState value)? initial,
+    TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
+    TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
+    TResult? Function(QandAErrorState value)? error,
+  }) {
+    return searchSuccess?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandAInitialState value)? initial,
+    TResult Function(QandALoadingState value)? loading,
+    TResult Function(QandAEmptyState value)? empty,
+    TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
+    TResult Function(QandAErrorState value)? error,
+    required TResult orElse(),
+  }) {
+    if (searchSuccess != null) {
+      return searchSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SearchQandASuccessState implements QandAState {
+  const factory SearchQandASuccessState(final List<QandAModel> articles) =
+      _$SearchQandASuccessStateImpl;
+
+  List<QandAModel> get articles;
+  @JsonKey(ignore: true)
+  _$$SearchQandASuccessStateImplCopyWith<_$SearchQandASuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -988,6 +1186,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
     required TResult Function() loading,
     required TResult Function() empty,
     required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -1000,6 +1199,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
     TResult? Function()? loading,
     TResult? Function()? empty,
     TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -1012,6 +1212,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
     TResult Function()? loading,
     TResult Function()? empty,
     TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1028,6 +1229,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
     required TResult Function(QandALoadingState value) loading,
     required TResult Function(QandAEmptyState value) empty,
     required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
     required TResult Function(QandAErrorState value) error,
   }) {
     return error(this);
@@ -1040,6 +1242,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
     TResult? Function(QandALoadingState value)? loading,
     TResult? Function(QandAEmptyState value)? empty,
     TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
     TResult? Function(QandAErrorState value)? error,
   }) {
     return error?.call(this);
@@ -1052,6 +1255,7 @@ class _$QandAErrorStateImpl implements QandAErrorState {
     TResult Function(QandALoadingState value)? loading,
     TResult Function(QandAEmptyState value)? empty,
     TResult Function(GetQandASuccessState value)? success,
+    TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
   }) {

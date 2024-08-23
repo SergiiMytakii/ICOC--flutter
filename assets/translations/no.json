@@ -1,5 +1,10 @@
 {
   
+      "Feedbacks": "Tilbakemeldinger",
+      "Sort articles descending": "Sorter artikler synkende",
+      "Sort articles ascending": "Sorter artikler stigende",
+      "Shuffle": "Tilfeldig rekkefølge",
+  
       "serverError": "Serverfeil. Vennligst sjekk internettforbindelsen din og prøv igjen.",
       "networkError": "Nettverksfeil. Vennligst sjekk internettforbindelsen din.",
       "notFound": "Den forespurte ressursen ble ikke funnet.",
@@ -150,7 +155,6 @@
   "Write your feedback here...": "Skriv tilbakemeldingen din her...",
   "Submit Feedback": "Send inn tilbakemelding",
   "Your name": "Ditt navn",
-  "Say Thank you!": "Si Takk!",
   "To the top": "Flytt til toppen av listen",
     "To the bottom": "Flytt til bunnen av listen",
     "*Language on the top": "*Språk på toppen",

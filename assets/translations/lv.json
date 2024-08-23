@@ -1,4 +1,8 @@
 {
+  "Feedbacks": "Paldies!",
+    "Sort articles descending": "Kārtot rakstus dilstošā secībā",
+    "Sort articles ascending": "Kārtot rakstus augošā secībā",
+    "Shuffle": "Sajaukt",
   
     "serverError": "Servera kļūda. Lūdzu, pārbaudiet interneta savienojumu un mēģiniet vēlreiz.",
     "networkError": "Tīkla kļūda. Lūdzu, pārbaudiet interneta savienojumu.",
@@ -151,7 +155,6 @@
   "Write your feedback here...": "Raksti savu atsauksmi šeit...",
   "Submit Feedback": "Iesniegt atsauksmes",
   "Your name": "Tavs vārds",
-  "Say Thank you!": "Pateiciet!",
   "To the top": "Pārvietot uz augšu sarakstā",
     "To the bottom": "Pārvietot uz leju sarakstā",
     "*Language on the top": "*Valoda augšā",

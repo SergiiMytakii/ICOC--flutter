@@ -1,5 +1,10 @@
 {
   
+  "Feedbacks": "Feedback",
+    "Sort articles descending": "Ordina articoli in ordine decrescente",
+    "Sort articles ascending": "Ordina articoli in ordine crescente",
+    "Shuffle": "Mescola",
+  
     "serverError": "Errore del server. Controlla la tua connessione internet e riprova.",
     "networkError": "Errore di rete. Controlla la tua connessione internet.",
     "notFound": "La risorsa richiesta non è stata trovata.",
@@ -149,7 +154,6 @@
   "Write your feedback here...": "Scrivi il tuo feedback qui...",
   "Submit Feedback": "Invia Feedback",
   "Your name": "Il tuo nome",
-  "Say Thank you!": "Dì Grazie!",
   "To the top": "Sposta in cima alla lista",
   "To the bottom": "Sposta in fondo alla lista",
   "*Language on the top": "*Lingua in alto",
