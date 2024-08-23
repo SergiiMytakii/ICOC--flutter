@@ -6,7 +6,7 @@ abstract class LocalSongsDB {
   Future<bool> addToFavorites(int id);
   Future<bool> deleteFromFavorites(int id);
   Future<bool> getFavoriteStatus(int id);
-  Future<List<int>> getListFavorites();
+  Future<Set<int>> getListFavorites();
   Future<List<SongVersionLocal>> getSearchResult(
     String query,
   );

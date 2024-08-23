@@ -23,10 +23,10 @@ abstract class UserLanguagesHandler {
         orElse: () => MapEntry(locale, true),
       )
       .key;
-  List<String> getActiveLanguages() => languages.entries
+  Set<String> getActiveLanguages() => languages.entries
       .where((entry) => entry.value)
       .map((entry) => entry.key)
-      .toList();
+      .toSet();
 
   Future<void> saveAllLanguages(Map<String, dynamic> updatedLanguages) async {
     languages = updatedLanguages;

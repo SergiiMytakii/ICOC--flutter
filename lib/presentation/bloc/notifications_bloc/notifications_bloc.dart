@@ -35,14 +35,11 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     return result.fold(
       (failure) =>
           emit(NotificationsState.error(failure.toUserFriendlyMessage())),
-      (allNotifications) {
+      (allNotifications) async {
         final List<NotificationsModel> filteredNotifications =
             filterNotificationsByLang(allNotifications.reversed.toList());
-        checkAndMarkWhatIsRead(filteredNotifications)
-            .then((markedNotifications) {
-          notifications = markedNotifications;
-          emit(NotificationsState.success(notifications));
-        });
+        notifications = checkAndMarkWhatIsRead(filteredNotifications);
+        emit(NotificationsState.success(notifications));
       },
     );
   }
@@ -55,7 +52,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     try {
       if (event.id != null) {
         final List<String> isRead =
-            await getIt<LocalCache>().getList(StorageKeys.notifications) ?? [];
+            getIt<LocalCache>().getList(StorageKeys.notifications) ?? [];
         isRead.add(event.id!);
         getIt<LocalCache>().saveList(StorageKeys.notifications, isRead);
 
@@ -107,10 +104,10 @@ List<NotificationsModel> filterNotificationsByLang(
   return filteredNotifications;
 }
 
-Future<List<NotificationsModel>> checkAndMarkWhatIsRead(
-    List<NotificationsModel> notifications) async {
+List<NotificationsModel> checkAndMarkWhatIsRead(
+    List<NotificationsModel> notifications) {
   final List<String> isRead =
-      await getIt<LocalCache>().getList(StorageKeys.notifications) ?? [];
+      getIt<LocalCache>().getList(StorageKeys.notifications) ?? [];
   if (isRead.isNotEmpty) {
     return notifications.map((notification) {
       if (isRead.contains(notification.id)) {

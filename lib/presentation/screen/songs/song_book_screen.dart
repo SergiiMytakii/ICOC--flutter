@@ -30,6 +30,11 @@ class _SongBookScreenState extends State<SongBookScreen> {
   void initState() {
     FirebaseAnalytics.instance.logScreenView(screenName: 'Song Book');
     _scrollController = ScrollController();
+
+    final bloc = getIt<SongsBloc>();
+    bloc.state.whenOrNull(
+      searchSuccess: (songVersions) => bloc.add(const SongsEvent.clearSearch()),
+    );
     super.initState();
   }
 

@@ -1,5 +1,10 @@
 { 
   
+    "Feedbacks": "Feedback",
+    "Sort articles descending": "Sortera artiklar fallande",
+    "Sort articles ascending": "Sortera artiklar stigande",
+    "Shuffle": "Blanda",
+  
       "serverError": "Serverfel. Kontrollera din internetanslutning och försök igen.",
       "networkError": "Nätverksfel. Kontrollera din internetanslutning.",
       "notFound": "Den begärda resursen hittades inte.",
@@ -152,7 +157,6 @@
   "Write your feedback here...": "Skriv dina kommentarer här...",
   "Submit Feedback": "Skicka feedback",
   "Your name": "Ditt namn",
-  "Say Thank you!": "Säg Tack!",
   "To the top": "Flytta till toppen av listan",
   "To the bottom": "Flytta till botten av listan",
   "*Language on the top": "*Språk överst",

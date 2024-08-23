@@ -1,5 +1,10 @@
 { 
   
+   "Feedbacks": "Feedbackuri",
+    "Sort articles descending": "Sortează articolele descrescător",
+    "Sort articles ascending": "Sortează articolele crescător",
+    "Shuffle": "Amestecă",
+  
     "serverError": "Eroare de server. Vă rugăm să verificați conexiunea la internet și să încercați din nou.",
     "networkError": "Eroare de rețea. Vă rugăm să verificați conexiunea la internet.",
     "notFound": "Resursa solicitată nu a fost găsită.",
@@ -148,7 +153,6 @@
   "Write your feedback here...": "Scrie feedback-ul tău aici...",
   "Submit Feedback": "Trimite feedback",
   "Your name": "Numele tău",
-  "Say Thank you!": "Spune Mulțumesc!",
   "To the top": "Mută în partea de sus a listei",
   "To the bottom": "Mută în partea de jos a listei",
   "*Language on the top": "*Limba sus",

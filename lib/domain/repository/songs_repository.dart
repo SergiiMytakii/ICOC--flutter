@@ -4,7 +4,7 @@ import 'package:icoc/core/errors/failures.dart';
 
 abstract class SongsRepository {
   Future<Either<Failure, List<SongModel>>> getSongs();
-  Future<Either<Failure, List<int>>> getFavoriteSongs();
+  Future<Either<Failure, Set<int>>> getFavoriteSongs();
   Future<Either<Failure, bool>> setFavoriteSong(int id, bool isFavorite);
   Future<Either<Failure, bool>> getFavoriteSongStatus(int id);
   Future<Either<Failure, bool>> insertAllSongsToLocalTable(

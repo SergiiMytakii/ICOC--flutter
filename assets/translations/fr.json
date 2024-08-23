@@ -1,5 +1,10 @@
 { 
   
+    "Feedbacks": "Dire merci !",
+    "Sort articles descending": "Trier les articles par ordre décroissant",
+    "Sort articles ascending": "Trier les articles par ordre croissant",
+    "Shuffle": "Mélanger",
+  
     "serverError": "Erreur serveur. Veuillez vérifier votre connexion internet et réessayer.",
     "networkError": "Erreur réseau. Veuillez vérifier votre connexion internet.",
     "notFound": "La ressource demandée n'a pas été trouvée.",
@@ -150,7 +155,6 @@
   "Write your feedback here...": "Écrivez votre feedback ici...",
   "Submit Feedback": "Envoyer le feedback",
   "Your name": "Votre nom",
-  "Say Thank you!": "Dites merci !",
   "To the top": "Déplacer en haut de la liste", "To the bottom": "Déplacer en bas de la liste", "*Language on the top": "*Langue en haut",
   "will be displayed first": "sera affiché en premier",
   "Unfortunately, there isn't any content here in": "Malheureusement, il n'y a pas de contenu ici en",  "Add more languages in the filter.": "Ajoutez d'autres langues dans le filtre.",

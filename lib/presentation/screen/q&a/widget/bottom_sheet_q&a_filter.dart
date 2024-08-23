@@ -23,6 +23,7 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
 
   @override
   Widget build(BuildContext context) {
+    final bool notEmpty = getIt<QandABloc>().state != const QandAState.empty();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       height: MediaQuery.of(context).size.height / 1.6,
@@ -34,24 +35,27 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
               IconButton(
                 icon: const Icon(Icons.arrow_downward),
                 onPressed: () {
-                  getIt<QandABloc>().add(
-                      const QandAEvent.requested(order: OrderEnum.descending));
+                  if (notEmpty)
+                    getIt<QandABloc>().add(const QandAEvent.requested(
+                        order: OrderEnum.descending));
                 },
                 tooltip: 'Sort articles descending'.tr(),
               ),
               IconButton(
                 icon: const Icon(Icons.arrow_upward),
                 onPressed: () {
-                  getIt<QandABloc>().add(
-                      const QandAEvent.requested(order: OrderEnum.ascending));
+                  if (notEmpty)
+                    getIt<QandABloc>().add(
+                        const QandAEvent.requested(order: OrderEnum.ascending));
                 },
                 tooltip: 'Sort articles ascending'.tr(),
               ),
               IconButton(
                 icon: const Icon(Icons.shuffle),
                 onPressed: () {
-                  getIt<QandABloc>()
-                      .add(const QandAEvent.requested(order: OrderEnum.random));
+                  if (notEmpty)
+                    getIt<QandABloc>().add(
+                        const QandAEvent.requested(order: OrderEnum.random));
                 },
                 tooltip: 'Shuffle'.tr(),
               ),
