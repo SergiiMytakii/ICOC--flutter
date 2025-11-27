@@ -11,6 +11,8 @@ import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:logger/logger.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -46,6 +48,8 @@ class _SongVersionTabState extends State<SongVersionTab>
   double _scrollSpeed = 40;
   Timer? _scrollTimer;
   int _transpose = 0;
+  late String _transposeKey;
+  late String _speedKey;
 
   @override
   void initState() {
@@ -60,6 +64,19 @@ class _SongVersionTabState extends State<SongVersionTab>
     _controller.addListener(() {
       setState(() {}); // Trigger a rebuild on each animation frame
     });
+    _transposeKey =
+        '${StorageKeys.songTranspose}_${widget.songVersion.id}_${widget.songVersion.lang.name}';
+    _speedKey =
+        '${StorageKeys.songScrollSpeed}_${widget.songVersion.id}_${widget.songVersion.lang.name}';
+    final savedTranspose =
+        getIt<LocalCache>().getDouble(_transposeKey) as double?;
+    if (savedTranspose != null) {
+      _transpose = savedTranspose.round();
+    }
+    final savedSpeed = getIt<LocalCache>().getDouble(_speedKey) as double?;
+    if (savedSpeed != null) {
+      _scrollSpeed = savedSpeed;
+    }
     super.initState();
   }
 
@@ -92,9 +109,20 @@ class _SongVersionTabState extends State<SongVersionTab>
                             setState(() {
                               _transpose -= 1;
                             });
+                            getIt<LocalCache>().saveDouble(
+                                _transposeKey, _transpose.toDouble());
                           },
                           tooltip: 'Transpose down'.tr(),
                           icon: const Icon(Icons.music_note_outlined),
+                        ),
+                        Text(
+                          '$_transpose',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: ScreenColors.songBook,
+                                  fontWeight: FontWeight.bold),
                         ),
                         IconButton(
                           color: ScreenColors.songBook,
@@ -102,10 +130,14 @@ class _SongVersionTabState extends State<SongVersionTab>
                             setState(() {
                               _transpose += 1;
                             });
+                            getIt<LocalCache>().saveDouble(
+                                _transposeKey, _transpose.toDouble());
                           },
                           tooltip: 'Transpose up'.tr(),
                           icon: const Icon(Icons.music_note),
                         ),
+                        const SizedBox(width: 6),
+                        const SizedBox(width: 10),
                         IconButton(
                           color: ScreenColors.songBook,
                           onPressed: () {
@@ -125,6 +157,7 @@ class _SongVersionTabState extends State<SongVersionTab>
                               ? Icons.pause_circle
                               : Icons.play_circle_outline),
                         ),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Tooltip(
                             message: 'Scroll speed'.tr(),
@@ -139,6 +172,8 @@ class _SongVersionTabState extends State<SongVersionTab>
                                 setState(() {
                                   _scrollSpeed = v;
                                 });
+                                getIt<LocalCache>()
+                                    .saveDouble(_speedKey, _scrollSpeed);
                               },
                             ),
                           ),
@@ -257,7 +292,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   String _applyTranspose(String text, int steps) {
     if (steps == 0) return text;
     final regex = RegExp(
-        r'(?<![A-Za-z])(([A-G](?:#|b)?)(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/([A-G](?:#|b)?))?)(?![A-Za-z])');
+        r'(?<![A-Za-z])(([A-H](?:#|b)?)(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/([A-H](?:#|b)?))?)(?![A-Za-z])');
     return text.replaceAllMapped(regex, (m) {
       final token = m.group(1)!;
       final root = m.group(2)!;
@@ -275,6 +310,8 @@ class _SongVersionTabState extends State<SongVersionTab>
   }
 
   String _transposeRoot(String root, int steps, bool preferFlat) {
+    final german = root.startsWith('H');
+    final normalized = german ? (root.replaceFirst('H', 'B')) : root;
     final sharp = [
       'C',
       'C#',
@@ -303,12 +340,20 @@ class _SongVersionTabState extends State<SongVersionTab>
       'Bb',
       'B'
     ];
-    int idx = sharp.indexOf(root);
-    if (idx == -1) idx = flat.indexOf(root);
+    int idx = sharp.indexOf(normalized);
+    if (idx == -1) idx = flat.indexOf(normalized);
     if (idx == -1) return root;
     final newIdx =
         (idx + steps) % 12 < 0 ? (12 + (idx + steps) % 12) : (idx + steps) % 12;
-    return preferFlat ? flat[newIdx] : sharp[newIdx];
+    var out = preferFlat ? flat[newIdx] : sharp[newIdx];
+    if (german) {
+      if (out == 'Bb') {
+        out = 'B';
+      } else if (out == 'B') {
+        out = 'H';
+      }
+    }
+    return out;
   }
 
   bool _hasChordsFormat(String text) {
@@ -335,7 +380,7 @@ class _SongVersionTabState extends State<SongVersionTab>
 
   int _countChordTokens(String line) {
     final tokenRe = RegExp(
-        r'^[A-G](?:#|b)?(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/[A-G](?:#|b)?)?$');
+        r'^[A-H](?:#|b)?(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/[A-H](?:#|b)?)?$');
     final tokens = line.trim().split(RegExp(r'\s+')).where((t) => t.isNotEmpty);
     int count = 0;
     for (final t in tokens) {
@@ -347,7 +392,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   List<TextSpan> _buildChordSpans(
       String text, TextStyle base, TextStyle chordStyle) {
     final tokenRe = RegExp(
-        r'^[A-G](?:#|b)?(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/[A-G](?:#|b)?)?$');
+        r'^[A-H](?:#|b)?(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/[A-H](?:#|b)?)?$');
     final lines = text.split('\n');
     final spans = <TextSpan>[];
     for (int i = 0; i < lines.length; i++) {
@@ -366,7 +411,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   String _highlightChordsHtml(String text) {
     const chordHex = '#ff595e';
     final regex = RegExp(
-        r'(?<![A-Za-z])(([A-G](?:#|b)?)(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/([A-G](?:#|b)?))?)(?![A-Za-z])');
+        r'(?<![A-Za-z])(([A-H](?:#|b)?)(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/([A-H](?:#|b)?))?)(?![A-Za-z])');
     return text.replaceAllMapped(regex, (m) {
       final token = m.group(1)!;
       return '<span style="color: $chordHex">$token</span>';

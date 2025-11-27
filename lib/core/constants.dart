@@ -51,6 +51,8 @@ class StorageKeys {
   static const String shouldBibleStudyFilterAnimate =
       'shouldBibleStudyFilterAnimate';
   static const String bibleStudyReadPosition = 'bibleStudyReadPosition';
+  static const String songTranspose = 'songTranspose';
+  static const String songScrollSpeed = 'songScrollSpeed';
   // Add more keys as needed
 }
 
