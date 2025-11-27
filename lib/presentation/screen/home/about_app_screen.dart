@@ -29,18 +29,29 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
     try {
       final canOpen = await canLaunchUrl(uri);
       if (!canOpen) {
-        final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+        final launched =
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
         if (!launched) {
-          showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+          showToast(
+              context: context,
+              title: 'Error'.tr(),
+              message: 'Can\'t open Email app'.tr());
         }
       } else {
-        final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+        final launched =
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
         if (!launched) {
-          showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+          showToast(
+              context: context,
+              title: 'Error'.tr(),
+              message: 'Can\'t open Email app'.tr());
         }
       }
     } catch (_) {
-      showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+      showToast(
+          context: context,
+          title: 'Error'.tr(),
+          message: 'Can\'t open Email app'.tr());
     }
   }
 
@@ -99,15 +110,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
-              'Antonina Glajevskaya'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              'Oksana Strelchenya'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              'Loginova Irina'.tr(),
+              'Anatoliy Mishin'.tr(),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 

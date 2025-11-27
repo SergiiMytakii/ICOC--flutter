@@ -19,7 +19,7 @@ class ScreenColors {
 const String email = 'serjmitaki@gmail.com';
 const String payPalAccount = 'serjmitaki@gmail.com';
 const String usdtWallet = 'TF9irV2F7CoGVpZFvDxvV7hzmT9esWanjf';
-const String monoBankCard = '5375411432482466';
+const String monoBankCard = '4441111042365647';
 const appUrlPlayMarket =
     'https://play.google.com/store/apps/details?id=ru.icoc.app';
 const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
