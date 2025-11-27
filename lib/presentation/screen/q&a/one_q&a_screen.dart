@@ -18,6 +18,7 @@ import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 class OneQandAScreen extends StatefulWidget {
   final QandAModel article;
@@ -30,13 +31,38 @@ class OneQandAScreen extends StatefulWidget {
   State<OneQandAScreen> createState() => _OneQandAScreenState();
 }
 
-class _OneQandAScreenState extends State<OneQandAScreen> {
+class _OneQandAScreenState extends State<OneQandAScreen> with WidgetsBindingObserver {
   static const fontStyle =
       TextStyle(color: ScreenColors.QandA, fontWeight: FontWeight.bold);
+  late final ScrollController _scrollController;
+  double _lastOffset = 0.0;
+  bool _restored = false;
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      _lastOffset = _scrollController.offset;
+    });
+    WidgetsBinding.instance.addObserver(this);
     _getArticle();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _saveReadingPosition();
+    WidgetsBinding.instance.removeObserver(this);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      _saveReadingPosition();
+    }
   }
 
   Future<void> _getArticle() async {
@@ -83,8 +109,10 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
             ),
             success: (article) => SingleChildScrollView(
               padding: const EdgeInsets.all(16),
+              controller: _scrollController,
               child: BlocBuilder<FontSizeBloc, FontSizeState>(
                 builder: (context, state) {
+                  _tryRestore();
                   return state.maybeWhen(
                     success: (fontSize) => ScaleText(
                       fontSize: fontSize ?? 14,
@@ -243,5 +271,28 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
         ],
       ),
     );
+  }
+
+  void _saveReadingPosition() {
+    getIt<LocalCache>().saveMap(StorageKeys.qAndAReadPosition, {
+      'articleId': widget.article.id,
+      'offset': _lastOffset,
+      'ts': DateTime.now().millisecondsSinceEpoch,
+    });
+  }
+
+  void _tryRestore() {
+    if (_restored) return;
+    final map = getIt<LocalCache>().getMap(StorageKeys.qAndAReadPosition);
+    final articleId = map?['articleId'];
+    final offset = (map?['offset'] is num) ? (map?['offset'] as num).toDouble() : 0.0;
+    if (articleId == widget.article.id) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(offset);
+          _restored = true;
+        }
+      });
+    }
   }
 }
