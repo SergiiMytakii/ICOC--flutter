@@ -8,6 +8,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QandAVideoPlayer extends StatefulWidget {
   QandAVideoPlayer({
@@ -26,6 +27,9 @@ class QandAVideoPlayer extends StatefulWidget {
 class _QandAVideoPlayerState extends State<QandAVideoPlayer> {
   YoutubePlayerController? youtubePlayerController;
   WebViewController? iosWebController;
+  WebViewController? androidWebController;
+  bool iosWebFailed = false;
+  bool androidWebFailed = false;
   @override
   void initState() {
     if (Platform.isIOS) {
@@ -40,6 +44,13 @@ class _QandAVideoPlayerState extends State<QandAVideoPlayer> {
       }
       final controller = WebViewController.fromPlatformCreationParams(params)
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent(
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1')
+        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
+          setState(() {
+            iosWebFailed = true;
+          });
+        }))
         ..loadRequest(
           Uri.parse(
               'https://www.youtube.com/embed/${widget.videoId}?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
@@ -50,13 +61,25 @@ class _QandAVideoPlayerState extends State<QandAVideoPlayer> {
         );
       iosWebController = controller;
     } else {
-      youtubePlayerController = YoutubePlayerController(
-        params: const YoutubePlayerParams(
-          showFullscreenButton: true,
-          playsInline: true,
-        ),
-      );
-      youtubePlayerController!.loadVideoById(videoId: widget.videoId);
+      final params = const PlatformWebViewControllerCreationParams();
+      final controller = WebViewController.fromPlatformCreationParams(params)
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent(
+            'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36')
+        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
+          setState(() {
+            androidWebFailed = true;
+          });
+        }))
+        ..loadRequest(
+          Uri.parse(
+              'https://www.youtube.com/embed/${widget.videoId}?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
+          headers: const {
+            'Referer': ICOC_WEB_PAGE,
+            'Referrer-Policy': 'strict-origin-when-cross-origin',
+          },
+        );
+      androidWebController = controller;
     }
     super.initState();
   }
@@ -85,23 +108,38 @@ class _QandAVideoPlayerState extends State<QandAVideoPlayer> {
         child: Scaffold(
           backgroundColor: AdaptiveTheme.of(context).theme.colorScheme.surface,
           appBar: AppBar(),
-          body: iosWebController != null
+          body: iosWebController != null && !iosWebFailed
               ? WebViewWidget(controller: iosWebController!)
-              : const SizedBox.shrink(),
+              : Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final uri = Uri.parse(
+                          'https://www.youtube.com/watch?v=${widget.videoId}');
+                      launchUrl(uri, mode: LaunchMode.externalApplication);
+                    },
+                    child: const Text('Open in YouTube'),
+                  ),
+                ),
         ),
       );
     }
-    return YoutubePlayerScaffold(
-        controller: youtubePlayerController!,
-        autoFullScreen: false,
-        builder: (BuildContext context, Widget player) {
-          return SafeArea(
-            child: Scaffold(
-                backgroundColor:
-                    AdaptiveTheme.of(context).theme.colorScheme.surface,
-                appBar: AppBar(),
-                body: player),
-          );
-        });
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AdaptiveTheme.of(context).theme.colorScheme.surface,
+        appBar: AppBar(),
+        body: androidWebController != null && !androidWebFailed
+            ? WebViewWidget(controller: androidWebController!)
+            : Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    final uri = Uri.parse(
+                        'https://www.youtube.com/watch?v=${widget.videoId}');
+                    launchUrl(uri, mode: LaunchMode.externalApplication);
+                  },
+                  child: const Text('Open in YouTube'),
+                ),
+              ),
+      ),
+    );
   }
 }

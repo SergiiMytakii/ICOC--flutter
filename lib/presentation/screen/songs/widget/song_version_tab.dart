@@ -14,6 +14,7 @@ import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SongVersionTab extends StatefulWidget {
   SongVersionTab({super.key, required this.songVersion});
@@ -35,6 +36,9 @@ class _SongVersionTabState extends State<SongVersionTab>
   bool videoIsPlaying = false;
   YoutubePlayerController? youtubePlayerController;
   WebViewController? iosWebController;
+  WebViewController? androidWebController;
+  bool iosWebFailed = false;
+  bool androidWebFailed = false;
 
   @override
   void initState() {
@@ -170,8 +174,15 @@ class _SongVersionTabState extends State<SongVersionTab>
       }
       final controller = WebViewController.fromPlatformCreationParams(params)
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent(
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1')
         ..setBackgroundColor(
             AdaptiveTheme.of(context).theme.colorScheme.surface)
+        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
+          setState(() {
+            iosWebFailed = true;
+          });
+        }))
         ..loadRequest(
           Uri.parse(
               'https://www.youtube.com/embed/$videoId?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
@@ -186,16 +197,30 @@ class _SongVersionTabState extends State<SongVersionTab>
       });
       _controller.forward();
     } else {
-      youtubePlayerController = YoutubePlayerController(
-        params: const YoutubePlayerParams(
-          showFullscreenButton: true,
-          playsInline: true,
-        ),
-      );
+      final params = const PlatformWebViewControllerCreationParams();
+      final controller = WebViewController.fromPlatformCreationParams(params)
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent(
+            'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36')
+        ..setBackgroundColor(
+            AdaptiveTheme.of(context).theme.colorScheme.surface)
+        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
+          setState(() {
+            androidWebFailed = true;
+          });
+        }))
+        ..loadRequest(
+          Uri.parse(
+              'https://www.youtube.com/embed/$videoId?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
+          headers: const {
+            'Referer': ICOC_WEB_PAGE,
+            'Referrer-Policy': 'strict-origin-when-cross-origin',
+          },
+        );
+      androidWebController = controller;
       setState(() {
         videoIsPlaying = true;
       });
-      youtubePlayerController!.loadVideoById(videoId: videoId);
       _controller.forward();
     }
   }
@@ -249,12 +274,30 @@ class _SongVersionTabState extends State<SongVersionTab>
           width: double.maxFinite,
           height: _animation.value * screenSize.width / 16 * 9,
           child: Platform.isIOS
-              ? (iosWebController != null
+              ? (!iosWebFailed && iosWebController != null
                   ? WebViewWidget(controller: iosWebController!)
-                  : const SizedBox.shrink())
-              : YoutubePlayer(
-                  controller: youtubePlayerController!,
-                ),
+                  : Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final uri = Uri.parse(
+                              'https://www.youtube.com/watch?v=${widget.songVersion.youtubeVideos?.first.link ?? ''}');
+                          launchUrl(uri, mode: LaunchMode.externalApplication);
+                        },
+                        child: const Text('Open in YouTube'),
+                      ),
+                    ))
+              : (!androidWebFailed && androidWebController != null
+                  ? WebViewWidget(controller: androidWebController!)
+                  : Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final uri = Uri.parse(
+                              'https://www.youtube.com/watch?v=${widget.songVersion.youtubeVideos?.first.link ?? ''}');
+                          launchUrl(uri, mode: LaunchMode.externalApplication);
+                        },
+                        child: const Text('Open in YouTube'),
+                      ),
+                    )),
         ),
       )
     ]);

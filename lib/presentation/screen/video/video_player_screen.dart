@@ -12,6 +12,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VideoPlayer extends StatefulWidget {
   VideoPlayer({
@@ -30,6 +31,9 @@ class VideoPlayer extends StatefulWidget {
 class _VideoPlayerState extends State<VideoPlayer> {
   YoutubePlayerController? youtubePlayerController;
   WebViewController? iosWebController;
+  WebViewController? androidWebController;
+  bool iosWebFailed = false;
+  bool androidWebFailed = false;
   @override
   void initState() {
     if (Platform.isIOS) {
@@ -44,6 +48,13 @@ class _VideoPlayerState extends State<VideoPlayer> {
       }
       final controller = WebViewController.fromPlatformCreationParams(params)
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent(
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1')
+        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
+          setState(() {
+            iosWebFailed = true;
+          });
+        }))
         ..loadRequest(
           Uri.parse(
               'https://www.youtube.com/embed/${widget.videoId}?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
@@ -54,13 +65,25 @@ class _VideoPlayerState extends State<VideoPlayer> {
         );
       iosWebController = controller;
     } else {
-      youtubePlayerController = YoutubePlayerController(
-        params: const YoutubePlayerParams(
-          showFullscreenButton: true,
-          playsInline: true,
-        ),
-      );
-      youtubePlayerController!.loadVideoById(videoId: widget.videoId);
+      final params = const PlatformWebViewControllerCreationParams();
+      final controller = WebViewController.fromPlatformCreationParams(params)
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setUserAgent(
+            'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36')
+        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
+          setState(() {
+            androidWebFailed = true;
+          });
+        }))
+        ..loadRequest(
+          Uri.parse(
+              'https://www.youtube.com/embed/${widget.videoId}?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
+          headers: const {
+            'Referer': ICOC_WEB_PAGE,
+            'Referrer-Policy': 'strict-origin-when-cross-origin',
+          },
+        );
+      androidWebController = controller;
     }
     super.initState();
   }
@@ -106,11 +129,27 @@ class _VideoPlayerState extends State<VideoPlayer> {
                     ),
                     body: Column(
                       children: [
-                        if (iosWebController != null)
+                        if (!iosWebFailed && iosWebController != null)
                           SizedBox(
                             width: double.maxFinite,
                             height: MediaQuery.of(context).size.width / 16 * 9,
                             child: WebViewWidget(controller: iosWebController!),
+                          ),
+                        if (iosWebFailed)
+                          SizedBox(
+                            width: double.maxFinite,
+                            height: MediaQuery.of(context).size.width / 16 * 9,
+                            child: Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  final uri = Uri.parse(
+                                      'https://www.youtube.com/watch?v=${widget.videoId}');
+                                  launchUrl(uri,
+                                      mode: LaunchMode.externalApplication);
+                                },
+                                child: const Text('Open in YouTube'),
+                              ),
+                            ),
                           ),
                         currentVideoInfo(youtubeVideo)
                       ],
@@ -123,40 +162,60 @@ class _VideoPlayerState extends State<VideoPlayer> {
         ),
       );
     }
-    return YoutubePlayerScaffold(
-        controller: youtubePlayerController!,
-        autoFullScreen: false,
-        builder: (BuildContext context, Widget player) {
-          return SafeArea(
-            top: false,
-            child: BlocBuilder<VideoBloc, VideoState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  getVideosFromPlaylistSuccess: (youtubeVideos) {
-                    final youtubeVideo = youtubeVideos.firstWhere(
-                        (item) => item.link.contains(widget.videoId));
-                    return Scaffold(
-                        backgroundColor:
-                            AdaptiveTheme.of(context).theme.colorScheme.surface,
-                        appBar: AppBar(
-                          centerTitle: true,
-                          title: Text(
-                            youtubeVideo.title ?? '',
-                            maxLines: 2,
-                            style: const TextStyle(fontSize: 12),
+    return SafeArea(
+      top: false,
+      child: BlocBuilder<VideoBloc, VideoState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            getVideosFromPlaylistSuccess: (youtubeVideos) {
+              final youtubeVideo = youtubeVideos
+                  .firstWhere((item) => item.link.contains(widget.videoId));
+              return Scaffold(
+                  backgroundColor:
+                      AdaptiveTheme.of(context).theme.colorScheme.surface,
+                  appBar: AppBar(
+                    centerTitle: true,
+                    title: Text(
+                      youtubeVideo.title ?? '',
+                      maxLines: 2,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                  body: Column(
+                    children: [
+                      if (!androidWebFailed && androidWebController != null)
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.width / 16 * 9,
+                          child:
+                              WebViewWidget(controller: androidWebController!),
+                        ),
+                      if (androidWebFailed)
+                        SizedBox(
+                          width: double.maxFinite,
+                          height: MediaQuery.of(context).size.width / 16 * 9,
+                          child: Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                final uri = Uri.parse(
+                                    'https://www.youtube.com/watch?v=${widget.videoId}');
+                                launchUrl(uri,
+                                    mode: LaunchMode.externalApplication);
+                              },
+                              child: const Text('Open in YouTube'),
+                            ),
                           ),
                         ),
-                        body: Column(
-                          children: [player, currentVideoInfo(youtubeVideo)],
-                        ));
-                  },
-                  error: (message) => const Scaffold(body: ErrorTextOnScreen()),
-                  orElse: () => const SizedBox.shrink(),
-                );
-              },
-            ),
+                      currentVideoInfo(youtubeVideo)
+                    ],
+                  ));
+            },
+            error: (message) => const Scaffold(body: ErrorTextOnScreen()),
+            orElse: () => const SizedBox.shrink(),
           );
-        });
+        },
+      ),
+    );
   }
 
   Widget currentVideoInfo(YoutubeVideo youtubeVideo) {
