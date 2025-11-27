@@ -73,8 +73,9 @@ class QandARepositoryImpl extends QandARepository {
   Future<Either<Failure, QandAModel>> getArticleContent(
       QandAModel article) async {
     try {
-      final response = await httpClientImpl.get(Uri.parse(article.link!),
-          headers: {'Content-Type': 'text/html'});
+      final fixedLink = article.link!.replaceAll('www.', '');
+      final response = await httpClientImpl
+          .get(Uri.parse(fixedLink), headers: {'Content-Type': 'text/html'});
       if (response.statusCode == 200) {
         final document = parse(response.body);
 
