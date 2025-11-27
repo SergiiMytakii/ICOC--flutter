@@ -26,14 +26,22 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
   Future launchEmail(BuildContext context) async {
     final uri = Uri(scheme: 'mailto', path: email, query: 'subject=ICOC app');
-
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else
-      showToast(
-          context: context,
-          title: 'Error'.tr(),
-          message: 'Can\'t open Email app'.tr());
+    try {
+      final canOpen = await canLaunchUrl(uri);
+      if (!canOpen) {
+        final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+        if (!launched) {
+          showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+        }
+      } else {
+        final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+        if (!launched) {
+          showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+        }
+      }
+    } catch (_) {
+      showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+    }
   }
 
   bool isOpened = false;
