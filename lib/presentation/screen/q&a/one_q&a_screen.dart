@@ -25,14 +25,14 @@ class OneQandAScreen extends StatefulWidget {
     super.key,
     required this.article,
   });
-  static const fontStyle =
-      TextStyle(color: ScreenColors.QandA, fontWeight: FontWeight.bold);
 
   @override
   State<OneQandAScreen> createState() => _OneQandAScreenState();
 }
 
 class _OneQandAScreenState extends State<OneQandAScreen> {
+  static const fontStyle =
+      TextStyle(color: ScreenColors.QandA, fontWeight: FontWeight.bold);
   @override
   void initState() {
     _getArticle();
@@ -94,8 +94,7 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
                           children: [
                             Text(
                               'Question:'.tr(),
-                              style: OneQandAScreen.fontStyle
-                                  .copyWith(fontSize: fontSize),
+                              style: fontStyle.copyWith(fontSize: fontSize),
                             ),
                             const SizedBox(
                               height: 10,
@@ -109,8 +108,7 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
                             ),
                             Text(
                               'Answer:'.tr(),
-                              style: OneQandAScreen.fontStyle
-                                  .copyWith(fontSize: fontSize),
+                              style: fontStyle.copyWith(fontSize: fontSize),
                             ),
                             const SizedBox(
                               height: 10,
@@ -143,20 +141,17 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
                             if (article.date != null)
                               Text(
                                 '${'Date:'.tr()} ${article.date}',
-                                style: OneQandAScreen.fontStyle
-                                    .copyWith(fontSize: fontSize),
+                                style: fontStyle.copyWith(fontSize: fontSize),
                               ),
                             if (article.author != null)
                               Text(
                                 '${'Author:'.tr()} ${article.author}',
-                                style: OneQandAScreen.fontStyle
-                                    .copyWith(fontSize: fontSize),
+                                style: fontStyle.copyWith(fontSize: fontSize),
                               ),
                             if (article.translatedBy != null)
                               Text(
                                 '${'Translated by:'.tr()} ${article.translatedBy}',
-                                style: OneQandAScreen.fontStyle
-                                    .copyWith(fontSize: fontSize),
+                                style: fontStyle.copyWith(fontSize: fontSize),
                               ),
                             if (article.source != null)
                               _buildActiveLink(
@@ -198,7 +193,7 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
         },
         child: Text(
           article.youtubeLink!,
-          style: OneQandAScreen.fontStyle.copyWith(
+          style: fontStyle.copyWith(
             fontSize: fontSize! - 5,
             color: Colors.blue,
             decoration: TextDecoration.underline,
@@ -228,12 +223,12 @@ class _OneQandAScreenState extends State<OneQandAScreen> {
         children: [
           Text(
             label,
-            style: OneQandAScreen.fontStyle.copyWith(fontSize: fontSize),
+            style: fontStyle.copyWith(fontSize: fontSize),
           ),
           Expanded(
             child: Text(
               url,
-              style: OneQandAScreen.fontStyle.copyWith(
+              style: fontStyle.copyWith(
                 decoration: TextDecoration.underline,
                 fontSize: fontSize,
                 color: Colors.blue,

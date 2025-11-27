@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
     getIt<LocalCache>()
         .saveString(StorageKeys.locale, context.locale.languageCode);
     return AdaptiveTheme(
-      initial: savedThemeMode ?? AdaptiveThemeMode.dark,
+      initial: savedThemeMode ?? AdaptiveThemeMode.system,
       light: myLightTheme,
       dark: myDarkTheme,
       builder: (light, dark) => MyMultiblocProvider(

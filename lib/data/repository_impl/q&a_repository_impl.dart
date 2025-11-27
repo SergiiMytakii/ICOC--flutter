@@ -57,7 +57,6 @@ class QandARepositoryImpl extends QandARepository {
 
       snapshot.docs.forEach((doc) {
         final langsMap = doc.data() as Map<String, dynamic>;
-        print(langsMap.toString());
         for (final lang in langsMap['QandAlangs']) {
           langs.add(convertLanguagesEnum(lang));
         }
@@ -141,7 +140,7 @@ class QandARepositoryImpl extends QandARepository {
       final query = {
         'question': article.question,
         'answer': article.answer,
-        'lang': article.lang,
+        'lang': article.lang.name,
         'outputTemplate': outputTemplate
       };
 

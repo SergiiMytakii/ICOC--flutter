@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final myDarkTheme = ThemeData.dark().copyWith(
   appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: const TabBarThemeData(
       labelStyle: TextStyle(fontSize: 16),
       unselectedLabelStyle: TextStyle(fontSize: 16),
       labelColor: Color(0xffff595e),
@@ -33,7 +33,7 @@ final myDarkTheme = ThemeData.dark().copyWith(
 final myLightTheme = ThemeData.light().copyWith(
   appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
   brightness: Brightness.light,
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: const TabBarThemeData(
       labelStyle: TextStyle(fontSize: 16),
       unselectedLabelStyle: TextStyle(fontSize: 16),
       labelColor: Color(0xffff595e),

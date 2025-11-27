@@ -106,6 +106,7 @@ class OneTopicScreen extends StatelessWidget {
           .then((_) => _getBibleStudyList());
       return null;
     } else
-      return bibleStudy;
+      bibleStudy.lessons.sort((a, b) => a.id.compareTo(b.id));
+    return bibleStudy;
   }
 }
