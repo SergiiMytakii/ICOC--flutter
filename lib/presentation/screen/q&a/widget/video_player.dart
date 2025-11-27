@@ -7,6 +7,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,15 +71,19 @@ class _QandAVideoPlayerState extends State<QandAVideoPlayer> {
           setState(() {
             androidWebFailed = true;
           });
-        }))
-        ..loadRequest(
-          Uri.parse(
-              'https://www.youtube.com/embed/${widget.videoId}?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
-          headers: const {
-            'Referer': ICOC_WEB_PAGE,
-            'Referrer-Policy': 'strict-origin-when-cross-origin',
-          },
-        );
+        }));
+      if (controller.platform is AndroidWebViewController) {
+        (controller.platform as AndroidWebViewController)
+            .setMediaPlaybackRequiresUserGesture(false);
+      }
+      controller.loadRequest(
+        Uri.parse(
+            'https://www.youtube.com/embed/${widget.videoId}?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
+        headers: const {
+          'Referer': ICOC_WEB_PAGE,
+          'Referrer-Policy': 'strict-origin-when-cross-origin',
+        },
+      );
       androidWebController = controller;
     }
     super.initState();
