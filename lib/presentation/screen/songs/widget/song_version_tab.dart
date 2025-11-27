@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
@@ -11,6 +12,8 @@ import 'package:logger/logger.dart';
 
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class SongVersionTab extends StatefulWidget {
   SongVersionTab({super.key, required this.songVersion});
@@ -31,6 +34,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   bool miniPlayerOpened = true;
   bool videoIsPlaying = false;
   YoutubePlayerController? youtubePlayerController;
+  WebViewController? iosWebController;
 
   @override
   void initState() {
@@ -154,16 +158,46 @@ class _SongVersionTabState extends State<SongVersionTab>
   }
 
   void _startPlayVideo(String videoId) async {
-    youtubePlayerController = YoutubePlayerController(
-      params: const YoutubePlayerParams(
-        showFullscreenButton: true,
-      ),
-    );
-    setState(() {
-      videoIsPlaying = true;
-    });
-    youtubePlayerController!.loadVideoById(videoId: videoId);
-    _controller.forward();
+    if (Platform.isIOS) {
+      late final PlatformWebViewControllerCreationParams params;
+      if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+        params = WebKitWebViewControllerCreationParams(
+          allowsInlineMediaPlayback: true,
+          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+        );
+      } else {
+        params = const PlatformWebViewControllerCreationParams();
+      }
+      final controller = WebViewController.fromPlatformCreationParams(params)
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..setBackgroundColor(
+            AdaptiveTheme.of(context).theme.colorScheme.surface)
+        ..loadRequest(
+          Uri.parse(
+              'https://www.youtube.com/embed/$videoId?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
+          headers: const {
+            'Referer': ICOC_WEB_PAGE,
+            'Referrer-Policy': 'strict-origin-when-cross-origin',
+          },
+        );
+      iosWebController = controller;
+      setState(() {
+        videoIsPlaying = true;
+      });
+      _controller.forward();
+    } else {
+      youtubePlayerController = YoutubePlayerController(
+        params: const YoutubePlayerParams(
+          showFullscreenButton: true,
+          playsInline: true,
+        ),
+      );
+      setState(() {
+        videoIsPlaying = true;
+      });
+      youtubePlayerController!.loadVideoById(videoId: videoId);
+      _controller.forward();
+    }
   }
 
   Widget _miniPlayerBuilder() {
@@ -197,8 +231,14 @@ class _SongVersionTabState extends State<SongVersionTab>
                       videoIsPlaying = false;
                       miniPlayerOpened = true;
                     }));
-                await youtubePlayerController!.stopVideo();
-                youtubePlayerController!.close();
+                if (Platform.isIOS) {
+                  iosWebController = null;
+                } else {
+                  if (youtubePlayerController != null) {
+                    await youtubePlayerController!.stopVideo();
+                    youtubePlayerController!.close();
+                  }
+                }
               },
               icon: const Icon(Icons.close_outlined)),
         ],
@@ -208,9 +248,13 @@ class _SongVersionTabState extends State<SongVersionTab>
         child: Container(
           width: double.maxFinite,
           height: _animation.value * screenSize.width / 16 * 9,
-          child: YoutubePlayer(
-            controller: youtubePlayerController!,
-          ),
+          child: Platform.isIOS
+              ? (iosWebController != null
+                  ? WebViewWidget(controller: iosWebController!)
+                  : const SizedBox.shrink())
+              : YoutubePlayer(
+                  controller: youtubePlayerController!,
+                ),
         ),
       )
     ]);
