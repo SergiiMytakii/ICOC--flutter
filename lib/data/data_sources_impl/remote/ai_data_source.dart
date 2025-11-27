@@ -12,12 +12,9 @@ class AiDataSourceImpl implements AiDataSource {
   final llm = ChatOpenAI(
     apiKey: openAIKey,
     defaultOptions: const ChatOpenAIOptions(
-      model: 'gpt-4o-mini',
-      temperature: 0.2,
-      responseFormat: ChatOpenAIResponseFormat(
-        type: ChatOpenAIResponseFormatType.jsonObject,
-      ),
-    ),
+        model: 'gpt-4o-mini',
+        temperature: 0.2,
+        responseFormat: ChatOpenAIResponseFormat.jsonObject),
   );
   @override
   Future<Map<String, dynamic>> getAiResponse(

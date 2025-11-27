@@ -105,7 +105,10 @@ class OneTopicScreen extends StatelessWidget {
           .addLanguage(bibleStudy.lang.name, true)
           .then((_) => _getBibleStudyList());
       return null;
-    } else
-      return bibleStudy;
+    } else {
+      final sortedLessons = List<Lesson>.from(bibleStudy.lessons)
+        ..sort((a, b) => a.id.compareTo(b.id));
+      return bibleStudy.copyWith(lessons: sortedLessons);
+    }
   }
 }

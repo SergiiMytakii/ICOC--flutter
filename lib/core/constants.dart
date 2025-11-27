@@ -41,6 +41,7 @@ class StorageKeys {
   static const String fontSize = 'fontSize';
   static const String bibleStudyLanguages = 'bibleStudyLanguages';
   static const String qAndALanguages = 'qAndALanguages';
+  static const String qAndAReadPosition = 'qAndAReadPosition';
   static const String notifications = 'notifications';
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
@@ -49,6 +50,7 @@ class StorageKeys {
   static const String shouldSongsFilterAnimate = 'shouldSongsFilterAnimate';
   static const String shouldBibleStudyFilterAnimate =
       'shouldBibleStudyFilterAnimate';
+  static const String bibleStudyReadPosition = 'bibleStudyReadPosition';
   // Add more keys as needed
 }
 

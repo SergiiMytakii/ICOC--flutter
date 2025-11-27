@@ -220,6 +220,6 @@ class _OneSongScreenState extends State<OneSongScreen>
     final hint = 'Open in ICOC app:'.tr();
     text = '$title\n$description\n\n$text\n\n$hint\n$link';
 
-    Share.share(text);
+    SharePlus.instance.share(ShareParams(text: text));
   }
 }

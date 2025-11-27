@@ -44,7 +44,7 @@ class OneQandABloc extends Bloc<OneQandAEvent, OneQandAState> {
             (failure) =>
                 emit(OneQandAState.error(failure.toUserFriendlyMessage())),
             (articleWithContent) async {
-          if (article.lang == Languages.en.name) {
+          if (article.lang == Languages.en) {
             emit(OneQandAState.success(articleWithContent));
           } else {
             emit(const OneQandAState.translating());

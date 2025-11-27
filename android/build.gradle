@@ -1,23 +1,9 @@
-buildscript {
-    ext.kotlin_version = '1.8.0'
-    repositories {
-        google()
-        mavenCentral()  // Maven Central repository
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.5'
-        classpath 'com.google.firebase:perf-plugin:1.4.1'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
-    }
-}
+// Project-level repositories and tasks
 
 allprojects {
     repositories {
         google()
-        mavenCentral()  // Maven Central repository
+        mavenCentral()
     }
 }
 
@@ -32,5 +18,4 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
-
 

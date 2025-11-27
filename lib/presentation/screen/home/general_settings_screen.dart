@@ -77,9 +77,9 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                       ),
                     ),
                     CountryFlag.fromCountryCode(
-                        handleLanguage(locale.languageCode),
-                        width: 20,
-                        height: 15),
+                      handleLanguage(locale.languageCode),
+                      theme: const ImageTheme(width: 20, height: 15),
+                    ),
                     const SizedBox(width: 10),
                     Text(
                       locale.languageCode.tr(),
@@ -114,9 +114,10 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                     contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 16),
                                     leading: CountryFlag.fromCountryCode(
-                                        handleLanguage(language),
-                                        width: 20,
-                                        height: 15),
+                                      handleLanguage(language),
+                                      theme: const ImageTheme(
+                                          width: 20, height: 15),
+                                    ),
                                   );
                                 }).toList(),
                               ),

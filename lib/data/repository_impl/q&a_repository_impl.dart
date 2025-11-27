@@ -57,7 +57,6 @@ class QandARepositoryImpl extends QandARepository {
 
       snapshot.docs.forEach((doc) {
         final langsMap = doc.data() as Map<String, dynamic>;
-        print(langsMap.toString());
         for (final lang in langsMap['QandAlangs']) {
           langs.add(convertLanguagesEnum(lang));
         }
@@ -74,8 +73,9 @@ class QandARepositoryImpl extends QandARepository {
   Future<Either<Failure, QandAModel>> getArticleContent(
       QandAModel article) async {
     try {
-      final response = await httpClientImpl.get(Uri.parse(article.link!),
-          headers: {'Content-Type': 'text/html'});
+      final fixedLink = article.link!.replaceAll('www.', '');
+      final response = await httpClientImpl
+          .get(Uri.parse(fixedLink), headers: {'Content-Type': 'text/html'});
       if (response.statusCode == 200) {
         final document = parse(response.body);
 
@@ -141,7 +141,7 @@ class QandARepositoryImpl extends QandARepository {
       final query = {
         'question': article.question,
         'answer': article.answer,
-        'lang': article.lang,
+        'lang': article.lang.name,
         'outputTemplate': outputTemplate
       };
 

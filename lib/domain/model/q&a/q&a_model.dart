@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:icoc/core/constants.dart';
 
 part 'q&a_model.freezed.dart';
 part 'q&a_model.g.dart';
@@ -13,7 +14,7 @@ class QandAModel with _$QandAModel {
       required String title,
       required String question,
       required String answer,
-      required String lang,
+      required Languages lang,
       String? date,
       String? author,
       String? link,

@@ -162,9 +162,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         const SizedBox(
                           width: 56,
                         ),
-                        Text(feedbacks[index].comment ?? '',
-                            style:
-                                const TextStyle(fontStyle: FontStyle.italic)),
+                        Flexible(
+                          child: Text(feedbacks[index].comment ?? '',
+                              style:
+                                  const TextStyle(fontStyle: FontStyle.italic)),
+                        ),
                       ],
                     ),
                   ],

@@ -26,7 +26,7 @@ mixin _$QandAModel {
   String get title => throw _privateConstructorUsedError;
   String get question => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
-  String get lang => throw _privateConstructorUsedError;
+  Languages get lang => throw _privateConstructorUsedError;
   String? get date => throw _privateConstructorUsedError;
   String? get author => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ abstract class $QandAModelCopyWith<$Res> {
       String title,
       String question,
       String answer,
-      String lang,
+      Languages lang,
       String? date,
       String? author,
       String? link,
@@ -117,7 +117,7 @@ class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -168,7 +168,7 @@ abstract class _$$QandAModelImplCopyWith<$Res>
       String title,
       String question,
       String answer,
-      String lang,
+      Languages lang,
       String? date,
       String? author,
       String? link,
@@ -229,7 +229,7 @@ class __$$QandAModelImplCopyWithImpl<$Res>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -301,7 +301,7 @@ class _$QandAModelImpl implements _QandAModel {
   @override
   final String answer;
   @override
-  final String lang;
+  final Languages lang;
   @override
   final String? date;
   @override
@@ -396,7 +396,7 @@ abstract class _QandAModel implements QandAModel {
       required final String title,
       required final String question,
       required final String answer,
-      required final String lang,
+      required final Languages lang,
       final String? date,
       final String? author,
       final String? link,
@@ -421,7 +421,7 @@ abstract class _QandAModel implements QandAModel {
   @override
   String get answer;
   @override
-  String get lang;
+  Languages get lang;
   @override
   String? get date;
   @override

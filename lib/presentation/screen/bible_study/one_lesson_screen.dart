@@ -15,6 +15,8 @@ import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 class OneLessonScreen extends StatefulWidget {
   final String lessonId;
@@ -33,11 +35,38 @@ class OneLessonScreen extends StatefulWidget {
   State<OneLessonScreen> createState() => _OneLessonScreenState();
 }
 
-class _OneLessonScreenState extends State<OneLessonScreen> {
+class _OneLessonScreenState extends State<OneLessonScreen>
+    with WidgetsBindingObserver {
+  late final ScrollController _scrollController;
+  double _lastOffset = 0.0;
+  bool _restored = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      _lastOffset = _scrollController.offset;
+    });
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   void dispose() {
+    _saveReadingPosition();
+    WidgetsBinding.instance.removeObserver(this);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      _saveReadingPosition();
+    }
   }
 
   @override
@@ -53,6 +82,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                 body: Center(child: CircularProgressIndicator())),
             success: (topics) {
               final lesson = _receiveLesson(topics);
+              _tryRestore();
               return Scaffold(
                 appBar: AppBar(
                   title: Text(
@@ -73,6 +103,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
                   ],
                 ),
                 body: SingleChildScrollView(
+                  controller: _scrollController,
                   child: SelectionArea(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
@@ -119,7 +150,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     final text =
         '${lesson.title}\n\n${FormatTextHelper.extractFormattedText(lesson.text)}\n\n$hint\n$link';
 
-    Share.share(text);
+    SharePlus.instance.share(ShareParams(text: text));
   }
 
   Lesson _receiveLesson(List<BibleStudy> topics) {
@@ -131,5 +162,32 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
       (item) => item.id == int.parse(widget.lessonId),
       orElse: () => Lesson.defaultLesson,
     );
+  }
+
+  void _saveReadingPosition() {
+    final position = _lastOffset;
+    getIt<LocalCache>().saveMap(StorageKeys.bibleStudyReadPosition, {
+      'topicId': widget.topicId,
+      'lessonId': widget.lessonId,
+      'offset': position,
+      'ts': DateTime.now().millisecondsSinceEpoch,
+    });
+  }
+
+  void _tryRestore() {
+    if (_restored) return;
+    final map = getIt<LocalCache>().getMap(StorageKeys.bibleStudyReadPosition);
+    final topicId = map?['topicId']?.toString();
+    final lessonId = map?['lessonId']?.toString();
+    final offset =
+        (map?['offset'] is num) ? (map?['offset'] as num).toDouble() : 0.0;
+    if (topicId == widget.topicId && lessonId == widget.lessonId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(offset);
+          _restored = true;
+        }
+      });
+    }
   }
 }

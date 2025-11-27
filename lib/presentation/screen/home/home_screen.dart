@@ -26,7 +26,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  final CarouselControllerPlus _carouselController = CarouselControllerPlus();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
   late AnimationController _menuAnimationController;
 
   List<MenuItem> items = HomeScreenMenuItems.items();

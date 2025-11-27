@@ -107,7 +107,8 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                         height: 8,
                       ),
                       CustomButton(
-                          onPressed: () => Share.share(link),
+                          onPressed: () => SharePlus.instance
+                              .share(ShareParams(text: link)),
                           color: ScreenColors.general,
                           child: FittedBox(
                             child: Text(
