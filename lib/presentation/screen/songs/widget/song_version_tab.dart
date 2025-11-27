@@ -1,5 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'dart:io';
+import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
@@ -39,6 +41,11 @@ class _SongVersionTabState extends State<SongVersionTab>
   WebViewController? androidWebController;
   bool iosWebFailed = false;
   bool androidWebFailed = false;
+  final ScrollController _scrollController = ScrollController();
+  bool _autoScroll = false;
+  double _scrollSpeed = 40;
+  Timer? _scrollTimer;
+  int _transpose = 0;
 
   @override
   void initState() {
@@ -59,6 +66,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   @override
   void dispose() {
     _controller.dispose();
+    _scrollTimer?.cancel();
     super.dispose();
   }
 
@@ -71,8 +79,76 @@ class _SongVersionTabState extends State<SongVersionTab>
             fontSize: fontSize ?? 14,
             child: Column(
               children: [
+                if (widget.songVersion.isChords &&
+                    _hasChordsFormat(widget.songVersion.text))
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          color: ScreenColors.songBook,
+                          onPressed: () {
+                            setState(() {
+                              _transpose -= 1;
+                            });
+                          },
+                          tooltip: 'Transpose down'.tr(),
+                          icon: const Icon(Icons.music_note_outlined),
+                        ),
+                        IconButton(
+                          color: ScreenColors.songBook,
+                          onPressed: () {
+                            setState(() {
+                              _transpose += 1;
+                            });
+                          },
+                          tooltip: 'Transpose up'.tr(),
+                          icon: const Icon(Icons.music_note),
+                        ),
+                        IconButton(
+                          color: ScreenColors.songBook,
+                          onPressed: () {
+                            setState(() {
+                              _autoScroll = !_autoScroll;
+                              if (_autoScroll) {
+                                _startAutoScroll();
+                              } else {
+                                _stopAutoScroll();
+                              }
+                            });
+                          },
+                          tooltip: _autoScroll
+                              ? 'Pause autoscroll'.tr()
+                              : 'Start autoscroll'.tr(),
+                          icon: Icon(_autoScroll
+                              ? Icons.pause_circle
+                              : Icons.play_circle_outline),
+                        ),
+                        Expanded(
+                          child: Tooltip(
+                            message: 'Scroll speed'.tr(),
+                            child: Slider(
+                              value: _scrollSpeed,
+                              min: 20,
+                              max: 100,
+                              activeColor: ScreenColors.songBook,
+                              inactiveColor:
+                                  ScreenColors.songBook.withValues(alpha: 0.5),
+                              onChanged: (v) {
+                                setState(() {
+                                  _scrollSpeed = v;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 Expanded(
                   child: SingleChildScrollView(
+                      controller: _scrollController,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 8),
                       child: SelectionArea(
@@ -104,7 +180,13 @@ class _SongVersionTabState extends State<SongVersionTab>
                             const SizedBox(height: 10),
                             widget.songVersion.text.startsWith('<')
                                 ? html.Html(
-                                    data: widget.songVersion.text,
+                                    data: (widget.songVersion.isChords &&
+                                            _hasChordsFormat(
+                                                widget.songVersion.text))
+                                        ? _highlightChordsHtml(_applyTranspose(
+                                            widget.songVersion.text,
+                                            _transpose))
+                                        : widget.songVersion.text,
                                     style: {
                                       'body': html.Style(
                                           alignment: Alignment.center,
@@ -112,14 +194,46 @@ class _SongVersionTabState extends State<SongVersionTab>
                                               html.FontSize(fontSize ?? 14)),
                                     },
                                   )
-                                : Text(
-                                    widget.songVersion.text,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(fontSize: fontSize ?? 14),
-                                  ),
+                                : (widget.songVersion.isChords &&
+                                        _hasChordsFormat(
+                                            widget.songVersion.text))
+                                    ? RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  fontSize: fontSize ?? 14),
+                                          children: _buildChordSpans(
+                                            _applyTranspose(
+                                                widget.songVersion.text,
+                                                _transpose),
+                                            Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontSize: fontSize ?? 14),
+                                            Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium!
+                                                .copyWith(
+                                                    fontSize: fontSize ?? 14,
+                                                    color:
+                                                        ScreenColors.songBook,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        widget.songVersion.text,
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(fontSize: fontSize ?? 14),
+                                      ),
                             const SizedBox(
                               height: 300,
                             )
@@ -138,6 +252,145 @@ class _SongVersionTabState extends State<SongVersionTab>
         );
       },
     );
+  }
+
+  String _applyTranspose(String text, int steps) {
+    if (steps == 0) return text;
+    final regex = RegExp(
+        r'(?<![A-Za-z])(([A-G](?:#|b)?)(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/([A-G](?:#|b)?))?)(?![A-Za-z])');
+    return text.replaceAllMapped(regex, (m) {
+      final token = m.group(1)!;
+      final root = m.group(2)!;
+      final bass = m.group(3);
+      final preferFlatRoot = root.contains('b');
+      final newRoot = _transposeRoot(root, steps, preferFlatRoot);
+      var newToken = newRoot + token.substring(root.length);
+      if (bass != null) {
+        final preferFlatBass = bass.contains('b');
+        final newBass = _transposeRoot(bass, steps, preferFlatBass);
+        newToken = newToken.replaceFirst('/$bass', '/$newBass');
+      }
+      return newToken;
+    });
+  }
+
+  String _transposeRoot(String root, int steps, bool preferFlat) {
+    final sharp = [
+      'C',
+      'C#',
+      'D',
+      'D#',
+      'E',
+      'F',
+      'F#',
+      'G',
+      'G#',
+      'A',
+      'A#',
+      'B'
+    ];
+    final flat = [
+      'C',
+      'Db',
+      'D',
+      'Eb',
+      'E',
+      'F',
+      'Gb',
+      'G',
+      'Ab',
+      'A',
+      'Bb',
+      'B'
+    ];
+    int idx = sharp.indexOf(root);
+    if (idx == -1) idx = flat.indexOf(root);
+    if (idx == -1) return root;
+    final newIdx =
+        (idx + steps) % 12 < 0 ? (12 + (idx + steps) % 12) : (idx + steps) % 12;
+    return preferFlat ? flat[newIdx] : sharp[newIdx];
+  }
+
+  bool _hasChordsFormat(String text) {
+    final raw = _normalizeForDetection(text);
+    final lines = raw.split('\n');
+    int chordLines = 0;
+    int chordTokens = 0;
+    for (final l in lines) {
+      if (l.trim().isEmpty) continue;
+      final count = _countChordTokens(l);
+      chordTokens += count;
+      final tokens =
+          l.trim().split(RegExp(r'\s+')).where((t) => t.isNotEmpty).length;
+      if (tokens > 0 && count >= (tokens * 0.6)) chordLines++;
+    }
+    return chordLines >= 2 || chordTokens >= 5;
+  }
+
+  String _normalizeForDetection(String s) {
+    var t = s.replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n');
+    t = t.replaceAll(RegExp(r'<[^>]+>'), ' ');
+    return t;
+  }
+
+  int _countChordTokens(String line) {
+    final tokenRe = RegExp(
+        r'^[A-G](?:#|b)?(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/[A-G](?:#|b)?)?$');
+    final tokens = line.trim().split(RegExp(r'\s+')).where((t) => t.isNotEmpty);
+    int count = 0;
+    for (final t in tokens) {
+      if (tokenRe.hasMatch(t)) count++;
+    }
+    return count;
+  }
+
+  List<TextSpan> _buildChordSpans(
+      String text, TextStyle base, TextStyle chordStyle) {
+    final tokenRe = RegExp(
+        r'^[A-G](?:#|b)?(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/[A-G](?:#|b)?)?$');
+    final lines = text.split('\n');
+    final spans = <TextSpan>[];
+    for (int i = 0; i < lines.length; i++) {
+      final parts =
+          lines[i].split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
+      for (int j = 0; j < parts.length; j++) {
+        final isChord = tokenRe.hasMatch(parts[j]);
+        spans.add(TextSpan(text: parts[j], style: isChord ? chordStyle : base));
+        if (j < parts.length - 1) spans.add(TextSpan(text: ' ', style: base));
+      }
+      if (i < lines.length - 1) spans.add(TextSpan(text: '\n', style: base));
+    }
+    return spans;
+  }
+
+  String _highlightChordsHtml(String text) {
+    const chordHex = '#ff595e';
+    final regex = RegExp(
+        r'(?<![A-Za-z])(([A-G](?:#|b)?)(?:(?:maj|min|m|dim|aug|sus(?:2|4)?|add)?\d*)?(?:/([A-G](?:#|b)?))?)(?![A-Za-z])');
+    return text.replaceAllMapped(regex, (m) {
+      final token = m.group(1)!;
+      return '<span style="color: $chordHex">$token</span>';
+    });
+  }
+
+  void _startAutoScroll() {
+    _scrollTimer?.cancel();
+    _scrollTimer = Timer.periodic(const Duration(milliseconds: 30), (t) {
+      if (!_scrollController.hasClients) return;
+      final max = _scrollController.position.maxScrollExtent;
+      final next = _scrollController.offset + (_scrollSpeed * 0.03);
+      if (next >= max) {
+        _stopAutoScroll();
+        return;
+      }
+      _scrollController.jumpTo(next);
+    });
+  }
+
+  void _stopAutoScroll() {
+    _scrollTimer?.cancel();
+    _scrollTimer = null;
+    _autoScroll = false;
   }
 
   Widget _buldVideoPreview(List<YoutubeVideo> youtubeVideos) {
@@ -197,7 +450,7 @@ class _SongVersionTabState extends State<SongVersionTab>
       });
       _controller.forward();
     } else {
-      final params = const PlatformWebViewControllerCreationParams();
+      const params = PlatformWebViewControllerCreationParams();
       final controller = WebViewController.fromPlatformCreationParams(params)
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setUserAgent(
