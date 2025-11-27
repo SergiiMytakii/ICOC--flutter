@@ -154,7 +154,11 @@ class _SongVersionTabState extends State<SongVersionTab>
   }
 
   void _startPlayVideo(String videoId) async {
-    youtubePlayerController = YoutubePlayerController();
+    youtubePlayerController = YoutubePlayerController(
+      params: const YoutubePlayerParams(
+        showFullscreenButton: true,
+      ),
+    );
     setState(() {
       videoIsPlaying = true;
     });

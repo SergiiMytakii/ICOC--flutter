@@ -119,7 +119,7 @@ class _OneLessonScreenState extends State<OneLessonScreen> {
     final text =
         '${lesson.title}\n\n${FormatTextHelper.extractFormattedText(lesson.text)}\n\n$hint\n$link';
 
-    Share.share(text);
+    SharePlus.instance.share(ShareParams(text: text));
   }
 
   Lesson _receiveLesson(List<BibleStudy> topics) {
