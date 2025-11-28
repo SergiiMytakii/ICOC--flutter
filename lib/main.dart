@@ -21,6 +21,7 @@ import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/theme.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 String locale = 'en';
 // ignore: prefer_const_declarations
@@ -33,6 +34,7 @@ void main() async {
       await Firebase.initializeApp();
       await GetStorage.init();
       configureDependencies(Environment.dev);
+      await getIt<PushNotificationService>().initialize();
       _activateCrashlitics();
       _setScreenSettings();
       Bloc.observer = AppBlocObserver();

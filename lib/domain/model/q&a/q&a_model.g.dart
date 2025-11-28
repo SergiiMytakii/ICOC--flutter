@@ -6,8 +6,7 @@ part of 'q&a_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$QandAModelImpl _$$QandAModelImplFromJson(Map<String, dynamic> json) =>
-    _$QandAModelImpl(
+_QandAModel _$QandAModelFromJson(Map<String, dynamic> json) => _QandAModel(
       id: (json['id'] as num).toInt(),
       documentRef: json['documentRef'] as String,
       title: json['title'] as String,
@@ -24,7 +23,7 @@ _$QandAModelImpl _$$QandAModelImplFromJson(Map<String, dynamic> json) =>
       tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$QandAModelImplToJson(_$QandAModelImpl instance) =>
+Map<String, dynamic> _$QandAModelToJson(_QandAModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

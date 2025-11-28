@@ -6,8 +6,7 @@ part of 'bible_study.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$BibleStudyImpl _$$BibleStudyImplFromJson(Map<String, dynamic> json) =>
-    _$BibleStudyImpl(
+_BibleStudy _$BibleStudyFromJson(Map<String, dynamic> json) => _BibleStudy(
       topic: json['topic'] as String,
       subtopic: json['subtopic'] as String,
       lang: $enumDecode(_$LanguagesEnumMap, json['lang']),
@@ -17,7 +16,7 @@ _$BibleStudyImpl _$$BibleStudyImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$BibleStudyImplToJson(_$BibleStudyImpl instance) =>
+Map<String, dynamic> _$BibleStudyToJson(_BibleStudy instance) =>
     <String, dynamic>{
       'topic': instance.topic,
       'subtopic': instance.subtopic,
@@ -64,14 +63,13 @@ const _$LanguagesEnumMap = {
   Languages.defaultLang: 'defaultLang',
 };
 
-_$LessonImpl _$$LessonImplFromJson(Map<String, dynamic> json) => _$LessonImpl(
+_Lesson _$LessonFromJson(Map<String, dynamic> json) => _Lesson(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       text: json['text'] as String,
     );
 
-Map<String, dynamic> _$$LessonImplToJson(_$LessonImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$LessonToJson(_Lesson instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'text': instance.text,

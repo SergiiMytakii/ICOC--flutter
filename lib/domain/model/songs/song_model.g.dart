@@ -6,22 +6,20 @@ part of 'song_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SongModelImpl _$$SongModelImplFromJson(Map<String, dynamic> json) =>
-    _$SongModelImpl(
+_SongModel _$SongModelFromJson(Map<String, dynamic> json) => _SongModel(
       id: (json['id'] as num).toInt(),
       songVersions: (json['songVersions'] as List<dynamic>)
           .map((e) => SongVersion.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$SongModelImplToJson(_$SongModelImpl instance) =>
+Map<String, dynamic> _$SongModelToJson(_SongModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'songVersions': instance.songVersions.map((e) => e.toJson()).toList(),
     };
 
-_$SongVersionImpl _$$SongVersionImplFromJson(Map<String, dynamic> json) =>
-    _$SongVersionImpl(
+_SongVersion _$SongVersionFromJson(Map<String, dynamic> json) => _SongVersion(
       id: (json['id'] as num).toInt(),
       lang: $enumDecode(_$LanguagesEnumMap, json['lang']),
       text: json['text'] as String,
@@ -33,7 +31,7 @@ _$SongVersionImpl _$$SongVersionImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$SongVersionImplToJson(_$SongVersionImpl instance) =>
+Map<String, dynamic> _$SongVersionToJson(_SongVersion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'lang': _$LanguagesEnumMap[instance.lang]!,
@@ -82,17 +80,15 @@ const _$LanguagesEnumMap = {
   Languages.defaultLang: 'defaultLang',
 };
 
-_$SongVersionLocalImpl _$$SongVersionLocalImplFromJson(
-        Map<String, dynamic> json) =>
-    _$SongVersionLocalImpl(
+_SongVersionLocal _$SongVersionLocalFromJson(Map<String, dynamic> json) =>
+    _SongVersionLocal(
       id: (json['id'] as num).toInt(),
       lang: json['lang'] as String,
       text: json['text'] as String,
       title: json['title'] as String,
     );
 
-Map<String, dynamic> _$$SongVersionLocalImplToJson(
-        _$SongVersionLocalImpl instance) =>
+Map<String, dynamic> _$SongVersionLocalToJson(_SongVersionLocal instance) =>
     <String, dynamic>{
       'id': instance.id,
       'lang': instance.lang,

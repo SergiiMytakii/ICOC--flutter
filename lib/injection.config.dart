@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -8,217 +9,224 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:get_it/get_it.dart' as _i1;
-import 'package:icoc/core/user_languages.dart' as _i26;
-import 'package:icoc/data/data_sources_impl/local/local_cache_impl.dart' as _i7;
+import 'package:get_it/get_it.dart' as _i174;
+import 'package:icoc/core/notifications/push_notification_service.dart'
+    as _i706;
+import 'package:icoc/core/user_languages.dart' as _i707;
+import 'package:icoc/data/data_sources_impl/local/local_cache_impl.dart'
+    as _i263;
 import 'package:icoc/data/data_sources_impl/local/sqlite_songs_db_impl.dart'
-    as _i9;
-import 'package:icoc/data/data_sources_impl/remote/ai_data_source.dart' as _i11;
+    as _i1065;
+import 'package:icoc/data/data_sources_impl/remote/ai_data_source.dart'
+    as _i719;
 import 'package:icoc/data/data_sources_impl/remote/firebase_data_source_impl.dart'
-    as _i13;
+    as _i798;
 import 'package:icoc/data/data_sources_impl/remote/http_client_impl.dart'
-    as _i5;
+    as _i892;
 import 'package:icoc/data/repository_impl/bible_study_repository_impl.dart'
-    as _i17;
+    as _i2;
 import 'package:icoc/data/repository_impl/feedback_repository_impl.dart'
-    as _i23;
+    as _i758;
 import 'package:icoc/data/repository_impl/notifications_repository_impl.dart'
-    as _i21;
-import 'package:icoc/data/repository_impl/q&a_repository_impl.dart' as _i19;
-import 'package:icoc/data/repository_impl/songs_repository_impl.dart' as _i15;
-import 'package:icoc/data/repository_impl/video_repository_impl.dart' as _i25;
-import 'package:icoc/domain/data_sources/local/local_cache.dart' as _i6;
+    as _i58;
+import 'package:icoc/data/repository_impl/q&a_repository_impl.dart' as _i88;
+import 'package:icoc/data/repository_impl/songs_repository_impl.dart' as _i528;
+import 'package:icoc/data/repository_impl/video_repository_impl.dart' as _i785;
+import 'package:icoc/domain/data_sources/local/local_cache.dart' as _i868;
 import 'package:icoc/domain/data_sources/local/local_db_data_source.dart'
-    as _i8;
-import 'package:icoc/domain/data_sources/remote/ai_data_source.dart' as _i10;
+    as _i751;
+import 'package:icoc/domain/data_sources/remote/ai_data_source.dart' as _i955;
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart'
-    as _i12;
-import 'package:icoc/domain/data_sources/remote/http_client.dart' as _i4;
-import 'package:icoc/domain/repository/bible_study_repository.dart' as _i16;
-import 'package:icoc/domain/repository/feedback_repository.dart' as _i22;
-import 'package:icoc/domain/repository/notifications_repository.dart' as _i20;
-import 'package:icoc/domain/repository/q&a_repository.dart' as _i18;
-import 'package:icoc/domain/repository/songs_repository.dart' as _i14;
-import 'package:icoc/domain/repository/video_repository.dart' as _i24;
+    as _i781;
+import 'package:icoc/domain/data_sources/remote/http_client.dart' as _i228;
+import 'package:icoc/domain/repository/bible_study_repository.dart' as _i299;
+import 'package:icoc/domain/repository/feedback_repository.dart' as _i671;
+import 'package:icoc/domain/repository/notifications_repository.dart' as _i1025;
+import 'package:icoc/domain/repository/q&a_repository.dart' as _i516;
+import 'package:icoc/domain/repository/songs_repository.dart' as _i1034;
+import 'package:icoc/domain/repository/video_repository.dart' as _i748;
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart'
-    as _i35;
+    as _i724;
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart'
-    as _i28;
+    as _i545;
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart'
-    as _i29;
+    as _i182;
 import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart'
-    as _i31;
+    as _i570;
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart'
-    as _i3;
+    as _i900;
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart'
-    as _i27;
-import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart' as _i34;
+    as _i1016;
+import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart'
+    as _i877;
 import 'package:icoc/presentation/bloc/q&a_bloc/one_q&a/one_q&a_bloc.dart'
-    as _i33;
-import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart' as _i30;
-import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart' as _i32;
-import 'package:injectable/injectable.dart' as _i2;
+    as _i1036;
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart' as _i1025;
+import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart' as _i582;
+import 'package:injectable/injectable.dart' as _i526;
 
 const String _dev = 'dev';
 const String _prod = 'prod';
 
-extension GetItInjectableX on _i1.GetIt {
+extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
-  _i1.GetIt init({
+  _i174.GetIt init({
     String? environment,
-    _i2.EnvironmentFilter? environmentFilter,
+    _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i2.GetItHelper(
+    final gh = _i526.GetItHelper(
       this,
       environment,
       environmentFilter,
     );
-    gh.singleton<_i3.FontSizeBloc>(() => _i3.FontSizeBloc());
-    gh.factory<_i4.HttpClient>(
-      () => _i5.HttpClientImpl(),
+    gh.singleton<_i900.FontSizeBloc>(() => _i900.FontSizeBloc());
+    gh.factory<_i228.HttpClient>(
+      () => _i892.HttpClientImpl(),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i6.LocalCache>(
-      () => _i7.LocalCacheImpl(),
+    gh.factory<_i868.LocalCache>(
+      () => _i263.LocalCacheImpl(),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i8.LocalSongsDB>(
-      () => _i9.SqliteSongsDbImpl(localCache: gh<_i6.LocalCache>()),
+    gh.factory<_i751.LocalSongsDB>(
+      () => _i1065.SqliteSongsDbImpl(localCache: gh<_i868.LocalCache>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i10.AiDataSource>(
-      () => _i11.AiDataSourceImpl(),
+    gh.lazySingleton<_i706.PushNotificationService>(
+        () => _i706.PushNotificationService(gh<_i868.LocalCache>()));
+    gh.factory<_i955.AiDataSource>(
+      () => _i719.AiDataSourceImpl(),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i12.FirebaseDataSource>(
-      () => _i13.DatabaseServiceFirebase(),
+    gh.factory<_i781.FirebaseDataSource>(
+      () => _i798.DatabaseServiceFirebase(),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i14.SongsRepository>(
-      () => _i15.SongsRepositoryImpl(
-        firebaseDataSource: gh<_i12.FirebaseDataSource>(),
-        localDB: gh<_i8.LocalSongsDB>(),
+    gh.factory<_i1034.SongsRepository>(
+      () => _i528.SongsRepositoryImpl(
+        firebaseDataSource: gh<_i781.FirebaseDataSource>(),
+        localDB: gh<_i751.LocalSongsDB>(),
       ),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i16.BibleStudyRepository>(
-      () => _i17.BibleStudyRepositoryImpl(
-          firebaseDataSource: gh<_i12.FirebaseDataSource>()),
+    gh.factory<_i299.BibleStudyRepository>(
+      () => _i2.BibleStudyRepositoryImpl(
+          firebaseDataSource: gh<_i781.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i18.QandARepository>(
-      () => _i19.QandARepositoryImpl(
-        gh<_i12.FirebaseDataSource>(),
-        gh<_i10.AiDataSource>(),
-        gh<_i4.HttpClient>(),
+    gh.factory<_i516.QandARepository>(
+      () => _i88.QandARepositoryImpl(
+        gh<_i781.FirebaseDataSource>(),
+        gh<_i955.AiDataSource>(),
+        gh<_i228.HttpClient>(),
       ),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i20.NotificationsRepository>(
-      () => _i21.NotificationsRepositoryImpl(gh<_i12.FirebaseDataSource>()),
+    gh.factory<_i1025.NotificationsRepository>(
+      () => _i58.NotificationsRepositoryImpl(gh<_i781.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i22.FeedbackRepository>(
-      () => _i23.FeedbackRepositoryImpl(gh<_i12.FirebaseDataSource>()),
+    gh.factory<_i671.FeedbackRepository>(
+      () => _i758.FeedbackRepositoryImpl(gh<_i781.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i24.VideoRepository>(
-      () => _i25.VideoRepositoryImpl(
-        gh<_i12.FirebaseDataSource>(),
-        gh<_i4.HttpClient>(),
+    gh.factory<_i748.VideoRepository>(
+      () => _i785.VideoRepositoryImpl(
+        gh<_i781.FirebaseDataSource>(),
+        gh<_i228.HttpClient>(),
       ),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.singleton<_i26.BibleStudyUserLanguagesHandler>(
-      () => _i26.BibleStudyUserLanguagesHandler(gh<_i6.LocalCache>()),
+    gh.singleton<_i707.BibleStudyUserLanguagesHandler>(
+      () => _i707.BibleStudyUserLanguagesHandler(gh<_i868.LocalCache>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.singleton<_i26.QandAUserLanguagesHandler>(
-      () => _i26.QandAUserLanguagesHandler(gh<_i6.LocalCache>()),
+    gh.singleton<_i707.QandAUserLanguagesHandler>(
+      () => _i707.QandAUserLanguagesHandler(gh<_i868.LocalCache>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.singleton<_i26.VideosUserLanguagesHandler>(
-      () => _i26.VideosUserLanguagesHandler(gh<_i6.LocalCache>()),
+    gh.singleton<_i707.VideosUserLanguagesHandler>(
+      () => _i707.VideosUserLanguagesHandler(gh<_i868.LocalCache>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.singleton<_i26.SongsUserLanguagesHandler>(
-      () => _i26.SongsUserLanguagesHandler(gh<_i6.LocalCache>()),
+    gh.singleton<_i707.SongsUserLanguagesHandler>(
+      () => _i707.SongsUserLanguagesHandler(gh<_i868.LocalCache>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.singleton<_i27.NotificationsBloc>(
-        () => _i27.NotificationsBloc(gh<_i20.NotificationsRepository>()));
-    gh.singleton<_i28.FavoriteSongStatusBloc>(
-        () => _i28.FavoriteSongStatusBloc(gh<_i14.SongsRepository>()));
-    gh.singleton<_i29.FavoriteSongsListBloc>(() => _i29.FavoriteSongsListBloc(
-          gh<_i14.SongsRepository>(),
-          gh<_i26.SongsUserLanguagesHandler>(),
+    gh.singleton<_i1016.NotificationsBloc>(
+        () => _i1016.NotificationsBloc(gh<_i1025.NotificationsRepository>()));
+    gh.singleton<_i545.FavoriteSongStatusBloc>(
+        () => _i545.FavoriteSongStatusBloc(gh<_i1034.SongsRepository>()));
+    gh.singleton<_i182.FavoriteSongsListBloc>(() => _i182.FavoriteSongsListBloc(
+          gh<_i1034.SongsRepository>(),
+          gh<_i707.SongsUserLanguagesHandler>(),
         ));
-    gh.singleton<_i30.SongsBloc>(() => _i30.SongsBloc(
-          gh<_i14.SongsRepository>(),
-          gh<_i26.SongsUserLanguagesHandler>(),
+    gh.singleton<_i1025.SongsBloc>(() => _i1025.SongsBloc(
+          gh<_i1034.SongsRepository>(),
+          gh<_i707.SongsUserLanguagesHandler>(),
         ));
-    gh.singleton<_i31.FeedbackBloc>(
-        () => _i31.FeedbackBloc(gh<_i22.FeedbackRepository>()));
-    gh.singleton<_i32.VideoBloc>(() => _i32.VideoBloc(
-          gh<_i24.VideoRepository>(),
-          gh<_i26.VideosUserLanguagesHandler>(),
+    gh.singleton<_i570.FeedbackBloc>(
+        () => _i570.FeedbackBloc(gh<_i671.FeedbackRepository>()));
+    gh.singleton<_i582.VideoBloc>(() => _i582.VideoBloc(
+          gh<_i748.VideoRepository>(),
+          gh<_i707.VideosUserLanguagesHandler>(),
         ));
-    gh.singleton<_i33.OneQandABloc>(() => _i33.OneQandABloc(
-          gh<_i18.QandARepository>(),
-          gh<_i26.QandAUserLanguagesHandler>(),
+    gh.singleton<_i877.QandABloc>(() => _i877.QandABloc(
+          gh<_i516.QandARepository>(),
+          gh<_i707.QandAUserLanguagesHandler>(),
         ));
-    gh.singleton<_i34.QandABloc>(() => _i34.QandABloc(
-          gh<_i18.QandARepository>(),
-          gh<_i26.QandAUserLanguagesHandler>(),
+    gh.singleton<_i1036.OneQandABloc>(() => _i1036.OneQandABloc(
+          gh<_i516.QandARepository>(),
+          gh<_i707.QandAUserLanguagesHandler>(),
         ));
-    gh.singleton<_i35.BibleStudyBloc>(() => _i35.BibleStudyBloc(
-          gh<_i16.BibleStudyRepository>(),
-          gh<_i26.BibleStudyUserLanguagesHandler>(),
+    gh.singleton<_i724.BibleStudyBloc>(() => _i724.BibleStudyBloc(
+          gh<_i299.BibleStudyRepository>(),
+          gh<_i707.BibleStudyUserLanguagesHandler>(),
         ));
     return this;
   }

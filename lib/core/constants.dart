@@ -43,6 +43,7 @@ class StorageKeys {
   static const String qAndALanguages = 'qAndALanguages';
   static const String qAndAReadPosition = 'qAndAReadPosition';
   static const String notifications = 'notifications';
+  static const String fcmToken = 'fcmToken';
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
   static const String shouldVideoFilterAnimate = 'shouldVideoFilterAnimate';

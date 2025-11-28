@@ -6,9 +6,8 @@ part of 'notifications_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$NotificationsModelImpl _$$NotificationsModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$NotificationsModelImpl(
+_NotificationsModel _$NotificationsModelFromJson(Map<String, dynamic> json) =>
+    _NotificationsModel(
       id: json['id'] as String,
       notifications: (json['notifications'] as List<dynamic>)
           .map((e) => NotificationVersion.fromJson(e as Map<String, dynamic>))
@@ -16,17 +15,15 @@ _$NotificationsModelImpl _$$NotificationsModelImplFromJson(
       isRead: json['isRead'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$NotificationsModelImplToJson(
-        _$NotificationsModelImpl instance) =>
+Map<String, dynamic> _$NotificationsModelToJson(_NotificationsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'notifications': instance.notifications.map((e) => e.toJson()).toList(),
       'isRead': instance.isRead,
     };
 
-_$NotificationVersionImpl _$$NotificationVersionImplFromJson(
-        Map<String, dynamic> json) =>
-    _$NotificationVersionImpl(
+_NotificationVersion _$NotificationVersionFromJson(Map<String, dynamic> json) =>
+    _NotificationVersion(
       id: json['id'] as String,
       title: json['title'] as String,
       text: json['text'] as String,
@@ -34,8 +31,8 @@ _$NotificationVersionImpl _$$NotificationVersionImplFromJson(
       link: json['link'] as String?,
     );
 
-Map<String, dynamic> _$$NotificationVersionImplToJson(
-        _$NotificationVersionImpl instance) =>
+Map<String, dynamic> _$NotificationVersionToJson(
+        _NotificationVersion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

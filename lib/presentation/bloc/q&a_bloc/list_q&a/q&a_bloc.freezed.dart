@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,101 +9,267 @@ part of 'q&a_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$QandAEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String? query, OrderEnum? order) requested,
-    required TResult Function() getLangs,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query, OrderEnum? order)? requested,
-    TResult? Function()? getLangs,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query, OrderEnum? order)? requested,
-    TResult Function()? getLangs,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandARequested value) requested,
-    required TResult Function(QandGetLangs value) getLangs,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandARequested value)? requested,
-    TResult? Function(QandGetLangs value)? getLangs,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is QandAEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'QandAEvent()';
+  }
+}
+
+/// @nodoc
+class $QandAEventCopyWith<$Res> {
+  $QandAEventCopyWith(QandAEvent _, $Res Function(QandAEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [QandAEvent].
+extension QandAEventPatterns on QandAEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QandARequested value)? requested,
     TResult Function(QandGetLangs value)? getLangs,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandARequested() when requested != null:
+        return requested(_that);
+      case QandGetLangs() when getLangs != null:
+        return getLangs(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandARequested value) requested,
+    required TResult Function(QandGetLangs value) getLangs,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandARequested():
+        return requested(_that);
+      case QandGetLangs():
+        return getLangs(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandGetLangs value)? getLangs,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandARequested() when requested != null:
+        return requested(_that);
+      case QandGetLangs() when getLangs != null:
+        return getLangs(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, OrderEnum? order)? requested,
+    TResult Function()? getLangs,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandARequested() when requested != null:
+        return requested(_that.query, _that.order);
+      case QandGetLangs() when getLangs != null:
+        return getLangs();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, OrderEnum? order) requested,
+    required TResult Function() getLangs,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandARequested():
+        return requested(_that.query, _that.order);
+      case QandGetLangs():
+        return getLangs();
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query, OrderEnum? order)? requested,
+    TResult? Function()? getLangs,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandARequested() when requested != null:
+        return requested(_that.query, _that.order);
+      case QandGetLangs() when getLangs != null:
+        return getLangs();
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $QandAEventCopyWith<$Res> {
-  factory $QandAEventCopyWith(
-          QandAEvent value, $Res Function(QandAEvent) then) =
-      _$QandAEventCopyWithImpl<$Res, QandAEvent>;
+
+class QandARequested implements QandAEvent {
+  const QandARequested({this.query, this.order});
+
+  final String? query;
+  final OrderEnum? order;
+
+  /// Create a copy of QandAEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $QandARequestedCopyWith<QandARequested> get copyWith =>
+      _$QandARequestedCopyWithImpl<QandARequested>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is QandARequested &&
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.order, order) || other.order == order));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, query, order);
+
+  @override
+  String toString() {
+    return 'QandAEvent.requested(query: $query, order: $order)';
+  }
 }
 
 /// @nodoc
-class _$QandAEventCopyWithImpl<$Res, $Val extends QandAEvent>
+abstract mixin class $QandARequestedCopyWith<$Res>
     implements $QandAEventCopyWith<$Res> {
-  _$QandAEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$QandARequestedImplCopyWith<$Res> {
-  factory _$$QandARequestedImplCopyWith(_$QandARequestedImpl value,
-          $Res Function(_$QandARequestedImpl) then) =
-      __$$QandARequestedImplCopyWithImpl<$Res>;
+  factory $QandARequestedCopyWith(
+          QandARequested value, $Res Function(QandARequested) _then) =
+      _$QandARequestedCopyWithImpl;
   @useResult
   $Res call({String? query, OrderEnum? order});
 }
 
 /// @nodoc
-class __$$QandARequestedImplCopyWithImpl<$Res>
-    extends _$QandAEventCopyWithImpl<$Res, _$QandARequestedImpl>
-    implements _$$QandARequestedImplCopyWith<$Res> {
-  __$$QandARequestedImplCopyWithImpl(
-      _$QandARequestedImpl _value, $Res Function(_$QandARequestedImpl) _then)
-      : super(_value, _then);
+class _$QandARequestedCopyWithImpl<$Res>
+    implements $QandARequestedCopyWith<$Res> {
+  _$QandARequestedCopyWithImpl(this._self, this._then);
 
+  final QandARequested _self;
+  final $Res Function(QandARequested) _then;
+
+  /// Create a copy of QandAEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? query = freezed,
     Object? order = freezed,
   }) {
-    return _then(_$QandARequestedImpl(
+    return _then(QandARequested(
       query: freezed == query
-          ? _value.query
+          ? _self.query
           : query // ignore: cast_nullable_to_non_nullable
               as String?,
       order: freezed == order
-          ? _value.order
+          ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as OrderEnum?,
     ));
@@ -112,267 +278,60 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$QandARequestedImpl implements QandARequested {
-  const _$QandARequestedImpl({this.query, this.order});
-
-  @override
-  final String? query;
-  @override
-  final OrderEnum? order;
-
-  @override
-  String toString() {
-    return 'QandAEvent.requested(query: $query, order: $order)';
-  }
+class QandGetLangs implements QandAEvent {
+  const QandGetLangs();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$QandARequestedImpl &&
-            (identical(other.query, query) || other.query == query) &&
-            (identical(other.order, order) || other.order == order));
+        (other.runtimeType == runtimeType && other is QandGetLangs);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, query, order);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
-      __$$QandARequestedImplCopyWithImpl<_$QandARequestedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String? query, OrderEnum? order) requested,
-    required TResult Function() getLangs,
-  }) {
-    return requested(query, order);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query, OrderEnum? order)? requested,
-    TResult? Function()? getLangs,
-  }) {
-    return requested?.call(query, order);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query, OrderEnum? order)? requested,
-    TResult Function()? getLangs,
-    required TResult orElse(),
-  }) {
-    if (requested != null) {
-      return requested(query, order);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandARequested value) requested,
-    required TResult Function(QandGetLangs value) getLangs,
-  }) {
-    return requested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandARequested value)? requested,
-    TResult? Function(QandGetLangs value)? getLangs,
-  }) {
-    return requested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandARequested value)? requested,
-    TResult Function(QandGetLangs value)? getLangs,
-    required TResult orElse(),
-  }) {
-    if (requested != null) {
-      return requested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class QandARequested implements QandAEvent {
-  const factory QandARequested({final String? query, final OrderEnum? order}) =
-      _$QandARequestedImpl;
-
-  String? get query;
-  OrderEnum? get order;
-  @JsonKey(ignore: true)
-  _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$QandGetLangsImplCopyWith<$Res> {
-  factory _$$QandGetLangsImplCopyWith(
-          _$QandGetLangsImpl value, $Res Function(_$QandGetLangsImpl) then) =
-      __$$QandGetLangsImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$QandGetLangsImplCopyWithImpl<$Res>
-    extends _$QandAEventCopyWithImpl<$Res, _$QandGetLangsImpl>
-    implements _$$QandGetLangsImplCopyWith<$Res> {
-  __$$QandGetLangsImplCopyWithImpl(
-      _$QandGetLangsImpl _value, $Res Function(_$QandGetLangsImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$QandGetLangsImpl implements QandGetLangs {
-  const _$QandGetLangsImpl();
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'QandAEvent.getLangs()';
   }
+}
 
+/// @nodoc
+mixin _$QandAState {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$QandGetLangsImpl);
+        (other.runtimeType == runtimeType && other is QandAState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String? query, OrderEnum? order) requested,
-    required TResult Function() getLangs,
-  }) {
-    return getLangs();
+  String toString() {
+    return 'QandAState()';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query, OrderEnum? order)? requested,
-    TResult? Function()? getLangs,
-  }) {
-    return getLangs?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query, OrderEnum? order)? requested,
-    TResult Function()? getLangs,
-    required TResult orElse(),
-  }) {
-    if (getLangs != null) {
-      return getLangs();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandARequested value) requested,
-    required TResult Function(QandGetLangs value) getLangs,
-  }) {
-    return getLangs(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandARequested value)? requested,
-    TResult? Function(QandGetLangs value)? getLangs,
-  }) {
-    return getLangs?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandARequested value)? requested,
-    TResult Function(QandGetLangs value)? getLangs,
-    required TResult orElse(),
-  }) {
-    if (getLangs != null) {
-      return getLangs(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class QandGetLangs implements QandAEvent {
-  const factory QandGetLangs() = _$QandGetLangsImpl;
 }
 
 /// @nodoc
-mixin _$QandAState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
+class $QandAStateCopyWith<$Res> {
+  $QandAStateCopyWith(QandAState _, $Res Function(QandAState) __);
+}
+
+/// Adds pattern-matching-related methods to [QandAState].
+extension QandAStatePatterns on QandAState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QandAInitialState value)? initial,
@@ -382,600 +341,356 @@ mixin _$QandAState {
     TResult Function(SearchQandASuccessState value)? searchSuccess,
     TResult Function(QandAErrorState value)? error,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandAInitialState() when initial != null:
+        return initial(_that);
+      case QandALoadingState() when loading != null:
+        return loading(_that);
+      case QandAEmptyState() when empty != null:
+        return empty(_that);
+      case GetQandASuccessState() when success != null:
+        return success(_that);
+      case SearchQandASuccessState() when searchSuccess != null:
+        return searchSuccess(_that);
+      case QandAErrorState() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandAInitialState value) initial,
+    required TResult Function(QandALoadingState value) loading,
+    required TResult Function(QandAEmptyState value) empty,
+    required TResult Function(GetQandASuccessState value) success,
+    required TResult Function(SearchQandASuccessState value) searchSuccess,
+    required TResult Function(QandAErrorState value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandAInitialState():
+        return initial(_that);
+      case QandALoadingState():
+        return loading(_that);
+      case QandAEmptyState():
+        return empty(_that);
+      case GetQandASuccessState():
+        return success(_that);
+      case SearchQandASuccessState():
+        return searchSuccess(_that);
+      case QandAErrorState():
+        return error(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandAInitialState value)? initial,
+    TResult? Function(QandALoadingState value)? loading,
+    TResult? Function(QandAEmptyState value)? empty,
+    TResult? Function(GetQandASuccessState value)? success,
+    TResult? Function(SearchQandASuccessState value)? searchSuccess,
+    TResult? Function(QandAErrorState value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandAInitialState() when initial != null:
+        return initial(_that);
+      case QandALoadingState() when loading != null:
+        return loading(_that);
+      case QandAEmptyState() when empty != null:
+        return empty(_that);
+      case GetQandASuccessState() when success != null:
+        return success(_that);
+      case SearchQandASuccessState() when searchSuccess != null:
+        return searchSuccess(_that);
+      case QandAErrorState() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? empty,
+    TResult Function(List<QandAModel> articles)? success,
+    TResult Function(List<QandAModel> articles)? searchSuccess,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandAInitialState() when initial != null:
+        return initial();
+      case QandALoadingState() when loading != null:
+        return loading();
+      case QandAEmptyState() when empty != null:
+        return empty();
+      case GetQandASuccessState() when success != null:
+        return success(_that.articles);
+      case SearchQandASuccessState() when searchSuccess != null:
+        return searchSuccess(_that.articles);
+      case QandAErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() empty,
+    required TResult Function(List<QandAModel> articles) success,
+    required TResult Function(List<QandAModel> articles) searchSuccess,
+    required TResult Function(String message) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandAInitialState():
+        return initial();
+      case QandALoadingState():
+        return loading();
+      case QandAEmptyState():
+        return empty();
+      case GetQandASuccessState():
+        return success(_that.articles);
+      case SearchQandASuccessState():
+        return searchSuccess(_that.articles);
+      case QandAErrorState():
+        return error(_that.message);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? empty,
+    TResult? Function(List<QandAModel> articles)? success,
+    TResult? Function(List<QandAModel> articles)? searchSuccess,
+    TResult? Function(String message)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case QandAInitialState() when initial != null:
+        return initial();
+      case QandALoadingState() when loading != null:
+        return loading();
+      case QandAEmptyState() when empty != null:
+        return empty();
+      case GetQandASuccessState() when success != null:
+        return success(_that.articles);
+      case SearchQandASuccessState() when searchSuccess != null:
+        return searchSuccess(_that.articles);
+      case QandAErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $QandAStateCopyWith<$Res> {
-  factory $QandAStateCopyWith(
-          QandAState value, $Res Function(QandAState) then) =
-      _$QandAStateCopyWithImpl<$Res, QandAState>;
-}
 
-/// @nodoc
-class _$QandAStateCopyWithImpl<$Res, $Val extends QandAState>
-    implements $QandAStateCopyWith<$Res> {
-  _$QandAStateCopyWithImpl(this._value, this._then);
+class QandAInitialState implements QandAState {
+  const QandAInitialState();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is QandAInitialState);
+  }
 
-/// @nodoc
-abstract class _$$QandAInitialStateImplCopyWith<$Res> {
-  factory _$$QandAInitialStateImplCopyWith(_$QandAInitialStateImpl value,
-          $Res Function(_$QandAInitialStateImpl) then) =
-      __$$QandAInitialStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$QandAInitialStateImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$QandAInitialStateImpl>
-    implements _$$QandAInitialStateImplCopyWith<$Res> {
-  __$$QandAInitialStateImplCopyWithImpl(_$QandAInitialStateImpl _value,
-      $Res Function(_$QandAInitialStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$QandAInitialStateImpl implements QandAInitialState {
-  const _$QandAInitialStateImpl();
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'QandAState.initial()';
   }
+}
+
+/// @nodoc
+
+class QandALoadingState implements QandAState {
+  const QandALoadingState();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$QandAInitialStateImpl);
+        (other.runtimeType == runtimeType && other is QandALoadingState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitialState value)? initial,
-    TResult Function(QandALoadingState value)? loading,
-    TResult Function(QandAEmptyState value)? empty,
-    TResult Function(GetQandASuccessState value)? success,
-    TResult Function(SearchQandASuccessState value)? searchSuccess,
-    TResult Function(QandAErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class QandAInitialState implements QandAState {
-  const factory QandAInitialState() = _$QandAInitialStateImpl;
-}
-
-/// @nodoc
-abstract class _$$QandALoadingStateImplCopyWith<$Res> {
-  factory _$$QandALoadingStateImplCopyWith(_$QandALoadingStateImpl value,
-          $Res Function(_$QandALoadingStateImpl) then) =
-      __$$QandALoadingStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$QandALoadingStateImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$QandALoadingStateImpl>
-    implements _$$QandALoadingStateImplCopyWith<$Res> {
-  __$$QandALoadingStateImplCopyWithImpl(_$QandALoadingStateImpl _value,
-      $Res Function(_$QandALoadingStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$QandALoadingStateImpl implements QandALoadingState {
-  const _$QandALoadingStateImpl();
 
   @override
   String toString() {
     return 'QandAState.loading()';
   }
+}
+
+/// @nodoc
+
+class QandAEmptyState implements QandAState {
+  const QandAEmptyState();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$QandALoadingStateImpl);
+        (other.runtimeType == runtimeType && other is QandAEmptyState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitialState value)? initial,
-    TResult Function(QandALoadingState value)? loading,
-    TResult Function(QandAEmptyState value)? empty,
-    TResult Function(GetQandASuccessState value)? success,
-    TResult Function(SearchQandASuccessState value)? searchSuccess,
-    TResult Function(QandAErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class QandALoadingState implements QandAState {
-  const factory QandALoadingState() = _$QandALoadingStateImpl;
-}
-
-/// @nodoc
-abstract class _$$QandAEmptyStateImplCopyWith<$Res> {
-  factory _$$QandAEmptyStateImplCopyWith(_$QandAEmptyStateImpl value,
-          $Res Function(_$QandAEmptyStateImpl) then) =
-      __$$QandAEmptyStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$QandAEmptyStateImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$QandAEmptyStateImpl>
-    implements _$$QandAEmptyStateImplCopyWith<$Res> {
-  __$$QandAEmptyStateImplCopyWithImpl(
-      _$QandAEmptyStateImpl _value, $Res Function(_$QandAEmptyStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$QandAEmptyStateImpl implements QandAEmptyState {
-  const _$QandAEmptyStateImpl();
 
   @override
   String toString() {
     return 'QandAState.empty()';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$QandAEmptyStateImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
-  }) {
-    return empty();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) {
-    return empty?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) {
-    return empty(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) {
-    return empty?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitialState value)? initial,
-    TResult Function(QandALoadingState value)? loading,
-    TResult Function(QandAEmptyState value)? empty,
-    TResult Function(GetQandASuccessState value)? success,
-    TResult Function(SearchQandASuccessState value)? searchSuccess,
-    TResult Function(QandAErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class QandAEmptyState implements QandAState {
-  const factory QandAEmptyState() = _$QandAEmptyStateImpl;
-}
-
-/// @nodoc
-abstract class _$$GetQandASuccessStateImplCopyWith<$Res> {
-  factory _$$GetQandASuccessStateImplCopyWith(_$GetQandASuccessStateImpl value,
-          $Res Function(_$GetQandASuccessStateImpl) then) =
-      __$$GetQandASuccessStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<QandAModel> articles});
-}
-
-/// @nodoc
-class __$$GetQandASuccessStateImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$GetQandASuccessStateImpl>
-    implements _$$GetQandASuccessStateImplCopyWith<$Res> {
-  __$$GetQandASuccessStateImplCopyWithImpl(_$GetQandASuccessStateImpl _value,
-      $Res Function(_$GetQandASuccessStateImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? articles = null,
-  }) {
-    return _then(_$GetQandASuccessStateImpl(
-      null == articles
-          ? _value._articles
-          : articles // ignore: cast_nullable_to_non_nullable
-              as List<QandAModel>,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$GetQandASuccessStateImpl implements GetQandASuccessState {
-  const _$GetQandASuccessStateImpl(final List<QandAModel> articles)
+class GetQandASuccessState implements QandAState {
+  const GetQandASuccessState(final List<QandAModel> articles)
       : _articles = articles;
 
   final List<QandAModel> _articles;
-  @override
   List<QandAModel> get articles {
     if (_articles is EqualUnmodifiableListView) return _articles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_articles);
   }
+
+  /// Create a copy of QandAState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $GetQandASuccessStateCopyWith<GetQandASuccessState> get copyWith =>
+      _$GetQandASuccessStateCopyWithImpl<GetQandASuccessState>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is GetQandASuccessState &&
+            const DeepCollectionEquality().equals(other._articles, _articles));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_articles));
 
   @override
   String toString() {
     return 'QandAState.success(articles: $articles)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GetQandASuccessStateImpl &&
-            const DeepCollectionEquality().equals(other._articles, _articles));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_articles));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GetQandASuccessStateImplCopyWith<_$GetQandASuccessStateImpl>
-      get copyWith =>
-          __$$GetQandASuccessStateImplCopyWithImpl<_$GetQandASuccessStateImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
-  }) {
-    return success(articles);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) {
-    return success?.call(articles);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(articles);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitialState value)? initial,
-    TResult Function(QandALoadingState value)? loading,
-    TResult Function(QandAEmptyState value)? empty,
-    TResult Function(GetQandASuccessState value)? success,
-    TResult Function(SearchQandASuccessState value)? searchSuccess,
-    TResult Function(QandAErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GetQandASuccessState implements QandAState {
-  const factory GetQandASuccessState(final List<QandAModel> articles) =
-      _$GetQandASuccessStateImpl;
-
-  List<QandAModel> get articles;
-  @JsonKey(ignore: true)
-  _$$GetQandASuccessStateImplCopyWith<_$GetQandASuccessStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SearchQandASuccessStateImplCopyWith<$Res> {
-  factory _$$SearchQandASuccessStateImplCopyWith(
-          _$SearchQandASuccessStateImpl value,
-          $Res Function(_$SearchQandASuccessStateImpl) then) =
-      __$$SearchQandASuccessStateImplCopyWithImpl<$Res>;
+abstract mixin class $GetQandASuccessStateCopyWith<$Res>
+    implements $QandAStateCopyWith<$Res> {
+  factory $GetQandASuccessStateCopyWith(GetQandASuccessState value,
+          $Res Function(GetQandASuccessState) _then) =
+      _$GetQandASuccessStateCopyWithImpl;
   @useResult
   $Res call({List<QandAModel> articles});
 }
 
 /// @nodoc
-class __$$SearchQandASuccessStateImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$SearchQandASuccessStateImpl>
-    implements _$$SearchQandASuccessStateImplCopyWith<$Res> {
-  __$$SearchQandASuccessStateImplCopyWithImpl(
-      _$SearchQandASuccessStateImpl _value,
-      $Res Function(_$SearchQandASuccessStateImpl) _then)
-      : super(_value, _then);
+class _$GetQandASuccessStateCopyWithImpl<$Res>
+    implements $GetQandASuccessStateCopyWith<$Res> {
+  _$GetQandASuccessStateCopyWithImpl(this._self, this._then);
 
+  final GetQandASuccessState _self;
+  final $Res Function(GetQandASuccessState) _then;
+
+  /// Create a copy of QandAState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? articles = null,
   }) {
-    return _then(_$SearchQandASuccessStateImpl(
+    return _then(GetQandASuccessState(
       null == articles
-          ? _value._articles
+          ? _self._articles
           : articles // ignore: cast_nullable_to_non_nullable
               as List<QandAModel>,
     ));
@@ -984,28 +699,30 @@ class __$$SearchQandASuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SearchQandASuccessStateImpl implements SearchQandASuccessState {
-  const _$SearchQandASuccessStateImpl(final List<QandAModel> articles)
+class SearchQandASuccessState implements QandAState {
+  const SearchQandASuccessState(final List<QandAModel> articles)
       : _articles = articles;
 
   final List<QandAModel> _articles;
-  @override
   List<QandAModel> get articles {
     if (_articles is EqualUnmodifiableListView) return _articles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_articles);
   }
 
-  @override
-  String toString() {
-    return 'QandAState.searchSuccess(articles: $articles)';
-  }
+  /// Create a copy of QandAState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $SearchQandASuccessStateCopyWith<SearchQandASuccessState> get copyWith =>
+      _$SearchQandASuccessStateCopyWithImpl<SearchQandASuccessState>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SearchQandASuccessStateImpl &&
+            other is SearchQandASuccessState &&
             const DeepCollectionEquality().equals(other._articles, _articles));
   }
 
@@ -1013,264 +730,107 @@ class _$SearchQandASuccessStateImpl implements SearchQandASuccessState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_articles));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SearchQandASuccessStateImplCopyWith<_$SearchQandASuccessStateImpl>
-      get copyWith => __$$SearchQandASuccessStateImplCopyWithImpl<
-          _$SearchQandASuccessStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
-  }) {
-    return searchSuccess(articles);
+  String toString() {
+    return 'QandAState.searchSuccess(articles: $articles)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) {
-    return searchSuccess?.call(articles);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (searchSuccess != null) {
-      return searchSuccess(articles);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) {
-    return searchSuccess(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) {
-    return searchSuccess?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitialState value)? initial,
-    TResult Function(QandALoadingState value)? loading,
-    TResult Function(QandAEmptyState value)? empty,
-    TResult Function(GetQandASuccessState value)? success,
-    TResult Function(SearchQandASuccessState value)? searchSuccess,
-    TResult Function(QandAErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (searchSuccess != null) {
-      return searchSuccess(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SearchQandASuccessState implements QandAState {
-  const factory SearchQandASuccessState(final List<QandAModel> articles) =
-      _$SearchQandASuccessStateImpl;
-
-  List<QandAModel> get articles;
-  @JsonKey(ignore: true)
-  _$$SearchQandASuccessStateImplCopyWith<_$SearchQandASuccessStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$QandAErrorStateImplCopyWith<$Res> {
-  factory _$$QandAErrorStateImplCopyWith(_$QandAErrorStateImpl value,
-          $Res Function(_$QandAErrorStateImpl) then) =
-      __$$QandAErrorStateImplCopyWithImpl<$Res>;
+abstract mixin class $SearchQandASuccessStateCopyWith<$Res>
+    implements $QandAStateCopyWith<$Res> {
+  factory $SearchQandASuccessStateCopyWith(SearchQandASuccessState value,
+          $Res Function(SearchQandASuccessState) _then) =
+      _$SearchQandASuccessStateCopyWithImpl;
   @useResult
-  $Res call({String message});
+  $Res call({List<QandAModel> articles});
 }
 
 /// @nodoc
-class __$$QandAErrorStateImplCopyWithImpl<$Res>
-    extends _$QandAStateCopyWithImpl<$Res, _$QandAErrorStateImpl>
-    implements _$$QandAErrorStateImplCopyWith<$Res> {
-  __$$QandAErrorStateImplCopyWithImpl(
-      _$QandAErrorStateImpl _value, $Res Function(_$QandAErrorStateImpl) _then)
-      : super(_value, _then);
+class _$SearchQandASuccessStateCopyWithImpl<$Res>
+    implements $SearchQandASuccessStateCopyWith<$Res> {
+  _$SearchQandASuccessStateCopyWithImpl(this._self, this._then);
 
+  final SearchQandASuccessState _self;
+  final $Res Function(SearchQandASuccessState) _then;
+
+  /// Create a copy of QandAState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? message = null,
+    Object? articles = null,
   }) {
-    return _then(_$QandAErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+    return _then(SearchQandASuccessState(
+      null == articles
+          ? _self._articles
+          : articles // ignore: cast_nullable_to_non_nullable
+              as List<QandAModel>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$QandAErrorStateImpl implements QandAErrorState {
-  const _$QandAErrorStateImpl(this.message);
+class QandAErrorState implements QandAState {
+  const QandAErrorState(this.message);
 
-  @override
   final String message;
 
-  @override
-  String toString() {
-    return 'QandAState.error(message: $message)';
-  }
+  /// Create a copy of QandAState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $QandAErrorStateCopyWith<QandAErrorState> get copyWith =>
+      _$QandAErrorStateCopyWithImpl<QandAErrorState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$QandAErrorStateImpl &&
+            other is QandAErrorState &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'QandAState.error(message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $QandAErrorStateCopyWith<$Res>
+    implements $QandAStateCopyWith<$Res> {
+  factory $QandAErrorStateCopyWith(
+          QandAErrorState value, $Res Function(QandAErrorState) _then) =
+      _$QandAErrorStateCopyWithImpl;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class _$QandAErrorStateCopyWithImpl<$Res>
+    implements $QandAErrorStateCopyWith<$Res> {
+  _$QandAErrorStateCopyWithImpl(this._self, this._then);
+
+  final QandAErrorState _self;
+  final $Res Function(QandAErrorState) _then;
+
+  /// Create a copy of QandAState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$QandAErrorStateImplCopyWith<_$QandAErrorStateImpl> get copyWith =>
-      __$$QandAErrorStateImplCopyWithImpl<_$QandAErrorStateImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<QandAModel> articles) success,
-    required TResult Function(List<QandAModel> articles) searchSuccess,
-    required TResult Function(String message) error,
+  $Res call({
+    Object? message = null,
   }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<QandAModel> articles)? success,
-    TResult? Function(List<QandAModel> articles)? searchSuccess,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<QandAModel> articles)? success,
-    TResult Function(List<QandAModel> articles)? searchSuccess,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(QandAInitialState value) initial,
-    required TResult Function(QandALoadingState value) loading,
-    required TResult Function(QandAEmptyState value) empty,
-    required TResult Function(GetQandASuccessState value) success,
-    required TResult Function(SearchQandASuccessState value) searchSuccess,
-    required TResult Function(QandAErrorState value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(QandAInitialState value)? initial,
-    TResult? Function(QandALoadingState value)? loading,
-    TResult? Function(QandAEmptyState value)? empty,
-    TResult? Function(GetQandASuccessState value)? success,
-    TResult? Function(SearchQandASuccessState value)? searchSuccess,
-    TResult? Function(QandAErrorState value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(QandAInitialState value)? initial,
-    TResult Function(QandALoadingState value)? loading,
-    TResult Function(QandAEmptyState value)? empty,
-    TResult Function(GetQandASuccessState value)? success,
-    TResult Function(SearchQandASuccessState value)? searchSuccess,
-    TResult Function(QandAErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
+    return _then(QandAErrorState(
+      null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class QandAErrorState implements QandAState {
-  const factory QandAErrorState(final String message) = _$QandAErrorStateImpl;
-
-  String get message;
-  @JsonKey(ignore: true)
-  _$$QandAErrorStateImplCopyWith<_$QandAErrorStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

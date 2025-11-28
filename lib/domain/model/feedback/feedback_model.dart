@@ -3,7 +3,7 @@ part 'feedback_model.freezed.dart';
 part 'feedback_model.g.dart';
 
 @freezed
-class FeedbackModel with _$FeedbackModel {
+abstract class FeedbackModel with _$FeedbackModel {
   const factory FeedbackModel(
       {required String id,
       required String text,
