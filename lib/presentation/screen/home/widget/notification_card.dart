@@ -1,4 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
@@ -76,8 +77,8 @@ class NotificationCard extends StatelessWidget {
               TextButton(
                   onPressed: () =>
                       context.go(notification.notifications.first.link!),
-                  child:
-                      const Text('Open', style: TextStyle(color: Colors.blue)))
+                  child: Text('Open'.tr(),
+                      style: const TextStyle(color: Colors.blue)))
           ]),
           isThreeLine: true,
         ),

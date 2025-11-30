@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:icoc/presentation/bloc/wall/wall_event.dart';
 import 'package:injectable/injectable.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -11,6 +12,14 @@ import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/core/routes/app_router.dart';
+import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
+import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
+import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
+import 'package:icoc/presentation/bloc/wall/wall_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -40,8 +49,17 @@ class PushNotificationService {
     final InitializationSettings initSettings =
         InitializationSettings(android: androidInit, iOS: iosInit);
     await _local.initialize(initSettings,
-        onDidReceiveNotificationResponse: (details) {
-      router.push(NOTIFICATIONS_SCREEN);
+        onDidReceiveNotificationResponse: (details) async {
+      final payload = details.payload;
+      if (payload != null && payload.isNotEmpty) {
+        try {
+          final data = json.decode(payload) as Map<String, dynamic>;
+          await _navigateByData(data);
+          await _refreshByData(data);
+          return;
+        } catch (_) {}
+      }
+      router.go(NOTIFICATIONS_SCREEN);
     });
     await _local
         .resolvePlatformSpecificImplementation<
@@ -105,6 +123,7 @@ class PushNotificationService {
     }
     FirebaseMessaging.onMessage.listen((message) async {
       await _showRemoteMessage(message);
+      _refreshByData(message.data);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       _handleNavigation(message);
@@ -137,7 +156,55 @@ class PushNotificationService {
   }
 
   void _handleNavigation(RemoteMessage message) {
-    router.push(NOTIFICATIONS_SCREEN);
+    final data = message.data;
+    _navigateByData(data);
+    _refreshByData(data);
+  }
+
+  Future<void> _navigateByData(Map<String, dynamic> data) async {
+    final link = (data['link'] ?? '') as String;
+    if (link.isNotEmpty) {
+      final uri = Uri.parse(link);
+      if (uri.scheme == 'http' || uri.scheme == 'https') {
+        final path = uri.path.startsWith('/') ? uri.path : '/${uri.path}';
+        final target = uri.hasQuery ? '$path?${uri.query}' : path;
+        router.go(target);
+        return;
+      }
+      router.go(link);
+      return;
+    }
+    router.go(NOTIFICATIONS_SCREEN);
+  }
+
+  Future<void> _refreshByData(Map<String, dynamic> data) async {
+    getIt<NotificationsBloc>().add(const NotificationsListRequested());
+    final link = (data['link'] ?? '') as String;
+    if (link.isEmpty) return;
+    final uri = Uri.parse(link);
+    final segments = (uri.scheme == 'http' || uri.scheme == 'https')
+        ? uri.pathSegments
+        : Uri.parse(link.startsWith('/') ? link : '/$link').pathSegments;
+    if (segments.isEmpty) return;
+    switch (segments.first) {
+      case 'songbook':
+        getIt<SongsBloc>().add(const SongsEvent.songsRequested());
+        break;
+      case 'qanda':
+        getIt<QandABloc>().add(const QandAEvent.requested());
+        break;
+      case 'video':
+        getIt<VideoBloc>().add(const VideoEvent.listRequested());
+        break;
+      case 'biblestudy':
+        getIt<BibleStudyBloc>().add(const BibleStudyEvent.listRequested());
+        break;
+      case 'wall':
+        getIt<WallBloc>().add(const WallEvent.fetch());
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> showLocalNotification(
