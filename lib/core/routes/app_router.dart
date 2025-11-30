@@ -22,6 +22,7 @@ import 'package:icoc/presentation/screen/songs/widget/bottom_navigation_bar.dart
 import 'package:icoc/presentation/screen/video/list_topics_screen.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/video_player_screen.dart';
+import 'package:icoc/presentation/screen/wall/wall_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
@@ -129,6 +130,12 @@ final GoRouter router = GoRouter(
             path: FEEDBACK_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const FeedbackScreen(),
+          ),
+
+          FadeGoRoute(
+            path: WALL,
+            builder: (BuildContext context, GoRouterState state) =>
+                const WallScreen(),
           ),
 
           //menu screens

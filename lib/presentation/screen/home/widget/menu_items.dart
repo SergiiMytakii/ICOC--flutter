@@ -30,6 +30,8 @@ class HomeScreenMenuItems {
         Icons.play_arrow,
         VIDEO,
       ),
+      MenuItem('Wall', ScreenColors.general, Icons.article,
+          WALL),
       MenuItem('Feedbacks', ScreenColors.general, Icons.thumb_up_alt,
           FEEDBACK_SCREEN),
     ];

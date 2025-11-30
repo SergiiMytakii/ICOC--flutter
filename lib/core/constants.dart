@@ -54,6 +54,8 @@ class StorageKeys {
   static const String bibleStudyReadPosition = 'bibleStudyReadPosition';
   static const String songTranspose = 'songTranspose';
   static const String songScrollSpeed = 'songScrollSpeed';
+  static const String wallLanguages = 'wallLanguages';
+  static const String shouldWallFilterAnimate = 'shouldWallFilterAnimate';
   // Add more keys as needed
 }
 
@@ -103,7 +105,8 @@ enum FirebaseCollections {
   QandA,
   Video,
   Feedback,
-  QandALangs
+  QandALangs,
+  Wall
 }
 
 enum OrderEnum { ascending, descending, random }

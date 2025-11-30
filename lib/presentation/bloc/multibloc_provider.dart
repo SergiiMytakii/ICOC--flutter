@@ -11,6 +11,7 @@ import 'package:icoc/presentation/bloc/q&a_bloc/one_q&a/one_q&a_bloc.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/injection.dart';
+import 'package:icoc/presentation/bloc/wall/wall_bloc.dart';
 
 class MyMultiblocProvider extends StatelessWidget {
   final Widget child;
@@ -52,6 +53,9 @@ class MyMultiblocProvider extends StatelessWidget {
         ),
         BlocProvider<FeedbackBloc>(
           create: (BuildContext context) => getIt<FeedbackBloc>(),
+        ),
+        BlocProvider<WallBloc>(
+          create: (BuildContext context) => getIt<WallBloc>(),
         ),
       ],
       child: child,

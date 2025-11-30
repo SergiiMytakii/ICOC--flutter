@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -68,9 +69,22 @@ class PushNotificationService {
         alert: true, badge: true, sound: true);
     if (settings.authorizationStatus == AuthorizationStatus.authorized ||
         settings.authorizationStatus == AuthorizationStatus.provisional) {
-      final token = await messaging.getToken();
-      if (token != null) {
-        await _localCache.saveString(StorageKeys.fcmToken, token);
+      bool canRequestToken = true;
+      if (Platform.isIOS) {
+        final apnsToken = await messaging.getAPNSToken();
+        if (apnsToken == null) {
+          canRequestToken = false;
+        }
+      }
+      if (canRequestToken) {
+        try {
+          final token = await messaging.getToken();
+          if (token != null) {
+            await _localCache.saveString(StorageKeys.fcmToken, token);
+          }
+        } catch (_) {
+          // Ignore token acquisition failures so app can continue startup
+        }
       }
       FirebaseMessaging.instance.onTokenRefresh.listen((t) async {
         await _localCache.saveString(StorageKeys.fcmToken, t);

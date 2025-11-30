@@ -153,3 +153,41 @@ class SongsUserLanguagesHandler extends UserLanguagesHandler {
   bool get isOneActiveLang =>
       languages.entries.toList().where((entry) => entry.value).length == 1;
 }
+
+@dev
+@prod
+@singleton
+class WallUserLanguagesHandler extends UserLanguagesHandler {
+  WallUserLanguagesHandler(super._localCache) {
+    final cachedLanguages = _localCache.getMap(StorageKeys.wallLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages = Map.from(languagesCodes)
+          .map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
+  }
+
+  @override
+  Future<void> addLanguage(String lang, bool isActive) async {
+    super.addLanguage(lang, isActive);
+    _localCache.saveMap(StorageKeys.wallLanguages, languages);
+  }
+
+  @override
+  Future<void> updateLanguage(String lang, bool isActive) async {
+    super.updateLanguage(lang, isActive);
+    _localCache.saveMap(StorageKeys.wallLanguages, languages);
+  }
+
+  @override
+  Future<void> saveAllLanguages(Map<String, dynamic> updatedLanguages) async {
+    super.saveAllLanguages(updatedLanguages);
+    await _localCache.saveMap(StorageKeys.wallLanguages, updatedLanguages);
+  }
+}
