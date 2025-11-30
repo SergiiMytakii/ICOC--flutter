@@ -6,6 +6,7 @@ import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetBibleStudyFilter extends StatefulWidget {
   const BottomSheetBibleStudyFilter({super.key});
@@ -52,6 +53,12 @@ class _BottomSheetBibleStudyFilterState
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await bibleStudyUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
+                      final activeSet = activeLanguages.entries
+                          .where((e) => e.value == true)
+                          .map((e) => e.key)
+                          .toSet();
+                      await getIt<PushNotificationService>()
+                          .updateLanguageSubscriptions(activeSet);
                       getIt<BibleStudyBloc>()
                           .add(const BibleStudyEvent.listRequested());
                     },

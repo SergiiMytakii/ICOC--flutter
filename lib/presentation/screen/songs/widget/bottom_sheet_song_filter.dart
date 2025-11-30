@@ -6,6 +6,7 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/main.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetSongsFilter extends StatefulWidget {
   const BottomSheetSongsFilter({super.key});
@@ -125,6 +126,12 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh() async {
     await songsUserLanguagesHandler.saveAllLanguages(allLanguages);
     await songsUserLanguagesHandler.updatePrimaryLanguage(primaryLang);
+    final activeSet = allLanguages.entries
+        .where((e) => e.value == true)
+        .map((e) => e.key)
+        .toSet();
+    await getIt<PushNotificationService>()
+        .updateLanguageSubscriptions(activeSet);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
     setState(() {});
   }

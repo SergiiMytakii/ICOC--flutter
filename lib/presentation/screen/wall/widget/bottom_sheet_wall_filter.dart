@@ -6,6 +6,7 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/wall/wall_bloc.dart';
 import 'package:icoc/presentation/bloc/wall/wall_event.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetWallFilter extends StatefulWidget {
   const BottomSheetWallFilter({super.key});
@@ -47,6 +48,12 @@ class _BottomSheetWallFilterState extends State<BottomSheetWallFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await wallUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
+                      final activeSet = activeLanguages.entries
+                          .where((e) => e.value == true)
+                          .map((e) => e.key)
+                          .toSet();
+                      await getIt<PushNotificationService>()
+                          .updateLanguageSubscriptions(activeSet);
                       getIt<WallBloc>().add(const WallEvent.fetch());
                       setState(() {});
                     },

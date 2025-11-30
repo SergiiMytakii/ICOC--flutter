@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
@@ -81,6 +82,12 @@ class PushNotificationService {
           final token = await messaging.getToken();
           if (token != null) {
             await _localCache.saveString(StorageKeys.fcmToken, token);
+            await _syncToken(token);
+            await messaging.subscribeToTopic('news');
+            final String? locale = _localCache.getString(StorageKeys.locale);
+            if (locale != null && locale.isNotEmpty) {
+              await messaging.subscribeToTopic('lang-$locale');
+            }
           }
         } catch (_) {
           // Ignore token acquisition failures so app can continue startup
@@ -88,6 +95,12 @@ class PushNotificationService {
       }
       FirebaseMessaging.instance.onTokenRefresh.listen((t) async {
         await _localCache.saveString(StorageKeys.fcmToken, t);
+        await _syncToken(t);
+        await FirebaseMessaging.instance.subscribeToTopic('news');
+        final String? locale = _localCache.getString(StorageKeys.locale);
+        if (locale != null && locale.isNotEmpty) {
+          await FirebaseMessaging.instance.subscribeToTopic('lang-$locale');
+        }
       });
     }
     FirebaseMessaging.onMessage.listen((message) async {
@@ -171,5 +184,46 @@ class PushNotificationService {
 
   Future<void> cancelAll() async {
     await _local.cancelAll();
+  }
+
+  Future<void> _syncToken(String token) async {
+    final String? lang = _localCache.getString(StorageKeys.locale);
+    final doc =
+        FirebaseFirestore.instance.collection('device_tokens').doc(token);
+    await doc.set({
+      'token': token,
+      'platform': Platform.isIOS ? 'ios' : 'android',
+      'locale': lang,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> updateLanguageSubscription(String newLocale) async {
+    final String? prev = _localCache.getString(StorageKeys.locale);
+    if (prev != null && prev.isNotEmpty && prev != newLocale) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('lang-$prev');
+    }
+    await FirebaseMessaging.instance.subscribeToTopic('lang-$newLocale');
+    await _localCache.saveString(StorageKeys.locale, newLocale);
+  }
+
+  Future<void> updateLanguageSubscriptions(Set<String> activeLocales) async {
+    final Map<String, dynamic> prevMap =
+        _localCache.getMap(StorageKeys.notificationLangs) ?? {};
+    final Set<String> prevActive =
+        prevMap.entries.where((e) => e.value == true).map((e) => e.key).toSet();
+    final Set<String> toUnsub = prevActive.difference(activeLocales);
+    final Set<String> toSub = activeLocales.difference(prevActive);
+    for (final l in toUnsub) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('lang-$l');
+    }
+    for (final l in toSub) {
+      await FirebaseMessaging.instance.subscribeToTopic('lang-$l');
+    }
+    final Map<String, dynamic> nextMap = {
+      for (final l in activeLocales) l: true,
+      for (final l in prevActive.difference(activeLocales)) l: false,
+    };
+    await _localCache.saveMap(StorageKeys.notificationLangs, nextMap);
   }
 }

@@ -6,6 +6,7 @@ import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetVideoFilter extends StatefulWidget {
   const BottomSheetVideoFilter({super.key});
@@ -52,6 +53,12 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await videosUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
+                      final activeSet = activeLanguages.entries
+                          .where((e) => e.value == true)
+                          .map((e) => e.key)
+                          .toSet();
+                      await getIt<PushNotificationService>()
+                          .updateLanguageSubscriptions(activeSet);
                       getIt<VideoBloc>().add(const VideoEvent.listRequested());
                     },
                     key: ValueKey('$index'));

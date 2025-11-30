@@ -6,6 +6,7 @@ import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetQandAFilter extends StatefulWidget {
   const BottomSheetQandAFilter({super.key});
@@ -80,6 +81,12 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await qAndAUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
+                      final activeSet = activeLanguages.entries
+                          .where((e) => e.value == true)
+                          .map((e) => e.key)
+                          .toSet();
+                      await getIt<PushNotificationService>()
+                          .updateLanguageSubscriptions(activeSet);
                       getIt<QandABloc>().add(const QandAEvent.requested());
                       setState(() {});
                     },
