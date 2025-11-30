@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/presentation/bloc/wall/wall_bloc.dart';
-import 'package:icoc/presentation/bloc/wall/wall_event.dart';
+import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
+import 'package:icoc/presentation/bloc/insights/insights_event.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 import 'package:icoc/core/notifications/push_notification_service.dart';
 
-class BottomSheetWallFilter extends StatefulWidget {
-  const BottomSheetWallFilter({super.key});
+class BottomSheetInsightsFilter extends StatefulWidget {
+  const BottomSheetInsightsFilter({super.key});
 
   @override
-  State<BottomSheetWallFilter> createState() => _BottomSheetWallFilterState();
+  State<BottomSheetInsightsFilter> createState() => _BottomSheetInsightsFilterState();
 }
 
-class _BottomSheetWallFilterState extends State<BottomSheetWallFilter> {
-  final wallUserLanguagesHandler = getIt<WallUserLanguagesHandler>();
+class _BottomSheetInsightsFilterState extends State<BottomSheetInsightsFilter> {
+  final wallUserLanguagesHandler = getIt<InsightsUserLanguagesHandler>();
   @override
   void initState() {
     super.initState();
@@ -54,7 +54,7 @@ class _BottomSheetWallFilterState extends State<BottomSheetWallFilter> {
                           .toSet();
                       await getIt<PushNotificationService>()
                           .updateLanguageSubscriptions(activeSet);
-                      getIt<WallBloc>().add(const WallEvent.fetch());
+                      getIt<InsightsBloc>().add(const InsightsEvent.fetch());
                       setState(() {});
                     },
                     onlyOneActiveLangAllowed: false,

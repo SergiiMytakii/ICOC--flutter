@@ -157,8 +157,8 @@ class SongsUserLanguagesHandler extends UserLanguagesHandler {
 @dev
 @prod
 @singleton
-class WallUserLanguagesHandler extends UserLanguagesHandler {
-  WallUserLanguagesHandler(super._localCache) {
+class InsightsUserLanguagesHandler extends UserLanguagesHandler {
+  InsightsUserLanguagesHandler(super._localCache) {
     final cachedLanguages = _localCache.getMap(StorageKeys.wallLanguages);
     if (cachedLanguages == null || cachedLanguages.isEmpty) {
       languages = Map.from(languagesCodes)

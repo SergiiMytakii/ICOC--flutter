@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'wall_state.dart';
+part of 'insights_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,11 +13,11 @@ part of 'wall_state.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$WallState {
+mixin _$InsightsState {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is WallState);
+        (other.runtimeType == runtimeType && other is InsightsState);
   }
 
   @override
@@ -25,17 +25,17 @@ mixin _$WallState {
 
   @override
   String toString() {
-    return 'WallState()';
+    return 'InsightsState()';
   }
 }
 
 /// @nodoc
-class $WallStateCopyWith<$Res> {
-  $WallStateCopyWith(WallState _, $Res Function(WallState) __);
+class $InsightsStateCopyWith<$Res> {
+  $InsightsStateCopyWith(InsightsState _, $Res Function(InsightsState) __);
 }
 
-/// Adds pattern-matching-related methods to [WallState].
-extension WallStatePatterns on WallState {
+/// Adds pattern-matching-related methods to [InsightsState].
+extension InsightsStatePatterns on InsightsState {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -247,7 +247,7 @@ extension WallStatePatterns on WallState {
 
 /// @nodoc
 
-class _Initial implements WallState {
+class _Initial implements InsightsState {
   const _Initial();
 
   @override
@@ -261,13 +261,13 @@ class _Initial implements WallState {
 
   @override
   String toString() {
-    return 'WallState.initial()';
+    return 'InsightsState.initial()';
   }
 }
 
 /// @nodoc
 
-class _Loading implements WallState {
+class _Loading implements InsightsState {
   const _Loading();
 
   @override
@@ -281,13 +281,13 @@ class _Loading implements WallState {
 
   @override
   String toString() {
-    return 'WallState.loading()';
+    return 'InsightsState.loading()';
   }
 }
 
 /// @nodoc
 
-class _Loaded implements WallState {
+class _Loaded implements InsightsState {
   const _Loaded(final List<Post> posts) : _posts = posts;
 
   final List<Post> _posts;
@@ -297,7 +297,7 @@ class _Loaded implements WallState {
     return EqualUnmodifiableListView(_posts);
   }
 
-  /// Create a copy of WallState
+  /// Create a copy of InsightsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
@@ -318,13 +318,13 @@ class _Loaded implements WallState {
 
   @override
   String toString() {
-    return 'WallState.loaded(posts: $posts)';
+    return 'InsightsState.loaded(posts: $posts)';
   }
 }
 
 /// @nodoc
 abstract mixin class _$LoadedCopyWith<$Res>
-    implements $WallStateCopyWith<$Res> {
+    implements $InsightsStateCopyWith<$Res> {
   factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) =
       __$LoadedCopyWithImpl;
   @useResult
@@ -338,7 +338,7 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
   final _Loaded _self;
   final $Res Function(_Loaded) _then;
 
-  /// Create a copy of WallState
+  /// Create a copy of InsightsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   $Res call({
@@ -355,12 +355,12 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
 
 /// @nodoc
 
-class _Error implements WallState {
+class _Error implements InsightsState {
   const _Error(this.message);
 
   final String message;
 
-  /// Create a copy of WallState
+  /// Create a copy of InsightsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
@@ -380,12 +380,13 @@ class _Error implements WallState {
 
   @override
   String toString() {
-    return 'WallState.error(message: $message)';
+    return 'InsightsState.error(message: $message)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$ErrorCopyWith<$Res> implements $WallStateCopyWith<$Res> {
+abstract mixin class _$ErrorCopyWith<$Res>
+    implements $InsightsStateCopyWith<$Res> {
   factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) =
       __$ErrorCopyWithImpl;
   @useResult
@@ -399,7 +400,7 @@ class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
   final _Error _self;
   final $Res Function(_Error) _then;
 
-  /// Create a copy of WallState
+  /// Create a copy of InsightsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   $Res call({

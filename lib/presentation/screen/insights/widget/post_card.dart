@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:icoc/domain/model/wall/post.dart';
-import 'package:icoc/domain/model/wall/post_type.dart';
+import 'package:icoc/domain/model/insights/post.dart';
+import 'package:icoc/domain/model/insights/post_type.dart';
 import 'package:share_plus/share_plus.dart';
 
 class PostCard extends StatelessWidget {
@@ -11,16 +11,16 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8),
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             _buildContent(context),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             _buildActions(context),
           ],
         ),
@@ -34,7 +34,7 @@ class PostCard extends StatelessWidget {
         CircleAvatar(
           backgroundImage: NetworkImage(post.author.avatarUrl),
         ),
-        const SizedBox(width: 8.0),
+        const SizedBox(width: 8),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -66,8 +66,7 @@ class PostCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (post.title != null)
-            Text(post.title!,
-                style: Theme.of(context).textTheme.titleMedium),
+            Text(post.title!, style: Theme.of(context).textTheme.titleMedium),
           if (post.content != null) Text(post.content!),
           if (post.thumbnailUrl != null) Image.network(post.thumbnailUrl!),
         ],
@@ -85,9 +84,7 @@ class PostCard extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.thumb_up_alt_outlined),
-              onPressed: () {
-                // TODO: Implement like functionality
-              },
+              onPressed: () {},
             ),
             Text('${post.likes}'),
           ],
@@ -109,6 +106,6 @@ class PostCard extends StatelessWidget {
     } else if (post.mediaUrl != null) {
       shareContent += '\n${post.mediaUrl}';
     }
-    Share.share(shareContent, subject: post.title);
+    SharePlus.instance.share(ShareParams(text: shareContent));
   }
 }

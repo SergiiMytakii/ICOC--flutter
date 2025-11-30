@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:icoc/domain/model/wall/post_author.dart';
-import 'package:icoc/domain/model/wall/post_type.dart';
+import 'package:icoc/domain/model/insights/post_author.dart';
+import 'package:icoc/domain/model/insights/post_type.dart';
 
 part 'post.freezed.dart';
 part 'post.g.dart';
 
-// Helper functions for custom date time conversion
 DateTime _dateTimeFromTimestamp(Timestamp timestamp) => timestamp.toDate();
-Timestamp _dateTimeToTimestamp(DateTime dateTime) =>
-    Timestamp.fromDate(dateTime);
+Timestamp _dateTimeToTimestamp(DateTime dateTime) => Timestamp.fromDate(dateTime);
 
 @freezed
 abstract class Post with _$Post {

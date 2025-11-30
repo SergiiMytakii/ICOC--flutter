@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'wall_event.dart';
+part of 'insights_event.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,11 +13,11 @@ part of 'wall_event.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$WallEvent {
+mixin _$InsightsEvent {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is WallEvent);
+        (other.runtimeType == runtimeType && other is InsightsEvent);
   }
 
   @override
@@ -25,17 +25,17 @@ mixin _$WallEvent {
 
   @override
   String toString() {
-    return 'WallEvent()';
+    return 'InsightsEvent()';
   }
 }
 
 /// @nodoc
-class $WallEventCopyWith<$Res> {
-  $WallEventCopyWith(WallEvent _, $Res Function(WallEvent) __);
+class $InsightsEventCopyWith<$Res> {
+  $InsightsEventCopyWith(InsightsEvent _, $Res Function(InsightsEvent) __);
 }
 
-/// Adds pattern-matching-related methods to [WallEvent].
-extension WallEventPatterns on WallEvent {
+/// Adds pattern-matching-related methods to [InsightsEvent].
+extension InsightsEventPatterns on InsightsEvent {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -193,7 +193,7 @@ extension WallEventPatterns on WallEvent {
 
 /// @nodoc
 
-class _Fetch implements WallEvent {
+class _Fetch implements InsightsEvent {
   const _Fetch();
 
   @override
@@ -207,7 +207,7 @@ class _Fetch implements WallEvent {
 
   @override
   String toString() {
-    return 'WallEvent.fetch()';
+    return 'InsightsEvent.fetch()';
   }
 }
 

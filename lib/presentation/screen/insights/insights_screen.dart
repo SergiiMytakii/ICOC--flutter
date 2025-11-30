@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/presentation/bloc/wall/wall_bloc.dart';
-import 'package:icoc/presentation/bloc/wall/wall_event.dart';
-import 'package:icoc/presentation/bloc/wall/wall_state.dart';
-import 'package:icoc/presentation/screen/wall/widget/bottom_sheet_wall_filter.dart';
-import 'package:icoc/presentation/screen/wall/widget/post_card.dart';
+import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
+import 'package:icoc/presentation/bloc/insights/insights_event.dart';
+import 'package:icoc/presentation/bloc/insights/insights_state.dart';
+import 'package:icoc/presentation/screen/insights/widget/bottom_sheet_insights_filter.dart';
+import 'package:icoc/presentation/screen/insights/widget/post_card.dart';
 import 'package:icoc/presentation/widget/animated_filter_button.dart';
 import 'package:icoc/presentation/widget/custom_refresh_indicator.dart';
-import 'package:icoc/presentation/widget/error_text_on_screen.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
-import 'package:icoc/presentation/widget/no_content_warning.dart';
+import 'package:icoc/presentation/widget/coming_soon_placeholder.dart';
 
-class WallScreen extends StatefulWidget {
-  const WallScreen({super.key});
+class InsightsScreen extends StatefulWidget {
+  const InsightsScreen({super.key});
 
   @override
-  State<WallScreen> createState() => _WallScreenState();
+  State<InsightsScreen> createState() => _InsightsScreenState();
 }
 
-class _WallScreenState extends State<WallScreen> {
+class _InsightsScreenState extends State<InsightsScreen> {
   @override
   void initState() {
     _getPosts();
@@ -29,32 +29,36 @@ class _WallScreenState extends State<WallScreen> {
   }
 
   Future<void> _getPosts() async {
-    getIt<WallBloc>().add(const WallEvent.fetch());
+    context.read<InsightsBloc>().add(const InsightsEvent.fetch());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wall'),
+        title: Text('Insights'.tr()),
         centerTitle: true,
         actions: [
           AnimatedFilterIconButton(
             shouldAnimate: StorageKeys.shouldWallFilterAnimate,
-            shouldAnimateForever:
-                getIt<WallUserLanguagesHandler>().getActiveLanguages().isEmpty,
+            shouldAnimateForever: getIt<InsightsUserLanguagesHandler>()
+                .getActiveLanguages()
+                .isEmpty,
             onTap: () => showLangFilter(context),
             color: ScreenColors.general,
           )
         ],
       ),
-      body: BlocBuilder<WallBloc, WallState>(
+      body: BlocBuilder<InsightsBloc, InsightsState>(
         builder: (context, state) {
           return state.maybeWhen(
-            loading: () => CustomRefreshIndicator(onRefresh: _getPosts),
+            // loading: () => CustomRefreshIndicator(onRefresh: _getPosts),
             loaded: (posts) {
               if (posts.isEmpty) {
-                return const NoContentWarning();
+                return CustomRefreshIndicator(
+                  onRefresh: _getPosts,
+                  child: const ComingSoonPlaceholder(),
+                );
               }
               return CustomRefreshIndicator(
                 onRefresh: _getPosts,
@@ -68,9 +72,9 @@ class _WallScreenState extends State<WallScreen> {
             },
             error: (message) => CustomRefreshIndicator(
               onRefresh: _getPosts,
-              child: ErrorTextOnScreen(message: message),
+              child: const ComingSoonPlaceholder(),
             ),
-            orElse: () => const SizedBox.shrink(),
+            orElse: () => const ComingSoonPlaceholder(),
           );
         },
       ),
@@ -87,7 +91,7 @@ Future<dynamic> showLangFilter(BuildContext context) {
       return ModalBottomSheet(
         height: MediaQuery.of(context).size.height / 1.5,
         blurBackground: false,
-        child: const BottomSheetWallFilter(),
+        child: const BottomSheetInsightsFilter(),
       );
     },
   );

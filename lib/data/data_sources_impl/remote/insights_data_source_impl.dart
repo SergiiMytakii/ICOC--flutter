@@ -1,14 +1,14 @@
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
-import 'package:icoc/domain/data_sources/remote/wall_data_source.dart';
-import 'package:icoc/domain/model/wall/post.dart';
+import 'package:icoc/domain/data_sources/remote/insights_data_source.dart';
+import 'package:icoc/domain/model/insights/post.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: WallDataSource)
-class WallDataSourceImpl implements WallDataSource {
+@LazySingleton(as: InsightsDataSource)
+class InsightsDataSourceImpl implements InsightsDataSource {
   final FirebaseDataSource _firebaseDataSource;
 
-  WallDataSourceImpl(this._firebaseDataSource);
+  InsightsDataSourceImpl(this._firebaseDataSource);
 
   @override
   Future<List<Post>> getPosts({Set<String> languages = const {}}) async {

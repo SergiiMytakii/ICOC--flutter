@@ -23,4 +23,4 @@ const TERMS_OF_USE = 'termsofuse';
 
 const FEEDBACK_SCREEN = 'feedback';
 const NOTIFICATIONS_SCREEN = 'notifications';
-const WALL = 'wall';
+const INSIGHTS = 'insights';

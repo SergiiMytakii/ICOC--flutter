@@ -20,6 +20,7 @@ class HomeScreenMenuItems {
     return [
       MenuItem('drawer_song_book', ScreenColors.songBook, Icons.music_note,
           SONGBOOK),
+      MenuItem('Insights', ScreenColors.general, Icons.article, INSIGHTS),
       MenuItem('drawer_first_principles', ScreenColors.bibleStudy,
           Icons.import_contacts, BIBLE_STUDY),
       MenuItem('drawer_q_and_a', ScreenColors.QandA, Icons.question_answer,
@@ -30,8 +31,6 @@ class HomeScreenMenuItems {
         Icons.play_arrow,
         VIDEO,
       ),
-      MenuItem('Wall', ScreenColors.general, Icons.article,
-          WALL),
       MenuItem('Feedbacks', ScreenColors.general, Icons.thumb_up_alt,
           FEEDBACK_SCREEN),
     ];

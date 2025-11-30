@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:icoc/presentation/bloc/wall/wall_event.dart';
+import 'package:icoc/presentation/bloc/insights/insights_event.dart';
 import 'package:injectable/injectable.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -18,7 +18,7 @@ import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
-import 'package:icoc/presentation/bloc/wall/wall_bloc.dart';
+import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 @pragma('vm:entry-point')
@@ -199,8 +199,8 @@ class PushNotificationService {
       case 'biblestudy':
         getIt<BibleStudyBloc>().add(const BibleStudyEvent.listRequested());
         break;
-      case 'wall':
-        getIt<WallBloc>().add(const WallEvent.fetch());
+      case 'insights':
+        getIt<InsightsBloc>().add(const InsightsEvent.fetch());
         break;
       default:
         break;
