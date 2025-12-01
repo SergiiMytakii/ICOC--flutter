@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icoc/presentation/bloc/insights/insights_event.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
@@ -19,18 +20,18 @@ import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:icoc/domain/model/notifications/notification_topic.dart';
+
+import 'package:icoc/core/user_languages.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
-@LazySingleton()
+@Singleton()
 class PushNotificationService {
   PushNotificationService(this._localCache);
-
+  final log = Logger();
   final LocalCache _localCache;
   final FlutterLocalNotificationsPlugin _local =
       FlutterLocalNotificationsPlugin();
@@ -46,9 +47,8 @@ class PushNotificationService {
   Future<void> _initLocalNotifications() async {
     const AndroidInitializationSettings androidInit =
         AndroidInitializationSettings('@mipmap/launcher_icon');
-    final DarwinInitializationSettings iosInit =
-        const DarwinInitializationSettings();
-    final InitializationSettings initSettings =
+    const DarwinInitializationSettings iosInit = DarwinInitializationSettings();
+    const InitializationSettings initSettings =
         InitializationSettings(android: androidInit, iOS: iosInit);
     await _local.initialize(initSettings,
         onDidReceiveNotificationResponse: (details) async {
@@ -86,8 +86,7 @@ class PushNotificationService {
   Future<void> _initFCM() async {
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     final messaging = FirebaseMessaging.instance;
-    final settings = await messaging.requestPermission(
-        alert: true, badge: true, sound: true);
+    final settings = await messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized ||
         settings.authorizationStatus == AuthorizationStatus.provisional) {
       bool canRequestToken = true;
@@ -103,26 +102,40 @@ class PushNotificationService {
           if (token != null) {
             await _localCache.saveString(StorageKeys.fcmToken, token);
             await _syncToken(token);
-            await messaging.subscribeToTopic('news');
             final String? locale = _localCache.getString(StorageKeys.locale);
             if (locale != null && locale.isNotEmpty) {
-              await messaging.subscribeToTopic('lang-$locale');
+              await messaging.subscribeToTopic('general-lang-$locale');
             }
-            // Subscribe to persisted notification topics (default: all)
+            final Map<String, dynamic> songsMap =
+                getIt<SongsUserLanguagesHandler>().languages;
+            final Map<String, dynamic> bibleMap =
+                getIt<BibleStudyUserLanguagesHandler>().languages;
+            final Map<String, dynamic> insightsMap =
+                getIt<InsightsUserLanguagesHandler>().languages;
+            await syncTopicLangSubscriptionsFor('songbook', songsMap);
+            await syncTopicLangSubscriptionsFor('biblestudy', bibleMap);
+            await syncTopicLangSubscriptionsFor('insights', insightsMap);
             await _ensureTopicSubscriptionsInitialized();
           }
-        } catch (_) {
-          // Ignore token acquisition failures so app can continue startup
-        }
+        } catch (_) {}
       }
       FirebaseMessaging.instance.onTokenRefresh.listen((t) async {
         await _localCache.saveString(StorageKeys.fcmToken, t);
         await _syncToken(t);
-        await FirebaseMessaging.instance.subscribeToTopic('news');
         final String? locale = _localCache.getString(StorageKeys.locale);
         if (locale != null && locale.isNotEmpty) {
-          await FirebaseMessaging.instance.subscribeToTopic('lang-$locale');
+          await FirebaseMessaging.instance
+              .subscribeToTopic('general-lang-$locale');
         }
+        final Map<String, dynamic> songsMap =
+            getIt<SongsUserLanguagesHandler>().languages;
+        final Map<String, dynamic> bibleMap =
+            getIt<BibleStudyUserLanguagesHandler>().languages;
+        final Map<String, dynamic> insightsMap =
+            getIt<InsightsUserLanguagesHandler>().languages;
+        await syncTopicLangSubscriptionsFor('songbook', songsMap);
+        await syncTopicLangSubscriptionsFor('biblestudy', bibleMap);
+        await syncTopicLangSubscriptionsFor('insights', insightsMap);
         await _ensureTopicSubscriptionsInitialized();
       });
     }
@@ -274,8 +287,12 @@ class PushNotificationService {
     final String? prev = _localCache.getString(StorageKeys.locale);
     if (prev != null && prev.isNotEmpty && prev != newLocale) {
       await FirebaseMessaging.instance.unsubscribeFromTopic('lang-$prev');
+      await FirebaseMessaging.instance
+          .unsubscribeFromTopic('general-lang-$prev');
     }
     await FirebaseMessaging.instance.subscribeToTopic('lang-$newLocale');
+    await FirebaseMessaging.instance
+        .subscribeToTopic('general-lang-$newLocale');
     await _localCache.saveString(StorageKeys.locale, newLocale);
   }
 
@@ -297,6 +314,37 @@ class PushNotificationService {
       for (final l in prevActive.difference(activeLocales)) l: false,
     };
     await _localCache.saveMap(StorageKeys.notificationLangs, nextMap);
+  }
+
+  Future<void> syncTopicLangSubscriptionsFor(
+      String topic, Map<String, dynamic> activeLanguages) async {
+    final Map<String, bool> topicStates = await getTopicStates();
+    if (topicStates[topic] != true) {
+      return;
+    }
+    final Set<String> toUnsub = activeLanguages.entries
+        .where((e) => e.value == false)
+        .map((e) => e.key)
+        .toSet();
+    final Set<String> toSub = activeLanguages.entries
+        .where((e) => e.value == true)
+        .map((e) => e.key)
+        .toSet();
+    for (final l in toUnsub) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('$topic-lang-$l');
+    }
+    print('Unsubscribed from $topic, ${toUnsub.toString()}');
+    for (final l in toSub) {
+      await FirebaseMessaging.instance.subscribeToTopic('$topic-lang-$l');
+    }
+    print('Subscribed to $topic, ${toSub.toString()}');
+  }
+
+  Future<void> unsubscribeAllLangsForTopic(String topic) async {
+    for (final l in languagesCodes.keys) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic('$topic-lang-$l');
+      print('Unsubscribed from $topic-lang-$l');
+    }
   }
 
   // Topics management
@@ -329,14 +377,19 @@ class PushNotificationService {
     return normalized;
   }
 
+// used fron notifications settings screen
   Future<void> updateTopicSubscription({
     required String topic,
     required bool enabled,
   }) async {
     if (enabled) {
       await FirebaseMessaging.instance.subscribeToTopic(topic);
+      final Map<String, dynamic> langs =
+          _getLanguagesMapForTopicFromHandler(topic);
+      await syncTopicLangSubscriptionsFor(topic, langs);
     } else {
       await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+      await unsubscribeAllLangsForTopic(topic);
     }
     final Map<String, bool> current = await getTopicStates();
     current[topic] = enabled;
@@ -345,18 +398,18 @@ class PushNotificationService {
 
   Future<void> updateTopicSubscriptions(Set<String> activeTopics) async {
     final Map<String, bool> current = await getTopicStates();
-    final Set<String> prevActive = current.entries
-        .where((e) => e.value == true)
-        .map((e) => e.key)
-        .toSet();
+    final Set<String> prevActive =
+        current.entries.where((e) => e.value == true).map((e) => e.key).toSet();
     final Set<String> toUnsub = prevActive.difference(activeTopics);
     final Set<String> toSub = activeTopics.difference(prevActive);
     for (final t in toUnsub) {
       await FirebaseMessaging.instance.unsubscribeFromTopic(t);
     }
+    print('Unsubscribed from $toUnsub');
     for (final t in toSub) {
       await FirebaseMessaging.instance.subscribeToTopic(t);
     }
+    print('Subscribed to ${toSub.toString()}');
     final Map<String, bool> nextMap = {
       for (final t in activeTopics) t: true,
       for (final t in prevActive.difference(activeTopics)) t: false,
@@ -364,12 +417,48 @@ class PushNotificationService {
     await _localCache.saveMap(StorageKeys.notificationTopics, nextMap);
   }
 
+//subscribes  on every start
   Future<void> _ensureTopicSubscriptionsInitialized() async {
     final Map<String, bool> states = await getTopicStates();
     for (final entry in states.entries) {
       if (entry.value == true) {
-        await FirebaseMessaging.instance.subscribeToTopic(entry.key);
+        final Map<String, dynamic> langs =
+            _getLanguagesMapForTopicFromHandler(entry.key);
+        if (langs.isEmpty) {
+          final String? l = _localCache.getString(StorageKeys.locale);
+          if (l != null && l.isNotEmpty) {
+            await FirebaseMessaging.instance
+                .subscribeToTopic('${entry.key}-lang-$l');
+          }
+        } else {
+          for (final e in langs.entries) {
+            if (e.value == true) {
+              await FirebaseMessaging.instance
+                  .subscribeToTopic('${entry.key}-lang-${e.key}');
+            }
+          }
+        }
       }
+    }
+    final String? locale = _localCache.getString(StorageKeys.locale);
+    if (locale != null && locale.isNotEmpty) {
+      await FirebaseMessaging.instance.subscribeToTopic('general-lang-$locale');
+    }
+  }
+
+  Map<String, dynamic> _getLanguagesMapForTopicFromHandler(String topic) {
+    switch (topic) {
+      case 'songbook':
+        return Map<String, dynamic>.from(
+            getIt<SongsUserLanguagesHandler>().languages);
+      case 'biblestudy':
+        return Map<String, dynamic>.from(
+            getIt<BibleStudyUserLanguagesHandler>().languages);
+      case 'insights':
+        return Map<String, dynamic>.from(
+            getIt<InsightsUserLanguagesHandler>().languages);
+      default:
+        return {};
     }
   }
 }

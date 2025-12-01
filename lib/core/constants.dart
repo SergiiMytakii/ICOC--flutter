@@ -58,6 +58,7 @@ class StorageKeys {
   static const String songScrollSpeed = 'songScrollSpeed';
   static const String wallLanguages = 'wallLanguages';
   static const String shouldWallFilterAnimate = 'shouldWallFilterAnimate';
+  static const String insightsLanguages = 'insightsLanguages';
   // Add more keys as needed
 }
 

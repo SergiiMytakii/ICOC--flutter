@@ -90,7 +90,7 @@ class _NotificationSettingsScreenState
     required bool enabled,
   }) {
     return SwitchListTile.adaptive(
-      activeColor: AdaptiveTheme.of(context).theme.focusColor,
+      activeThumbColor: AdaptiveTheme.of(context).theme.focusColor,
       title: Text(
         topic.labelKey.tr(),
         style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,

@@ -6,16 +6,13 @@ class ComingSoonPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const SizedBox(height: 200),
-        const Padding(
-          padding: EdgeInsets.all(8),
-          child: Center(
-            child: _ComingSoonText(),
-          ),
+    return const Center(
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Center(
+          child: _ComingSoonText(),
         ),
-      ],
+      ),
     );
   }
 }

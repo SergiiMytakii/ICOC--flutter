@@ -5,6 +5,20 @@ import * as admin from "firebase-admin";
 setGlobalOptions({maxInstances: 10, region: "europe-central2"});
 admin.initializeApp();
 
+const allowedBaseTopics = new Set([
+  "songbook",
+  "insights",
+  "biblestudy",
+  "general",
+]);
+const allowedLangs = new Set([
+  "en", "uk", "ru",
+  "de", "fr", "it",
+  "lt", "lv", "et",
+  "no", "pl", "ro",
+  "sv", "bg",
+]);
+
 const envAllowed = (process.env.ALLOWED_ADMIN_EMAILS || "")
   .split(",")
   .map((e) => e.trim())
@@ -124,6 +138,109 @@ export const sendTopics = onRequest(
       topic: string; messageId?: string; error?: string;
     }> = [];
     for (const t of topics) {
+      const message: admin.messaging.Message = {
+        topic: t,
+        notification: {title, body},
+        data: data ?? {},
+        android: {priority: "high"},
+        apns: {headers: {"apns-priority": "10"}, payload: {aps: {}}},
+      };
+      try {
+        const id = await admin.messaging().send(message);
+        results.push({topic: t, messageId: id});
+      } catch (e: unknown) {
+        results.push({topic: t, error: String(e)});
+      }
+    }
+    res.json({results});
+  },
+);
+
+/** Sends to composite topic `${baseTopic}-lang-${lang}` */
+export const sendTopicByLang = onRequest(
+  {cors: true, region: "europe-central2"},
+  async (req, res) => {
+    if (applyCors(req, res)) return;
+    if (req.method !== "POST") {
+      res.status(405).end();
+      return;
+    }
+    const decoded = await verifyIdToken(
+      req.headers.authorization as string,
+    );
+    if (!decoded || !isAllowed(decoded.email || null)) {
+      res.status(403).json({error: "unauthorized"});
+      return;
+    }
+    const {baseTopic, lang, title, body, data} = req.body ?? {};
+    if (!baseTopic || !lang || !title || !body) {
+      res.status(400).json({error: "missing_fields"});
+      return;
+    }
+    if (!allowedBaseTopics.has(String(baseTopic))) {
+      res.status(400).json({error: "invalid_base_topic"});
+      return;
+    }
+    if (!allowedLangs.has(String(lang))) {
+      res.status(400).json({error: "invalid_lang"});
+      return;
+    }
+    const topic = `${baseTopic}-lang-${lang}`;
+    const message: admin.messaging.Message = {
+      topic,
+      notification: {title, body},
+      data: data ?? {},
+      android: {priority: "high"},
+      apns: {headers: {"apns-priority": "10"}, payload: {aps: {}}},
+    };
+    try {
+      const id = await admin.messaging().send(message);
+      res.json({messageId: id, topic});
+    } catch (e: unknown) {
+      res.status(400).json({error: String(e)});
+    }
+  },
+);
+
+/** Sends to multiple composite `${baseTopic}-lang-<code>` topics in one call */
+export const sendTopicForLangs = onRequest(
+  {cors: true, region: "europe-central2"},
+  async (req, res) => {
+    if (applyCors(req, res)) return;
+    if (req.method !== "POST") {
+      res.status(405).end();
+      return;
+    }
+    const decoded = await verifyIdToken(
+      req.headers.authorization as string,
+    );
+    if (!decoded || !isAllowed(decoded.email || null)) {
+      res.status(403).json({error: "unauthorized"});
+      return;
+    }
+    const {baseTopic, langs, title, body, data} = req.body ?? {};
+    const invalid = !baseTopic || !Array.isArray(langs) || langs.length === 0 ||
+      !title || !body;
+    if (invalid) {
+      res.status(400).json({error: "missing_fields"});
+      return;
+    }
+    if (!allowedBaseTopics.has(String(baseTopic))) {
+      res.status(400).json({error: "invalid_base_topic"});
+      return;
+    }
+    const results: Array<{
+      topic: string; messageId?: string; error?: string;
+    }> = [];
+    for (const l of langs) {
+      if (!allowedLangs.has(String(l))) {
+        results.push({
+          topic: `${baseTopic}-lang-${String(l)}`,
+          error: "invalid_lang",
+        });
+        continue;
+      }
+      const t = `${baseTopic}-lang-${String(l)}`;
       const message: admin.messaging.Message = {
         topic: t,
         notification: {title, body},

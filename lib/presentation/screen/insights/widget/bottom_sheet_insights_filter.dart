@@ -12,7 +12,8 @@ class BottomSheetInsightsFilter extends StatefulWidget {
   const BottomSheetInsightsFilter({super.key});
 
   @override
-  State<BottomSheetInsightsFilter> createState() => _BottomSheetInsightsFilterState();
+  State<BottomSheetInsightsFilter> createState() =>
+      _BottomSheetInsightsFilterState();
 }
 
 class _BottomSheetInsightsFilterState extends State<BottomSheetInsightsFilter> {
@@ -38,8 +39,8 @@ class _BottomSheetInsightsFilterState extends State<BottomSheetInsightsFilter> {
           ),
           Expanded(
             child: ListView(
-              children:
-                  List.generate(wallUserLanguagesHandler.languages.length, (index) {
+              children: List.generate(wallUserLanguagesHandler.languages.length,
+                  (index) {
                 return MyCheckboxListTile(
                     allLanguages: wallUserLanguagesHandler.languages,
                     color: ScreenColors.general,
@@ -48,12 +49,9 @@ class _BottomSheetInsightsFilterState extends State<BottomSheetInsightsFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await wallUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
-                      final activeSet = activeLanguages.entries
-                          .where((e) => e.value == true)
-                          .map((e) => e.key)
-                          .toSet();
                       await getIt<PushNotificationService>()
-                          .updateLanguageSubscriptions(activeSet);
+                          .syncTopicLangSubscriptionsFor(
+                              'insights', activeLanguages);
                       getIt<InsightsBloc>().add(const InsightsEvent.fetch());
                       setState(() {});
                     },

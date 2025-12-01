@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:icoc/core/notifications/push_notification_service.dart';
-import 'package:icoc/domain/model/notifications/notification_topic.dart';
 
 part 'notification_settings_event.dart';
 part 'notification_settings_state.dart';
@@ -56,4 +55,3 @@ class NotificationSettingsBloc
     }
   }
 }
-

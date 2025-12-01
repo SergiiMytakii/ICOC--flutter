@@ -126,12 +126,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh() async {
     await songsUserLanguagesHandler.saveAllLanguages(allLanguages);
     await songsUserLanguagesHandler.updatePrimaryLanguage(primaryLang);
-    final activeSet = allLanguages.entries
-        .where((e) => e.value == true)
-        .map((e) => e.key)
-        .toSet();
     await getIt<PushNotificationService>()
-        .updateLanguageSubscriptions(activeSet);
+        .syncTopicLangSubscriptionsFor('songbook', allLanguages);
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
     setState(() {});
   }

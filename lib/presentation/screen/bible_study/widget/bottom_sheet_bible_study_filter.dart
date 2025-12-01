@@ -53,12 +53,9 @@ class _BottomSheetBibleStudyFilterState
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await bibleStudyUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
-                      final activeSet = activeLanguages.entries
-                          .where((e) => e.value == true)
-                          .map((e) => e.key)
-                          .toSet();
                       await getIt<PushNotificationService>()
-                          .updateLanguageSubscriptions(activeSet);
+                          .syncTopicLangSubscriptionsFor(
+                              'biblestudy', activeLanguages);
                       getIt<BibleStudyBloc>()
                           .add(const BibleStudyEvent.listRequested());
                     },

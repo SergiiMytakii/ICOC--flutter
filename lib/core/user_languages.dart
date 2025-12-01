@@ -38,7 +38,19 @@ abstract class UserLanguagesHandler {
 @singleton
 class BibleStudyUserLanguagesHandler extends UserLanguagesHandler {
   BibleStudyUserLanguagesHandler(super._localCache) {
-    languages.addAll(_localCache.getMap(StorageKeys.bibleStudyLanguages) ?? {});
+    final cachedLanguages =
+        _localCache.getMap(StorageKeys.bibleStudyLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -66,7 +78,18 @@ class BibleStudyUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class QandAUserLanguagesHandler extends UserLanguagesHandler {
   QandAUserLanguagesHandler(super._localCache) {
-    languages.addAll(_localCache.getMap(StorageKeys.qAndALanguages) ?? {});
+    final cachedLanguages = _localCache.getMap(StorageKeys.qAndALanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -93,7 +116,19 @@ class QandAUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class VideosUserLanguagesHandler extends UserLanguagesHandler {
   VideosUserLanguagesHandler(super._localCache) {
-    languages.addAll(_localCache.getMap(StorageKeys.videosAllLanguages) ?? {});
+    final cachedLanguages =
+        _localCache.getMap(StorageKeys.videosAllLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -120,7 +155,18 @@ class VideosUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class SongsUserLanguagesHandler extends UserLanguagesHandler {
   SongsUserLanguagesHandler(super._localCache) {
-    languages = _localCache.getMap(StorageKeys.allSongsLanguages) ?? {};
+    final cachedLanguages = _localCache.getMap(StorageKeys.allSongsLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -159,10 +205,10 @@ class SongsUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class InsightsUserLanguagesHandler extends UserLanguagesHandler {
   InsightsUserLanguagesHandler(super._localCache) {
-    final cachedLanguages = _localCache.getMap(StorageKeys.wallLanguages);
+    final cachedLanguages = _localCache.getMap(StorageKeys.insightsLanguages);
     if (cachedLanguages == null || cachedLanguages.isEmpty) {
-      languages = Map.from(languagesCodes)
-          .map((key, value) => MapEntry(key, false));
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
       if (languages.containsKey(locale)) {
         languages[locale] = true;
       } else if (languages.isNotEmpty) {
@@ -176,18 +222,18 @@ class InsightsUserLanguagesHandler extends UserLanguagesHandler {
   @override
   Future<void> addLanguage(String lang, bool isActive) async {
     super.addLanguage(lang, isActive);
-    _localCache.saveMap(StorageKeys.wallLanguages, languages);
+    _localCache.saveMap(StorageKeys.insightsLanguages, languages);
   }
 
   @override
   Future<void> updateLanguage(String lang, bool isActive) async {
     super.updateLanguage(lang, isActive);
-    _localCache.saveMap(StorageKeys.wallLanguages, languages);
+    _localCache.saveMap(StorageKeys.insightsLanguages, languages);
   }
 
   @override
   Future<void> saveAllLanguages(Map<String, dynamic> updatedLanguages) async {
     super.saveAllLanguages(updatedLanguages);
-    await _localCache.saveMap(StorageKeys.wallLanguages, updatedLanguages);
+    await _localCache.saveMap(StorageKeys.insightsLanguages, updatedLanguages);
   }
 }
