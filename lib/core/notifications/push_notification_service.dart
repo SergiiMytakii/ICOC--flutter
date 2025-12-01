@@ -56,11 +56,12 @@ class PushNotificationService {
       if (payload != null && payload.isNotEmpty) {
         try {
           final data = json.decode(payload) as Map<String, dynamic>;
-          await _navigateByData(data);
           await _refreshByData(data);
+          await _navigateByData(data);
           return;
         } catch (_) {}
       }
+      getIt<NotificationsBloc>().add(const NotificationsListRequested());
       router.go(NOTIFICATIONS_SCREEN);
     });
     await _local
@@ -175,8 +176,8 @@ class PushNotificationService {
 
   void _handleNavigation(RemoteMessage message) {
     final data = message.data;
-    _navigateByData(data);
     _refreshByData(data);
+    _navigateByData(data);
   }
 
   Future<void> _navigateByData(Map<String, dynamic> data) async {
@@ -286,11 +287,9 @@ class PushNotificationService {
   Future<void> updateLanguageSubscription(String newLocale) async {
     final String? prev = _localCache.getString(StorageKeys.locale);
     if (prev != null && prev.isNotEmpty && prev != newLocale) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic('lang-$prev');
       await FirebaseMessaging.instance
           .unsubscribeFromTopic('general-lang-$prev');
     }
-    await FirebaseMessaging.instance.subscribeToTopic('lang-$newLocale');
     await FirebaseMessaging.instance
         .subscribeToTopic('general-lang-$newLocale');
     await _localCache.saveString(StorageKeys.locale, newLocale);
@@ -304,10 +303,10 @@ class PushNotificationService {
     final Set<String> toUnsub = prevActive.difference(activeLocales);
     final Set<String> toSub = activeLocales.difference(prevActive);
     for (final l in toUnsub) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic('lang-$l');
+      await FirebaseMessaging.instance.unsubscribeFromTopic('general-lang-$l');
     }
     for (final l in toSub) {
-      await FirebaseMessaging.instance.subscribeToTopic('lang-$l');
+      await FirebaseMessaging.instance.subscribeToTopic('general-lang-$l');
     }
     final Map<String, dynamic> nextMap = {
       for (final l in activeLocales) l: true,

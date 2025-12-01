@@ -24,6 +24,8 @@ import 'package:icoc/presentation/screen/video/list_topics_screen.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 import 'package:icoc/presentation/screen/insights/insights_screen.dart';
+import 'package:icoc/presentation/screen/insights/one_insight_screen.dart';
+import 'package:icoc/domain/model/insights/post.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
@@ -83,6 +85,16 @@ final GoRouter router = GoRouter(
               builder: (BuildContext context, GoRouterState state) =>
                   const BibleStudyScreen(),
               routes: [
+                // Alias route to open a lesson directly: /biblestudy/lessons/:topicId/:id
+                GoRoute(
+                  path: 'lessons/:topicId/:id',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final id = state.pathParameters['id'];
+                    final topicId = state.pathParameters['topicId'];
+                    return OneLessonScreen(
+                        lessonId: id ?? '', topicId: topicId ?? '');
+                  },
+                ),
                 GoRoute(
                     path: '$ONE_TOPIC_SCREEN/:topicId',
                     builder: (BuildContext context, GoRouterState state) {
@@ -137,6 +149,32 @@ final GoRouter router = GoRouter(
             path: INSIGHTS,
             builder: (BuildContext context, GoRouterState state) =>
                 const InsightsScreen(),
+            routes: [
+              GoRoute(
+                path: ONE_INSIGHT_SCREEN,
+                builder: (BuildContext context, GoRouterState state) {
+                  final Post? post =
+                      state.extra is Post ? state.extra as Post : null;
+                  return OneInsightScreen(post: post);
+                },
+              ),
+              GoRoute(
+                path: 'post/:id',
+                builder: (BuildContext context, GoRouterState state) {
+                  final id = state.pathParameters['id'];
+                  final lang = state.uri.queryParameters['lang'];
+                  return OneInsightScreen(postId: id ?? '', lang: lang);
+                },
+              ),
+              GoRoute(
+                path: 'article/:id',
+                builder: (BuildContext context, GoRouterState state) {
+                  final id = state.pathParameters['id'];
+                  final lang = state.uri.queryParameters['lang'];
+                  return OneInsightScreen(postId: id ?? '', lang: lang);
+                },
+              ),
+            ],
           ),
 
           //menu screens

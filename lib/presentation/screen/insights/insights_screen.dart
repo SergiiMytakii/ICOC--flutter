@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:go_router/go_router.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
@@ -65,7 +67,11 @@ class _InsightsScreenState extends State<InsightsScreen> {
                 child: ListView.builder(
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
-                    return PostCard(post: posts[index]);
+                    return InkWell(
+                      onTap: () => context.go('/$INSIGHTS/$ONE_INSIGHT_SCREEN',
+                          extra: posts[index]),
+                      child: PostCard(post: posts[index]),
+                    );
                   },
                 ),
               );
