@@ -63,6 +63,8 @@ import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart'
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart'
     as _i900;
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart' as _i707;
+import 'package:icoc/presentation/bloc/notification_settings/notification_settings_bloc.dart'
+    as _i373;
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart'
     as _i1016;
 import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart'
@@ -180,6 +182,8 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.factory<_i373.NotificationSettingsBloc>(() =>
+        _i373.NotificationSettingsBloc(gh<_i706.PushNotificationService>()));
     gh.lazySingleton<_i1018.InsightsRepository>(
         () => _i227.InsightsRepositoryImpl(gh<_i963.InsightsDataSource>()));
     gh.singleton<_i707.BibleStudyUserLanguagesHandler>(

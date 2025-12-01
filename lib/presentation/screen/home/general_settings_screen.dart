@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
+import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/modal_bottom_sheet.dart';
 
@@ -41,8 +43,21 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
             const SizedBox(
               height: 40,
             ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+              leading: Icon(
+                Icons.notifications,
+                color: AdaptiveTheme.of(context).theme.iconTheme.color,
+              ),
+              title: Text(
+                'Notifications'.tr(),
+                style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => context.go('/$NOTIFICATION_SETTINGS'),
+            ),
             SwitchListTile.adaptive(
-              activeColor: AdaptiveTheme.of(context).theme.focusColor,
+              activeThumbColor: AdaptiveTheme.of(context).theme.focusColor,
               title: Text(
                 'settings_dark_theme'.tr(),
                 style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
@@ -105,6 +120,9 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
                                       await context.setLocale(Locale(language));
                                       getIt<LocalCache>().saveString(
                                           StorageKeys.locale, language);
+                                      // Update FCM language topic subscriptions
+                                      await getIt<PushNotificationService>()
+                                          .updateLanguageSubscription(language);
                                       FirebaseAnalytics.instance.logEvent(
                                           name: 'change language',
                                           parameters: {'language': language});

@@ -45,6 +45,7 @@ class StorageKeys {
   static const String notifications = 'notifications';
   static const String fcmToken = 'fcmToken';
   static const String notificationLangs = 'notificationLangs';
+  static const String notificationTopics = 'notificationTopics';
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
   static const String shouldVideoFilterAnimate = 'shouldVideoFilterAnimate';

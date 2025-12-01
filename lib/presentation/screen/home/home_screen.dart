@@ -107,12 +107,8 @@ class _HomeScreenState extends State<HomeScreen>
   Stack _buildMenu(Size screenSize) {
     return Stack(
       children: [
-        Positioned(
-          left: screenSize.height * 0.06,
-          top: screenSize.height * 0.1,
-          child: const DimmedCircle(),
-        ),
-        MyDrawer(_menuAnimationController),
+        const DimmedBackground(),
+        MyDrawer(_menuAnimationController, isDrawerOpenNotifier),
       ],
     );
   }
@@ -123,10 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
           child: ValueListenableBuilder<bool>(
             valueListenable: isDrawerOpenNotifier,
             builder: (context, isDrawerOpen, _) => isDrawerOpen
-                ? const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  )
+                ? const SizedBox.shrink()
                 : Text(
                     'Menu'.tr(context: context),
                     style: screenSize.width > 400
@@ -152,14 +145,14 @@ class _HomeScreenState extends State<HomeScreen>
           enlargeFactor: 0.55,
           autoPlay: true,
           enlargeCenterPage: true,
-          autoPlayInterval: const Duration(seconds: 6),
+          autoPlayInterval: const Duration(seconds: 8),
           viewportFraction: 0.3,
           enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-          autoPlayAnimationDuration: const Duration(milliseconds: 1200),
+          autoPlayAnimationDuration: const Duration(milliseconds: 2000),
           scrollDirection: Axis.vertical,
           onPageChanged: (index, reason) {
             currentItem = items[index];
-            HapticFeedback.heavyImpact();
+            HapticFeedback.mediumImpact();
           },
           onScrolled: (scrollPosition) {
             angleNotifier.value = scrollPosition! - 10000;

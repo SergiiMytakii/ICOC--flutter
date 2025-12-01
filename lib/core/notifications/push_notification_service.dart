@@ -20,6 +20,7 @@ import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:icoc/domain/model/notifications/notification_topic.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -39,6 +40,7 @@ class PushNotificationService {
     tz.initializeTimeZones();
     await _initLocalNotifications();
     await _initFCM();
+    await _ensureTopicSubscriptionsInitialized();
   }
 
   Future<void> _initLocalNotifications() async {
@@ -106,6 +108,8 @@ class PushNotificationService {
             if (locale != null && locale.isNotEmpty) {
               await messaging.subscribeToTopic('lang-$locale');
             }
+            // Subscribe to persisted notification topics (default: all)
+            await _ensureTopicSubscriptionsInitialized();
           }
         } catch (_) {
           // Ignore token acquisition failures so app can continue startup
@@ -119,6 +123,7 @@ class PushNotificationService {
         if (locale != null && locale.isNotEmpty) {
           await FirebaseMessaging.instance.subscribeToTopic('lang-$locale');
         }
+        await _ensureTopicSubscriptionsInitialized();
       });
     }
     FirebaseMessaging.onMessage.listen((message) async {
@@ -292,5 +297,79 @@ class PushNotificationService {
       for (final l in prevActive.difference(activeLocales)) l: false,
     };
     await _localCache.saveMap(StorageKeys.notificationLangs, nextMap);
+  }
+
+  // Topics management
+  static final Set<String> _defaultTopics = {
+    'songbook',
+    'insights',
+    'biblestudy',
+  };
+
+  Future<Map<String, bool>> getTopicStates() async {
+    final Map<String, dynamic>? saved =
+        _localCache.getMap(StorageKeys.notificationTopics);
+    if (saved == null || saved.isEmpty) {
+      // Default: subscribe to all topics and persist
+      final Map<String, bool> defaults = {
+        for (final t in _defaultTopics) t: true,
+      };
+      await _localCache.saveMap(StorageKeys.notificationTopics, defaults);
+      return defaults;
+    }
+    // Normalize to bool map
+    final Map<String, bool> normalized = {
+      for (final e in saved.entries)
+        e.key: (e.value is bool) ? e.value as bool : (e.value == true),
+    };
+    // Ensure all defaults exist
+    for (final t in _defaultTopics) {
+      normalized[t] = normalized[t] ?? true;
+    }
+    return normalized;
+  }
+
+  Future<void> updateTopicSubscription({
+    required String topic,
+    required bool enabled,
+  }) async {
+    if (enabled) {
+      await FirebaseMessaging.instance.subscribeToTopic(topic);
+    } else {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+    }
+    final Map<String, bool> current = await getTopicStates();
+    current[topic] = enabled;
+    await _localCache.saveMap(StorageKeys.notificationTopics, current);
+  }
+
+  Future<void> updateTopicSubscriptions(Set<String> activeTopics) async {
+    final Map<String, bool> current = await getTopicStates();
+    final Set<String> prevActive = current.entries
+        .where((e) => e.value == true)
+        .map((e) => e.key)
+        .toSet();
+    final Set<String> toUnsub = prevActive.difference(activeTopics);
+    final Set<String> toSub = activeTopics.difference(prevActive);
+    for (final t in toUnsub) {
+      await FirebaseMessaging.instance.unsubscribeFromTopic(t);
+    }
+    for (final t in toSub) {
+      await FirebaseMessaging.instance.subscribeToTopic(t);
+    }
+    final Map<String, bool> nextMap = {
+      for (final t in activeTopics) t: true,
+      for (final t in prevActive.difference(activeTopics)) t: false,
+    };
+    await _localCache.saveMap(StorageKeys.notificationTopics, nextMap);
+  }
+
+  Future<void> _ensureTopicSubscriptionsInitialized() async {
+    final Map<String, bool> states = await getTopicStates();
+    for (final entry in states.entries) {
+      if (entry.value == true) {
+        await FirebaseMessaging.instance.subscribeToTopic(entry.key);
+      }
+    }
   }
 }

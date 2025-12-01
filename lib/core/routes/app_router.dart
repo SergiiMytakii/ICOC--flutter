@@ -11,6 +11,7 @@ import 'package:icoc/presentation/screen/home/about_app_screen.dart';
 import 'package:icoc/presentation/screen/home/general_settings_screen.dart';
 import 'package:icoc/presentation/screen/home/home_screen.dart';
 import 'package:icoc/presentation/screen/home/notifications_screen.dart';
+import 'package:icoc/presentation/screen/home/notification_settings_screen.dart';
 import 'package:icoc/presentation/screen/home/share_app_screen.dart';
 import 'package:icoc/presentation/screen/home/terms_of_use_screen.dart';
 import 'package:icoc/presentation/screen/q&a/one_q&a_screen.dart';
@@ -144,6 +145,11 @@ final GoRouter router = GoRouter(
             path: SETTINGS,
             builder: (BuildContext context, GoRouterState state) =>
                 const GeneralSettingsScreen(),
+          ),
+          FadeGoRoute(
+            path: NOTIFICATION_SETTINGS,
+            builder: (BuildContext context, GoRouterState state) =>
+                const NotificationSettingsScreen(),
           ),
           FadeGoRoute(
             path: SHARE_APP_SCREEN,

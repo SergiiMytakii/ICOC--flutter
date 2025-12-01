@@ -182,4 +182,6 @@
         "Primary": "Primary",
         "Insights": "Insights",
         "Coming soon": "🚧 Coming soon"
+        ,
+          "notification_choose_topics": "Choose which topics you want to receive notifications for"
         }
