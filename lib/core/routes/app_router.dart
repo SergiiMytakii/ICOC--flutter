@@ -26,6 +26,7 @@ import 'package:icoc/presentation/screen/video/video_player_screen.dart';
 import 'package:icoc/presentation/screen/insights/insights_screen.dart';
 import 'package:icoc/presentation/screen/insights/one_insight_screen.dart';
 import 'package:icoc/domain/model/insights/post.dart';
+import 'package:icoc/presentation/screen/webview/webview_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
@@ -143,6 +144,14 @@ final GoRouter router = GoRouter(
             path: FEEDBACK_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const FeedbackScreen(),
+          ),
+
+          FadeGoRoute(
+            path: WEBVIEW_SCREEN,
+            builder: (BuildContext context, GoRouterState state) {
+              final String? url = state.extra is String ? state.extra as String : state.uri.queryParameters['url'];
+              return WebViewScreen(url: url ?? '');
+            },
           ),
 
           FadeGoRoute(

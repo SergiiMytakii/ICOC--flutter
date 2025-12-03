@@ -177,23 +177,52 @@ class PushNotificationService {
   void _handleNavigation(RemoteMessage message) {
     final data = message.data;
     _refreshByData(data);
-    _navigateByData(data);
+    _navigateByData(data, from: message.from);
   }
 
-  Future<void> _navigateByData(Map<String, dynamic> data) async {
+  Future<void> _navigateByData(Map<String, dynamic> data,
+      {String? from}) async {
+    final String topicInData = (data['topic'] ?? '') as String;
+    final bool isGeneralTopic = topicInData.startsWith('general') ||
+        (from != null && from.contains('/topics/general'));
+    if (isGeneralTopic) {
+      router.go('/$NOTIFICATIONS_SCREEN');
+      return;
+    }
+
     final link = (data['link'] ?? '') as String;
     if (link.isNotEmpty) {
       final uri = Uri.parse(link);
       if (uri.scheme == 'http' || uri.scheme == 'https') {
-        final path = uri.path.startsWith('/') ? uri.path : '/${uri.path}';
-        final target = uri.hasQuery ? '$path?${uri.query}' : path;
-        router.go(target);
+        router.go('/$NOTIFICATIONS_SCREEN');
         return;
       }
-      router.go(link);
+      final target = link.startsWith('/') ? link : '/$link';
+      final segments = Uri.parse(target).pathSegments;
+      if (segments.isNotEmpty) {
+        final first = segments.first;
+        switch (first) {
+          case 'songbook':
+          case 'qanda':
+          case 'video':
+          case 'biblestudy':
+          case 'insights':
+          case 'notifications':
+          case 'settings':
+          case 'shareapp':
+          case 'termsofuse':
+          case 'aboutapp':
+            router.go(target);
+            return;
+          default:
+            router.go('/$NOTIFICATIONS_SCREEN');
+            return;
+        }
+      }
+      router.go('/$NOTIFICATIONS_SCREEN');
       return;
     }
-    router.go(NOTIFICATIONS_SCREEN);
+    router.go('/$NOTIFICATIONS_SCREEN');
   }
 
   Future<void> _refreshByData(Map<String, dynamic> data) async {

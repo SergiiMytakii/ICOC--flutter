@@ -27,7 +27,7 @@ class BibleStudyScreen extends StatefulWidget {
 }
 
 class _BibleStudyScreenState extends State<BibleStudyScreen> {
-  final GlobalKey tooltipKey1 = GlobalKey();
+  final GlobalKey<TooltipState> tooltipKey1 = GlobalKey<TooltipState>();
   bool _tooltipVisible = true;
 
   @override
@@ -185,7 +185,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
             0.0;
     if (tooltipShown < 5.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
-        (tooltipKey1.currentState as TooltipState).ensureTooltipVisible();
+        tooltipKey1.currentState?.ensureTooltipVisible();
         Future.delayed(const Duration(seconds: 6), () {
           if (mounted) {
             setState(() {

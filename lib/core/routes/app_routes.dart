@@ -26,3 +26,4 @@ const FEEDBACK_SCREEN = 'feedback';
 const NOTIFICATIONS_SCREEN = 'notifications';
 const INSIGHTS = 'insights';
 const ONE_INSIGHT_SCREEN = 'oneinsight';
+const WEBVIEW_SCREEN = 'webview';
