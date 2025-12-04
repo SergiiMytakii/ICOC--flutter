@@ -6,6 +6,8 @@ import 'package:icoc/domain/model/notifications/notification_topic.dart';
 import 'package:icoc/presentation/bloc/notification_settings/notification_settings_bloc.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/core/notifications/push_notification_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -23,12 +25,14 @@ class _NotificationSettingsScreenState
     NotificationTopic.insights,
     NotificationTopic.biblestudy,
   ];
+  bool _notificationsDenied = false;
 
   @override
   void initState() {
     super.initState();
     _bloc = NotificationSettingsBloc(getIt<PushNotificationService>())
       ..add(const NotificationSettingsEvent.loadRequested());
+    _checkSystemNotificationsStatus();
   }
 
   @override
@@ -52,6 +56,28 @@ class _NotificationSettingsScreenState
               loaded: (topicStates) => ListView(
                 children: [
                   const SizedBox(height: 8),
+                  if (_notificationsDenied)
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Notifications are disabled at the system level.'.tr(),
+                            style: AdaptiveTheme.of(context)
+                                .theme
+                                .textTheme
+                                .bodyLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          TextButton.icon(
+                            onPressed: _openSystemSettings,
+                            icon: const Icon(Icons.settings),
+                            label: Text('Open Settings'.tr()),
+                          ),
+                        ],
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Text(
@@ -63,7 +89,9 @@ class _NotificationSettingsScreenState
                   ...topics.map((t) => _buildToggle(
                         context: context,
                         topic: t,
-                        enabled: topicStates[t.topic] ?? true,
+                        enabled: _notificationsDenied
+                            ? false
+                            : (topicStates[t.topic] ?? true),
                       )),
                 ],
               ),
@@ -97,6 +125,10 @@ class _NotificationSettingsScreenState
       ),
       value: enabled,
       onChanged: (val) {
+        if (_notificationsDenied && val) {
+          _showEnableSystemDialog();
+          return;
+        }
         context.read<NotificationSettingsBloc>().add(
               NotificationSettingsEvent.toggleRequested(
                 topic: topic.topic,
@@ -120,5 +152,44 @@ class _NotificationSettingsScreenState
       case NotificationTopic.biblestudy:
         return Icons.import_contacts;
     }
+  }
+
+  Future<void> _checkSystemNotificationsStatus() async {
+    final settings = await FirebaseMessaging.instance.getNotificationSettings();
+    setState(() {
+      _notificationsDenied = settings.authorizationStatus ==
+          AuthorizationStatus.denied;
+    });
+  }
+
+  Future<void> _openSystemSettings() async {
+    final uri = Uri.parse('app-settings:');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  void _showEnableSystemDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Enable Notifications'.tr()),
+        content: Text(
+            'Notifications are disabled in system settings. Please enable them to turn on topics here.'.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text('Cancel'.tr()),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              _openSystemSettings();
+            },
+            child: Text('Open Settings'.tr()),
+          ),
+        ],
+      ),
+    );
   }
 }

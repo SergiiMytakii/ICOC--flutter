@@ -46,6 +46,9 @@ void main() async {
           ) ??
           'en';
 
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        getIt<PushNotificationService>().requestNotificationPermissionIfNeeded();
+      });
       runApp(
         EasyLocalization(
           useOnlyLangCode: true,

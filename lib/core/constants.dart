@@ -59,6 +59,8 @@ class StorageKeys {
   static const String wallLanguages = 'wallLanguages';
   static const String shouldWallFilterAnimate = 'shouldWallFilterAnimate';
   static const String insightsLanguages = 'insightsLanguages';
+  static const String notificationsPermissionAsked =
+      'notificationsPermissionAsked';
   // Add more keys as needed
 }
 
