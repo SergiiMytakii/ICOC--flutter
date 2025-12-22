@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/user_languages.dart';
@@ -53,13 +55,11 @@ class _BottomSheetVideoFilterState extends State<BottomSheetVideoFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await videosUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
-                      final activeSet = activeLanguages.entries
-                          .where((e) => e.value == true)
-                          .map((e) => e.key)
-                          .toSet();
-                      await getIt<PushNotificationService>()
-                          .updateLanguageSubscriptions(activeSet);
+                      unawaited(getIt<PushNotificationService>()
+                          .syncTopicLangSubscriptionsFor(
+                              'video', activeLanguages));
                       getIt<VideoBloc>().add(const VideoEvent.listRequested());
+                      setState(() {});
                     },
                     key: ValueKey('$index'));
               }),

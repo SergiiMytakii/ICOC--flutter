@@ -61,6 +61,7 @@ class StorageKeys {
   static const String insightsLanguages = 'insightsLanguages';
   static const String notificationsPermissionAsked =
       'notificationsPermissionAsked';
+  static const String deviceId = 'deviceId';
   // Add more keys as needed
 }
 
@@ -111,7 +112,7 @@ enum FirebaseCollections {
   Video,
   Feedback,
   QandALangs,
-  Wall
+  Insights
 }
 
 enum OrderEnum { ascending, descending, random }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/user_languages.dart';
@@ -81,12 +83,10 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await qAndAUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
-                      final activeSet = activeLanguages.entries
-                          .where((e) => e.value == true)
-                          .map((e) => e.key)
-                          .toSet();
-                      await getIt<PushNotificationService>()
-                          .updateLanguageSubscriptions(activeSet);
+
+                      unawaited(getIt<PushNotificationService>()
+                          .syncTopicLangSubscriptionsFor(
+                              'qanda', activeLanguages));
                       getIt<QandABloc>().add(const QandAEvent.requested());
                       setState(() {});
                     },

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
@@ -126,8 +128,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh() async {
     await songsUserLanguagesHandler.saveAllLanguages(allLanguages);
     await songsUserLanguagesHandler.updatePrimaryLanguage(primaryLang);
-    await getIt<PushNotificationService>()
-        .syncTopicLangSubscriptionsFor('songbook', allLanguages);
+    unawaited(getIt<PushNotificationService>()
+        .syncTopicLangSubscriptionsFor('songbook', allLanguages));
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
     setState(() {});
   }

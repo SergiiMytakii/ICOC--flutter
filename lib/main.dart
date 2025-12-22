@@ -34,7 +34,7 @@ void main() async {
       await Firebase.initializeApp();
       await GetStorage.init();
       configureDependencies(Environment.dev);
-      await getIt<PushNotificationService>().initialize();
+
       _activateCrashlitics();
       _setScreenSettings();
       Bloc.observer = AppBlocObserver();
@@ -47,7 +47,8 @@ void main() async {
           'en';
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        getIt<PushNotificationService>().requestNotificationPermissionIfNeeded();
+        getIt<PushNotificationService>()
+            .requestNotificationPermissionIfNeeded();
       });
       runApp(
         EasyLocalization(
@@ -59,6 +60,11 @@ void main() async {
           fallbackLocale: const Locale('en', 'US'),
           child: MyApp(savedThemeMode: savedThemeMode),
         ),
+      );
+      unawaited(
+        getIt<PushNotificationService>().initialize().catchError((e, st) {
+          Logger().w('Push init failed', error: e, stackTrace: st);
+        }),
       );
     },
     (error, stackTrace) {

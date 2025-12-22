@@ -18,13 +18,14 @@ class InsightsDataSourceImpl implements InsightsDataSource {
     }
 
     final result = await _firebaseDataSource.getFromFirebase(
-      FirebaseCollections.Wall.name,
+      FirebaseCollections.Insights.name,
       filters: filters,
       orderBy: {'createdAt': true},
     );
 
-    final posts =
-        result.docs.map((doc) => Post.fromJson(doc.data() as Map<String, dynamic>)).toList();
+    final posts = result.docs
+        .map((doc) => Post.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
     return posts;
   }
 }
