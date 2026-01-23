@@ -49,7 +49,7 @@ final myLightTheme = ThemeData.light().copyWith(
     brightness: Brightness.light,
     primary: const Color(0xff6a4c93),
     onPrimary: Colors.white,
-    secondary: Colors.grey.withOpacity(0.9),
+    secondary: Colors.grey.withValues(alpha: 0.9),
     onSecondary: Colors.black,
     error: Colors.red,
     onError: Colors.white,

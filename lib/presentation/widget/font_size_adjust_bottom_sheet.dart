@@ -19,7 +19,7 @@ class FontSizeAdjustBottomSheet {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withOpacity(0.2),
+      barrierColor: Colors.black.withValues(alpha: 0.2),
       builder: (context) => ModalBottomSheet(
         height: 200,
         blurBackground: false,

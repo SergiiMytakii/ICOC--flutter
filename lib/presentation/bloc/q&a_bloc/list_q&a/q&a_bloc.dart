@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/helpers/convert_languages_enum.dart';
-import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/domain/repository/q&a_repository.dart';

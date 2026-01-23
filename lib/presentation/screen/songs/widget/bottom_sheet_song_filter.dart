@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/main.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/core/notifications/push_notification_service.dart';

@@ -40,7 +40,7 @@ class ModalBottomSheet extends StatelessWidget {
                     height: 6,
                     width: 50,
                     decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(25)),
                   ),
                 ],
