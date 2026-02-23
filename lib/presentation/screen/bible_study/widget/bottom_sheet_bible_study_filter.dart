@@ -42,26 +42,36 @@ class _BottomSheetBibleStudyFilterState
             ),
           ),
           Expanded(
-            child: ListView(
-              children: List.generate(
-                  bibleStudyUserLanguagesHandler.languages.length, (index) {
-                return MyCheckboxListTile(
-                    allLanguages: bibleStudyUserLanguagesHandler.languages,
-                    color: ScreenColors.bibleStudy,
-                    label: bibleStudyUserLanguagesHandler.languages.keys
-                        .toList()[index],
-                    callback: (Map<String, dynamic> activeLanguages) async {
-                      await bibleStudyUserLanguagesHandler
-                          .saveAllLanguages(activeLanguages);
-                      await getIt<PushNotificationService>()
-                          .syncTopicLangSubscriptionsFor(
-                              'biblestudy', activeLanguages);
-                      getIt<BibleStudyBloc>()
-                          .add(const BibleStudyEvent.listRequested());
-                    },
-                    key: ValueKey('$index'));
-              }),
-            ),
+            child: bibleStudyUserLanguagesHandler.languages.isEmpty
+                ? Center(
+                    child: Text(
+                      'No languages available'.tr(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  )
+                : ListView(
+                    children: List.generate(
+                        bibleStudyUserLanguagesHandler.languages.length,
+                        (index) {
+                      return MyCheckboxListTile(
+                          allLanguages:
+                              bibleStudyUserLanguagesHandler.languages,
+                          color: ScreenColors.bibleStudy,
+                          label: bibleStudyUserLanguagesHandler.languages.keys
+                              .toList()[index],
+                          callback:
+                              (Map<String, dynamic> activeLanguages) async {
+                            await bibleStudyUserLanguagesHandler
+                                .saveAllLanguages(activeLanguages);
+                            await getIt<PushNotificationService>()
+                                .syncTopicLangSubscriptionsFor(
+                                    'biblestudy', activeLanguages);
+                            getIt<BibleStudyBloc>()
+                                .add(const BibleStudyEvent.listRequested());
+                          },
+                          key: ValueKey('$index'));
+                    }),
+                  ),
           ),
         ],
       ),

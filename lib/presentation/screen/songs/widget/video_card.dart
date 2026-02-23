@@ -4,9 +4,10 @@ import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/theme.dart';
-import 'package:icoc/presentation/widget/toast.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({super.key, required this.youtubeVideo, required this.onTap});
@@ -81,10 +82,8 @@ class _VideoCardState extends State<VideoCard> {
         return YoutubePlayerController.convertUrlToId(link) ?? '';
       } on Exception catch (e, stackTrace) {
         logError(e, stackTrace);
-        showToast(
-            context: context,
-            title: 'Error'.tr(),
-            message: 'Can not play video'.tr());
+        getIt<PushNotificationService>().showLocalNotification(
+            title: 'Error'.tr(), body: 'Can not play video'.tr());
         return '';
       }
     } else {

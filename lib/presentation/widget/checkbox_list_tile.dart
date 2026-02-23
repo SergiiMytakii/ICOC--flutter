@@ -2,7 +2,8 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/presentation/widget/toast.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
+import 'package:icoc/injection.dart';
 import 'package:logger/logger.dart';
 
 class MyCheckboxListTile extends StatefulWidget {
@@ -64,9 +65,9 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
           }
           widget.callback(widget.allLanguages);
           if (widget.allLanguages.values.every((element) => element == false)) {
-            showToast(
-                context: context,
-                message: 'At list 1 label has to be selected'.tr());
+            getIt<PushNotificationService>().showLocalNotification(
+                title: 'Selection'.tr(),
+                body: 'At list 1 label has to be selected'.tr());
           }
         });
   }

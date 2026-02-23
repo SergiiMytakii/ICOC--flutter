@@ -40,13 +40,8 @@ class BibleStudyUserLanguagesHandler extends UserLanguagesHandler {
   BibleStudyUserLanguagesHandler(super._localCache) {
     final cachedLanguages = _localCache.getMap(StorageKeys.bibleStudyLanguages);
     if (cachedLanguages == null || cachedLanguages.isEmpty) {
-      languages =
-          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
-      if (languages.containsKey(locale)) {
-        languages[locale] = true;
-      } else if (languages.isNotEmpty) {
-        languages[languages.keys.first] = true;
-      }
+      // Start with empty map - languages will be populated from actual database content
+      languages = <String, dynamic>{};
     } else {
       languages.addAll(cachedLanguages);
     }
