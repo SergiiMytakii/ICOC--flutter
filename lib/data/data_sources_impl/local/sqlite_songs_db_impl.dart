@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/domain/data_sources/local/local_db_data_source.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
@@ -34,7 +33,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   var log = Logger();
 
 /* get refetence to the DB and initialasing DB */
-  Future<Database?> getDb() async {
+  Future<Database?> db() async {
     if (_db != null) {
       // log.i('db already exist!');
       return _db!;
@@ -54,36 +53,14 @@ class SqliteSongsDbImpl implements LocalSongsDB {
           onCreate: (Database db, int version) async {
         try {
           await db.execute(
-              'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts5($ID_SONG UNINDEXED, $SONG_TITLE, $SONG_TEXT, $SONG_LANG, tokenize="unicode61")');
-          await FirebaseAnalytics.instance.logEvent(
-              name: 'songs_fts_init',
-              parameters: {'fts': 'fts5', 'tokenizer': 'unicode61'});
-          FirebaseCrashlytics.instance
-              .log('songs_fts_init fts=fts5 tokenizer=unicode61');
+              'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4(tokenize=unicode61, $ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
         } catch (_) {
-          try {
-            await db.execute(
-                'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4(tokenize=unicode61, $ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
-            await FirebaseAnalytics.instance.logEvent(
-                name: 'songs_fts_init',
-                parameters: {'fts': 'fts4', 'tokenizer': 'unicode61'});
-            FirebaseCrashlytics.instance
-                .log('songs_fts_init fts=fts4 tokenizer=unicode61');
-          } catch (_) {
-            await db.execute(
-                'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4($ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
-            await FirebaseAnalytics.instance
-                .logEvent(name: 'songs_fts_init', parameters: {'fts': 'fts4'});
-            FirebaseCrashlytics.instance.log('songs_fts_init fts=fts4');
-          }
+          await db.execute(
+              'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4($ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
         }
         await db.execute(
             'CREATE TABLE $TABLE_FAVORITES ($ID_SONG INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
         log.i(' !!!!databases hac been opened!!!!!');
-        await FirebaseAnalytics.instance.logEvent(name: 'sqlite_opened');
-        FirebaseCrashlytics.instance.log('sqlite_opened');
-      }, onOpen: (Database db) async {
-        await _migrateToFts5IfSupported(db);
       });
     } on Exception catch (e, stackTrace) {
       logError(e, stackTrace);
@@ -91,57 +68,11 @@ class SqliteSongsDbImpl implements LocalSongsDB {
     }
   }
 
-  Future<bool> _supportsFts5(Database db) async {
-    try {
-      await db.execute('CREATE VIRTUAL TABLE temp_fts5 USING fts5(x)');
-      await db.execute('DROP TABLE temp_fts5');
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
-  Future<String?> _currentSongsTableSql(Database db) async {
-    final List<Map<String, Object?>> res = await db.rawQuery(
-        "SELECT sql FROM sqlite_master WHERE type='table' AND name=?",
-        [TABLE_SONGS]);
-    if (res.isEmpty) return null;
-    final val = res.first['sql'];
-    return val is String ? val : null;
-  }
-
-  Future<void> _migrateToFts5IfSupported(Database db) async {
-    final supports = await _supportsFts5(db);
-    if (!supports) return;
-    final sql = await _currentSongsTableSql(db);
-    if (sql == null) return;
-    if (sql.contains('fts5')) return;
-    if (sql.contains('fts4')) {
-      try {
-        await db
-            .execute('ALTER TABLE $TABLE_SONGS RENAME TO ${TABLE_SONGS}_old');
-        await db.execute(
-            'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts5($ID_SONG UNINDEXED, $SONG_TITLE, $SONG_TEXT, $SONG_LANG, tokenize="unicode61")');
-        await db.execute(
-            'INSERT INTO $TABLE_SONGS($ID_SONG, $SONG_TITLE, $SONG_TEXT, $SONG_LANG) SELECT $ID_SONG, $SONG_TITLE, $SONG_TEXT, $SONG_LANG FROM ${TABLE_SONGS}_old');
-        await FirebaseAnalytics.instance.logEvent(
-            name: 'songs_fts_migrate',
-            parameters: {'from': 'fts4', 'to': 'fts5'});
-        FirebaseCrashlytics.instance.log('songs_fts_migrate from=fts4 to=fts5');
-        await db.execute('DROP TABLE ${TABLE_SONGS}_old');
-      } catch (e, stackTrace) {
-        FirebaseCrashlytics.instance.setCustomKey('fts_migration_error', '$e');
-        FirebaseCrashlytics.instance.log('songs_fts_migration_error');
-        await logError(e, stackTrace);
-      }
-    }
-  }
-
 /* inserting songs into database */
   @override
   Future<bool> insertAllSongs(List<SongModel> songs) async {
     // Get a reference to the database.
-    final Database? database = await getDb();
+    final Database? database = await db();
     //clean tables before inserting new data
     if (database != null) {
       try {
@@ -156,7 +87,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
           await FirebaseAnalytics.instance
               .logEvent(name: 'Deleting DB and make second try to insert');
           _db = null;
-          final Database? database = await getDb();
+          final Database? database = await db();
           if (database != null) insertTitlesAndTexts(songs, database);
         } catch (e, stackTrace) {
           logError(e, stackTrace);
@@ -188,15 +119,11 @@ class SqliteSongsDbImpl implements LocalSongsDB {
         }
       }
     }
-    final count = await songsInLocalDB;
-    log.i('HAS BEEN INSERTED SONGS:  $count');
-    await FirebaseAnalytics.instance
-        .logEvent(name: 'songs_inserted', parameters: {'count': count});
-    FirebaseCrashlytics.instance.log('songs_inserted count=$count');
+    log.i('HAS BEEN INSERTED SONGS:  ${await songsInLocalDB}');
   }
 
   Future<int> get songsInLocalDB async {
-    final Database? database = await getDb();
+    final Database? database = await db();
     if (database != null) {
       final List<Map<String, dynamic>> songs =
           await database.query(TABLE_SONGS, columns: [ID_SONG]);
@@ -209,7 +136,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 //for testing
   @override
   Future<void> printSongsDBHead() async {
-    final Database? database = await getDb();
+    final Database? database = await db();
     final List<Map<String, dynamic>> songs = await database!.query(TABLE_SONGS);
 
     for (int i = 0; i < 5; i++) {
@@ -222,7 +149,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   @override
   Future<bool> addToFavorites(int id) async {
     // Get a reference to the database.
-    final Database? database = await getDb();
+    final Database? database = await db();
     if (database != null) {
       final int status = await database.insert(
         TABLE_FAVORITES,
@@ -242,7 +169,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   @override
   Future<bool> deleteFromFavorites(int id) async {
     // Get a reference to the database.
-    final Database? database = await getDb();
+    final Database? database = await db();
     if (database != null) {
       final int status = await database
           .delete(TABLE_FAVORITES, where: '$ID_SONG = ?', whereArgs: [id]);
@@ -258,7 +185,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 
   @override
   Future<bool> getFavoriteStatus(int id) async {
-    final Database? database = await getDb();
+    final Database? database = await db();
     if (database != null) {
       final status = await database.query(TABLE_FAVORITES,
           columns: [FAVORITE_STATUS], where: '$ID_SONG = ?', whereArgs: [id]);
@@ -274,7 +201,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 
   @override
   Future<Set<int>> getListFavorites() async {
-    final Database? database = await getDb();
+    final Database? database = await db();
     if (database != null) {
       final List<Map<String, dynamic>> items =
           await database.query(TABLE_FAVORITES, columns: [ID_SONG]);
@@ -292,65 +219,13 @@ class SqliteSongsDbImpl implements LocalSongsDB {
   Future<List<SongVersionLocal>> getSearchResult(
     String query,
   ) async {
-    final Database? database = await getDb();
+    final Database? database = await db();
 
     final List<SongVersionLocal> songs = [];
     if (database != null)
     // search in titiles
     {
       try {
-        FirebaseCrashlytics.instance.setCustomKey('search_query', query.trim());
-        FirebaseCrashlytics.instance.log('search_songs_start');
-        try {
-          final List<Map<String, dynamic>> searchInTitles =
-              await database.rawQuery('''
-                  SELECT $TABLE_SONGS.$ID_SONG,
-                  highlight($TABLE_SONGS, 1, '[', ' ') as title,
-                  $TABLE_SONGS.$SONG_TEXT AS text,
-                  $TABLE_SONGS.$SONG_LANG AS lang
-                  FROM $TABLE_SONGS
-                  WHERE $TABLE_SONGS.$SONG_TITLE MATCH ?
-                  ''', ['${query.trim()}*']);
-
-          for (Map map in searchInTitles) {
-            final SongVersionLocal song = SongVersionLocal(
-              id: map['id_song'],
-              title: map['title'],
-              text: map['text'],
-              lang: map['lang'],
-            );
-            songs.add(song);
-          }
-
-          final List<Map<String, dynamic>> searhInTexts =
-              await database.rawQuery('''
-                  SELECT $TABLE_SONGS.$ID_SONG,
-                  highlight($TABLE_SONGS, 2, '[', ' ') as text,
-                  $TABLE_SONGS.$SONG_TITLE AS title,
-                  $TABLE_SONGS.$SONG_LANG AS lang
-                  FROM $TABLE_SONGS
-                  WHERE $TABLE_SONGS.$SONG_TEXT MATCH ?
-                  ORDER BY $TABLE_SONGS.$ID_SONG 
-                  ''', ['${query.trim()}*']);
-
-          for (Map map in searhInTexts) {
-            final SongVersionLocal song = SongVersionLocal(
-              id: map['id_song'],
-              title: map['title'],
-              text: map['text'],
-              lang: map['lang'],
-            );
-            songs.add(song);
-          }
-
-          await FirebaseAnalytics.instance.logEvent(
-              name: 'search_songs',
-              parameters: {'method': 'fts5', 'results': songs.length});
-          FirebaseCrashlytics.instance
-              .log('search_songs method=fts5 results=${songs.length}');
-          return songs;
-        } catch (_) {}
-
         final List<Map<String, dynamic>> searchInTitles =
             await database.rawQuery('''
                   SELECT $TABLE_SONGS.$ID_SONG,
@@ -392,16 +267,9 @@ class SqliteSongsDbImpl implements LocalSongsDB {
           songs.add(song);
         }
 
-        await FirebaseAnalytics.instance.logEvent(
-            name: 'search_songs',
-            parameters: {'method': 'fts4', 'results': songs.length});
-        FirebaseCrashlytics.instance
-            .log('search_songs method=fts4 results=${songs.length}');
         return songs;
       } catch (e, stackTrace) {
         logError(e, stackTrace);
-        FirebaseCrashlytics.instance.setCustomKey('search_error', '$e');
-        FirebaseCrashlytics.instance.log('search_songs_error');
         try {
           final List<Map<String, dynamic>> likeResults = await database.query(
             TABLE_SONGS,
@@ -419,13 +287,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
               lang: map[SONG_LANG] as String,
             );
           }
-          final list = unique.values.toList();
-          await FirebaseAnalytics.instance.logEvent(
-              name: 'search_songs',
-              parameters: {'method': 'like', 'results': list.length});
-          FirebaseCrashlytics.instance
-              .log('search_songs method=like results=${list.length}');
-          return list;
+          return unique.values.toList();
         } catch (_) {
           return [];
         }

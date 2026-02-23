@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -117,6 +119,13 @@ class _OneLessonScreenState extends State<OneLessonScreen>
                                 onLinkTap: (url, __, ___) {
                                   launchUrl(Uri.parse(url ?? ''));
                                 },
+                                extensions: [
+                                  html.OnImageTapExtension(
+                                    onImageTap: (src, __, ___) {
+                                      _showZoomableImage(src);
+                                    },
+                                  ),
+                                ],
                                 style: {
                                   'body': html.Style(
                                       fontSize: html.FontSize(fontSize ?? 14)),
@@ -189,5 +198,75 @@ class _OneLessonScreenState extends State<OneLessonScreen>
         }
       });
     }
+  }
+
+  void _showZoomableImage(String? source) {
+    if (!mounted || source == null || source.isEmpty) return;
+
+    final imageWidget = _buildZoomImageWidget(source);
+    if (imageWidget == null) return;
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black87,
+      builder: (dialogContext) {
+        final size = MediaQuery.sizeOf(dialogContext);
+        return Scaffold(
+          backgroundColor: Colors.black87,
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: InteractiveViewer(
+                    minScale: 1,
+                    maxScale: 8,
+                    constrained: false,
+                    boundaryMargin: const EdgeInsets.all(120),
+                    child: SizedBox(
+                      width: size.width,
+                      height: size.height,
+                      child: Center(child: imageWidget),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget? _buildZoomImageWidget(String source) {
+    if (source.startsWith('data:image')) {
+      final commaIndex = source.indexOf(',');
+      if (commaIndex < 0 || commaIndex + 1 >= source.length) return null;
+      final bytes = base64Decode(source.substring(commaIndex + 1));
+      return Image.memory(bytes, fit: BoxFit.contain);
+    }
+
+    if (source.startsWith('asset:')) {
+      final assetPath = source.substring('asset:'.length);
+      return Image.asset(assetPath, fit: BoxFit.contain);
+    }
+
+    if (source.startsWith('http://') || source.startsWith('https://')) {
+      return Image.network(source, fit: BoxFit.contain);
+    }
+
+    if (source.startsWith('assets/')) {
+      return Image.asset(source, fit: BoxFit.contain);
+    }
+
+    return null;
   }
 }
