@@ -56,7 +56,6 @@ dependencies:
   shared_preferences: ^2.2.3
   url_launcher: ^6.0.12
   wakelock_plus: ^1.2.5
-  xml: ^6.6.1
   youtube_player_iframe: ^5.2.2
   webview_flutter: ^4.13.1
   webview_flutter_wkwebview: ^3.23.5
