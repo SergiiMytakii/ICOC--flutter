@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/user_languages.dart';
@@ -63,11 +65,13 @@ class _BottomSheetBibleStudyFilterState
                               (Map<String, dynamic> activeLanguages) async {
                             await bibleStudyUserLanguagesHandler
                                 .saveAllLanguages(activeLanguages);
-                            await getIt<PushNotificationService>()
+
+                            unawaited(getIt<PushNotificationService>()
                                 .syncTopicLangSubscriptionsFor(
-                                    'biblestudy', activeLanguages);
+                                    'biblestudy', activeLanguages));
                             getIt<BibleStudyBloc>()
                                 .add(const BibleStudyEvent.listRequested());
+                            setState(() {});
                           },
                           key: ValueKey('$index'));
                     }),

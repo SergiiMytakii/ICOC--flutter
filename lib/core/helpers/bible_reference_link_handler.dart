@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/core/helpers/bible_reference_linkifier.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
 import 'package:icoc/domain/data_sources/local/local_bible_db_data_source.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/domain/model/bible/bible_reference.dart';
@@ -115,8 +115,8 @@ class BibleReferenceLinkHandler {
   }
 
   static void _showNotFound(BuildContext context) {
-    final notificationService = getIt<PushNotificationService>();
-    notificationService.showLocalNotification(
+    AppToast.show(
+      context,
       title: 'Bible Verse'.tr(),
       body: 'Verse not found'.tr(),
     );

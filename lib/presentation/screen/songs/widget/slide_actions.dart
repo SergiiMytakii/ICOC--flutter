@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
@@ -54,7 +54,7 @@ class AddToFavorites extends StatelessWidget {
                   id: songId, isFavorite: true));
           getIt<FavoriteSongsListBloc>()
               .add(const FavoriteSongsEvent.getRequested());
-          getIt<PushNotificationService>().showLocalNotification(
+          AppToast.show(context,
               title: 'Favorites'.tr(), body: 'Added to favorite list'.tr());
         });
   }

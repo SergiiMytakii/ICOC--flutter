@@ -7,8 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
-import 'package:icoc/injection.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
 
 class AboutAppScreen extends StatefulWidget {
@@ -33,20 +32,26 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         final launched =
             await launchUrl(uri, mode: LaunchMode.externalApplication);
         if (!launched) {
-          getIt<PushNotificationService>().showLocalNotification(
-              title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+          if (context.mounted) {
+            AppToast.show(context,
+                title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+          }
         }
       } else {
         final launched =
             await launchUrl(uri, mode: LaunchMode.externalApplication);
         if (!launched) {
-          getIt<PushNotificationService>().showLocalNotification(
-              title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+          if (context.mounted) {
+            AppToast.show(context,
+                title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+          }
         }
       }
     } catch (_) {
-      getIt<PushNotificationService>().showLocalNotification(
-          title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+      if (context.mounted) {
+        AppToast.show(context,
+            title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+      }
     }
   }
 
@@ -151,8 +156,10 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
   Future<void> _copyToClipboard(String text) async {
     await Clipboard.setData(ClipboardData(text: text));
-    getIt<PushNotificationService>().showLocalNotification(
-        title: 'Clipboard'.tr(), body: 'Copied to clipboard'.tr());
+    if (mounted) {
+      AppToast.show(context,
+          title: 'Clipboard'.tr(), body: 'Copied to clipboard'.tr());
+    }
   }
 
   Column supportProjectBlock(BuildContext context) {

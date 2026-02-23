@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/core/routes/app_routes.dart';
-import 'package:icoc/injection.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoCard extends StatefulWidget {
@@ -35,7 +34,7 @@ class _VideoCardState extends State<VideoCard> {
             YoutubePlayerController.convertUrlToId(widget.youtubeVideos.link) ??
                 '';
       } on Exception catch (e, stackTrace) {
-        getIt<PushNotificationService>().showLocalNotification(
+        AppToast.show(context,
             title: 'Error'.tr(), body: 'Can not play video'.tr());
         logError(e, stackTrace);
       }

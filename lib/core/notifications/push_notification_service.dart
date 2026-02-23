@@ -37,6 +37,56 @@ class PushNotificationService {
   final FlutterLocalNotificationsPlugin _local =
       FlutterLocalNotificationsPlugin();
   static const String _channelId = 'icoc_default_channel';
+  static const String _silentChannelId = 'icoc_silent_channel';
+  int _notificationIdCounter = 0;
+
+  // Notification details constants
+  static const NotificationDetails _silentNotificationDetails =
+      NotificationDetails(
+    android: AndroidNotificationDetails(
+      _silentChannelId,
+      'Silent Notifications',
+      channelDescription: 'ICOC Silent Notifications',
+      importance: Importance.low,
+      priority: Priority.low,
+      playSound: false,
+      enableVibration: false,
+      icon: '@mipmap/launcher_icon',
+      showProgress: false,
+      ongoing: false,
+      autoCancel: true,
+    ),
+    iOS: DarwinNotificationDetails(
+      presentSound: false,
+      presentAlert: true,
+      presentBadge: false,
+    ),
+  );
+
+  static const NotificationDetails _soundNotificationDetails =
+      NotificationDetails(
+    android: AndroidNotificationDetails(
+      _channelId,
+      'Notifications',
+      channelDescription: 'ICOC',
+      importance: Importance.high,
+      priority: Priority.high,
+      icon: '@mipmap/launcher_icon',
+    ),
+    iOS: DarwinNotificationDetails(),
+  );
+
+  int _generateNotificationId() {
+    return ++_notificationIdCounter;
+  }
+
+  static int _deterministicHash(String input) {
+    int hash = 0;
+    for (int i = 0; i < input.length; i++) {
+      hash = 31 * hash + input.codeUnitAt(i);
+    }
+    return hash & 0x7FFFFFFF;
+  }
 
   Future<void> initialize() async {
     tz.initializeTimeZones();
@@ -91,6 +141,19 @@ class PushNotificationService {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
+
+    // Create silent notification channel for local notifications
+    const AndroidNotificationChannel silentChannel = AndroidNotificationChannel(
+      _silentChannelId,
+      'Silent Notifications',
+      description: 'ICOC Silent Notifications',
+      importance:
+          Importance.low, // Low importance - won't show in notification bar
+    );
+    await _local
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(silentChannel);
   }
 
   Future<void> _initFCM() async {
@@ -321,17 +384,20 @@ class PushNotificationService {
   Future<void> showLocalNotification(
       {required String title, required String body}) async {
     await _local.show(
-      DateTime.now().millisecondsSinceEpoch % 1000000,
+      _generateNotificationId(),
       title,
       body,
-      const NotificationDetails(
-        android: AndroidNotificationDetails(_channelId, 'Notifications',
-            channelDescription: 'ICOC',
-            importance: Importance.high,
-            priority: Priority.high,
-            icon: '@mipmap/launcher_icon'),
-        iOS: DarwinNotificationDetails(),
-      ),
+      _soundNotificationDetails,
+    );
+  }
+
+  Future<void> showLocalNotificationWithSound(
+      {required String title, required String body}) async {
+    await _local.show(
+      _generateNotificationId(),
+      title,
+      body,
+      _soundNotificationDetails,
     );
   }
 
@@ -341,18 +407,29 @@ class PushNotificationService {
       required String title,
       required String body}) async {
     await _local.zonedSchedule(
-      id.hashCode,
+      _deterministicHash(id),
       title,
       body,
       tz.TZDateTime.from(scheduleAt, tz.local),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(_channelId, 'Notifications',
-            channelDescription: 'ICOC',
-            importance: Importance.high,
-            priority: Priority.high,
-            icon: '@mipmap/launcher_icon'),
-        iOS: DarwinNotificationDetails(),
-      ),
+      _silentNotificationDetails,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      payload: id,
+    );
+  }
+
+  Future<void> scheduleLocalNotificationWithSound(
+      {required String id,
+      required DateTime scheduleAt,
+      required String title,
+      required String body}) async {
+    await _local.zonedSchedule(
+      _deterministicHash(id),
+      title,
+      body,
+      tz.TZDateTime.from(scheduleAt, tz.local),
+      _soundNotificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,

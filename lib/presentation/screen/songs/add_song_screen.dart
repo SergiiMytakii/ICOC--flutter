@@ -5,8 +5,7 @@ import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
-import 'package:icoc/injection.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({super.key});
@@ -199,13 +198,16 @@ class _AddSongScreenState extends State<AddSongScreen> {
     if (await canLaunchUrl(uri)) {
       final result = await launchUrl(uri);
       if (result) {
-        getIt<PushNotificationService>().showLocalNotification(
-            title: 'Email'.tr(), body: 'Email has been sent'.tr());
-        await Future.delayed(const Duration(seconds: 1));
-        context.pop();
+        if (context.mounted) {
+          AppToast.show(context,
+              title: 'Email'.tr(), body: 'Email has been sent'.tr());
+          await Future.delayed(const Duration(seconds: 1));
+          context.pop();
+        }
       }
-    } else
-      getIt<PushNotificationService>().showLocalNotification(
+    } else if (context.mounted) {
+      AppToast.show(context,
           title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+    }
   }
 }

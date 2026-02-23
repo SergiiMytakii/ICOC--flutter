@@ -1,10 +1,8 @@
 // ignore_for_file: overridden_fields
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
-import 'package:icoc/injection.dart';
-import 'package:logger/logger.dart';
 
 class MyCheckboxListTile extends StatefulWidget {
   @override
@@ -31,10 +29,20 @@ class MyCheckboxListTile extends StatefulWidget {
 }
 
 class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
-  final log = Logger();
+  late Map<String, dynamic> _localLanguages;
+
   @override
   void initState() {
     super.initState();
+    _localLanguages = Map<String, dynamic>.from(widget.allLanguages);
+  }
+
+  @override
+  void didUpdateWidget(MyCheckboxListTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!mapEquals(oldWidget.allLanguages, widget.allLanguages)) {
+      _localLanguages = Map<String, dynamic>.from(widget.allLanguages);
+    }
   }
 
   @override
@@ -45,29 +53,41 @@ class _MyCheckboxListTileState extends State<MyCheckboxListTile> {
         controlAffinity: ListTileControlAffinity.leading,
         title: Text(widget.label.tr(),
             style: Theme.of(context).textTheme.titleLarge!),
-        value: widget.allLanguages[widget.label],
+        value: _localLanguages[widget.label],
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         secondary: widget.trailingIcon,
         onChanged: (val) {
           if (val != null) {
-            if (widget.onlyOneActiveLangAllowed) {
-              setState(() {
-                for (var lang in widget.allLanguages.keys) {
-                  widget.allLanguages[lang] = false;
-                }
-                widget.allLanguages[widget.label] = val;
-              });
-            } else {
-              setState(() {
-                widget.allLanguages[widget.label] = val;
-              });
+            // Check if this change would result in no active languages
+            final currentActiveCount =
+                _localLanguages.values.where((v) => v == true).length;
+            final isCurrentlyActive = _localLanguages[widget.label] == true;
+            final wouldHaveNoActiveLanguages =
+                currentActiveCount == 1 && isCurrentlyActive && val == false;
+
+            if (wouldHaveNoActiveLanguages) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('At least 1 label has to be selected'.tr()),
+                  duration: const Duration(seconds: 2),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+              return; // Don't allow the change
             }
-          }
-          widget.callback(widget.allLanguages);
-          if (widget.allLanguages.values.every((element) => element == false)) {
-            getIt<PushNotificationService>().showLocalNotification(
-                title: 'Selection'.tr(),
-                body: 'At list 1 label has to be selected'.tr());
+
+            setState(() {
+              if (widget.onlyOneActiveLangAllowed) {
+                for (var lang in _localLanguages.keys) {
+                  _localLanguages[lang] = false;
+                }
+                _localLanguages[widget.label] = val;
+              } else {
+                _localLanguages[widget.label] = val;
+              }
+            });
+
+            widget.callback(_localLanguages);
           }
         });
   }
