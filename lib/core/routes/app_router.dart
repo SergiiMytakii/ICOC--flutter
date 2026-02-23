@@ -96,6 +96,25 @@ final GoRouter router = GoRouter(
                         lessonId: id ?? '', topicId: topicId ?? '');
                   },
                 ),
+                // Backward-compatible alias: /biblestudy/topics/:topicId
+                GoRoute(
+                    path: 'topics/:topicId',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final id = state.pathParameters['topicId'];
+                      return OneTopicScreen(topicId: id ?? '');
+                    },
+                    routes: [
+                      // Backward-compatible alias: /biblestudy/topics/:topicId/lessons/:id
+                      GoRoute(
+                        path: 'lessons/:id',
+                        builder: (BuildContext context, GoRouterState state) {
+                          final id = state.pathParameters['id'];
+                          final topicId = state.pathParameters['topicId'];
+                          return OneLessonScreen(
+                              lessonId: id ?? '', topicId: topicId ?? '');
+                        },
+                      ),
+                    ]),
                 GoRoute(
                     path: '$ONE_TOPIC_SCREEN/:topicId',
                     builder: (BuildContext context, GoRouterState state) {
@@ -149,7 +168,9 @@ final GoRouter router = GoRouter(
           FadeGoRoute(
             path: WEBVIEW_SCREEN,
             builder: (BuildContext context, GoRouterState state) {
-              final String? url = state.extra is String ? state.extra as String : state.uri.queryParameters['url'];
+              final String? url = state.extra is String
+                  ? state.extra as String
+                  : state.uri.queryParameters['url'];
               return WebViewScreen(url: url ?? '');
             },
           ),

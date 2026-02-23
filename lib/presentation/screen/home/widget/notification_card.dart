@@ -12,6 +12,7 @@ class NotificationCard extends StatelessWidget {
   final NotificationsModel notification;
   final int index;
   final Function(String?) onMarkAsRead;
+  static final String _appHost = Uri.parse(ICOC_WEB_PAGE).host;
 
   const NotificationCard({
     super.key,
@@ -80,13 +81,30 @@ class NotificationCard extends StatelessWidget {
                   onPressed: () {
                     final link = notification.notifications.first.link!;
                     final uri = Uri.tryParse(link);
+                    String? target;
+
                     if (uri != null &&
                         (uri.scheme == 'http' || uri.scheme == 'https')) {
-                      context.go('/$WEBVIEW_SCREEN', extra: link);
+                      // Treat app-domain URLs as internal routes.
+                      final isAppHost = uri.host == _appHost;
+                      if (isAppHost) {
+                        target = uri.path.isEmpty ? '/' : uri.path;
+                        if (uri.hasQuery) {
+                          target = '$target?${uri.query}';
+                        }
+                      } else {
+                        context.go('/$WEBVIEW_SCREEN', extra: link);
+                        return;
+                      }
+                    } else {
+                      target = link.startsWith('/') ? link : '/$link';
+                    }
+
+                    final segments = Uri.parse(target).pathSegments;
+                    if (segments.isEmpty) {
+                      context.go(target);
                       return;
                     }
-                    final target = link.startsWith('/') ? link : '/$link';
-                    final segments = Uri.parse(target).pathSegments;
                     if (segments.isNotEmpty) {
                       final first = segments.first;
                       final known = {
