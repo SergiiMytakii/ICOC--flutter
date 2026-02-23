@@ -202,6 +202,24 @@ void main() {
     });
   });
 
+  group('BibleReferenceParser.findMatches', () {
+    test('finds reference with leading non-book token in same text chunk', () {
+      final List<BibleReferenceMatch> matches = BibleReferenceParser.findMatches(
+        'ЦЕЛЬ ИОАННА 1:1--2, 14, 18',
+        langHint: 'ru',
+      );
+      expect(matches.length, 1);
+      expect(matches.first.label, 'ИОАННА 1:1--2, 14, 18');
+      expect(matches.first.reference.bookId, 43);
+      expect(matches.first.reference.chapterStart, 1);
+      expect(matches.first.reference.segments.length, 3);
+      expect(matches.first.reference.segments[0].minVerse, 1);
+      expect(matches.first.reference.segments[0].maxVerse, 2);
+      expect(matches.first.reference.segments[1].minVerse, 14);
+      expect(matches.first.reference.segments[2].minVerse, 18);
+    });
+  });
+
   test('roundtrips via bible URI', () {
     final BibleReference? ref =
         BibleReferenceParser.parse('Колосян 1:18', langHint: 'uk');

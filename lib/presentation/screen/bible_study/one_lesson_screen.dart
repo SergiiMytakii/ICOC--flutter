@@ -137,7 +137,8 @@ class _OneLessonScreenState extends State<OneLessonScreen>
                                     return;
                                   }
                                   final Uri? uri = Uri.tryParse(url ?? '');
-                                  if (uri != null) {
+                                  if (uri != null &&
+                                      !uri.scheme.contains('wordhtml.com')) {
                                     launchUrl(uri);
                                   }
                                 },

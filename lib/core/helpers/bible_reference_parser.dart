@@ -101,19 +101,64 @@ class BibleReferenceParser {
       }
 
       final String normalizedCandidate = rawText.substring(start, end);
-      final BibleReference? parsed =
-          parse(normalizedCandidate, langHint: langHint);
-      if (parsed == null) {
+      final _ResolvedMatch? resolved = _resolveBestMatch(
+        normalizedCandidate,
+        globalStart: start,
+        globalEnd: end,
+        langHint: langHint,
+      );
+      if (resolved == null) {
         continue;
       }
       matches.add(BibleReferenceMatch(
-        start: start,
-        end: end,
-        reference: parsed,
-        label: normalizedCandidate,
+        start: resolved.start,
+        end: resolved.end,
+        reference: resolved.reference,
+        label: resolved.label,
       ));
     }
     return matches;
+  }
+
+  static _ResolvedMatch? _resolveBestMatch(
+    String candidate, {
+    required int globalStart,
+    required int globalEnd,
+    required String langHint,
+  }) {
+    final BibleReference? direct = parse(candidate, langHint: langHint);
+    if (direct != null) {
+      return _ResolvedMatch(
+        start: globalStart,
+        end: globalEnd,
+        reference: direct,
+        label: candidate,
+      );
+    }
+
+    int attempts = 0;
+    for (final RegExpMatch ws in RegExp(r'\s+').allMatches(candidate)) {
+      if (attempts >= 16) {
+        break;
+      }
+      attempts++;
+      final int localStart = ws.end;
+      if (localStart <= 0 || localStart >= candidate.length) {
+        continue;
+      }
+      final String trimmed = candidate.substring(localStart);
+      final BibleReference? parsed = parse(trimmed, langHint: langHint);
+      if (parsed == null) {
+        continue;
+      }
+      return _ResolvedMatch(
+        start: globalStart + localStart,
+        end: globalEnd,
+        reference: parsed,
+        label: trimmed,
+      );
+    }
+    return null;
   }
 
   static String _trimOuterPunctuation(String value) {
@@ -138,10 +183,25 @@ class BibleReferenceParser {
   static String _normalizeReferenceText(String value) {
     String out = value;
     out = out.replaceAll(RegExp(r'[\u200B\u200C\u200D\u2060\uFEFF]'), '');
+    out = out.replaceAll('\u00A0', ' ');
     out = out.replaceAll('\u00AD', '');
     out = out.replaceAll(RegExp('[$_dashChars]+'), '-');
     out = out.replaceAll(RegExp(r'-{2,}'), '-');
     out = out.replaceAll(RegExp(r'\s+'), ' ').trim();
     return out;
   }
+}
+
+class _ResolvedMatch {
+  final int start;
+  final int end;
+  final BibleReference reference;
+  final String label;
+
+  const _ResolvedMatch({
+    required this.start,
+    required this.end,
+    required this.reference,
+    required this.label,
+  });
 }

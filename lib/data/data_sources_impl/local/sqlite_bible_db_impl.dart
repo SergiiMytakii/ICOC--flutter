@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
 import 'package:icoc/domain/data_sources/local/local_bible_db_data_source.dart';
 import 'package:icoc/domain/model/bible/bible_reference.dart';
+import 'package:icoc/domain/model/bible/bible_translation.dart';
 import 'package:icoc/domain/model/bible/bible_verse_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
@@ -61,19 +62,61 @@ class SqliteBibleDbImpl implements LocalBibleDB {
     final int currentVersion = prefs.getInt(_prefMetaVersionKey) ?? -1;
 
     if (!exists || (assetVersion > 0 && assetVersion > currentVersion)) {
-      if (exists) {
-        await dbFile.delete();
-      }
-      final ByteData data = await rootBundle.load(_assetPath);
-      final Uint8List bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await dbFile.writeAsBytes(bytes, flush: true);
-
-      if (assetVersion > 0) {
-        await prefs.setInt(_prefMetaVersionKey, assetVersion);
-      }
+      await _replaceDbFromAsset(
+        dbFile,
+        prefs: prefs,
+        assetVersion: assetVersion,
+      );
     }
-    return openDatabase(path);
+
+    Database database = await openDatabase(path);
+    final bool healthy = await _isDbHealthy(database);
+    if (!healthy) {
+      await database.close();
+      await _replaceDbFromAsset(
+        dbFile,
+        prefs: prefs,
+        assetVersion: assetVersion,
+      );
+      database = await openDatabase(path);
+    }
+
+    return database;
+  }
+
+  Future<void> _replaceDbFromAsset(
+    io.File dbFile, {
+    required SharedPreferences prefs,
+    required int assetVersion,
+  }) async {
+    if (await dbFile.exists()) {
+      await dbFile.delete();
+    }
+    final ByteData data = await rootBundle.load(_assetPath);
+    final Uint8List bytes =
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    await dbFile.writeAsBytes(bytes, flush: true);
+
+    if (assetVersion > 0) {
+      await prefs.setInt(_prefMetaVersionKey, assetVersion);
+    }
+  }
+
+  Future<bool> _isDbHealthy(Database database) async {
+    try {
+      final List<Map<String, Object?>> translationRows =
+          await database.rawQuery(
+        'SELECT COUNT(*) AS count FROM $_tableTranslations',
+      );
+      final List<Map<String, Object?>> verseRows = await database.rawQuery(
+        'SELECT COUNT(*) AS count FROM $_tableVerses',
+      );
+      final int translationCount = translationRows.first['count'] as int? ?? 0;
+      final int verseCount = verseRows.first['count'] as int? ?? 0;
+      return translationCount > 0 && verseCount > 1000;
+    } catch (_) {
+      return false;
+    }
   }
 
   @override
@@ -82,21 +125,24 @@ class SqliteBibleDbImpl implements LocalBibleDB {
   }
 
   @override
-  Future<List<String>> getAvailableTranslations() async {
+  Future<List<BibleTranslation>> getAvailableTranslations() async {
     final Database database = await _database();
     try {
       final List<Map<String, Object?>> rows = await database.query(
         _tableTranslations,
-        columns: <String>[_columnCode],
+        columns: <String>[_columnCode, _columnName],
         orderBy: _columnCode,
       );
       return rows
-          .map((Map<String, Object?> row) => row[_columnCode]?.toString() ?? '')
-          .where((String code) => code.isNotEmpty)
+          .map((Map<String, Object?> row) => BibleTranslation(
+                code: row[_columnCode]?.toString() ?? '',
+                name: row[_columnName]?.toString() ?? '',
+              ))
+          .where((BibleTranslation translation) => translation.code.isNotEmpty)
           .toList();
     } catch (error, stackTrace) {
       await logError(error, stackTrace);
-      return <String>[];
+      return <BibleTranslation>[];
     }
   }
 

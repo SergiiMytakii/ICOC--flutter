@@ -24,6 +24,7 @@ class BibleReferenceLinkifier {
 
     _applyExplicitDataRefLinks(document, langHint: langHint);
     _applyAnchorTextBibleLinks(document, langHint: langHint);
+    _applyInlineFragmentedBibleLinks(document, langHint: langHint);
     final List<dom.Text> textNodes = <dom.Text>[];
     _collectTextNodes(body, insideBlockedTag: false, out: textNodes);
     for (final dom.Text textNode in textNodes) {
@@ -38,6 +39,47 @@ class BibleReferenceLinkifier {
     return result;
   }
 
+  static void _applyInlineFragmentedBibleLinks(dom.Document document,
+      {required String langHint}) {
+    final dom.Element? body = document.body;
+    if (body == null) {
+      return;
+    }
+
+    final List<dom.Element> allElements = body.querySelectorAll('*');
+    for (final dom.Element element in allElements) {
+      if (element.localName == 'a') {
+        continue;
+      }
+      if (_hasAnchorAncestor(element)) {
+        continue;
+      }
+      if (element.children.isEmpty) {
+        continue;
+      }
+      if (!_containsOnlyInlineChildren(element)) {
+        continue;
+      }
+
+      final String text = element.text.trim();
+      if (text.isEmpty) {
+        continue;
+      }
+      final parsed = BibleReferenceParser.parse(text, langHint: langHint);
+      if (parsed == null) {
+        continue;
+      }
+
+      final dom.Element anchor = dom.Element.tag('a');
+      anchor.attributes['href'] = parsed.toUri().toString();
+      final List<dom.Node> children = List<dom.Node>.from(element.nodes);
+      for (final dom.Node node in children) {
+        anchor.append(node);
+      }
+      element.append(anchor);
+    }
+  }
+
   static void _applyAnchorTextBibleLinks(dom.Document document,
       {required String langHint}) {
     final List<dom.Element> anchors = document.querySelectorAll('a');
@@ -47,7 +89,7 @@ class BibleReferenceLinkifier {
           currentHref.startsWith('https://') ||
           currentHref.startsWith('mailto:') ||
           currentHref.startsWith('tel:');
-      if (isExternal || currentHref.startsWith('bible://lookup')) {
+      if (isExternal) {
         continue;
       }
 
@@ -160,4 +202,38 @@ class BibleReferenceLinkifier {
     }
     textNode.remove();
   }
+
+  static bool _containsOnlyInlineChildren(dom.Element element) {
+    for (final dom.Element child in element.children) {
+      final String tag = child.localName ?? '';
+      if (!_inlineTags.contains(tag)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static bool _hasAnchorAncestor(dom.Element element) {
+    dom.Element? current = element.parent;
+    while (current != null) {
+      if (current.localName == 'a') {
+        return true;
+      }
+      current = current.parent;
+    }
+    return false;
+  }
+
+  static const Set<String> _inlineTags = <String>{
+    'span',
+    'strong',
+    'b',
+    'em',
+    'i',
+    'u',
+    'small',
+    'sub',
+    'sup',
+    'font',
+  };
 }

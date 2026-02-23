@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/domain/data_sources/local/local_bible_db_data_source.dart';
 import 'package:icoc/domain/model/bible/bible_reference.dart';
+import 'package:icoc/domain/model/bible/bible_translation.dart';
 import 'package:icoc/domain/model/bible/bible_verse_result.dart';
 
 class BibleVerseDialog extends StatefulWidget {
@@ -23,7 +25,7 @@ class BibleVerseDialog extends StatefulWidget {
 
 class _BibleVerseDialogState extends State<BibleVerseDialog> {
   late String _selectedTranslation;
-  List<String> _translations = <String>[];
+  List<BibleTranslation> _translations = <BibleTranslation>[];
   BibleVerseResult? _result;
   bool _loading = true;
   String? _error;
@@ -37,16 +39,19 @@ class _BibleVerseDialogState extends State<BibleVerseDialog> {
 
   Future<void> _loadInitial() async {
     await widget.bibleDb.ensureInitialized();
-    final List<String> translations =
+    final List<BibleTranslation> translations =
         await widget.bibleDb.getAvailableTranslations();
     if (!mounted) {
       return;
     }
     setState(() {
       _translations = translations;
-      if (_translations.isNotEmpty &&
-          !_translations.contains(_selectedTranslation)) {
-        _selectedTranslation = _translations.first;
+      final bool selectedExists = _translations.any(
+        (BibleTranslation translation) =>
+            translation.code == _selectedTranslation,
+      );
+      if (_translations.isNotEmpty && !selectedExists) {
+        _selectedTranslation = _translations.first.code;
       }
     });
     await _loadVerse();
@@ -76,7 +81,9 @@ class _BibleVerseDialogState extends State<BibleVerseDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     return Dialog(
+      backgroundColor: isDarkTheme ? const Color(0xFF2A2A2A) : null,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520, maxHeight: 560),
         child: Padding(
@@ -101,14 +108,51 @@ class _BibleVerseDialogState extends State<BibleVerseDialog> {
               if (_translations.isNotEmpty)
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _selectedTranslation,
+                  child: MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                      textScaler: const TextScaler.linear(0.95),
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Version'.tr(),
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Colors.grey.withValues(alpha: 0.5)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Colors.grey.withValues(alpha: 0.5)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Colors.grey.withValues(alpha: 0.5)),
+                        ),
+                      ),
+                      initialValue: _selectedTranslation,
+                      itemHeight: 48,
+                      menuMaxHeight: 320,
+                      iconSize: 20,
+                      style: Theme.of(context).textTheme.bodyMedium,
                       items: _translations
-                          .map((String code) => DropdownMenuItem<String>(
-                                value: code,
-                                child: Text(code.toUpperCase()),
-                              ))
+                          .map(
+                            (BibleTranslation translation) =>
+                                DropdownMenuItem<String>(
+                              value: translation.code,
+                              child: Text(
+                                _localizedName(context, translation),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
                           .toList(),
                       onChanged: (String? value) async {
                         if (value == null || value == _selectedTranslation) {
@@ -156,5 +200,35 @@ class _BibleVerseDialogState extends State<BibleVerseDialog> {
         ),
       ),
     );
+  }
+
+  String _localizedName(BuildContext context, BibleTranslation translation) {
+    final String uk = 'uk'.tr();
+    final String ru = 'ru'.tr();
+    final String en = 'en'.tr();
+    final String contemporary = 'bible_variant_contemporary'.tr();
+    final String ohienko = 'bible_variant_ohienko'.tr();
+    final String kulish = 'bible_variant_kulish'.tr();
+    final String synodal = 'bible_variant_synodal'.tr();
+    final String rsp = 'bible_variant_rsp'.tr();
+
+    final String label = switch (translation.code) {
+      'uk_tub' => '$uk ($contemporary)',
+      'uk_ohienko' => '$uk ($ohienko)',
+      'uk_kulish' => '$uk ($kulish)',
+      'ru_wbtc' => '$ru ($contemporary)',
+      'ru_synodal' => '$ru ($synodal)',
+      'ru_rsp' => '$ru ($rsp)',
+      'en_easy' => '$en ($contemporary)',
+      'en_asv' => '$en (ASV)',
+      'en_kjv' => '$en (KJV)',
+      _ => translation.name,
+    };
+
+    // If localization key is missing, EasyLocalization returns the key itself.
+    if (label.contains('bible_variant_')) {
+      return translation.name;
+    }
+    return label;
   }
 }
