@@ -15,6 +15,8 @@ import 'package:icoc/core/notifications/push_notification_service.dart'
 import 'package:icoc/core/user_languages.dart' as _i707;
 import 'package:icoc/data/data_sources_impl/local/local_cache_impl.dart'
     as _i263;
+import 'package:icoc/data/data_sources_impl/local/sqlite_bible_db_impl.dart'
+    as _i788;
 import 'package:icoc/data/data_sources_impl/local/sqlite_songs_db_impl.dart'
     as _i1065;
 import 'package:icoc/data/data_sources_impl/remote/ai_data_source.dart'
@@ -36,6 +38,8 @@ import 'package:icoc/data/repository_impl/notifications_repository_impl.dart'
 import 'package:icoc/data/repository_impl/q&a_repository_impl.dart' as _i88;
 import 'package:icoc/data/repository_impl/songs_repository_impl.dart' as _i528;
 import 'package:icoc/data/repository_impl/video_repository_impl.dart' as _i785;
+import 'package:icoc/domain/data_sources/local/local_bible_db_data_source.dart'
+    as _i559;
 import 'package:icoc/domain/data_sources/local/local_cache.dart' as _i868;
 import 'package:icoc/domain/data_sources/local/local_db_data_source.dart'
     as _i751;
@@ -104,6 +108,13 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.factory<_i559.LocalBibleDB>(
+      () => _i788.SqliteBibleDbImpl(),
+      registerFor: {
+        _dev,
+        _prod,
+      },
+    );
     gh.factory<_i751.LocalSongsDB>(
       () => _i1065.SqliteSongsDbImpl(localCache: gh<_i868.LocalCache>()),
       registerFor: {
@@ -111,7 +122,7 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
-    gh.lazySingleton<_i706.PushNotificationService>(
+    gh.singleton<_i706.PushNotificationService>(
         () => _i706.PushNotificationService(gh<_i868.LocalCache>()));
     gh.factory<_i955.AiDataSource>(
       () => _i719.AiDataSourceImpl(),

@@ -62,7 +62,12 @@ class StorageKeys {
   static const String notificationsPermissionAsked =
       'notificationsPermissionAsked';
   static const String deviceId = 'deviceId';
+  static const String bibleVerseTranslation = 'bibleVerseTranslation';
   // Add more keys as needed
+}
+
+class FeatureFlags {
+  static const bool bibleReferencePopup = true;
 }
 
 Map<String, String> languagesCodes = {

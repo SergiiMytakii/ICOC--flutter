@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/bible_reference_link_handler.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
@@ -40,8 +41,11 @@ class OneLessonScreen extends StatefulWidget {
 class _OneLessonScreenState extends State<OneLessonScreen>
     with WidgetsBindingObserver {
   late final ScrollController _scrollController;
-  double _lastOffset = 0.0;
+  double _lastOffset = 0;
   bool _restored = false;
+  String? _lastRawHtml;
+  String? _lastLinkedHtml;
+  String? _lastLangHint;
 
   @override
   void initState() {
@@ -83,7 +87,12 @@ class _OneLessonScreenState extends State<OneLessonScreen>
             loading: () => const Scaffold(
                 body: Center(child: CircularProgressIndicator())),
             success: (topics) {
-              final lesson = _receiveLesson(topics);
+              final topic = _receiveTopic(topics);
+              final lesson = _receiveLesson(topic);
+              final lessonHtml = _prepareLessonHtml(
+                lesson.text,
+                langHint: topic.lang.name,
+              );
               _tryRestore();
               return Scaffold(
                 appBar: AppBar(
@@ -115,9 +124,22 @@ class _OneLessonScreenState extends State<OneLessonScreen>
                             success: (fontSize) => ScaleText(
                               fontSize: fontSize ?? 14,
                               child: html.Html(
-                                data: lesson.text,
-                                onLinkTap: (url, __, ___) {
-                                  launchUrl(Uri.parse(url ?? ''));
+                                data: lessonHtml,
+                                onLinkTap: (url, __, ___) async {
+                                  final bool handled =
+                                      await BibleReferenceLinkHandler
+                                          .handleLinkTap(
+                                    context,
+                                    url: url,
+                                    langHint: topic.lang.name,
+                                  );
+                                  if (handled) {
+                                    return;
+                                  }
+                                  final Uri? uri = Uri.tryParse(url ?? '');
+                                  if (uri != null) {
+                                    launchUrl(uri);
+                                  }
                                 },
                                 extensions: [
                                   html.OnImageTapExtension(
@@ -162,15 +184,33 @@ class _OneLessonScreenState extends State<OneLessonScreen>
     SharePlus.instance.share(ShareParams(text: text));
   }
 
-  Lesson _receiveLesson(List<BibleStudy> topics) {
-    final topic = topics.firstWhere(
-      (item) => item.id == int.parse(widget.topicId),
+  BibleStudy _receiveTopic(List<BibleStudy> topics) {
+    return topics.firstWhere(
+      (item) => item.id == int.tryParse(widget.topicId),
       orElse: () => BibleStudy.defaultBibleStudy,
     );
+  }
+
+  Lesson _receiveLesson(BibleStudy topic) {
     return topic.lessons.firstWhere(
-      (item) => item.id == int.parse(widget.lessonId),
+      (item) => item.id == int.tryParse(widget.lessonId),
       orElse: () => Lesson.defaultLesson,
     );
+  }
+
+  String _prepareLessonHtml(String rawHtml, {required String langHint}) {
+    if (_lastRawHtml == rawHtml &&
+        _lastLinkedHtml != null &&
+        _lastLangHint == langHint) {
+      return _lastLinkedHtml!;
+    }
+
+    final String linked =
+        BibleReferenceLinkHandler.preprocessHtml(rawHtml, langHint: langHint);
+    _lastRawHtml = rawHtml;
+    _lastLinkedHtml = linked;
+    _lastLangHint = langHint;
+    return linked;
   }
 
   void _saveReadingPosition() {

@@ -74,6 +74,8 @@ dev_dependencies:
   json_serializable: ^6.8.0
   mockito: ^5.4.4
   path: ^1.8.0
+  sqlite3: ^2.9.3
+  xml: ^6.6.1
 
 flutter:
   generate: true
@@ -81,6 +83,9 @@ flutter:
 
   assets:
     - assets/translations/
+    - assets/db/
+    - assets/db/Bible.db
+    - assets/db/Bible.meta.json
     - assets/
     - assets/images/
     - assets/images/space/

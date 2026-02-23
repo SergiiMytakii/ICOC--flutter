@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "code": "uk",
+      "source": "tool/bible/sources/UkrainianTUBBible.xml"
+    },
+    {
+      "code": "ru",
+      "source": "tool/bible/sources/RussianSynodalBible.xml"
+    }
+  ],
+  "translations": 2,
+  "verses": 62188
+}
