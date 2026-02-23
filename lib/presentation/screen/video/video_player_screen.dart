@@ -144,15 +144,49 @@ class _VideoPlayerState extends State<VideoPlayer> {
                           SizedBox(
                             width: double.maxFinite,
                             height: MediaQuery.of(context).size.width / 16 * 9,
-                            child: Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  final uri = Uri.parse(
-                                      'https://www.youtube.com/watch?v=${widget.videoId}');
-                                  launchUrl(uri,
-                                      mode: LaunchMode.externalApplication);
-                                },
-                                child: const Text('Open in YouTube'),
+                            child: Card(
+                              margin: const EdgeInsets.all(8),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      size: 48,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      'Video player failed to load',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'The video could not be played in the app. Please try opening it in YouTube.',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    ElevatedButton.icon(
+                                      onPressed: () {
+                                        final uri = Uri.parse(
+                                            'https://www.youtube.com/watch?v=${widget.videoId}');
+                                        launchUrl(uri,
+                                            mode:
+                                                LaunchMode.externalApplication);
+                                      },
+                                      icon: const Icon(Icons.play_arrow),
+                                      label: const Text('Open in YouTube'),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -199,15 +233,45 @@ class _VideoPlayerState extends State<VideoPlayer> {
                         SizedBox(
                           width: double.maxFinite,
                           height: MediaQuery.of(context).size.width / 16 * 9,
-                          child: Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                final uri = Uri.parse(
-                                    'https://www.youtube.com/watch?v=${widget.videoId}');
-                                launchUrl(uri,
-                                    mode: LaunchMode.externalApplication);
-                              },
-                              child: const Text('Open in YouTube'),
+                          child: Card(
+                            margin: const EdgeInsets.all(8),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.error_outline,
+                                    size: 48,
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Video player failed to load',
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'The video could not be played in the app. Please try opening it in YouTube.',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      final uri = Uri.parse(
+                                          'https://www.youtube.com/watch?v=${widget.videoId}');
+                                      launchUrl(uri,
+                                          mode: LaunchMode.externalApplication);
+                                    },
+                                    icon: const Icon(Icons.play_arrow),
+                                    label: const Text('Open in YouTube'),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
