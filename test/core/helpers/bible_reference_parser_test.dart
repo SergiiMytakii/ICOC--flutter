@@ -195,6 +195,98 @@ void main() {
       expect(ref.segments.first.maxVerse, 4);
     });
 
+    test('parses english gospel reference', () {
+      final BibleReference? ref =
+          BibleReferenceParser.parse('John 1:1-5', langHint: 'en');
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 43);
+      expect(ref.chapterStart, 1);
+      expect(ref.segments.first.minVerse, 1);
+      expect(ref.segments.first.maxVerse, 5);
+    });
+
+    test('parses english ordinal epistle reference', () {
+      final BibleReference? ref = BibleReferenceParser.parse(
+        '1 Corinthians 12:12-13',
+        langHint: 'en',
+      );
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 46);
+      expect(ref.chapterStart, 12);
+      expect(ref.segments.first.minVerse, 12);
+      expect(ref.segments.first.maxVerse, 13);
+    });
+
+    test('parses english prefix "According to"', () {
+      final BibleReference? ref = BibleReferenceParser.parse(
+        'According to Mark 1:14-18',
+        langHint: 'en',
+      );
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 41);
+      expect(ref.chapterStart, 1);
+      expect(ref.segments.first.minVerse, 14);
+      expect(ref.segments.first.maxVerse, 18);
+    });
+
+    test('parses english ordinal word form', () {
+      final BibleReference? ref = BibleReferenceParser.parse(
+        'First John 4:8-10',
+        langHint: 'en',
+      );
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 62);
+      expect(ref.chapterStart, 4);
+      expect(ref.segments.first.minVerse, 8);
+      expect(ref.segments.first.maxVerse, 10);
+    });
+
+    test('parses english ordinal numeric suffix form', () {
+      final BibleReference? ref = BibleReferenceParser.parse(
+        '1st Corinthians 13:4-7',
+        langHint: 'en',
+      );
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 46);
+      expect(ref.chapterStart, 13);
+      expect(ref.segments.first.minVerse, 4);
+      expect(ref.segments.first.maxVerse, 7);
+    });
+
+    test('parses english roman numeral form', () {
+      final BibleReference? ref = BibleReferenceParser.parse(
+        'III John 1:2-4',
+        langHint: 'en',
+      );
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 64);
+      expect(ref.chapterStart, 1);
+      expect(ref.segments.first.minVerse, 2);
+      expect(ref.segments.first.maxVerse, 4);
+    });
+
+    test('parses song of songs alias', () {
+      final BibleReference? ref = BibleReferenceParser.parse(
+        'Song of Songs 2:1-2',
+        langHint: 'en',
+      );
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 22);
+      expect(ref.chapterStart, 2);
+      expect(ref.segments.first.minVerse, 1);
+      expect(ref.segments.first.maxVerse, 2);
+    });
+
+    test('parses revelation alias', () {
+      final BibleReference? ref =
+          BibleReferenceParser.parse('Rev 21:4', langHint: 'en');
+      expect(ref, isNotNull);
+      expect(ref!.bookId, 66);
+      expect(ref.chapterStart, 21);
+      expect(ref.segments.first.minVerse, 4);
+      expect(ref.segments.first.maxVerse, 4);
+    });
+
     test('returns null for invalid text', () {
       final BibleReference? ref =
           BibleReferenceParser.parse('Це не є посилання', langHint: 'uk');
@@ -204,7 +296,8 @@ void main() {
 
   group('BibleReferenceParser.findMatches', () {
     test('finds reference with leading non-book token in same text chunk', () {
-      final List<BibleReferenceMatch> matches = BibleReferenceParser.findMatches(
+      final List<BibleReferenceMatch> matches =
+          BibleReferenceParser.findMatches(
         'ЦЕЛЬ ИОАННА 1:1--2, 14, 18',
         langHint: 'ru',
       );

@@ -145,5 +145,58 @@ void main() {
       expect(output, contains('verseStart=26'));
       expect(output, contains('verseEnd=40'));
     });
+
+    test('linkifies plain english scripture reference', () {
+      const String input = '<p>John 1:1-5</p>';
+      final String output =
+          BibleReferenceLinkifier.linkifyHtml(input, langHint: 'en');
+      expect(output, contains('href="bible://lookup?'));
+      expect(output, contains('bookId=43'));
+      expect(output, contains('John 1:1-5'));
+    });
+
+    test('linkifies english ordinal epistle reference', () {
+      const String input = '<p>1 Corinthians 12:12-13</p>';
+      final String output =
+          BibleReferenceLinkifier.linkifyHtml(input, langHint: 'en');
+      expect(output, contains('href="bible://lookup?'));
+      expect(output, contains('bookId=46'));
+      expect(output, contains('verseStart=12'));
+      expect(output, contains('verseEnd=13'));
+    });
+
+    test('linkifies english reference with leading words', () {
+      const String input = '<h5>Example from Acts 2:41-47</h5>';
+      final String output =
+          BibleReferenceLinkifier.linkifyHtml(input, langHint: 'en');
+      final int linkCount =
+          RegExp(r'href="bible://lookup\?').allMatches(output).length;
+      expect(linkCount, 1);
+      expect(output, contains('Example from '));
+      expect(output, contains('bookId=44'));
+    });
+
+    test('linkifies english ordinal variants', () {
+      const String input =
+          '<p>First John 4:8-10 and 1st Corinthians 13:4-7</p>';
+      final String output =
+          BibleReferenceLinkifier.linkifyHtml(input, langHint: 'en');
+      final int linkCount =
+          RegExp(r'href="bible://lookup\?').allMatches(output).length;
+      expect(linkCount, 2);
+      expect(output, contains('bookId=62'));
+      expect(output, contains('bookId=46'));
+    });
+
+    test('linkifies english roman numeral and revelation aliases', () {
+      const String input = '<p>III John 1:2-4; Rev 21:4</p>';
+      final String output =
+          BibleReferenceLinkifier.linkifyHtml(input, langHint: 'en');
+      final int linkCount =
+          RegExp(r'href="bible://lookup\?').allMatches(output).length;
+      expect(linkCount, 2);
+      expect(output, contains('bookId=64'));
+      expect(output, contains('bookId=66'));
+    });
   });
 }

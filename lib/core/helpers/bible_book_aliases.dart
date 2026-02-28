@@ -1,6 +1,7 @@
 class BibleBookAliases {
   static final Map<String, Map<String, int>> _aliasesByLang =
       <String, Map<String, int>>{
+    'en': _buildAliasIndex(_enAliases),
     'uk': _buildAliasIndex(_ukAliases),
     'ru': _buildAliasIndex(_ruAliases),
   };
@@ -43,6 +44,45 @@ class BibleBookAliases {
     out = out.replaceAll(RegExp(r'^(від|от)\s+'), '');
     // Normalize "до Римлян" / "к Римлянам".
     out = out.replaceAll(RegExp(r'^(до|к)\s+'), '');
+    // Normalize English ordinal forms used in references.
+    out = out.replaceAllMapped(
+      RegExp(r'^(first|1st)\s+'),
+      (Match _) => '1 ',
+    );
+    out = out.replaceAllMapped(
+      RegExp(r'^(second|2nd)\s+'),
+      (Match _) => '2 ',
+    );
+    out = out.replaceAllMapped(
+      RegExp(r'^(third|3rd)\s+'),
+      (Match _) => '3 ',
+    );
+    out = out.replaceAllMapped(
+      RegExp(r'^(i{1,3})\s+', caseSensitive: false),
+      (Match m) {
+        final String value = (m.group(1) ?? '').toLowerCase();
+        switch (value) {
+          case 'i':
+            return '1 ';
+          case 'ii':
+            return '2 ';
+          case 'iii':
+            return '3 ';
+          default:
+            return '${m.group(0)}';
+        }
+      },
+    );
+    // Normalize common English prefixes.
+    out = out.replaceAll(
+      RegExp(r'^(the\s+)?gospel\s+according\s+to\s+'),
+      '',
+    );
+    out = out.replaceAll(RegExp(r'^according\s+to\s+'), '');
+    out = out.replaceAll(RegExp(r'^(the\s+)?gospel\s+of\s+'), '');
+    out = out.replaceAll(RegExp(r'^(epistle|letter)\s+to\s+'), '');
+    out = out.replaceAll(RegExp(r'^to\s+'), '');
+    out = out.replaceAll(RegExp(r'^of\s+'), '');
 
     out = out.replaceAll(RegExp(r'\s+'), ' ').trim();
     return out;
@@ -281,6 +321,271 @@ class BibleBookAliases {
       'Откровение',
       'Апокаліпсис',
       'Апок'
+    ],
+  };
+
+  static final Map<int, List<String>> _enAliases = <int, List<String>>{
+    // Pentateuch
+    1: <String>['Genesis', 'Gen', 'Ge', 'Gn'],
+    2: <String>['Exodus', 'Exod', 'Exo', 'Ex'],
+    3: <String>['Leviticus', 'Lev', 'Le', 'Lv'],
+    4: <String>['Numbers', 'Num', 'Nu', 'Nm', 'Nb'],
+    5: <String>['Deuteronomy', 'Deut', 'Deu', 'Dt', 'De'],
+
+    // Historical books
+    6: <String>['Joshua', 'Josh', 'Jos', 'Jsh'],
+    7: <String>['Judges', 'Judg', 'Jdg', 'Jg', 'Jdgs'],
+    8: <String>['Ruth', 'Rth', 'Ru'],
+    9: <String>[
+      '1 Samuel',
+      '1 Sam',
+      '1Sam',
+      '1 Sa',
+      '1Sa',
+      '1 Sm',
+      '1Sm',
+      'I Sam',
+      'First Samuel',
+      '1st Samuel'
+    ],
+    10: <String>[
+      '2 Samuel',
+      '2 Sam',
+      '2Sam',
+      '2 Sa',
+      '2Sa',
+      '2 Sm',
+      '2Sm',
+      'II Sam',
+      'Second Samuel',
+      '2nd Samuel'
+    ],
+    11: <String>[
+      '1 Kings',
+      '1 Kgs',
+      '1 Kgs.',
+      '1Ki',
+      '1 Ki',
+      '1 Kg',
+      '1Kg',
+      'I Kgs',
+      'First Kings',
+      '1st Kings'
+    ],
+    12: <String>[
+      '2 Kings',
+      '2 Kgs',
+      '2 Kgs.',
+      '2Ki',
+      '2 Ki',
+      '2 Kg',
+      '2Kg',
+      'II Kgs',
+      'Second Kings',
+      '2nd Kings'
+    ],
+    13: <String>['1 Chronicles', '1 Chron', '1 Chr', '1Chr', '1 Ch', 'I Chr'],
+    14: <String>['2 Chronicles', '2 Chron', '2 Chr', '2Chr', '2 Ch', 'II Chr'],
+    15: <String>['Ezra', 'Ezr', 'Ez'],
+    16: <String>['Nehemiah', 'Neh', 'Ne'],
+    17: <String>['Esther', 'Esth', 'Est', 'Es'],
+
+    // Poetry and wisdom
+    18: <String>['Job', 'Jb'],
+    19: <String>['Psalms', 'Psalm', 'Psalm.', 'Ps', 'Psa', 'Psm', 'Pss'],
+    20: <String>['Proverbs', 'Prov', 'Pro', 'Prv', 'Pr'],
+    21: <String>['Ecclesiastes', 'Eccles', 'Eccl', 'Ecc', 'Qoh', 'Qoheleth'],
+    22: <String>[
+      'Song of Solomon',
+      'Song of Sol',
+      'Song of Solom',
+      'Song of Songs',
+      'Song',
+      'Songs',
+      'SOS',
+      'Canticles',
+      'Canticle of Canticles',
+      'Cant'
+    ],
+
+    // Prophets
+    23: <String>['Isaiah', 'Isa', 'Is'],
+    24: <String>['Jeremiah', 'Jer', 'Je', 'Jr'],
+    25: <String>['Lamentations', 'Lam', 'La'],
+    26: <String>['Ezekiel', 'Ezek', 'Eze', 'Ezk'],
+    27: <String>['Daniel', 'Dan', 'Da', 'Dn'],
+    28: <String>['Hosea', 'Hos', 'Ho'],
+    29: <String>['Joel', 'Joe', 'Jl'],
+    30: <String>['Amos', 'Amo', 'Am'],
+    31: <String>['Obadiah', 'Obad', 'Oba', 'Ob'],
+    32: <String>['Jonah', 'Jon', 'Jnh'],
+    33: <String>['Micah', 'Mic', 'Mc'],
+    34: <String>['Nahum', 'Nah', 'Na'],
+    35: <String>['Habakkuk', 'Hab', 'Hb'],
+    36: <String>['Zephaniah', 'Zeph', 'Zep', 'Zp'],
+    37: <String>['Haggai', 'Hag', 'Hg'],
+    38: <String>['Zechariah', 'Zech', 'Zec', 'Zc'],
+    39: <String>['Malachi', 'Mal', 'Ml'],
+
+    // New Testament
+    40: <String>['Matthew', 'Matt', 'Mat', 'Mt'],
+    41: <String>['Mark', 'Mrk', 'Mar', 'Mk', 'Mr'],
+    42: <String>['Luke', 'Luk', 'Lk', 'Lu'],
+    43: <String>[
+      'John',
+      'Jn',
+      'Jhn',
+      'Joh',
+      'The Gospel of John',
+      'Gospel of John',
+      'The Gospel according to John',
+      'Gospel according to John'
+    ],
+    44: <String>['Acts', 'Act', 'Ac', 'Acts of the Apostles'],
+    45: <String>['Romans', 'Rom', 'Ro', 'Rm'],
+    46: <String>[
+      '1 Corinthians',
+      '1 Cor',
+      '1Cor',
+      '1 Co',
+      '1Co',
+      'I Cor',
+      '1st Corinthians',
+      'First Corinthians',
+      '1 Corinth'
+    ],
+    47: <String>[
+      '2 Corinthians',
+      '2 Cor',
+      '2Cor',
+      '2 Co',
+      '2Co',
+      'II Cor',
+      '2nd Corinthians',
+      'Second Corinthians',
+      '2 Corinth'
+    ],
+    48: <String>['Galatians', 'Gal', 'Ga'],
+    49: <String>['Ephesians', 'Eph', 'Ep'],
+    50: <String>['Philippians', 'Phil', 'Php', 'Pp', 'Philp'],
+    51: <String>['Colossians', 'Col'],
+    52: <String>[
+      '1 Thessalonians',
+      '1 Thess',
+      '1Thess',
+      '1 Thes',
+      '1Thes',
+      '1 Ths',
+      '1Ths',
+      '1 Th',
+      '1Th',
+      'I Thess',
+      'First Thessalonians',
+      '1st Thessalonians'
+    ],
+    53: <String>[
+      '2 Thessalonians',
+      '2 Thess',
+      '2Thess',
+      '2 Thes',
+      '2Thes',
+      '2 Ths',
+      '2Ths',
+      '2 Th',
+      '2Th',
+      'II Thess',
+      'Second Thessalonians',
+      '2nd Thessalonians'
+    ],
+    54: <String>[
+      '1 Timothy',
+      '1 Tim',
+      '1Tim',
+      '1 Ti',
+      '1Ti',
+      'I Tim',
+      'First Timothy',
+      '1st Timothy'
+    ],
+    55: <String>[
+      '2 Timothy',
+      '2 Tim',
+      '2Tim',
+      '2 Ti',
+      '2Ti',
+      'II Tim',
+      'Second Timothy',
+      '2nd Timothy'
+    ],
+    56: <String>['Titus', 'Tit'],
+    57: <String>['Philemon', 'Philem', 'Philem.', 'Phlm', 'Phm', 'Pm'],
+    58: <String>['Hebrews', 'Heb', 'He'],
+    59: <String>['James', 'Jas', 'Jam', 'Jm'],
+    60: <String>[
+      '1 Peter',
+      '1 Pet',
+      '1Pet',
+      '1 Pe',
+      '1Pe',
+      '1 Pt',
+      '1Pt',
+      'I Pet',
+      'First Peter',
+      '1st Peter'
+    ],
+    61: <String>[
+      '2 Peter',
+      '2 Pet',
+      '2Pet',
+      '2 Pe',
+      '2Pe',
+      '2 Pt',
+      '2Pt',
+      'II Pet',
+      'Second Peter',
+      '2nd Peter'
+    ],
+    62: <String>[
+      '1 John',
+      '1 Jn',
+      '1Jn',
+      '1 Jhn',
+      '1Jhn',
+      'I Jn',
+      'First John',
+      '1st John'
+    ],
+    63: <String>[
+      '2 John',
+      '2 Jn',
+      '2Jn',
+      '2 Jhn',
+      '2Jhn',
+      'II Jn',
+      'Second John',
+      '2nd John'
+    ],
+    64: <String>[
+      '3 John',
+      '3 Jn',
+      '3Jn',
+      '3 Jhn',
+      '3Jhn',
+      'III Jn',
+      'Third John',
+      '3rd John'
+    ],
+    65: <String>['Jude', 'Jud', 'Jde'],
+    66: <String>[
+      'Revelation',
+      'Rev',
+      'Re',
+      'Rv',
+      'Apocalypse',
+      'Apoc',
+      'Revelation of John',
+      'The Revelation of John',
+      'The Revelation to John'
     ],
   };
 
