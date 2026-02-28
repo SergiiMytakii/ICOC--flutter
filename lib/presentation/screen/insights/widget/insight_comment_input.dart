@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class InsightCommentInput extends StatefulWidget {
   const InsightCommentInput({
@@ -50,9 +51,9 @@ class _InsightCommentInputState extends State<InsightCommentInput> {
                 minLines: 1,
                 maxLines: 4,
                 textInputAction: TextInputAction.newline,
-                decoration: const InputDecoration(
-                  hintText: 'Add a comment...',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: 'comments_input_hint'.tr(),
+                  border: const OutlineInputBorder(),
                   isDense: true,
                 ),
               ),

@@ -21,6 +21,7 @@ import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:icoc/core/user_languages.dart';
 
@@ -38,6 +39,8 @@ class PushNotificationService {
       FlutterLocalNotificationsPlugin();
   static const String _channelId = 'icoc_default_channel';
   static const String _silentChannelId = 'icoc_silent_channel';
+  static const int _permissionReminderMaxDeclines = 2;
+  static const Duration _permissionReminderInterval = Duration(days: 30);
   int _notificationIdCounter = 0;
 
   // Notification details constants
@@ -238,6 +241,69 @@ class PushNotificationService {
           error: _, stackTrace: StackTrace.current);
     }
     await _localCache.saveBool(StorageKeys.notificationsPermissionAsked, true);
+  }
+
+  Future<bool> shouldShowPermissionReminderDialog() async {
+    final bool asked =
+        _localCache.getBool(StorageKeys.notificationsPermissionAsked) ?? false;
+    if (!asked) {
+      return false;
+    }
+
+    final int declines = await _getPermissionReminderDeclines();
+    if (declines >= _permissionReminderMaxDeclines) {
+      return false;
+    }
+
+    final DateTime now = DateTime.now().toUtc();
+    final String? rawLastCheck = _localCache
+        .getString(StorageKeys.notificationsPermissionReminderLastCheckAt);
+    final DateTime? lastCheck =
+        rawLastCheck == null ? null : DateTime.tryParse(rawLastCheck);
+
+    if (lastCheck != null &&
+        now.difference(lastCheck) < _permissionReminderInterval) {
+      return false;
+    }
+
+    await _localCache.saveString(
+      StorageKeys.notificationsPermissionReminderLastCheckAt,
+      now.toIso8601String(),
+    );
+
+    final settings = await FirebaseMessaging.instance.getNotificationSettings();
+    final bool hasPermission =
+        settings.authorizationStatus == AuthorizationStatus.authorized ||
+            settings.authorizationStatus == AuthorizationStatus.provisional;
+
+    return !hasPermission;
+  }
+
+  Future<void> markPermissionReminderDeclined() async {
+    final int currentDeclines = await _getPermissionReminderDeclines();
+    await _localCache.saveDouble(
+      StorageKeys.notificationsPermissionReminderDeclines,
+      (currentDeclines + 1).toDouble(),
+    );
+  }
+
+  Future<void> openNotificationSettings() async {
+    final Uri uri = Uri.parse('app-settings:');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Future<int> _getPermissionReminderDeclines() async {
+    final stored = _localCache
+        .getDouble(StorageKeys.notificationsPermissionReminderDeclines);
+    if (stored is double) {
+      return stored.toInt();
+    }
+    if (stored is Future<double?>) {
+      return (await stored)?.toInt() ?? 0;
+    }
+    return 0;
   }
 
   Future<void> _getTokenAndSubscribe(FirebaseMessaging messaging) async {

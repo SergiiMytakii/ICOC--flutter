@@ -188,9 +188,16 @@
     "Language": "Язык",
     "Primary": "Основной",
     "Insights": "Инсайты",
-    "Coming soon": "🚧 Скоро"
-    ,
-    "notification_choose_topics": "Выберите темы, о которых хотите получать уведомления"
-
+    "Coming soon": "🚧 Скоро будет",
+    "notification_choose_topics": "Выберите темы, по которым хотите получать уведомления",
+    "push_permission_reminder_title": "Включите уведомления",
+    "push_permission_reminder_body": "Сейчас уведомления отключены. Включите их в настройках системы, чтобы не пропустить новые песни, видео и инсайты.",
+    "push_permission_reminder_later": "Не сейчас",
+    "push_permission_reminder_open_settings": "Открыть настройки",
+    "comments_title": "Комментарии",
+    "comments_refresh": "Обновить",
+    "comments_retry": "Повторить",
+    "comments_empty": "Пока нет комментариев",
+    "comments_input_hint": "Напишите комментарий..."
 
 }

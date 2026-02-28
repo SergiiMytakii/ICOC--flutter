@@ -63,6 +63,10 @@ class StorageKeys {
   static const String insightsLikedPosts = 'insightsLikedPosts';
   static const String notificationsPermissionAsked =
       'notificationsPermissionAsked';
+  static const String notificationsPermissionReminderLastCheckAt =
+      'notificationsPermissionReminderLastCheckAt';
+  static const String notificationsPermissionReminderDeclines =
+      'notificationsPermissionReminderDeclines';
   static const String deviceId = 'deviceId';
   static const String bibleVerseTranslation = 'bibleVerseTranslation';
   // Add more keys as needed

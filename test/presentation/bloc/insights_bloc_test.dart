@@ -327,6 +327,7 @@ void main() {
       const InsightsEvent.languagesChanged(
           <String, bool>{'en': true, 'uk': true}),
     ),
+    wait: const Duration(milliseconds: 1),
     expect: () => <InsightsState>[
       const InsightsState.loaded(
         posts: <Post>[],

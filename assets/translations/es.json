@@ -167,9 +167,13 @@
   "Language": "Idioma",
   "Primary": "Principal",
   "Insights": "Perspectivas",
-  "Coming soon": "🚧 Próximamente"
-  ,
-  "notification_choose_topics": "Elige los temas de los que quieres recibir notificaciones"
+  "Coming soon": "🚧 Próximamente",
+  "notification_choose_topics": "Elige los temas de los que quieres recibir notificaciones",
+  "comments_title": "Comentarios",
+  "comments_refresh": "Actualizar",
+  "comments_retry": "Reintentar",
+  "comments_empty": "Aún no hay comentarios",
+  "comments_input_hint": "Añade un comentario..."
 
   }
   

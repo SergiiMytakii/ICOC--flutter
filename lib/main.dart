@@ -22,6 +22,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/theme.dart';
 import 'package:icoc/core/notifications/push_notification_service.dart';
+import 'package:y_player/y_player.dart';
 
 String locale = 'en';
 // ignore: prefer_const_declarations
@@ -29,7 +30,7 @@ final openAIKey = const String.fromEnvironment('openAIKey');
 void main() async {
   runZonedGuarded(
     () async {
-      WidgetsFlutterBinding.ensureInitialized();
+      YPlayerInitializer.ensureInitialized();
       await EasyLocalization.ensureInitialized();
       await Firebase.initializeApp();
       await GetStorage.init();
@@ -45,11 +46,6 @@ void main() async {
             StorageKeys.locale,
           ) ??
           'en';
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        getIt<PushNotificationService>()
-            .requestNotificationPermissionIfNeeded();
-      });
       runApp(
         EasyLocalization(
           useOnlyLangCode: true,
@@ -85,17 +81,77 @@ void _setScreenSettings() {
       statusBarIconBrightness: Brightness.light));
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key, this.savedThemeMode});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key, this.savedThemeMode});
 
   final AdaptiveThemeMode? savedThemeMode;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _runStartupNotificationChecks();
+    });
+  }
+
+  Future<void> _runStartupNotificationChecks() async {
+    final pushService = getIt<PushNotificationService>();
+
+    final bool shouldShowReminder =
+        await pushService.shouldShowPermissionReminderDialog();
+    await pushService.requestNotificationPermissionIfNeeded();
+
+    if (!mounted || !shouldShowReminder) {
+      return;
+    }
+
+    final bool openSettings = await _showPushPermissionReminderDialog();
+    if (!mounted) {
+      return;
+    }
+    if (openSettings) {
+      await pushService.openNotificationSettings();
+      return;
+    }
+    await pushService.markPermissionReminderDeclined();
+  }
+
+  Future<bool> _showPushPermissionReminderDialog() async {
+    final bool? openSettings = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text('push_permission_reminder_title'.tr()),
+          content: Text('push_permission_reminder_body'.tr()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text('push_permission_reminder_later'.tr()),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text('push_permission_reminder_open_settings'.tr()),
+            ),
+          ],
+        );
+      },
+    );
+
+    return openSettings ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
     getIt<LocalCache>()
         .saveString(StorageKeys.locale, context.locale.languageCode);
     return AdaptiveTheme(
-      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       light: myLightTheme,
       dark: myDarkTheme,
       builder: (light, dark) => MyMultiblocProvider(

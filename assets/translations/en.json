@@ -195,7 +195,15 @@
         "Language": "Language",
         "Primary": "Primary",
         "Insights": "Insights",
-        "Coming soon": "🚧 Coming soon"
-        ,
-          "notification_choose_topics": "Choose which topics you want to receive notifications for"
+        "Coming soon": "🚧 Coming soon",
+        "notification_choose_topics": "Choose which topics you want to receive notifications for",
+        "push_permission_reminder_title": "Turn on notifications",
+        "push_permission_reminder_body": "Notifications are currently disabled. Turn them on in system settings so you don't miss new songs, videos, and insights.",
+        "push_permission_reminder_later": "Not now",
+        "push_permission_reminder_open_settings": "Open settings",
+        "comments_title": "Comments",
+        "comments_refresh": "Refresh",
+        "comments_retry": "Retry",
+        "comments_empty": "No comments yet",
+        "comments_input_hint": "Add a comment..."
         }

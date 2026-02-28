@@ -8,6 +8,7 @@ import 'package:icoc/presentation/screen/insights/widget/insight_inline_youtube_
 class InsightFeedItem extends StatefulWidget {
   const InsightFeedItem({
     super.key,
+    this.mediaKey,
     required this.post,
     required this.isLiked,
     required this.isBusy,
@@ -19,8 +20,10 @@ class InsightFeedItem extends StatefulWidget {
     this.expandCaption = false,
     this.showCommentPreview = true,
     this.autoplayVideo = false,
+    this.prepareVideo = false,
   });
 
+  final Key? mediaKey;
   final Post post;
   final bool isLiked;
   final bool isBusy;
@@ -32,6 +35,7 @@ class InsightFeedItem extends StatefulWidget {
   final bool expandCaption;
   final bool showCommentPreview;
   final bool autoplayVideo;
+  final bool prepareVideo;
 
   @override
   State<InsightFeedItem> createState() => _InsightFeedItemState();
@@ -193,15 +197,19 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
   }
 
   Widget _buildMedia(BuildContext context) {
-    switch (widget.post.type) {
-      case PostType.video:
-        return _buildVideo(context);
-      case PostType.image:
-        return _buildImageCarousel(context);
-    }
+    return KeyedSubtree(
+      key: widget.mediaKey,
+      child: switch (widget.post.type) {
+        PostType.video => _buildVideo(context),
+        PostType.image => _buildImageCarousel(context),
+      },
+    );
   }
 
   Widget _buildVideo(BuildContext context) {
+    final bool isShorts = YoutubeThumbnailHelper.isShortsUrl(
+      widget.post.articleUrl,
+    );
     final String? videoId = YoutubeThumbnailHelper.resolveVideoId(
       youtubeId: widget.post.youtubeId,
       articleUrl: widget.post.articleUrl,
@@ -213,9 +221,7 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
     );
     final double aspectRatio = widget.post.aspectRatioForIndex(
       0,
-      fallback: YoutubeThumbnailHelper.isShortsUrl(widget.post.articleUrl)
-          ? (9 / 16)
-          : (16 / 9),
+      fallback: isShorts ? (9 / 16) : (16 / 9),
     );
 
     if (videoId == null || videoId.isEmpty) {
@@ -225,12 +231,13 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
       );
     }
 
-    if (widget.autoplayVideo) {
+    if (isShorts && (widget.autoplayVideo || widget.prepareVideo)) {
       return InsightInlineYoutubePlayer(
         videoId: videoId,
         aspectRatio: aspectRatio,
         thumbnailUrl: thumbnailUrl,
-        isActive: true,
+        isActive: widget.autoplayVideo,
+        shouldPrepare: widget.prepareVideo || widget.autoplayVideo,
         onTap: widget.onPlayVideo,
       );
     }
@@ -277,7 +284,6 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
     final List<String> mediaUrls = widget.post.mediaUrls;
     final double aspectRatio = widget.post.aspectRatioForIndex(
       _currentMediaIndex,
-      fallback: 1,
     );
 
     return Stack(

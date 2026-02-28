@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -25,10 +26,12 @@ class YoutubeVideoPlayerScreen extends StatefulWidget {
 }
 
 class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
+  static const String _fullscreenChannelName = 'VideoFullscreen';
   WebViewController? _iosController;
   WebViewController? _androidController;
   bool _iosFailed = false;
   bool _androidFailed = false;
+  bool _isVideoFullscreen = false;
 
   @override
   void initState() {
@@ -45,6 +48,12 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
         params = const PlatformWebViewControllerCreationParams();
       }
       _iosController = WebViewController.fromPlatformCreationParams(params)
+        ..addJavaScriptChannel(
+          _fullscreenChannelName,
+          onMessageReceived: (JavaScriptMessage message) {
+            _handleFullscreenMessage(message.message);
+          },
+        )
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setUserAgent(
           'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
@@ -56,6 +65,7 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
                 setState(() => _iosFailed = true);
               }
             },
+            onPageFinished: (_) => _attachFullscreenListener(_iosController!),
           ),
         )
         ..loadRequest(
@@ -68,9 +78,15 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
           },
         );
     } else {
-      final PlatformWebViewControllerCreationParams params =
-          const PlatformWebViewControllerCreationParams();
+      const PlatformWebViewControllerCreationParams params =
+          PlatformWebViewControllerCreationParams();
       _androidController = WebViewController.fromPlatformCreationParams(params)
+        ..addJavaScriptChannel(
+          _fullscreenChannelName,
+          onMessageReceived: (JavaScriptMessage message) {
+            _handleFullscreenMessage(message.message);
+          },
+        )
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setUserAgent(
           'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36',
@@ -82,6 +98,8 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
                 setState(() => _androidFailed = true);
               }
             },
+            onPageFinished: (_) =>
+                _attachFullscreenListener(_androidController!),
           ),
         );
       if (_androidController!.platform is AndroidWebViewController) {
@@ -98,6 +116,13 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
         },
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _restorePortraitMode();
+    WakelockPlus.disable();
+    super.dispose();
   }
 
   @override
@@ -129,5 +154,48 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
         child: const Text('Open in YouTube'),
       ),
     );
+  }
+
+  Future<void> _attachFullscreenListener(WebViewController controller) async {
+    try {
+      await controller.runJavaScript('''
+        (function() {
+          if (window.__icocFullscreenBridgeAttached) return;
+          window.__icocFullscreenBridgeAttached = true;
+          function notifyFullscreenState() {
+            const isFullscreen = !!document.fullscreenElement;
+            __FULLSCREEN_CHANNEL__.postMessage(isFullscreen ? 'enter' : 'exit');
+          }
+          document.addEventListener('fullscreenchange', notifyFullscreenState);
+          document.addEventListener('webkitfullscreenchange', notifyFullscreenState);
+        })();
+      '''
+          .replaceAll('__FULLSCREEN_CHANNEL__', _fullscreenChannelName));
+    } catch (_) {}
+  }
+
+  Future<void> _handleFullscreenMessage(String message) async {
+    final bool shouldEnterFullscreen = message == 'enter';
+    if (_isVideoFullscreen == shouldEnterFullscreen) {
+      return;
+    }
+    _isVideoFullscreen = shouldEnterFullscreen;
+    if (shouldEnterFullscreen) {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      return;
+    }
+    await _restorePortraitMode();
+  }
+
+  Future<void> _restorePortraitMode() async {
+    _isVideoFullscreen = false;
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ]);
   }
 }

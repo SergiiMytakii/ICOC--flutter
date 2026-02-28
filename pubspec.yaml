@@ -60,6 +60,8 @@ dependencies:
   youtube_player_iframe: ^5.2.2
   webview_flutter: ^4.13.1
   webview_flutter_wkwebview: ^3.23.5
+  y_player: ^2.0.6
+  media_kit_video: ^1.3.1
 
 
 

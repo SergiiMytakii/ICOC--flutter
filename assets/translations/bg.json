@@ -168,9 +168,12 @@
   "Language": "Език",
   "Primary": "Основен",
   "Insights": "Прозрения",
-  "Coming soon": "🚧 Очаквайте скоро"
-
-  }
+  "Coming soon": "Очаквайте скоро",
+  "notification_choose_topics": "Изберете за кои теми да получавате известия",
+  "comments_title": "Коментари",
+  "comments_refresh": "Опресни",
+  "comments_retry": "Опитай отново",
+  "comments_empty": "Все още няма коментари",
+  "comments_input_hint": "Добавете коментар..."
   
-,
-"notification_choose_topics": "Изберете за кои теми да получавате известия"
+}

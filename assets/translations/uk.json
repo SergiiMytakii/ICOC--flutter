@@ -189,9 +189,17 @@
     "Language": "Мова",
     "Primary": "Основна",
     "Insights": "Інсайти",
-    "Coming soon": "🚧 Скоро"
-    ,
-    "notification_choose_topics": "Виберіть теми, про які хочете отримувати сповіщення"
+    "Coming soon": "🚧 Скоро",
+    "notification_choose_topics": "Виберіть теми, про які хочете отримувати сповіщення",
+    "push_permission_reminder_title": "Увімкніть сповіщення",
+    "push_permission_reminder_body": "Зараз сповіщення вимкнені. Увімкніть їх у системних налаштуваннях, щоб не пропустити нові пісні, відео та інсайти.",
+    "push_permission_reminder_later": "Не зараз",
+    "push_permission_reminder_open_settings": "Відкрити налаштування",
+    "comments_title": "Коментарі",
+    "comments_refresh": "Оновити",
+    "comments_retry": "Спробувати ще раз",
+    "comments_empty": "Поки немає коментарів",
+    "comments_input_hint": "Додайте коментар..."
 
 
 }
