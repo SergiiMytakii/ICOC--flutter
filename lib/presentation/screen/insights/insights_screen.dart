@@ -332,7 +332,7 @@ Future<dynamic> showLangFilter(BuildContext context) {
     backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
       return ModalBottomSheet(
-        height: MediaQuery.of(context).size.height / 1.5,
+        height: MediaQuery.of(context).size.height / 2.5,
         blurBackground: false,
         child: const BottomSheetInsightsFilter(),
       );

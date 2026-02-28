@@ -7,6 +7,7 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_event.dart';
 import 'package:icoc/presentation/bloc/insights/insights_state.dart';
+import 'package:icoc/domain/model/insights/post.dart';
 
 class BottomSheetInsightsFilter extends StatelessWidget {
   const BottomSheetInsightsFilter({super.key});
@@ -15,17 +16,17 @@ class BottomSheetInsightsFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      height: MediaQuery.of(context).size.height / 1.6,
+      height: MediaQuery.of(context).size.height / 2.5,
       child: BlocBuilder<InsightsBloc, InsightsState>(
         builder: (BuildContext context, InsightsState state) {
           return state.maybeWhen(
             loaded: (
-              List<dynamic> _posts,
+              List<Post> posts,
               List<String> availableLanguages,
               Map<String, bool> selectedLanguages,
-              Set<String> _likedPostIds,
-              Set<String> _busyPostIds,
-              String? _actionMessage,
+              Set<String> likedPostIds,
+              Set<String> busyPostIds,
+              String? actionMessage,
             ) {
               return Column(
                 children: [
@@ -57,7 +58,6 @@ class BottomSheetInsightsFilter extends StatelessWidget {
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
-                                subtitle: Text(langCode.toUpperCase()),
                                 onChanged: (bool? value) async {
                                   if (value == null) {
                                     return;

@@ -59,17 +59,7 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
       appBar: AppBar(
         title: Text('Insights'.tr()),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              final Post? resolved = _resolvePostFromState(context);
-              if (resolved != null) {
-                _sharePost(resolved);
-              }
-            },
-          ),
-        ],
+        actions: [],
       ),
       body: BlocConsumer<InsightsBloc, InsightsState>(
         listener: (BuildContext context, InsightsState state) {
