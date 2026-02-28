@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
+import 'package:icoc/core/helpers/linkify_bible_references.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
@@ -81,7 +82,12 @@ class _OneLessonScreenState extends State<OneLessonScreen>
             loading: () => const Scaffold(
                 body: Center(child: CircularProgressIndicator())),
             success: (topics) {
-              final lesson = _receiveLesson(topics);
+              final topic = _receiveTopic(topics);
+              final lesson = _receiveLesson(topic);
+              final lessonHtml = BibleReferenceLinkifier.linkifyByLanguage(
+                htmlContent: lesson.text,
+                language: topic.lang,
+              );
               _tryRestore();
               return Scaffold(
                 appBar: AppBar(
@@ -113,7 +119,7 @@ class _OneLessonScreenState extends State<OneLessonScreen>
                             success: (fontSize) => ScaleText(
                               fontSize: fontSize ?? 14,
                               child: html.Html(
-                                data: lesson.text,
+                                data: lessonHtml,
                                 onLinkTap: (url, __, ___) {
                                   launchUrl(Uri.parse(url ?? ''));
                                 },
@@ -153,14 +159,17 @@ class _OneLessonScreenState extends State<OneLessonScreen>
     SharePlus.instance.share(ShareParams(text: text));
   }
 
-  Lesson _receiveLesson(List<BibleStudy> topics) {
-    final topic = topics.firstWhere(
-      (item) => item.id == int.parse(widget.topicId),
-      orElse: () => BibleStudy.defaultBibleStudy,
-    );
+  Lesson _receiveLesson(BibleStudy topic) {
     return topic.lessons.firstWhere(
       (item) => item.id == int.parse(widget.lessonId),
       orElse: () => Lesson.defaultLesson,
+    );
+  }
+
+  BibleStudy _receiveTopic(List<BibleStudy> topics) {
+    return topics.firstWhere(
+      (item) => item.id == int.parse(widget.topicId),
+      orElse: () => BibleStudy.defaultBibleStudy,
     );
   }
 
