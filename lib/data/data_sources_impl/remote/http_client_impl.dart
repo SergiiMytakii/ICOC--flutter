@@ -10,8 +10,7 @@ import 'package:injectable/injectable.dart';
 class HttpClientImpl implements HttpClient {
   final http.Client _client = http.Client();
 
-  @override
-  Future<Response> get(Uri url, {Map<String, String>? headers}) {
+  Map<String, String> _mergeHeaders(Map<String, String>? headers) {
     final browserHeaders = {
       'User-Agent':
           'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
@@ -25,7 +24,24 @@ class HttpClientImpl implements HttpClient {
     if (headers != null) {
       finalHeaders.addAll(headers);
     }
+    return finalHeaders;
+  }
 
-    return _client.get(url, headers: finalHeaders);
+  @override
+  Future<Response> get(Uri url, {Map<String, String>? headers}) {
+    return _client.get(url, headers: _mergeHeaders(headers));
+  }
+
+  @override
+  Future<Response> post(
+    Uri url, {
+    Map<String, String>? headers,
+    Object? body,
+  }) {
+    return _client.post(
+      url,
+      headers: _mergeHeaders(headers),
+      body: body,
+    );
   }
 }

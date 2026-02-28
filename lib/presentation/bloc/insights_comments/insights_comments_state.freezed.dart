@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'insights_state.dart';
+part of 'insights_comments_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,11 +13,11 @@ part of 'insights_state.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$InsightsState {
+mixin _$InsightsCommentsState {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is InsightsState);
+        (other.runtimeType == runtimeType && other is InsightsCommentsState);
   }
 
   @override
@@ -25,17 +25,18 @@ mixin _$InsightsState {
 
   @override
   String toString() {
-    return 'InsightsState()';
+    return 'InsightsCommentsState()';
   }
 }
 
 /// @nodoc
-class $InsightsStateCopyWith<$Res> {
-  $InsightsStateCopyWith(InsightsState _, $Res Function(InsightsState) __);
+class $InsightsCommentsStateCopyWith<$Res> {
+  $InsightsCommentsStateCopyWith(
+      InsightsCommentsState _, $Res Function(InsightsCommentsState) __);
 }
 
-/// Adds pattern-matching-related methods to [InsightsState].
-extension InsightsStatePatterns on InsightsState {
+/// Adds pattern-matching-related methods to [InsightsCommentsState].
+extension InsightsCommentsStatePatterns on InsightsCommentsState {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -157,12 +158,11 @@ extension InsightsStatePatterns on InsightsState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            List<Post> posts,
-            List<String> availableLanguages,
-            Map<String, bool> selectedLanguages,
-            Set<String> likedPostIds,
-            Set<String> busyPostIds,
-            String? actionMessage)?
+            String postId,
+            List<InsightComment> comments,
+            bool isSubmitting,
+            String? actionMessage,
+            String? lastSubmittedCommentId)?
         loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -174,13 +174,8 @@ extension InsightsStatePatterns on InsightsState {
       case _Loading() when loading != null:
         return loading();
       case _Loaded() when loaded != null:
-        return loaded(
-            _that.posts,
-            _that.availableLanguages,
-            _that.selectedLanguages,
-            _that.likedPostIds,
-            _that.busyPostIds,
-            _that.actionMessage);
+        return loaded(_that.postId, _that.comments, _that.isSubmitting,
+            _that.actionMessage, _that.lastSubmittedCommentId);
       case _Error() when error != null:
         return error(_that.message);
       case _:
@@ -206,12 +201,11 @@ extension InsightsStatePatterns on InsightsState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            List<Post> posts,
-            List<String> availableLanguages,
-            Map<String, bool> selectedLanguages,
-            Set<String> likedPostIds,
-            Set<String> busyPostIds,
-            String? actionMessage)
+            String postId,
+            List<InsightComment> comments,
+            bool isSubmitting,
+            String? actionMessage,
+            String? lastSubmittedCommentId)
         loaded,
     required TResult Function(String message) error,
   }) {
@@ -222,13 +216,8 @@ extension InsightsStatePatterns on InsightsState {
       case _Loading():
         return loading();
       case _Loaded():
-        return loaded(
-            _that.posts,
-            _that.availableLanguages,
-            _that.selectedLanguages,
-            _that.likedPostIds,
-            _that.busyPostIds,
-            _that.actionMessage);
+        return loaded(_that.postId, _that.comments, _that.isSubmitting,
+            _that.actionMessage, _that.lastSubmittedCommentId);
       case _Error():
         return error(_that.message);
       case _:
@@ -253,12 +242,11 @@ extension InsightsStatePatterns on InsightsState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            List<Post> posts,
-            List<String> availableLanguages,
-            Map<String, bool> selectedLanguages,
-            Set<String> likedPostIds,
-            Set<String> busyPostIds,
-            String? actionMessage)?
+            String postId,
+            List<InsightComment> comments,
+            bool isSubmitting,
+            String? actionMessage,
+            String? lastSubmittedCommentId)?
         loaded,
     TResult? Function(String message)? error,
   }) {
@@ -269,13 +257,8 @@ extension InsightsStatePatterns on InsightsState {
       case _Loading() when loading != null:
         return loading();
       case _Loaded() when loaded != null:
-        return loaded(
-            _that.posts,
-            _that.availableLanguages,
-            _that.selectedLanguages,
-            _that.likedPostIds,
-            _that.busyPostIds,
-            _that.actionMessage);
+        return loaded(_that.postId, _that.comments, _that.isSubmitting,
+            _that.actionMessage, _that.lastSubmittedCommentId);
       case _Error() when error != null:
         return error(_that.message);
       case _:
@@ -286,7 +269,7 @@ extension InsightsStatePatterns on InsightsState {
 
 /// @nodoc
 
-class _Initial implements InsightsState {
+class _Initial implements InsightsCommentsState {
   const _Initial();
 
   @override
@@ -300,13 +283,13 @@ class _Initial implements InsightsState {
 
   @override
   String toString() {
-    return 'InsightsState.initial()';
+    return 'InsightsCommentsState.initial()';
   }
 }
 
 /// @nodoc
 
-class _Loading implements InsightsState {
+class _Loading implements InsightsCommentsState {
   const _Loading();
 
   @override
@@ -320,70 +303,36 @@ class _Loading implements InsightsState {
 
   @override
   String toString() {
-    return 'InsightsState.loading()';
+    return 'InsightsCommentsState.loading()';
   }
 }
 
 /// @nodoc
 
-class _Loaded implements InsightsState {
+class _Loaded implements InsightsCommentsState {
   const _Loaded(
-      {required final List<Post> posts,
-      final List<String> availableLanguages = const <String>[],
-      final Map<String, bool> selectedLanguages = const <String, bool>{},
-      final Set<String> likedPostIds = const <String>{},
-      final Set<String> busyPostIds = const <String>{},
-      this.actionMessage})
-      : _posts = posts,
-        _availableLanguages = availableLanguages,
-        _selectedLanguages = selectedLanguages,
-        _likedPostIds = likedPostIds,
-        _busyPostIds = busyPostIds;
+      {required this.postId,
+      final List<InsightComment> comments = const <InsightComment>[],
+      this.isSubmitting = false,
+      this.actionMessage,
+      this.lastSubmittedCommentId})
+      : _comments = comments;
 
-  final List<Post> _posts;
-  List<Post> get posts {
-    if (_posts is EqualUnmodifiableListView) return _posts;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_posts);
-  }
-
-  final List<String> _availableLanguages;
+  final String postId;
+  final List<InsightComment> _comments;
   @JsonKey()
-  List<String> get availableLanguages {
-    if (_availableLanguages is EqualUnmodifiableListView)
-      return _availableLanguages;
+  List<InsightComment> get comments {
+    if (_comments is EqualUnmodifiableListView) return _comments;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_availableLanguages);
+    return EqualUnmodifiableListView(_comments);
   }
 
-  final Map<String, bool> _selectedLanguages;
   @JsonKey()
-  Map<String, bool> get selectedLanguages {
-    if (_selectedLanguages is EqualUnmodifiableMapView)
-      return _selectedLanguages;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_selectedLanguages);
-  }
-
-  final Set<String> _likedPostIds;
-  @JsonKey()
-  Set<String> get likedPostIds {
-    if (_likedPostIds is EqualUnmodifiableSetView) return _likedPostIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableSetView(_likedPostIds);
-  }
-
-  final Set<String> _busyPostIds;
-  @JsonKey()
-  Set<String> get busyPostIds {
-    if (_busyPostIds is EqualUnmodifiableSetView) return _busyPostIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableSetView(_busyPostIds);
-  }
-
+  final bool isSubmitting;
   final String? actionMessage;
+  final String? lastSubmittedCommentId;
 
-  /// Create a copy of InsightsState
+  /// Create a copy of InsightsCommentsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
@@ -395,48 +344,43 @@ class _Loaded implements InsightsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Loaded &&
-            const DeepCollectionEquality().equals(other._posts, _posts) &&
-            const DeepCollectionEquality()
-                .equals(other._availableLanguages, _availableLanguages) &&
-            const DeepCollectionEquality()
-                .equals(other._selectedLanguages, _selectedLanguages) &&
-            const DeepCollectionEquality()
-                .equals(other._likedPostIds, _likedPostIds) &&
-            const DeepCollectionEquality()
-                .equals(other._busyPostIds, _busyPostIds) &&
+            (identical(other.postId, postId) || other.postId == postId) &&
+            const DeepCollectionEquality().equals(other._comments, _comments) &&
+            (identical(other.isSubmitting, isSubmitting) ||
+                other.isSubmitting == isSubmitting) &&
             (identical(other.actionMessage, actionMessage) ||
-                other.actionMessage == actionMessage));
+                other.actionMessage == actionMessage) &&
+            (identical(other.lastSubmittedCommentId, lastSubmittedCommentId) ||
+                other.lastSubmittedCommentId == lastSubmittedCommentId));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_posts),
-      const DeepCollectionEquality().hash(_availableLanguages),
-      const DeepCollectionEquality().hash(_selectedLanguages),
-      const DeepCollectionEquality().hash(_likedPostIds),
-      const DeepCollectionEquality().hash(_busyPostIds),
-      actionMessage);
+      postId,
+      const DeepCollectionEquality().hash(_comments),
+      isSubmitting,
+      actionMessage,
+      lastSubmittedCommentId);
 
   @override
   String toString() {
-    return 'InsightsState.loaded(posts: $posts, availableLanguages: $availableLanguages, selectedLanguages: $selectedLanguages, likedPostIds: $likedPostIds, busyPostIds: $busyPostIds, actionMessage: $actionMessage)';
+    return 'InsightsCommentsState.loaded(postId: $postId, comments: $comments, isSubmitting: $isSubmitting, actionMessage: $actionMessage, lastSubmittedCommentId: $lastSubmittedCommentId)';
   }
 }
 
 /// @nodoc
 abstract mixin class _$LoadedCopyWith<$Res>
-    implements $InsightsStateCopyWith<$Res> {
+    implements $InsightsCommentsStateCopyWith<$Res> {
   factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) =
       __$LoadedCopyWithImpl;
   @useResult
   $Res call(
-      {List<Post> posts,
-      List<String> availableLanguages,
-      Map<String, bool> selectedLanguages,
-      Set<String> likedPostIds,
-      Set<String> busyPostIds,
-      String? actionMessage});
+      {String postId,
+      List<InsightComment> comments,
+      bool isSubmitting,
+      String? actionMessage,
+      String? lastSubmittedCommentId});
 }
 
 /// @nodoc
@@ -446,41 +390,36 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
   final _Loaded _self;
   final $Res Function(_Loaded) _then;
 
-  /// Create a copy of InsightsState
+  /// Create a copy of InsightsCommentsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? posts = null,
-    Object? availableLanguages = null,
-    Object? selectedLanguages = null,
-    Object? likedPostIds = null,
-    Object? busyPostIds = null,
+    Object? postId = null,
+    Object? comments = null,
+    Object? isSubmitting = null,
     Object? actionMessage = freezed,
+    Object? lastSubmittedCommentId = freezed,
   }) {
     return _then(_Loaded(
-      posts: null == posts
-          ? _self._posts
-          : posts // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
-      availableLanguages: null == availableLanguages
-          ? _self._availableLanguages
-          : availableLanguages // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      selectedLanguages: null == selectedLanguages
-          ? _self._selectedLanguages
-          : selectedLanguages // ignore: cast_nullable_to_non_nullable
-              as Map<String, bool>,
-      likedPostIds: null == likedPostIds
-          ? _self._likedPostIds
-          : likedPostIds // ignore: cast_nullable_to_non_nullable
-              as Set<String>,
-      busyPostIds: null == busyPostIds
-          ? _self._busyPostIds
-          : busyPostIds // ignore: cast_nullable_to_non_nullable
-              as Set<String>,
+      postId: null == postId
+          ? _self.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String,
+      comments: null == comments
+          ? _self._comments
+          : comments // ignore: cast_nullable_to_non_nullable
+              as List<InsightComment>,
+      isSubmitting: null == isSubmitting
+          ? _self.isSubmitting
+          : isSubmitting // ignore: cast_nullable_to_non_nullable
+              as bool,
       actionMessage: freezed == actionMessage
           ? _self.actionMessage
           : actionMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lastSubmittedCommentId: freezed == lastSubmittedCommentId
+          ? _self.lastSubmittedCommentId
+          : lastSubmittedCommentId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -488,12 +427,12 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
 
 /// @nodoc
 
-class _Error implements InsightsState {
+class _Error implements InsightsCommentsState {
   const _Error(this.message);
 
   final String message;
 
-  /// Create a copy of InsightsState
+  /// Create a copy of InsightsCommentsState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
@@ -513,13 +452,13 @@ class _Error implements InsightsState {
 
   @override
   String toString() {
-    return 'InsightsState.error(message: $message)';
+    return 'InsightsCommentsState.error(message: $message)';
   }
 }
 
 /// @nodoc
 abstract mixin class _$ErrorCopyWith<$Res>
-    implements $InsightsStateCopyWith<$Res> {
+    implements $InsightsCommentsStateCopyWith<$Res> {
   factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) =
       __$ErrorCopyWithImpl;
   @useResult
@@ -533,7 +472,7 @@ class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
   final _Error _self;
   final $Res Function(_Error) _then;
 
-  /// Create a copy of InsightsState
+  /// Create a copy of InsightsCommentsState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   $Res call({

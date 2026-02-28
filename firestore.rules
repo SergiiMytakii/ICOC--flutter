@@ -1,0 +1,76 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isPublishedInsight(data) {
+      return !("status" in data) || data.status == "published";
+    }
+
+    match /SongsV2/{docId} {
+      allow read: if true;
+    }
+
+    match /BibleStudy/{docId} {
+      allow read: if true;
+    }
+
+    match /BibleStudyV2/{docId} {
+      allow read: if true;
+    }
+
+    match /Notifications/{docId} {
+      allow read: if true;
+    }
+
+    match /QandA/{docId} {
+      allow read, write: if true;
+    }
+
+    match /QandALangs/{docId} {
+      allow read: if true;
+    }
+
+    match /Video/{docId} {
+      allow read: if true;
+    }
+
+    match /Feedback/{docId} {
+      allow read, write: if true;
+    }
+
+    match /device_tokens/{tokenId} {
+      allow write: if true;
+      allow read: if false;
+    }
+
+    match /Insights/{postId} {
+      allow read: if isPublishedInsight(resource.data);
+      allow write: if false;
+
+      match /comments/{commentId} {
+        allow read: if isPublishedInsight(
+            get(/databases/$(database)/documents/Insights/$(postId)).data
+          ) &&
+          (!("status" in resource.data) || resource.data.status == "published");
+        allow write: if false;
+      }
+
+      match /likes/{likeId} {
+        allow read, write: if false;
+      }
+    }
+
+    match /InsightsMeta/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /InsightsDevices/{deviceId} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

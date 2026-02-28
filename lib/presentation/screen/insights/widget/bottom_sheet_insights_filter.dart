@@ -1,66 +1,102 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_event.dart';
-import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
-import 'package:icoc/core/notifications/push_notification_service.dart';
+import 'package:icoc/presentation/bloc/insights/insights_state.dart';
 
-class BottomSheetInsightsFilter extends StatefulWidget {
+class BottomSheetInsightsFilter extends StatelessWidget {
   const BottomSheetInsightsFilter({super.key});
-
-  @override
-  State<BottomSheetInsightsFilter> createState() =>
-      _BottomSheetInsightsFilterState();
-}
-
-class _BottomSheetInsightsFilterState extends State<BottomSheetInsightsFilter> {
-  final wallUserLanguagesHandler = getIt<InsightsUserLanguagesHandler>();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       height: MediaQuery.of(context).size.height / 1.6,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text(
-              'Filter languages'.tr(),
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: List.generate(wallUserLanguagesHandler.languages.length,
-                  (index) {
-                return MyCheckboxListTile(
-                    allLanguages: wallUserLanguagesHandler.languages,
-                    color: ScreenColors.general,
-                    label:
-                        wallUserLanguagesHandler.languages.keys.toList()[index],
-                    callback: (Map<String, dynamic> activeLanguages) async {
-                      await wallUserLanguagesHandler
-                          .saveAllLanguages(activeLanguages);
-                      await getIt<PushNotificationService>()
-                          .syncTopicLangSubscriptionsFor(
-                              'insights', activeLanguages);
-                      getIt<InsightsBloc>().add(const InsightsEvent.fetch());
-                      setState(() {});
-                    },
-                    onlyOneActiveLangAllowed: false,
-                    key: ValueKey('$index'));
-              }),
-            ),
-          ),
-        ],
+      child: BlocBuilder<InsightsBloc, InsightsState>(
+        builder: (BuildContext context, InsightsState state) {
+          return state.maybeWhen(
+            loaded: (
+              List<dynamic> _posts,
+              List<String> availableLanguages,
+              Map<String, bool> selectedLanguages,
+              Set<String> _likedPostIds,
+              Set<String> _busyPostIds,
+              String? _actionMessage,
+            ) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      'Filter languages'.tr(),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+                  Expanded(
+                    child: availableLanguages.isEmpty
+                        ? const Center(
+                            child: Text('No language filters available'),
+                          )
+                        : ListView.builder(
+                            itemCount: availableLanguages.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final String langCode = availableLanguages[index];
+                              final String label = languagesCodes[langCode] ??
+                                  langCode.toUpperCase();
+                              return CheckboxListTile(
+                                value: selectedLanguages[langCode] == true,
+                                activeColor: ScreenColors.general,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(
+                                  label,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
+                                ),
+                                subtitle: Text(langCode.toUpperCase()),
+                                onChanged: (bool? value) async {
+                                  if (value == null) {
+                                    return;
+                                  }
+                                  final Map<String, bool> nextSelected =
+                                      <String, bool>{
+                                    for (final String key in availableLanguages)
+                                      key: selectedLanguages[key] == true,
+                                  };
+                                  nextSelected[langCode] = value;
+                                  if (!nextSelected.values
+                                      .any((bool selected) => selected)) {
+                                    nextSelected[langCode] = true;
+                                  }
+                                  await getIt<PushNotificationService>()
+                                      .syncTopicLangSubscriptionsFor(
+                                    'insights',
+                                    nextSelected,
+                                  );
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+                                  context.read<InsightsBloc>().add(
+                                        InsightsEvent.languagesChanged(
+                                          nextSelected,
+                                        ),
+                                      );
+                                },
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              );
+            },
+            orElse: () =>
+                const Center(child: CircularProgressIndicator.adaptive()),
+          );
+        },
       ),
     );
   }

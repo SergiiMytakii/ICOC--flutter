@@ -1,3 +1,5 @@
+import {createHash} from "crypto";
+import {Request, Response} from "express";
 import {setGlobalOptions} from "firebase-functions";
 import {onRequest} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
@@ -27,14 +29,17 @@ const allowedAdminEmails: string[] =
   envAllowed.length > 0 ? envAllowed : ["serjmitaki@gmail.com"];
 
 const allowOrigin = process.env.CORS_ALLOW_ORIGIN || "*";
+const insightsCommentCooldownMs = 20 * 1000;
+const insightsCollection = "Insights";
+const insightsDevicesCollection = "InsightsDevices";
 
 /**
  * Applies CORS headers and handles preflight.
- * @param {any} req request
- * @param {any} res response
+ * @param {Request} req request
+ * @param {Response} res response
  * @return {boolean} true if preflight handled
  */
-function applyCors(req: any, res: any): boolean {
+function applyCors(req: Request, res: Response): boolean {
   res.set("Access-Control-Allow-Origin", allowOrigin);
   res.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.set(
@@ -74,6 +79,33 @@ async function verifyIdToken(authHeader?: string) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Normalizes an unknown value into a trimmed string.
+ * @param {unknown} value raw input
+ * @return {string} trimmed string or empty string
+ */
+function normalizedString(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+/**
+ * Creates a stable SHA-256 hash for a device identifier.
+ * @param {string} deviceId raw device id
+ * @return {string} hex digest
+ */
+function hashDeviceId(deviceId: string): string {
+  return createHash("sha256").update(deviceId).digest("hex");
+}
+
+/**
+ * Checks whether an insight document is published.
+ * @param {admin.firestore.DocumentData|undefined} data insight document data
+ * @return {boolean} true when the document is published or missing status
+ */
+function isPublishedInsight(data?: admin.firestore.DocumentData): boolean {
+  return !data || !("status" in data) || data.status === "published";
 }
 
 /** Sends a notification to a single FCM topic */
@@ -297,5 +329,239 @@ export const sendTokens = onRequest(
       failureCount: response.failureCount,
       results,
     });
+  },
+);
+
+export const toggleInsightLike = onRequest(
+  {cors: true, region: "europe-central2"},
+  async (req, res) => {
+    if (applyCors(req, res)) return;
+    if (req.method !== "POST") {
+      res.status(405).end();
+      return;
+    }
+
+    const postId = normalizedString(req.body?.postId);
+    const deviceId = normalizedString(req.body?.deviceId);
+    if (!postId || !deviceId) {
+      res.status(400).json({error: "missing_fields"});
+      return;
+    }
+
+    const db = admin.firestore();
+    const postRef = db.collection(insightsCollection).doc(postId);
+    const deviceHash = hashDeviceId(deviceId);
+    const likeRef = postRef.collection("likes").doc(deviceHash);
+
+    try {
+      const result = await db.runTransaction(async (tx) => {
+        const postSnap = await tx.get(postRef);
+        if (!postSnap.exists) {
+          throw new Error("not_found");
+        }
+        const postData = postSnap.data();
+        if (!isPublishedInsight(postData)) {
+          throw new Error("not_found");
+        }
+
+        const likeSnap = await tx.get(likeRef);
+        const now = admin.firestore.Timestamp.now();
+        let likes = Number(postData?.likes ?? 0);
+        let liked = false;
+
+        if (likeSnap.exists) {
+          tx.delete(likeRef);
+          likes = Math.max(0, likes - 1);
+          liked = false;
+        } else {
+          tx.set(likeRef, {
+            deviceHash,
+            createdAt: now,
+            updatedAt: now,
+          });
+          likes += 1;
+          liked = true;
+        }
+
+        tx.update(postRef, {
+          likes,
+          updatedAt: now,
+        });
+
+        return {liked, likes};
+      });
+
+      res.json(result);
+    } catch (e: unknown) {
+      const message = String(e);
+      if (message.includes("not_found")) {
+        res.status(404).json({error: "not_found"});
+        return;
+      }
+      res.status(400).json({error: message});
+    }
+  },
+);
+
+export const createInsightComment = onRequest(
+  {cors: true, region: "europe-central2"},
+  async (req, res) => {
+    if (applyCors(req, res)) return;
+    if (req.method !== "POST") {
+      res.status(405).end();
+      return;
+    }
+
+    const postId = normalizedString(req.body?.postId);
+    const deviceId = normalizedString(req.body?.deviceId);
+    const displayName = normalizedString(req.body?.displayName);
+    const text = normalizedString(req.body?.text);
+    if (!postId || !deviceId || !displayName || !text) {
+      res.status(400).json({error: "missing_fields"});
+      return;
+    }
+    if (displayName.length > 60 || text.length > 800) {
+      res.status(400).json({error: "invalid_length"});
+      return;
+    }
+
+    const db = admin.firestore();
+    const postRef = db.collection(insightsCollection).doc(postId);
+    const deviceHash = hashDeviceId(deviceId);
+    const deviceRef = db.collection(insightsDevicesCollection).doc(deviceHash);
+    const commentRef = postRef.collection("comments").doc();
+
+    try {
+      const result = await db.runTransaction(async (tx) => {
+        const postSnap = await tx.get(postRef);
+        if (!postSnap.exists) {
+          throw new Error("not_found");
+        }
+        const postData = postSnap.data();
+        if (!isPublishedInsight(postData)) {
+          throw new Error("not_found");
+        }
+        if (postData?.allowComments === false) {
+          throw new Error("comments_disabled");
+        }
+
+        const deviceSnap = await tx.get(deviceRef);
+        const now = admin.firestore.Timestamp.now();
+        const lastCommentAt = deviceSnap.data()?.lastCommentAt;
+        if (lastCommentAt instanceof admin.firestore.Timestamp) {
+          const elapsedMs = now.toMillis() - lastCommentAt.toMillis();
+          if (elapsedMs < insightsCommentCooldownMs) {
+            throw new Error("rate_limited");
+          }
+        }
+
+        const commentsCount = Number(postData?.commentsCount ?? 0) + 1;
+        const commentPayload = {
+          id: commentRef.id,
+          postId,
+          displayName,
+          text,
+          status: "published",
+          deviceHash,
+          createdAt: now,
+          updatedAt: now,
+        };
+
+        tx.set(commentRef, commentPayload);
+        tx.set(deviceRef, {
+          lastCommentAt: now,
+          lastSeenAt: now,
+          lastUsedDisplayName: displayName,
+        }, {merge: true});
+        tx.update(postRef, {
+          commentsCount,
+          updatedAt: now,
+        });
+
+        return {
+          comment: {
+            ...commentPayload,
+            createdAt: now.toMillis(),
+            updatedAt: now.toMillis(),
+          },
+          commentsCount,
+        };
+      });
+
+      res.json(result);
+    } catch (e: unknown) {
+      const message = String(e);
+      if (message.includes("not_found")) {
+        res.status(404).json({error: "not_found"});
+        return;
+      }
+      if (message.includes("rate_limited")) {
+        res.status(429).json({error: "rate_limited"});
+        return;
+      }
+      if (message.includes("comments_disabled")) {
+        res.status(400).json({error: "comments_disabled"});
+        return;
+      }
+      res.status(400).json({error: message});
+    }
+  },
+);
+
+export const incrementInsightShare = onRequest(
+  {cors: true, region: "europe-central2"},
+  async (req, res) => {
+    if (applyCors(req, res)) return;
+    if (req.method !== "POST") {
+      res.status(405).end();
+      return;
+    }
+
+    const postId = normalizedString(req.body?.postId);
+    const deviceId = normalizedString(req.body?.deviceId);
+    if (!postId || !deviceId) {
+      res.status(400).json({error: "missing_fields"});
+      return;
+    }
+
+    const db = admin.firestore();
+    const postRef = db.collection(insightsCollection).doc(postId);
+    const deviceHash = hashDeviceId(deviceId);
+    const deviceRef = db.collection(insightsDevicesCollection).doc(deviceHash);
+
+    try {
+      const result = await db.runTransaction(async (tx) => {
+        const postSnap = await tx.get(postRef);
+        if (!postSnap.exists) {
+          throw new Error("not_found");
+        }
+        const postData = postSnap.data();
+        if (!isPublishedInsight(postData)) {
+          throw new Error("not_found");
+        }
+
+        const now = admin.firestore.Timestamp.now();
+        const shares = Number(postData?.shares ?? 0) + 1;
+
+        tx.update(postRef, {
+          shares,
+          updatedAt: now,
+        });
+        tx.set(deviceRef, {
+          lastSeenAt: now,
+        }, {merge: true});
+
+        return {shares};
+      });
+
+      res.json(result);
+    } catch (e: unknown) {
+      const message = String(e);
+      if (message.includes("not_found")) {
+        res.status(404).json({error: "not_found"});
+        return;
+      }
+      res.status(400).json({error: message});
+    }
   },
 );

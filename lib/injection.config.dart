@@ -13,6 +13,8 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:icoc/core/notifications/push_notification_service.dart'
     as _i706;
 import 'package:icoc/core/user_languages.dart' as _i707;
+import 'package:icoc/core/user_state/insights_interaction_local_store.dart'
+    as _i397;
 import 'package:icoc/data/data_sources_impl/local/local_cache_impl.dart'
     as _i263;
 import 'package:icoc/data/data_sources_impl/local/sqlite_bible_db_impl.dart'
@@ -25,8 +27,12 @@ import 'package:icoc/data/data_sources_impl/remote/firebase_data_source_impl.dar
     as _i798;
 import 'package:icoc/data/data_sources_impl/remote/http_client_impl.dart'
     as _i892;
+import 'package:icoc/data/data_sources_impl/remote/insights_comments_data_source_impl.dart'
+    as _i1060;
 import 'package:icoc/data/data_sources_impl/remote/insights_data_source_impl.dart'
     as _i248;
+import 'package:icoc/data/data_sources_impl/remote/insights_interactions_api.dart'
+    as _i813;
 import 'package:icoc/data/repository_impl/bible_study_repository_impl.dart'
     as _i2;
 import 'package:icoc/data/repository_impl/feedback_repository_impl.dart'
@@ -47,8 +53,12 @@ import 'package:icoc/domain/data_sources/remote/ai_data_source.dart' as _i955;
 import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart'
     as _i781;
 import 'package:icoc/domain/data_sources/remote/http_client.dart' as _i228;
-import 'package:icoc/domain/data_sources/remote/insights_data_source.dart'
-    as _i963;
+import 'package:icoc/domain/data_sources/remote/insights_comments_data_source.dart'
+    as _i427;
+import 'package:icoc/domain/data_sources/remote/insights_feed_data_source.dart'
+    as _i685;
+import 'package:icoc/domain/data_sources/remote/insights_interactions_api.dart'
+    as _i583;
 import 'package:icoc/domain/repository/bible_study_repository.dart' as _i299;
 import 'package:icoc/domain/repository/feedback_repository.dart' as _i671;
 import 'package:icoc/domain/repository/insights_repository.dart' as _i1018;
@@ -67,6 +77,8 @@ import 'package:icoc/presentation/bloc/feedback_bloc/feedback_bloc.dart'
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart'
     as _i900;
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart' as _i707;
+import 'package:icoc/presentation/bloc/insights_comments/insights_comments_bloc.dart'
+    as _i406;
 import 'package:icoc/presentation/bloc/notification_settings/notification_settings_bloc.dart'
     as _i373;
 import 'package:icoc/presentation/bloc/notifications_bloc/notifications_bloc.dart'
@@ -94,6 +106,8 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.singleton<_i900.FontSizeBloc>(() => _i900.FontSizeBloc());
+    gh.lazySingleton<_i685.InsightsFeedDataSource>(
+        () => _i248.InsightsDataSourceImpl());
     gh.factory<_i228.HttpClient>(
       () => _i892.HttpClientImpl(),
       registerFor: {
@@ -101,6 +115,8 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.lazySingleton<_i427.InsightsCommentsDataSource>(
+        () => _i1060.InsightsCommentsDataSourceImpl());
     gh.factory<_i868.LocalCache>(
       () => _i263.LocalCacheImpl(),
       registerFor: {
@@ -122,6 +138,8 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.singleton<_i397.InsightsInteractionLocalStore>(
+        () => _i397.InsightsInteractionLocalStore(gh<_i868.LocalCache>()));
     gh.singleton<_i706.PushNotificationService>(
         () => _i706.PushNotificationService(gh<_i868.LocalCache>()));
     gh.factory<_i955.AiDataSource>(
@@ -167,6 +185,8 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.lazySingleton<_i583.InsightsInteractionsApi>(
+        () => _i813.InsightsInteractionsApiImpl(gh<_i228.HttpClient>()));
     gh.factory<_i1025.NotificationsRepository>(
       () => _i58.NotificationsRepositoryImpl(gh<_i781.FirebaseDataSource>()),
       registerFor: {
@@ -174,8 +194,6 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
-    gh.lazySingleton<_i963.InsightsDataSource>(
-        () => _i248.InsightsDataSourceImpl(gh<_i781.FirebaseDataSource>()));
     gh.factory<_i671.FeedbackRepository>(
       () => _i758.FeedbackRepositoryImpl(gh<_i781.FirebaseDataSource>()),
       registerFor: {
@@ -193,10 +211,14 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.lazySingleton<_i1018.InsightsRepository>(
+        () => _i227.InsightsRepositoryImpl(
+              gh<_i685.InsightsFeedDataSource>(),
+              gh<_i427.InsightsCommentsDataSource>(),
+              gh<_i583.InsightsInteractionsApi>(),
+            ));
     gh.factory<_i373.NotificationSettingsBloc>(() =>
         _i373.NotificationSettingsBloc(gh<_i706.PushNotificationService>()));
-    gh.lazySingleton<_i1018.InsightsRepository>(
-        () => _i227.InsightsRepositoryImpl(gh<_i963.InsightsDataSource>()));
     gh.singleton<_i707.BibleStudyUserLanguagesHandler>(
       () => _i707.BibleStudyUserLanguagesHandler(gh<_i868.LocalCache>()),
       registerFor: {
@@ -232,10 +254,19 @@ extension GetItInjectableX on _i174.GetIt {
         _prod,
       },
     );
+    gh.factory<_i707.InsightsBloc>(() => _i707.InsightsBloc(
+          gh<_i1018.InsightsRepository>(),
+          gh<_i707.InsightsUserLanguagesHandler>(),
+          gh<_i397.InsightsInteractionLocalStore>(),
+        ));
     gh.singleton<_i1016.NotificationsBloc>(
         () => _i1016.NotificationsBloc(gh<_i1025.NotificationsRepository>()));
     gh.singleton<_i545.FavoriteSongStatusBloc>(
         () => _i545.FavoriteSongStatusBloc(gh<_i1034.SongsRepository>()));
+    gh.factory<_i406.InsightsCommentsBloc>(() => _i406.InsightsCommentsBloc(
+          gh<_i1018.InsightsRepository>(),
+          gh<_i397.InsightsInteractionLocalStore>(),
+        ));
     gh.singleton<_i182.FavoriteSongsListBloc>(() => _i182.FavoriteSongsListBloc(
           gh<_i1034.SongsRepository>(),
           gh<_i707.SongsUserLanguagesHandler>(),
@@ -261,10 +292,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i724.BibleStudyBloc>(() => _i724.BibleStudyBloc(
           gh<_i299.BibleStudyRepository>(),
           gh<_i707.BibleStudyUserLanguagesHandler>(),
-        ));
-    gh.factory<_i707.InsightsBloc>(() => _i707.InsightsBloc(
-          gh<_i1018.InsightsRepository>(),
-          gh<_i707.InsightsUserLanguagesHandler>(),
         ));
     return this;
   }

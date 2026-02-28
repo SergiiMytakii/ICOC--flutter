@@ -374,7 +374,8 @@ class PushNotificationService {
         getIt<BibleStudyBloc>().add(const BibleStudyEvent.listRequested());
         break;
       case 'insights':
-        getIt<InsightsBloc>().add(const InsightsEvent.fetch());
+        getIt<InsightsBloc>()
+            .add(const InsightsEvent.fetchAvailableLanguagesAndPosts());
         break;
       default:
         break;

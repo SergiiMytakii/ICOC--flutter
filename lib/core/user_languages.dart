@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/main.dart';
@@ -198,16 +200,65 @@ class InsightsUserLanguagesHandler extends UserLanguagesHandler {
   InsightsUserLanguagesHandler(super._localCache) {
     final cachedLanguages = _localCache.getMap(StorageKeys.insightsLanguages);
     if (cachedLanguages == null || cachedLanguages.isEmpty) {
-      languages =
-          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
-      if (languages.containsKey(locale)) {
-        languages[locale] = true;
-      } else if (languages.isNotEmpty) {
-        languages[languages.keys.first] = true;
-      }
+      languages = <String, dynamic>{};
     } else {
       languages.addAll(cachedLanguages);
     }
+  }
+
+  Future<Map<String, dynamic>> initializeFromAvailableLanguages(
+    List<String> availableLanguages,
+  ) async {
+    final List<String> normalizedAvailable = availableLanguages
+        .map((String lang) => lang.trim())
+        .where((String lang) => lang.isNotEmpty)
+        .toSet()
+        .toList();
+
+    if (normalizedAvailable.isEmpty) {
+      languages = <String, dynamic>{};
+      await _localCache.saveMap(StorageKeys.insightsLanguages, languages);
+      return languages;
+    }
+
+    final Map<String, dynamic> normalized = <String, dynamic>{
+      for (final String lang in normalizedAvailable)
+        lang: languages[lang] == true,
+    };
+
+    if (!normalized.values.any((dynamic value) => value == true)) {
+      final String fallbackLang = _pickDefaultLanguage(normalizedAvailable);
+      normalized[fallbackLang] = true;
+    }
+
+    languages = normalized;
+    await _localCache.saveMap(StorageKeys.insightsLanguages, normalized);
+    return normalized;
+  }
+
+  Future<void> ensureLanguageEnabled(String lang) async {
+    if (lang.isEmpty) {
+      return;
+    }
+    final Map<String, dynamic> next = Map<String, dynamic>.from(languages);
+    next[lang] = true;
+    languages = next;
+    await _localCache.saveMap(StorageKeys.insightsLanguages, next);
+  }
+
+  String _pickDefaultLanguage(List<String> availableLanguages) {
+    final String appLocale = locale;
+    final String deviceLocale =
+        ui.PlatformDispatcher.instance.locale.languageCode;
+
+    if (availableLanguages.contains(appLocale)) {
+      return appLocale;
+    }
+    if (deviceLocale != appLocale &&
+        availableLanguages.contains(deviceLocale)) {
+      return deviceLocale;
+    }
+    return availableLanguages.first;
   }
 
   @override
