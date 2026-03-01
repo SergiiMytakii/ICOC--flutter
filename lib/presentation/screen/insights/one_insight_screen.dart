@@ -193,176 +193,192 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
           minChildSize: 0.5,
           initialChildSize: 0.5,
           maxChildSize: 0.95,
-          builder: (BuildContext context, ScrollController controller) {
-            return BlocProvider<InsightsCommentsBloc>.value(
-              value: _commentsBloc!,
-              child: SafeArea(
-                top: false,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Container(
-                        width: 36,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(99),
+          builder: (BuildContext sheetContext, ScrollController controller) {
+            final EdgeInsets viewInsets = MediaQuery.viewInsetsOf(sheetContext);
+            return Padding(
+              padding: EdgeInsets.only(bottom: viewInsets.bottom),
+              child: BlocProvider<InsightsCommentsBloc>.value(
+                value: _commentsBloc!,
+                child: SafeArea(
+                  top: false,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Container(
+                          width: 36,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.outlineVariant,
+                            borderRadius: BorderRadius.circular(99),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          Text(
-                            'comments_title'.tr(),
-                            style: theme.textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () => modalContext
-                                .read<InsightsCommentsBloc>()
-                                .add(InsightsCommentsEvent.refresh(post.id)),
-                            icon: const Icon(Icons.refresh_rounded),
-                            tooltip: 'comments_refresh'.tr(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: BlocBuilder<InsightsCommentsBloc,
-                          InsightsCommentsState>(
-                        builder: (BuildContext context,
-                            InsightsCommentsState state) {
-                          return state.maybeWhen(
-                            initial: () => const Center(
-                                child: CircularProgressIndicator.adaptive()),
-                            loading: () => const Center(
-                                child: CircularProgressIndicator.adaptive()),
-                            error: (String message) => Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    message,
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  FilledButton.icon(
-                                    onPressed: () => context
-                                        .read<InsightsCommentsBloc>()
-                                        .add(InsightsCommentsEvent.refresh(
-                                            post.id)),
-                                    icon: const Icon(Icons.refresh),
-                                    label: Text('comments_retry'.tr()),
-                                  ),
-                                ],
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          children: [
+                            Text(
+                              'comments_title'.tr(),
+                              style: theme.textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.w700),
                             ),
-                            loaded: (
-                              String _postId,
-                              List<InsightComment> comments,
-                              bool isSubmitting,
-                              String? actionMessage,
-                              String? lastSubmittedCommentId,
-                            ) {
-                              if (comments.isEmpty) {
-                                return ListView(
-                                  controller: controller,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () => modalContext
+                                  .read<InsightsCommentsBloc>()
+                                  .add(InsightsCommentsEvent.refresh(post.id)),
+                              icon: const Icon(Icons.refresh_rounded),
+                              tooltip: 'comments_refresh'.tr(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: BlocBuilder<InsightsCommentsBloc,
+                            InsightsCommentsState>(
+                          builder: (BuildContext context,
+                              InsightsCommentsState state) {
+                            return state.maybeWhen(
+                              initial: () => const Center(
+                                  child: CircularProgressIndicator.adaptive()),
+                              loading: () => const Center(
+                                  child: CircularProgressIndicator.adaptive()),
+                              error: (String message) => Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'comments_empty'.tr(),
+                                      message,
+                                      textAlign: TextAlign.center,
                                       style:
                                           theme.textTheme.bodyMedium?.copyWith(
                                         color:
                                             theme.colorScheme.onSurfaceVariant,
                                       ),
                                     ),
+                                    const SizedBox(height: 12),
+                                    FilledButton.icon(
+                                      onPressed: () => context
+                                          .read<InsightsCommentsBloc>()
+                                          .add(InsightsCommentsEvent.refresh(
+                                              post.id)),
+                                      icon: const Icon(Icons.refresh),
+                                      label: Text('comments_retry'.tr()),
+                                    ),
                                   ],
-                                );
-                              }
-
-                              return ListView.separated(
-                                controller: controller,
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                                itemCount: comments.length,
-                                separatorBuilder: (_, __) => const SizedBox(
-                                  height: 12,
                                 ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  final InsightComment comment =
-                                      comments[index];
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                              ),
+                              loaded: (
+                                String _postId,
+                                List<InsightComment> comments,
+                                bool isSubmitting,
+                                String? actionMessage,
+                                String? lastSubmittedCommentId,
+                              ) {
+                                if (comments.isEmpty) {
+                                  return ListView(
+                                    controller: controller,
+                                    padding: const EdgeInsets.fromLTRB(
+                                      16,
+                                      12,
+                                      16,
+                                      16,
+                                    ),
                                     children: [
-                                      RichText(
-                                        text: TextSpan(
-                                          style: theme.textTheme.bodyMedium,
-                                          children: [
-                                            TextSpan(
-                                              text: '${comment.displayName} ',
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            TextSpan(text: comment.text),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
                                       Text(
-                                        _formatDate(comment.createdAt),
-                                        style:
-                                            theme.textTheme.bodySmall?.copyWith(
+                                        'comments_empty'.tr(),
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
                                           color: theme
                                               .colorScheme.onSurfaceVariant,
                                         ),
                                       ),
                                     ],
                                   );
-                                },
-                              );
-                            },
-                            orElse: () => const SizedBox.shrink(),
-                          );
-                        },
+                                }
+
+                                return ListView.separated(
+                                  controller: controller,
+                                  padding: const EdgeInsets.fromLTRB(
+                                    16,
+                                    12,
+                                    16,
+                                    16,
+                                  ),
+                                  itemCount: comments.length,
+                                  separatorBuilder: (_, __) =>
+                                      const SizedBox(height: 12),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final InsightComment comment =
+                                        comments[index];
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            style: theme.textTheme.bodyMedium,
+                                            children: [
+                                              TextSpan(
+                                                text: '${comment.displayName} ',
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              TextSpan(text: comment.text),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          _formatDate(comment.createdAt),
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: theme
+                                                .colorScheme.onSurfaceVariant,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              orElse: () => const SizedBox.shrink(),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    if (post.allowComments)
-                      BlocBuilder<InsightsCommentsBloc, InsightsCommentsState>(
-                        builder: (BuildContext context,
-                            InsightsCommentsState state) {
-                          final bool isSubmitting = state.maybeWhen(
-                            loaded: (
-                              String _postId,
-                              List<InsightComment> _comments,
-                              bool isSubmitting,
-                              String? _actionMessage,
-                              String? _lastSubmittedCommentId,
-                            ) =>
-                                isSubmitting,
-                            orElse: () => false,
-                          );
-                          return InsightCommentInput(
-                            isSubmitting: isSubmitting,
-                            onSubmit: (String text) => _submitComment(
-                              modalContext,
-                              post.id,
-                              text,
-                            ),
-                          );
-                        },
-                      ),
-                  ],
+                      if (post.allowComments)
+                        BlocBuilder<InsightsCommentsBloc,
+                            InsightsCommentsState>(
+                          builder: (BuildContext context,
+                              InsightsCommentsState state) {
+                            final bool isSubmitting = state.maybeWhen(
+                              loaded: (
+                                String _postId,
+                                List<InsightComment> _comments,
+                                bool isSubmitting,
+                                String? _actionMessage,
+                                String? _lastSubmittedCommentId,
+                              ) =>
+                                  isSubmitting,
+                              orElse: () => false,
+                            );
+                            return InsightCommentInput(
+                              isSubmitting: isSubmitting,
+                              onSubmit: (String text) => _submitComment(
+                                modalContext,
+                                post.id,
+                                text,
+                              ),
+                            );
+                          },
+                        ),
+                    ],
+                  ),
                 ),
               ),
             );

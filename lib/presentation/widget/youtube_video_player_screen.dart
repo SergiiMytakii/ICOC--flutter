@@ -162,12 +162,24 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen> {
         (function() {
           if (window.__icocFullscreenBridgeAttached) return;
           window.__icocFullscreenBridgeAttached = true;
+          function isPlayerFullscreen() {
+            return !!document.querySelector('.html5-video-player.ytp-fullscreen');
+          }
           function notifyFullscreenState() {
-            const isFullscreen = !!document.fullscreenElement;
+            const isFullscreen = isPlayerFullscreen();
             __FULLSCREEN_CHANNEL__.postMessage(isFullscreen ? 'enter' : 'exit');
           }
+          const observer = new MutationObserver(notifyFullscreenState);
+          observer.observe(document.documentElement, {
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+          });
           document.addEventListener('fullscreenchange', notifyFullscreenState);
           document.addEventListener('webkitfullscreenchange', notifyFullscreenState);
+          document.addEventListener('webkitbeginfullscreen', notifyFullscreenState);
+          document.addEventListener('webkitendfullscreen', notifyFullscreenState);
+          setInterval(notifyFullscreenState, 400);
         })();
       '''
           .replaceAll('__FULLSCREEN_CHANNEL__', _fullscreenChannelName));

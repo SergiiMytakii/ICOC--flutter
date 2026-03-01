@@ -30,6 +30,8 @@ class InsightInlineYoutubePlayer extends StatefulWidget {
 class _InsightInlineYoutubePlayerState
     extends State<InsightInlineYoutubePlayer> {
   static const Duration _activationDelay = Duration(milliseconds: 180);
+  static const double _mutedVolume = 0;
+  static const double _unmutedVolume = 100;
 
   YPlayerController? _controller;
   VideoController? _videoController;
@@ -38,6 +40,7 @@ class _InsightInlineYoutubePlayerState
   int _controllerToken = 0;
   bool _isInitializing = false;
   bool _isVideoVisible = false;
+  bool _isMuted = true;
 
   @override
   void initState() {
@@ -116,7 +119,7 @@ class _InsightInlineYoutubePlayerState
                 ),
               ),
             Positioned(
-              right: 12,
+              left: 12,
               bottom: 12,
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -137,6 +140,29 @@ class _InsightInlineYoutubePlayerState
                 ),
               ),
             ),
+            if (_videoController != null && widget.isActive)
+              Positioned(
+                right: 12,
+                bottom: 12,
+                child: Material(
+                  color: Colors.black.withValues(alpha: 0.55),
+                  shape: const CircleBorder(),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: _toggleMute,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Icon(
+                        _isMuted
+                            ? Icons.volume_off_rounded
+                            : Icons.volume_up_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -198,7 +224,7 @@ class _InsightInlineYoutubePlayerState
         autoPlay: false,
         chooseBestQuality: false,
       );
-      await controller.player.setVolume(0);
+      await _applyVolume(controller);
 
       if (!_isCurrentController(controller, controllerToken) ||
           !widget.shouldPrepare) {
@@ -238,7 +264,7 @@ class _InsightInlineYoutubePlayerState
     if (!controller.isInitialized) {
       return;
     }
-    await controller.player.setVolume(0);
+    await _applyVolume(controller);
     await controller.play();
     if (!mounted) {
       return;
@@ -254,6 +280,8 @@ class _InsightInlineYoutubePlayerState
     if (!controller.isInitialized) {
       return;
     }
+    _isMuted = true;
+    await controller.player.setVolume(_mutedVolume);
     await controller.pause();
     if (!mounted) {
       return;
@@ -289,12 +317,35 @@ class _InsightInlineYoutubePlayerState
     if (!mounted) {
       _isVideoVisible = false;
       _isInitializing = false;
+      _isMuted = true;
       return;
     }
     setState(() {
       _isVideoVisible = false;
       _isInitializing = false;
+      _isMuted = true;
     });
+  }
+
+  Future<void> _toggleMute() async {
+    final YPlayerController? controller = _controller;
+    if (controller == null || !controller.isInitialized) {
+      return;
+    }
+    final bool nextMuted = !_isMuted;
+    await controller.player.setVolume(
+      nextMuted ? _mutedVolume : _unmutedVolume,
+    );
+    if (!mounted) {
+      return;
+    }
+    setState(() => _isMuted = nextMuted);
+  }
+
+  Future<void> _applyVolume(YPlayerController controller) {
+    return controller.player.setVolume(
+      _isMuted ? _mutedVolume : _unmutedVolume,
+    );
   }
 
   void _releaseController(YPlayerController? controller) {
