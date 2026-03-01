@@ -4,6 +4,10 @@
     "Sort articles ascending": "Sort articles ascending",
     "Shuffle": "Shuffle",
 
+    "insights_no_liked_title": "No liked posts yet",
+    "insights_no_liked_subtitle": "Like some posts to see them here.",
+    "insights_show_all_posts": "Show all posts",
+    "insights_show_liked_only": "Show liked only",
     
 "serverError": "Server error. Please check your internet connection and try again.",
     "networkError": "Network error. Please check your internet connection.",

@@ -12,6 +12,10 @@ abstract class InsightsInteractionsApi {
     required String deviceId,
   });
 
+  Future<List<String>> getLikedPosts({
+    required String deviceId,
+  });
+
   Future<InsightCommentSubmissionResult> addComment({
     required String postId,
     required String deviceId,

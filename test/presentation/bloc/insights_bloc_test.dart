@@ -30,6 +30,9 @@ class _FakeInsightsRepository implements InsightsRepository {
     required String postId,
     required String deviceId,
   })? toggleLikeHandler;
+  Future<Either<Failure, List<String>>> Function({
+    required String deviceId,
+  })? getLikedPostsHandler;
   Future<Either<Failure, int>> Function({
     required String postId,
     required String deviceId,
@@ -102,6 +105,17 @@ class _FakeInsightsRepository implements InsightsRepository {
       throw StateError('toggleLikeHandler is not configured');
     }
     return handler(postId: postId, deviceId: deviceId);
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> getLikedPosts({
+    required String deviceId,
+  }) {
+    final handler = getLikedPostsHandler;
+    if (handler == null) {
+      throw StateError('getLikedPostsHandler is not configured');
+    }
+    return handler(deviceId: deviceId);
   }
 }
 

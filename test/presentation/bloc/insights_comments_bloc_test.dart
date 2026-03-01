@@ -25,6 +25,9 @@ class _FakeInsightsRepository implements InsightsRepository {
     required String displayName,
     required String text,
   })? addCommentHandler;
+  Future<Either<Failure, List<String>>> Function({
+    required String deviceId,
+  })? getLikedPostsHandler;
 
   @override
   Future<Either<Failure, InsightCommentSubmissionResult>> addComment({
@@ -83,6 +86,17 @@ class _FakeInsightsRepository implements InsightsRepository {
     required String deviceId,
   }) async =>
       const Right(InsightLikeResult(liked: false, likes: 0));
+
+  @override
+  Future<Either<Failure, List<String>>> getLikedPosts({
+    required String deviceId,
+  }) {
+    final handler = getLikedPostsHandler;
+    if (handler == null) {
+      throw StateError('getLikedPostsHandler is not configured');
+    }
+    return handler(deviceId: deviceId);
+  }
 }
 
 class _MemoryLocalCache implements LocalCache {

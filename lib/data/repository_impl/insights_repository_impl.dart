@@ -133,4 +133,19 @@ class InsightsRepositoryImpl implements InsightsRepository {
       return const Left(Failure.serverError());
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getLikedPosts({
+    required String deviceId,
+  }) async {
+    try {
+      final List<String> ids = await _interactionsApi.getLikedPosts(
+        deviceId: deviceId,
+      );
+      return Right(ids);
+    } catch (e, stackTrace) {
+      logError(e, stackTrace);
+      return const Left(Failure.serverError());
+    }
+  }
 }

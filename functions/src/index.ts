@@ -376,6 +376,7 @@ export const toggleInsightLike = onRequest(
         } else {
           tx.set(likeRef, {
             deviceHash,
+            postId,
             createdAt: now,
             updatedAt: now,
           });
@@ -399,6 +400,42 @@ export const toggleInsightLike = onRequest(
         return;
       }
       res.status(400).json({error: message});
+    }
+  },
+);
+
+export const getInsightLikedPosts = onRequest(
+  {cors: true, region: "europe-central2"},
+  async (req, res) => {
+    if (applyCors(req, res)) return;
+    if (req.method !== "POST") {
+      res.status(405).end();
+      return;
+    }
+
+    const deviceId = normalizedString(req.body?.deviceId);
+    if (!deviceId) {
+      res.status(400).json({error: "missing_fields"});
+      return;
+    }
+
+    const deviceHash = hashDeviceId(deviceId);
+    const db = admin.firestore();
+
+    try {
+      const likesQuery = await db
+        .collectionGroup("likes")
+        .where("deviceHash", "==", deviceHash)
+        .get();
+
+      const postIds = likesQuery.docs
+        .map((doc) => doc.data()?.postId || doc.ref.parent.parent?.id)
+        .filter(Boolean)
+        .map((id) => String(id));
+
+      res.json({postIds});
+    } catch (e: unknown) {
+      res.status(400).json({error: String(e)});
     }
   },
 );

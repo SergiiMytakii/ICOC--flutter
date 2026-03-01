@@ -56,18 +56,34 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
         postsResult.fold(
           (failure) =>
               emit(InsightsState.error(failure.toUserFriendlyMessage())),
-          (List<Post> posts) => emit(
-            InsightsState.loaded(
-              posts: posts,
-              availableLanguages: availableLanguages,
-              selectedLanguages: <String, bool>{
-                for (final MapEntry<String, dynamic> entry
-                    in initializedMap.entries)
-                  entry.key: entry.value == true,
+          (List<Post> posts) async {
+            final String deviceId = _localStore.getOrCreateDeviceId();
+            final likedRemote = await _insightsRepository.getLikedPosts(
+              deviceId: deviceId,
+            );
+
+            Set<String> likedIds = _localStore.getLikedPostIds();
+            likedRemote.fold(
+              (_) {},
+              (remoteIds) {
+                likedIds = remoteIds.toSet();
               },
-              likedPostIds: _localStore.getLikedPostIds(),
-            ),
-          ),
+            );
+            await _localStore.setLikedPostIds(likedIds);
+
+            emit(
+              InsightsState.loaded(
+                posts: posts,
+                availableLanguages: availableLanguages,
+                selectedLanguages: <String, bool>{
+                  for (final MapEntry<String, dynamic> entry
+                      in initializedMap.entries)
+                    entry.key: entry.value == true,
+                },
+                likedPostIds: likedIds,
+              ),
+            );
+          },
         );
       },
     );

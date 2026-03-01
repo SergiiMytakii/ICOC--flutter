@@ -37,9 +37,12 @@ class _InsightInlineYoutubePlayerState
   VideoController? _videoController;
   Timer? _activationTimer;
   final Set<YPlayerController> _releasedControllers = <YPlayerController>{};
+  final List<StreamSubscription<dynamic>> _controllerSubscriptions =
+      <StreamSubscription<dynamic>>[];
   int _controllerToken = 0;
   bool _isInitializing = false;
   bool _isVideoVisible = false;
+  bool _hasRenderedFrame = false;
   bool _isMuted = true;
 
   @override
@@ -86,6 +89,7 @@ class _InsightInlineYoutubePlayerState
                 child: Video(
                   controller: _videoController!,
                   fit: BoxFit.cover,
+                  fill: Colors.transparent,
                   controls: (_) => const SizedBox.shrink(),
                   wakelock: false,
                 ),
@@ -216,7 +220,10 @@ class _InsightInlineYoutubePlayerState
       _videoController = videoController;
       _isInitializing = true;
       _isVideoVisible = false;
+      _hasRenderedFrame = false;
     });
+
+    _bindControllerFrameState(controller, controllerToken);
 
     try {
       await controller.initialize(
@@ -245,7 +252,7 @@ class _InsightInlineYoutubePlayerState
 
       setState(() {
         _isInitializing = false;
-        _isVideoVisible = widget.isActive;
+        _isVideoVisible = widget.isActive && _hasRenderedFrame;
       });
     } catch (_) {
       if (!_isCurrentController(controller, controllerToken)) {
@@ -269,7 +276,7 @@ class _InsightInlineYoutubePlayerState
     if (!mounted) {
       return;
     }
-    setState(() => _isVideoVisible = true);
+    setState(() => _isVideoVisible = _hasRenderedFrame);
   }
 
   Future<void> _pausePreparedPlayback() async {
@@ -286,7 +293,10 @@ class _InsightInlineYoutubePlayerState
     if (!mounted) {
       return;
     }
-    setState(() => _isVideoVisible = false);
+    setState(() {
+      _isVideoVisible = false;
+      _isMuted = true;
+    });
   }
 
   bool _isCurrentController(YPlayerController controller, int token) =>
@@ -296,6 +306,7 @@ class _InsightInlineYoutubePlayerState
 
   void _disposePlayer({bool notify = true, bool release = false}) {
     _controllerToken++;
+    _clearControllerSubscriptions();
     final YPlayerController? controller = _controller;
     _controller = null;
     _videoController = null;
@@ -306,10 +317,12 @@ class _InsightInlineYoutubePlayerState
       setState(() {
         _isInitializing = false;
         _isVideoVisible = false;
+        _hasRenderedFrame = false;
       });
     } else {
       _isInitializing = false;
       _isVideoVisible = false;
+      _hasRenderedFrame = false;
     }
   }
 
@@ -346,6 +359,55 @@ class _InsightInlineYoutubePlayerState
     return controller.player.setVolume(
       _isMuted ? _mutedVolume : _unmutedVolume,
     );
+  }
+
+  void _bindControllerFrameState(YPlayerController controller, int token) {
+    _clearControllerSubscriptions();
+    int width = controller.player.state.width ?? 0;
+    int height = controller.player.state.height ?? 0;
+
+    void markReadyIfPossible() {
+      if (width <= 0 || height <= 0) {
+        return;
+      }
+      if (!_isCurrentController(controller, token)) {
+        return;
+      }
+      if (_hasRenderedFrame) {
+        return;
+      }
+      if (!mounted) {
+        _hasRenderedFrame = true;
+        return;
+      }
+      setState(() {
+        _hasRenderedFrame = true;
+        if (widget.isActive) {
+          _isVideoVisible = true;
+        }
+      });
+    }
+
+    _controllerSubscriptions.addAll([
+      controller.player.stream.width.listen((int? value) {
+        width = value ?? 0;
+        markReadyIfPossible();
+      }),
+      controller.player.stream.height.listen((int? value) {
+        height = value ?? 0;
+        markReadyIfPossible();
+      }),
+    ]);
+
+    markReadyIfPossible();
+  }
+
+  void _clearControllerSubscriptions() {
+    for (final StreamSubscription<dynamic> subscription
+        in _controllerSubscriptions) {
+      subscription.cancel();
+    }
+    _controllerSubscriptions.clear();
   }
 
   void _releaseController(YPlayerController? controller) {

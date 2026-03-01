@@ -318,31 +318,42 @@ class PushNotificationService {
     if (canRequestToken) {
       try {
         final token = await messaging.getToken();
-        if (token != null) {
-          log.i('FCM token obtained: ${token.substring(0, 20)}...');
-          await _localCache.saveString(StorageKeys.fcmToken, token);
-          await _syncToken(token);
-          final String? locale = _localCache.getString(StorageKeys.locale);
-          if (locale != null && locale.isNotEmpty) {
-            await _subscribeTopicSafe('general-lang-$locale');
-          }
-          final Map<String, dynamic> songsMap =
-              getIt<SongsUserLanguagesHandler>().languages;
-          final Map<String, dynamic> bibleMap =
-              getIt<BibleStudyUserLanguagesHandler>().languages;
-          final Map<String, dynamic> insightsMap =
-              getIt<InsightsUserLanguagesHandler>().languages;
-          unawaited(syncTopicLangSubscriptionsFor('songbook', songsMap));
-          unawaited(syncTopicLangSubscriptionsFor('biblestudy', bibleMap));
-          unawaited(syncTopicLangSubscriptionsFor('insights', insightsMap));
-          unawaited(_ensureTopicSubscriptionsInitialized());
-        } else {
-          log.w('FCM token is null after getToken()');
+        if (token == null) return;
+        await _localCache.saveString(StorageKeys.fcmToken, token);
+        await _syncToken(token);
+        final String? locale = _localCache.getString(StorageKeys.locale);
+        if (locale != null && locale.isNotEmpty) {
+          await _subscribeTopicSafe('general-lang-$locale');
         }
+        final Map<String, dynamic> songsMap =
+            getIt<SongsUserLanguagesHandler>().languages;
+        final Map<String, dynamic> bibleMap =
+            getIt<BibleStudyUserLanguagesHandler>().languages;
+        final Map<String, dynamic> insightsMap =
+            getIt<InsightsUserLanguagesHandler>().languages;
+        unawaited(syncTopicLangSubscriptionsFor('songbook', songsMap));
+        unawaited(syncTopicLangSubscriptionsFor('biblestudy', bibleMap));
+        unawaited(syncTopicLangSubscriptionsFor('insights', insightsMap));
+        unawaited(_ensureTopicSubscriptionsInitialized());
       } catch (e, st) {
+        if (_isGmsUnavailable(e)) {
+          // Common on emulators/simulators without Play Services / APNs
+          log.i('Skipping FCM token; messaging not available on this device.');
+          return;
+        }
         log.e('Failed to get FCM token', error: e, stackTrace: st);
       }
     }
+  }
+
+  bool _isGmsUnavailable(Object error) {
+    final message = error.toString();
+    return message.contains('SERVICE_NOT_AVAILABLE') ||
+        message.contains('DEVELOPER_ERROR') ||
+        message.contains('MISSING_INSTANCEID_SERVICE') ||
+        message.contains('Unknown calling package name') ||
+        message.contains('Play Services') ||
+        message.contains('NOT_AVAILABLE');
   }
 
   Future<void> _showRemoteMessage(RemoteMessage message) async {

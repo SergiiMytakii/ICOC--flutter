@@ -13,6 +13,9 @@ abstract class InsightsRepository {
     required String postId,
     required String deviceId,
   });
+  Future<Either<Failure, List<String>>> getLikedPosts({
+    required String deviceId,
+  });
   Future<Either<Failure, int>> incrementShare({
     required String postId,
     required String deviceId,

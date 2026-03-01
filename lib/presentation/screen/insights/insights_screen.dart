@@ -48,6 +48,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
   String? _preparedVideoPostId;
   Timer? _videoActivationTimer;
   String? _pendingVideoPostId;
+  bool _showLikedOnly = false;
 
   @override
   void initState() {
@@ -78,6 +79,18 @@ class _InsightsScreenState extends State<InsightsScreen> {
         title: Text('Insights'.tr()),
         centerTitle: true,
         actions: [
+          IconButton(
+            onPressed: () => setState(() {
+              _showLikedOnly = !_showLikedOnly;
+            }),
+            tooltip: _showLikedOnly
+                ? 'insights_show_all_posts'.tr()
+                : 'insights_show_liked_only'.tr(),
+            icon: Icon(
+              _showLikedOnly ? Icons.favorite : Icons.favorite_border,
+              color: _showLikedOnly ? Colors.redAccent : ScreenColors.general,
+            ),
+          ),
           AnimatedFilterIconButton(
             shouldAnimate: StorageKeys.shouldWallFilterAnimate,
             shouldAnimateForever: getIt<InsightsUserLanguagesHandler>()
@@ -112,10 +125,34 @@ class _InsightsScreenState extends State<InsightsScreen> {
         },
         builder: (BuildContext context, InsightsState state) {
           return state.when(
-            initial: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
-            loading: () =>
-                const Center(child: CircularProgressIndicator.adaptive()),
+            initial: () {
+              if (_showLikedOnly) {
+                return CustomRefreshIndicator(
+                  onRefresh: _refresh,
+                  child: _InsightsEmptyState(
+                    title: 'insights_no_liked_title'.tr(),
+                    subtitle: 'insights_no_liked_subtitle'.tr(),
+                    actionLabel: 'insights_show_all_posts'.tr(),
+                    onAction: () => setState(() => _showLikedOnly = false),
+                  ),
+                );
+              }
+              return const Center(child: CircularProgressIndicator.adaptive());
+            },
+            loading: () {
+              if (_showLikedOnly) {
+                return CustomRefreshIndicator(
+                  onRefresh: _refresh,
+                  child: _InsightsEmptyState(
+                    title: 'insights_no_liked_title'.tr(),
+                    subtitle: 'insights_no_liked_subtitle'.tr(),
+                    actionLabel: 'insights_show_all_posts'.tr(),
+                    onAction: () => setState(() => _showLikedOnly = false),
+                  ),
+                );
+              }
+              return const Center(child: CircularProgressIndicator.adaptive());
+            },
             error: (String message) => CustomRefreshIndicator(
               onRefresh: _refresh,
               child: _InsightsEmptyState(
@@ -131,6 +168,12 @@ class _InsightsScreenState extends State<InsightsScreen> {
               Set<String> busyPostIds,
               String? _,
             ) {
+              final List<Post> visiblePosts = _showLikedOnly
+                  ? posts
+                      .where((Post post) => likedPostIds.contains(post.id))
+                      .toList()
+                  : posts;
+
               if (availableLanguages.isEmpty) {
                 return CustomRefreshIndicator(
                   onRefresh: _refresh,
@@ -156,7 +199,21 @@ class _InsightsScreenState extends State<InsightsScreen> {
                 );
               }
 
-              _syncRenderedPosts(posts);
+              if (_showLikedOnly && visiblePosts.isEmpty) {
+                _setPreparedVideoPostId(null);
+                _setActiveVideoPostId(null);
+                return CustomRefreshIndicator(
+                  onRefresh: _refresh,
+                  child: _InsightsEmptyState(
+                    title: 'insights_no_liked_title'.tr(),
+                    subtitle: 'insights_no_liked_subtitle'.tr(),
+                    actionLabel: 'insights_show_all_posts'.tr(),
+                    onAction: () => setState(() => _showLikedOnly = false),
+                  ),
+                );
+              }
+
+              _syncRenderedPosts(visiblePosts);
               return RefreshIndicator.adaptive(
                 onRefresh: () async => _refresh(),
                 child: NotificationListener<ScrollNotification>(
@@ -169,9 +226,9 @@ class _InsightsScreenState extends State<InsightsScreen> {
                     controller: _scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
-                    itemCount: posts.length,
+                    itemCount: visiblePosts.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final Post post = posts[index];
+                      final Post post = visiblePosts[index];
                       return InsightFeedItem(
                         mediaKey: _mediaKeys[post.id],
                         post: post,

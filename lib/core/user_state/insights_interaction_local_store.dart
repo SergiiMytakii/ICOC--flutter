@@ -42,6 +42,13 @@ class InsightsInteractionLocalStore {
         .toSet();
   }
 
+  Future<void> setLikedPostIds(Set<String> postIds) async {
+    await _localCache.saveList(
+      StorageKeys.insightsLikedPosts,
+      postIds.toList()..sort(),
+    );
+  }
+
   Future<void> setLikedPostState(String postId, bool isLiked) async {
     final Set<String> likedPostIds = getLikedPostIds();
     if (isLiked) {

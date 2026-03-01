@@ -95,4 +95,31 @@ class InsightsInteractionsApiImpl implements domain.InsightsInteractionsApi {
       jsonDecode(response.body) as Map<String, dynamic>,
     );
   }
+
+  @override
+  Future<List<String>> getLikedPosts({required String deviceId}) async {
+    final response = await _httpClient.post(
+      _functionUri('getInsightLikedPosts'),
+      headers: const <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'deviceId': deviceId,
+      }),
+    );
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw Exception('Failed to load liked posts');
+    }
+
+    final Map<String, dynamic> json =
+        jsonDecode(response.body) as Map<String, dynamic>;
+    final List<dynamic> postIds = (json['postIds'] as List<dynamic>?) ??
+        (json['posts'] as List<dynamic>? ?? <dynamic>[]);
+    return postIds
+        .map((dynamic id) => id.toString())
+        .where((String id) => id.isNotEmpty)
+        .toSet()
+        .toList(growable: false);
+  }
 }
