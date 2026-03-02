@@ -15,7 +15,6 @@ import 'package:icoc/injection.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -38,7 +37,6 @@ class _SongVersionTabState extends State<SongVersionTab>
   bool showVideos = false;
   bool miniPlayerOpened = true;
   bool videoIsPlaying = false;
-  YoutubePlayerController? youtubePlayerController;
   WebViewController? iosWebController;
   WebViewController? androidWebController;
   bool iosWebFailed = false;
@@ -557,10 +555,7 @@ class _SongVersionTabState extends State<SongVersionTab>
                 if (Platform.isIOS) {
                   iosWebController = null;
                 } else {
-                  if (youtubePlayerController != null) {
-                    await youtubePlayerController!.stopVideo();
-                    youtubePlayerController!.close();
-                  }
+                  androidWebController = null;
                 }
               },
               icon: const Icon(Icons.close_outlined)),

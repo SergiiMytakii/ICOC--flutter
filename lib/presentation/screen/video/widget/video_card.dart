@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/core/routes/app_routes.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoCard extends StatefulWidget {
   const VideoCard({
@@ -30,9 +30,9 @@ class _VideoCardState extends State<VideoCard> {
     if (widget.youtubeVideos.link.isNotEmpty &&
         widget.youtubeVideos.link.contains('yout')) {
       try {
-        videoId =
-            YoutubePlayerController.convertUrlToId(widget.youtubeVideos.link) ??
-                '';
+        videoId = YoutubeThumbnailHelper.videoIdFromInput(
+                widget.youtubeVideos.link) ??
+            '';
       } on Exception catch (e, stackTrace) {
         AppToast.show(context,
             title: 'Error'.tr(), body: 'Can not play video'.tr());

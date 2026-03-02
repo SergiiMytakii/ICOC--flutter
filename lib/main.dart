@@ -22,7 +22,6 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/theme.dart';
 import 'package:icoc/core/notifications/push_notification_service.dart';
-import 'package:y_player/y_player.dart';
 
 String locale = 'en';
 // ignore: prefer_const_declarations
@@ -30,7 +29,7 @@ final openAIKey = const String.fromEnvironment('openAIKey');
 void main() async {
   runZonedGuarded(
     () async {
-      YPlayerInitializer.ensureInitialized();
+      WidgetsFlutterBinding.ensureInitialized();
       await EasyLocalization.ensureInitialized();
       await Firebase.initializeApp();
       await GetStorage.init();
@@ -124,7 +123,6 @@ class _MyAppState extends State<MyApp> {
   Future<bool> _showPushPermissionReminderDialog() async {
     final bool? openSettings = await showDialog<bool>(
       context: context,
-      barrierDismissible: true,
       builder: (dialogContext) {
         return AlertDialog(
           title: Text('push_permission_reminder_title'.tr()),

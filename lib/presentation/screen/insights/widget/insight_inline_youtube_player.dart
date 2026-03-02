@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:media_kit_video/media_kit_video.dart';
-import 'package:y_player/y_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import 'package:icoc/presentation/widget/youtube/youtube_embed_helper.dart';
 
 class InsightInlineYoutubePlayer extends StatefulWidget {
   const InsightInlineYoutubePlayer({
@@ -30,20 +31,15 @@ class InsightInlineYoutubePlayer extends StatefulWidget {
 class _InsightInlineYoutubePlayerState
     extends State<InsightInlineYoutubePlayer> {
   static const Duration _activationDelay = Duration(milliseconds: 180);
-  static const double _mutedVolume = 0;
-  static const double _unmutedVolume = 100;
 
-  YPlayerController? _controller;
-  VideoController? _videoController;
+  WebViewController? _controller;
   Timer? _activationTimer;
-  final Set<YPlayerController> _releasedControllers = <YPlayerController>{};
-  final List<StreamSubscription<dynamic>> _controllerSubscriptions =
-      <StreamSubscription<dynamic>>[];
   int _controllerToken = 0;
   bool _isInitializing = false;
+  bool _isReady = false;
   bool _isVideoVisible = false;
-  bool _hasRenderedFrame = false;
   bool _isMuted = true;
+  bool _hasLoadError = false;
 
   @override
   void initState() {
@@ -55,7 +51,7 @@ class _InsightInlineYoutubePlayerState
   void didUpdateWidget(covariant InsightInlineYoutubePlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.videoId != widget.videoId) {
-      _disposePlayer(notify: false, release: true);
+      _disposePlayer(notify: false);
     }
     if (oldWidget.isActive != widget.isActive ||
         oldWidget.shouldPrepare != widget.shouldPrepare ||
@@ -67,7 +63,7 @@ class _InsightInlineYoutubePlayerState
   @override
   void dispose() {
     _activationTimer?.cancel();
-    _disposePlayer(notify: false, release: true);
+    _disposePlayer(notify: false);
     super.dispose();
   }
 
@@ -81,18 +77,12 @@ class _InsightInlineYoutubePlayerState
           fit: StackFit.expand,
           children: [
             _buildThumbnail(context),
-            if (_videoController != null)
+            if (_controller != null)
               AnimatedOpacity(
                 opacity: _isVideoVisible ? 1 : 0,
                 duration: const Duration(milliseconds: 260),
                 curve: Curves.easeOutCubic,
-                child: Video(
-                  controller: _videoController!,
-                  fit: BoxFit.cover,
-                  fill: Colors.transparent,
-                  controls: (_) => const SizedBox.shrink(),
-                  wakelock: false,
-                ),
+                child: WebViewWidget(controller: _controller!),
               ),
             AnimatedOpacity(
               opacity: _isVideoVisible ? 0 : 1,
@@ -144,7 +134,7 @@ class _InsightInlineYoutubePlayerState
                 ),
               ),
             ),
-            if (_videoController != null && widget.isActive)
+            if (_controller != null && widget.isActive && !_hasLoadError)
               Positioned(
                 right: 12,
                 bottom: 12,
@@ -188,22 +178,21 @@ class _InsightInlineYoutubePlayerState
   void _syncPlayback() {
     _activationTimer?.cancel();
     if (!widget.shouldPrepare) {
-      _hideVideo();
+      _disposePlayer();
+      return;
+    }
+    if (_controller == null) {
+      _activationTimer = Timer(
+        widget.isActive ? _activationDelay : Duration.zero,
+        _initializePlayer,
+      );
+      return;
+    }
+    if (widget.isActive) {
+      unawaited(_resumePlayback());
+    } else {
       unawaited(_pausePreparedPlayback());
-      return;
     }
-    if (_controller != null) {
-      if (widget.isActive) {
-        _resumePlayback();
-      } else {
-        _pausePreparedPlayback();
-      }
-      return;
-    }
-    _activationTimer = Timer(
-      widget.isActive ? _activationDelay : Duration.zero,
-      _initializePlayer,
-    );
   }
 
   Future<void> _initializePlayer() async {
@@ -211,213 +200,136 @@ class _InsightInlineYoutubePlayerState
       return;
     }
 
-    final YPlayerController controller = YPlayerController();
-    final VideoController videoController = VideoController(controller.player);
-    final int controllerToken = ++_controllerToken;
+    final int token = ++_controllerToken;
+    final ThemeData theme = Theme.of(context);
+    final WebViewController controller = await createYoutubeWebViewController(
+      backgroundColor: theme.colorScheme.surface,
+      onWebResourceError: (_) {
+        if (_controllerToken != token || !mounted) {
+          return;
+        }
+        setState(() {
+          _hasLoadError = true;
+          _isInitializing = false;
+          _isVideoVisible = false;
+        });
+      },
+      onPageFinished: (WebViewController controller) async {
+        if (_controllerToken != token || !mounted) {
+          return;
+        }
+        _isReady = true;
+        await youtubeMute(controller);
+        if (widget.isActive) {
+          await youtubePlay(controller);
+        } else {
+          await youtubePause(controller);
+        }
+        if (!mounted || _controllerToken != token) {
+          return;
+        }
+        setState(() {
+          _isInitializing = false;
+          _isVideoVisible = widget.isActive && !_hasLoadError;
+        });
+      },
+    );
+
+    if (!mounted || _controllerToken != token) {
+      return;
+    }
 
     setState(() {
       _controller = controller;
-      _videoController = videoController;
       _isInitializing = true;
+      _isReady = false;
       _isVideoVisible = false;
-      _hasRenderedFrame = false;
+      _isMuted = true;
+      _hasLoadError = false;
     });
 
-    _bindControllerFrameState(controller, controllerToken);
-
-    try {
-      await controller.initialize(
-        'https://www.youtube.com/watch?v=${widget.videoId}',
-        autoPlay: false,
-        chooseBestQuality: false,
-      );
-      await _applyVolume(controller);
-
-      if (!_isCurrentController(controller, controllerToken) ||
-          !widget.shouldPrepare) {
-        _releaseController(controller);
-        return;
-      }
-
-      if (widget.isActive) {
-        await controller.play();
-      } else {
-        await controller.pause();
-      }
-
-      if (!_isCurrentController(controller, controllerToken)) {
-        _releaseController(controller);
-        return;
-      }
-
-      setState(() {
-        _isInitializing = false;
-        _isVideoVisible = widget.isActive && _hasRenderedFrame;
-      });
-    } catch (_) {
-      if (!_isCurrentController(controller, controllerToken)) {
-        _releaseController(controller);
-        return;
-      }
-      _disposePlayer(release: true);
-    }
+    await loadYoutubeEmbed(
+      controller,
+      videoId: widget.videoId,
+      autoplay: widget.isActive,
+      mute: true,
+      showControls: false,
+      showFullscreenButton: false,
+    );
   }
 
   Future<void> _resumePlayback() async {
-    final YPlayerController? controller = _controller;
-    if (controller == null) {
+    final WebViewController? controller = _controller;
+    if (controller == null || !_isReady || _hasLoadError) {
       return;
     }
-    if (!controller.isInitialized) {
-      return;
+    if (_isMuted) {
+      await youtubeMute(controller);
+    } else {
+      await youtubeUnmute(controller);
     }
-    await _applyVolume(controller);
-    await controller.play();
-    if (!mounted) {
-      return;
-    }
-    setState(() => _isVideoVisible = _hasRenderedFrame);
-  }
-
-  Future<void> _pausePreparedPlayback() async {
-    final YPlayerController? controller = _controller;
-    if (controller == null) {
-      return;
-    }
-    if (!controller.isInitialized) {
-      return;
-    }
-    _isMuted = true;
-    await controller.player.setVolume(_mutedVolume);
-    await controller.pause();
+    await youtubePlay(controller);
     if (!mounted) {
       return;
     }
     setState(() {
-      _isVideoVisible = false;
-      _isMuted = true;
+      _isVideoVisible = !_hasLoadError;
     });
   }
 
-  bool _isCurrentController(YPlayerController controller, int token) =>
-      mounted &&
-      identical(_controller, controller) &&
-      _controllerToken == token;
-
-  void _disposePlayer({bool notify = true, bool release = false}) {
-    _controllerToken++;
-    _clearControllerSubscriptions();
-    final YPlayerController? controller = _controller;
-    _controller = null;
-    _videoController = null;
-    if (release) {
-      _releaseController(controller);
+  Future<void> _pausePreparedPlayback() async {
+    final WebViewController? controller = _controller;
+    if (controller == null || !_isReady) {
+      return;
     }
-    if (notify && mounted) {
-      setState(() {
-        _isInitializing = false;
-        _isVideoVisible = false;
-        _hasRenderedFrame = false;
-      });
-    } else {
-      _isInitializing = false;
-      _isVideoVisible = false;
-      _hasRenderedFrame = false;
-    }
-  }
-
-  void _hideVideo() {
+    _isMuted = true;
+    await youtubeMute(controller);
+    await youtubePause(controller);
     if (!mounted) {
-      _isVideoVisible = false;
-      _isInitializing = false;
-      _isMuted = true;
       return;
     }
     setState(() {
       _isVideoVisible = false;
-      _isInitializing = false;
       _isMuted = true;
     });
   }
 
   Future<void> _toggleMute() async {
-    final YPlayerController? controller = _controller;
-    if (controller == null || !controller.isInitialized) {
+    final WebViewController? controller = _controller;
+    if (controller == null || !_isReady || _hasLoadError) {
       return;
     }
     final bool nextMuted = !_isMuted;
-    await controller.player.setVolume(
-      nextMuted ? _mutedVolume : _unmutedVolume,
-    );
+    if (nextMuted) {
+      await youtubeMute(controller);
+    } else {
+      await youtubeUnmute(controller);
+    }
     if (!mounted) {
       return;
     }
     setState(() => _isMuted = nextMuted);
   }
 
-  Future<void> _applyVolume(YPlayerController controller) {
-    return controller.player.setVolume(
-      _isMuted ? _mutedVolume : _unmutedVolume,
-    );
-  }
-
-  void _bindControllerFrameState(YPlayerController controller, int token) {
-    _clearControllerSubscriptions();
-    int width = controller.player.state.width ?? 0;
-    int height = controller.player.state.height ?? 0;
-
-    void markReadyIfPossible() {
-      if (width <= 0 || height <= 0) {
-        return;
-      }
-      if (!_isCurrentController(controller, token)) {
-        return;
-      }
-      if (_hasRenderedFrame) {
-        return;
-      }
-      if (!mounted) {
-        _hasRenderedFrame = true;
-        return;
-      }
-      setState(() {
-        _hasRenderedFrame = true;
-        if (widget.isActive) {
-          _isVideoVisible = true;
-        }
-      });
-    }
-
-    _controllerSubscriptions.addAll([
-      controller.player.stream.width.listen((int? value) {
-        width = value ?? 0;
-        markReadyIfPossible();
-      }),
-      controller.player.stream.height.listen((int? value) {
-        height = value ?? 0;
-        markReadyIfPossible();
-      }),
-    ]);
-
-    markReadyIfPossible();
-  }
-
-  void _clearControllerSubscriptions() {
-    for (final StreamSubscription<dynamic> subscription
-        in _controllerSubscriptions) {
-      subscription.cancel();
-    }
-    _controllerSubscriptions.clear();
-  }
-
-  void _releaseController(YPlayerController? controller) {
-    if (controller == null || _releasedControllers.contains(controller)) {
+  void _disposePlayer({bool notify = true}) {
+    _controllerToken++;
+    _activationTimer?.cancel();
+    _controller = null;
+    if (!notify || !mounted) {
+      _isInitializing = false;
+      _isReady = false;
+      _isVideoVisible = false;
+      _isMuted = true;
+      _hasLoadError = false;
       return;
     }
-    _releasedControllers.add(controller);
-    try {
-      controller.dispose();
-    } catch (_) {}
+    setState(() {
+      _isInitializing = false;
+      _isReady = false;
+      _isVideoVisible = false;
+      _isMuted = true;
+      _hasLoadError = false;
+    });
   }
 
   Widget _placeholder(BuildContext context) {

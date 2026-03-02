@@ -1,0 +1,181 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+
+import 'package:icoc/core/constants.dart';
+
+const String youtubeEmbedOrigin = 'https://www.youtube.com';
+
+String buildYoutubeEmbedUrl({
+  required String videoId,
+  bool autoplay = true,
+  bool mute = false,
+  bool showControls = true,
+  bool showFullscreenButton = true,
+}) {
+  final Uri uri = Uri.https(
+    'www.youtube.com',
+    '/embed/$videoId',
+    <String, String>{
+      'playsinline': '1',
+      'autoplay': autoplay ? '1' : '0',
+      'mute': mute ? '1' : '0',
+      'controls': showControls ? '1' : '0',
+      'fs': showFullscreenButton ? '1' : '0',
+      'enablejsapi': '1',
+      'origin': youtubeEmbedOrigin,
+      'widget_referrer': youtubeEmbedOrigin,
+      'rel': '0',
+      'modestbranding': '1',
+    },
+  );
+  return uri.toString();
+}
+
+String youtubeMobileUserAgent() {
+  if (Platform.isIOS) {
+    return 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+  }
+  return 'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36';
+}
+
+Future<WebViewController> createYoutubeWebViewController({
+  required Color backgroundColor,
+  required void Function(WebResourceError error) onWebResourceError,
+  Future<void> Function(WebViewController controller)? onPageFinished,
+}) async {
+  late final PlatformWebViewControllerCreationParams params;
+  if (Platform.isIOS && WebViewPlatform.instance is WebKitWebViewPlatform) {
+    params = WebKitWebViewControllerCreationParams(
+      allowsInlineMediaPlayback: true,
+      mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+    );
+  } else {
+    params = const PlatformWebViewControllerCreationParams();
+  }
+
+  late final WebViewController controller;
+  controller = WebViewController.fromPlatformCreationParams(params)
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..setBackgroundColor(backgroundColor)
+    ..setUserAgent(youtubeMobileUserAgent())
+    ..setNavigationDelegate(
+      NavigationDelegate(
+        onWebResourceError: onWebResourceError,
+        onPageFinished: (_) async {
+          if (onPageFinished != null) {
+            await onPageFinished(controller);
+          }
+        },
+      ),
+    );
+
+  if (controller.platform is AndroidWebViewController) {
+    final AndroidWebViewController androidController =
+        controller.platform as AndroidWebViewController;
+    androidController.setMediaPlaybackRequiresUserGesture(false);
+  }
+
+  return controller;
+}
+
+Future<void> loadYoutubeEmbed(
+  WebViewController controller, {
+  required String videoId,
+  bool autoplay = true,
+  bool mute = false,
+  bool showControls = true,
+  bool showFullscreenButton = true,
+}) {
+  return controller.loadRequest(
+    Uri.parse(
+      buildYoutubeEmbedUrl(
+        videoId: videoId,
+        autoplay: autoplay,
+        mute: mute,
+        showControls: showControls,
+        showFullscreenButton: showFullscreenButton,
+      ),
+    ),
+    headers: const <String, String>{
+      'Referer': ICOC_WEB_PAGE,
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+    },
+  );
+}
+
+Future<void> youtubeMute(WebViewController controller) {
+  return controller.runJavaScript('''
+    (function() {
+      if (window.player && player.mute) player.mute();
+      const video = document.querySelector('video');
+      if (video) video.muted = true;
+    })();
+  ''');
+}
+
+Future<void> youtubeUnmute(WebViewController controller) {
+  return controller.runJavaScript('''
+    (function() {
+      if (window.player && player.unMute) player.unMute();
+      const video = document.querySelector('video');
+      if (video) video.muted = false;
+    })();
+  ''');
+}
+
+Future<void> youtubePlay(WebViewController controller) {
+  return controller.runJavaScript('''
+    (function() {
+      if (window.player && player.playVideo) player.playVideo();
+      const video = document.querySelector('video');
+      if (video) {
+        const playPromise = video.play();
+        if (playPromise && playPromise.catch) playPromise.catch(function() {});
+      }
+    })();
+  ''');
+}
+
+Future<void> youtubePause(WebViewController controller) {
+  return controller.runJavaScript('''
+    (function() {
+      if (window.player && player.pauseVideo) player.pauseVideo();
+      const video = document.querySelector('video');
+      if (video) video.pause();
+    })();
+  ''');
+}
+
+Future<void> attachYoutubeFullscreenListener(
+  WebViewController controller, {
+  required String channelName,
+}) {
+  return controller.runJavaScript('''
+    (function() {
+      if (window.__icocFullscreenBridgeAttached) return;
+      window.__icocFullscreenBridgeAttached = true;
+      function isPlayerFullscreen() {
+        return !!document.querySelector('.html5-video-player.ytp-fullscreen');
+      }
+      function notifyFullscreenState() {
+        const isFullscreen = isPlayerFullscreen();
+        $channelName.postMessage(isFullscreen ? 'enter' : 'exit');
+      }
+      const observer = new MutationObserver(notifyFullscreenState);
+      observer.observe(document.documentElement, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class']
+      });
+      document.addEventListener('fullscreenchange', notifyFullscreenState);
+      document.addEventListener('webkitfullscreenchange', notifyFullscreenState);
+      document.addEventListener('webkitbeginfullscreen', notifyFullscreenState);
+      document.addEventListener('webkitendfullscreen', notifyFullscreenState);
+      setInterval(notifyFullscreenState, 400);
+    })();
+  ''');
+}

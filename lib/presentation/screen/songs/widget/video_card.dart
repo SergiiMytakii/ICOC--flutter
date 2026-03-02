@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/core/helpers/error_logger.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/theme.dart';
 
@@ -40,9 +40,7 @@ class _VideoCardState extends State<VideoCard> {
             children: [
               Image.network(
                 widget.youtubeVideo.thumbnail ??
-                    YoutubePlayerController.getThumbnail(
-                      videoId: videoId,
-                    ),
+                    YoutubeThumbnailHelper.thumbnailForVideoId(videoId),
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     color: myDarkTheme.scaffoldBackgroundColor,
@@ -78,7 +76,7 @@ class _VideoCardState extends State<VideoCard> {
     //if you use Youtube_player or youtube iFrame player
     if (link.isNotEmpty && link.contains('yout')) {
       try {
-        return YoutubePlayerController.convertUrlToId(link) ?? '';
+        return YoutubeThumbnailHelper.videoIdFromInput(link) ?? '';
       } on Exception catch (e, stackTrace) {
         logError(e, stackTrace);
         AppToast.show(context,

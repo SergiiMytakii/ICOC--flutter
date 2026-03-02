@@ -109,7 +109,7 @@ class InsightsInteractionsApiImpl implements domain.InsightsInteractionsApi {
     );
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception('Failed to load liked posts');
+      return <String>[];
     }
 
     final Map<String, dynamic> json =

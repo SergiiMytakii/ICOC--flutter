@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/helpers/bible_reference_link_handler.dart';
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/injection.dart';
@@ -18,7 +19,6 @@ import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 class OneQandAScreen extends StatefulWidget {
@@ -250,8 +250,8 @@ class _OneQandAScreenState extends State<OneQandAScreen>
       QandAModel article, BuildContext context, double? fontSize) {
     return GestureDetector(
         onTap: () {
-          final videoId =
-              YoutubePlayerController.convertUrlToId(article.youtubeLink!) ??
+          final String videoId =
+              YoutubeThumbnailHelper.videoIdFromInput(article.youtubeLink!) ??
                   '';
           context.go('/$Q_AND_ANSVERS/$Q_AND_A_VIDEO_PLAYER/$videoId');
         },

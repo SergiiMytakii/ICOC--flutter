@@ -53,8 +53,8 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
 
         final postsResult =
             await _insightsRepository.getPosts(languages: activeLanguages);
-        postsResult.fold(
-          (failure) =>
+        await postsResult.fold(
+          (failure) async =>
               emit(InsightsState.error(failure.toUserFriendlyMessage())),
           (List<Post> posts) async {
             final String deviceId = _localStore.getOrCreateDeviceId();
