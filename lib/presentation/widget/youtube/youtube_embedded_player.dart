@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'package:icoc/core/user_state/youtube_watch_progress_store.dart';
+import 'package:icoc/domain/data_sources/local/local_cache.dart';
+import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/widget/youtube/youtube_embed_helper.dart';
 
 class YoutubeEmbeddedPlayer extends StatefulWidget {
@@ -13,6 +18,7 @@ class YoutubeEmbeddedPlayer extends StatefulWidget {
     this.mute = false,
     this.showControls = true,
     this.showFullscreenButton = true,
+    this.persistProgress = true,
     this.onFullscreenChanged,
   });
 
@@ -22,22 +28,31 @@ class YoutubeEmbeddedPlayer extends StatefulWidget {
   final bool mute;
   final bool showControls;
   final bool showFullscreenButton;
+  final bool persistProgress;
   final ValueChanged<bool>? onFullscreenChanged;
 
   @override
   State<YoutubeEmbeddedPlayer> createState() => _YoutubeEmbeddedPlayerState();
 }
 
-class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer> {
+class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
+    with WidgetsBindingObserver {
   static const String _fullscreenChannelName = 'YoutubeEmbedFullscreen';
+  static const Duration _progressSyncInterval = Duration(seconds: 10);
 
+  final YoutubeWatchProgressStore _progressStore =
+      YoutubeWatchProgressStore(getIt<LocalCache>());
   WebViewController? _controller;
   bool _hasLoadError = false;
   bool _didInitialize = false;
+  bool _pageLoaded = false;
+  Timer? _progressTimer;
+  int _loadGeneration = 0;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -57,27 +72,49 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer> {
         oldWidget.autoPlay != widget.autoPlay ||
         oldWidget.mute != widget.mute ||
         oldWidget.showControls != widget.showControls ||
-        oldWidget.showFullscreenButton != widget.showFullscreenButton) {
+        oldWidget.showFullscreenButton != widget.showFullscreenButton ||
+        oldWidget.persistProgress != widget.persistProgress) {
       _initializeController();
     }
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      unawaited(_syncWatchProgress());
+    }
+  }
+
   Future<void> _initializeController() async {
+    final int generation = ++_loadGeneration;
     final ThemeData theme = Theme.of(context);
+    _pageLoaded = false;
+    _progressTimer?.cancel();
+
+    final int? resumeFromSeconds = await _readResumePosition();
     final WebViewController controller = await createYoutubeWebViewController(
       backgroundColor: theme.colorScheme.surface,
       onWebResourceError: (_) {
-        if (!mounted) {
+        if (!mounted || generation != _loadGeneration) {
           return;
         }
         setState(() => _hasLoadError = true);
       },
       onPageFinished: widget.onFullscreenChanged == null
-          ? null
-          : (WebViewController controller) {
-              return attachYoutubeFullscreenListener(
+          ? (WebViewController controller) => _handlePageFinished(
+                controller,
+                generation: generation,
+              )
+          : (WebViewController controller) async {
+              await attachYoutubeFullscreenListener(
                 controller,
                 channelName: _fullscreenChannelName,
+              );
+              await _handlePageFinished(
+                controller,
+                generation: generation,
               );
             },
     );
@@ -98,9 +135,10 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer> {
       mute: widget.mute,
       showControls: widget.showControls,
       showFullscreenButton: widget.showFullscreenButton,
+      startSeconds: resumeFromSeconds,
     );
 
-    if (!mounted) {
+    if (!mounted || generation != _loadGeneration) {
       return;
     }
 
@@ -108,6 +146,14 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer> {
       _controller = controller;
       _hasLoadError = false;
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _progressTimer?.cancel();
+    unawaited(_syncWatchProgress());
+    super.dispose();
   }
 
   @override
@@ -170,5 +216,67 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer> {
     final Uri uri =
         Uri.parse('https://www.youtube.com/watch?v=${widget.videoId}');
     return launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<int?> _readResumePosition() async {
+    if (!widget.persistProgress) {
+      return null;
+    }
+    final double? progressSeconds =
+        await _progressStore.getProgressSeconds(widget.videoId);
+    if (progressSeconds == null) {
+      return null;
+    }
+    return progressSeconds.floor();
+  }
+
+  Future<void> _handlePageFinished(
+    WebViewController controller, {
+    required int generation,
+  }) async {
+    if (!mounted || generation != _loadGeneration) {
+      return;
+    }
+
+    _pageLoaded = true;
+    _startProgressTimer();
+  }
+
+  void _startProgressTimer() {
+    _progressTimer?.cancel();
+    if (!widget.persistProgress) {
+      return;
+    }
+
+    _progressTimer = Timer.periodic(_progressSyncInterval, (_) {
+      unawaited(_syncWatchProgress());
+    });
+  }
+
+  Future<void> _syncWatchProgress() async {
+    if (!widget.persistProgress || !_pageLoaded) {
+      return;
+    }
+
+    final WebViewController? controller = _controller;
+    if (controller == null) {
+      return;
+    }
+
+    try {
+      final double? positionSeconds = await youtubeCurrentTime(controller);
+      if (positionSeconds == null || positionSeconds <= 0) {
+        return;
+      }
+
+      final double? durationSeconds = await youtubeDuration(controller);
+      await _progressStore.saveProgress(
+        widget.videoId,
+        positionSeconds,
+        durationSeconds,
+      );
+    } catch (_) {
+      // Ignore transient WebView/JS errors during teardown or page reloads.
+    }
   }
 }

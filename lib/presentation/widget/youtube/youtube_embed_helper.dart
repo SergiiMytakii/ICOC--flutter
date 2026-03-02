@@ -15,22 +15,28 @@ String buildYoutubeEmbedUrl({
   bool mute = false,
   bool showControls = true,
   bool showFullscreenButton = true,
+  int? startSeconds,
 }) {
+  final Map<String, String> queryParameters = <String, String>{
+    'playsinline': '1',
+    'autoplay': autoplay ? '1' : '0',
+    'mute': mute ? '1' : '0',
+    'controls': showControls ? '1' : '0',
+    'fs': showFullscreenButton ? '1' : '0',
+    'enablejsapi': '1',
+    'origin': youtubeEmbedOrigin,
+    'widget_referrer': youtubeEmbedOrigin,
+    'rel': '0',
+    'modestbranding': '1',
+  };
+  if (startSeconds != null && startSeconds > 0) {
+    queryParameters['start'] = startSeconds.toString();
+  }
+
   final Uri uri = Uri.https(
     'www.youtube.com',
     '/embed/$videoId',
-    <String, String>{
-      'playsinline': '1',
-      'autoplay': autoplay ? '1' : '0',
-      'mute': mute ? '1' : '0',
-      'controls': showControls ? '1' : '0',
-      'fs': showFullscreenButton ? '1' : '0',
-      'enablejsapi': '1',
-      'origin': youtubeEmbedOrigin,
-      'widget_referrer': youtubeEmbedOrigin,
-      'rel': '0',
-      'modestbranding': '1',
-    },
+    queryParameters,
   );
   return uri.toString();
 }
@@ -89,6 +95,7 @@ Future<void> loadYoutubeEmbed(
   bool mute = false,
   bool showControls = true,
   bool showFullscreenButton = true,
+  int? startSeconds,
 }) {
   return controller.loadRequest(
     Uri.parse(
@@ -98,6 +105,7 @@ Future<void> loadYoutubeEmbed(
         mute: mute,
         showControls: showControls,
         showFullscreenButton: showFullscreenButton,
+        startSeconds: startSeconds,
       ),
     ),
     headers: const <String, String>{
@@ -150,6 +158,28 @@ Future<void> youtubePause(WebViewController controller) {
   ''');
 }
 
+Future<double?> youtubeCurrentTime(WebViewController controller) async {
+  final Object result = await controller.runJavaScriptReturningResult('''
+    (function() {
+      if (window.player && player.getCurrentTime) return player.getCurrentTime();
+      const video = document.querySelector('video');
+      return video ? video.currentTime : 0;
+    })();
+  ''');
+  return _parseJavascriptNumber(result);
+}
+
+Future<double?> youtubeDuration(WebViewController controller) async {
+  final Object result = await controller.runJavaScriptReturningResult('''
+    (function() {
+      if (window.player && player.getDuration) return player.getDuration();
+      const video = document.querySelector('video');
+      return video ? video.duration : 0;
+    })();
+  ''');
+  return _parseJavascriptNumber(result);
+}
+
 Future<void> attachYoutubeFullscreenListener(
   WebViewController controller, {
   required String channelName,
@@ -178,4 +208,25 @@ Future<void> attachYoutubeFullscreenListener(
       setInterval(notifyFullscreenState, 400);
     })();
   ''');
+}
+
+double? _parseJavascriptNumber(Object? result) {
+  if (result == null) {
+    return null;
+  }
+  if (result is num) {
+    final double value = result.toDouble();
+    return value.isFinite ? value : null;
+  }
+
+  final String normalized =
+      result.toString().trim().replaceAll('"', '').replaceAll("'", '');
+  if (normalized.isEmpty ||
+      normalized == 'null' ||
+      normalized == 'undefined' ||
+      normalized == 'NaN') {
+    return null;
+  }
+
+  return double.tryParse(normalized);
 }
