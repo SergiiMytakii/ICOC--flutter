@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/domain/model/insights/post.dart';
@@ -231,7 +233,9 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
       );
     }
 
-    if (isShorts && (widget.autoplayVideo || widget.prepareVideo)) {
+    if (!Platform.isAndroid &&
+        isShorts &&
+        (widget.autoplayVideo || widget.prepareVideo)) {
       return InsightInlineYoutubePlayer(
         videoId: videoId,
         aspectRatio: aspectRatio,
