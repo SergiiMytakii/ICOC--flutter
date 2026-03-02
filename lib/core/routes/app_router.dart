@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/core/routes/app_routes.dart';
-import 'package:icoc/core/routes/routes_with_transitions.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_topic_screen.dart';
@@ -37,7 +36,7 @@ final GoRouter router = GoRouter(
             const HomeScreen(),
         routes: [
           //main sections
-          FadeGoRoute(
+          GoRoute(
               path: SONGBOOK,
               builder: (BuildContext context, GoRouterState state) =>
                   const MyBottomNavigationBar(),
@@ -60,7 +59,7 @@ final GoRouter router = GoRouter(
                       const AddSongScreen(),
                 ),
               ]),
-          FadeGoRoute(
+          GoRoute(
               path: Q_AND_ANSVERS,
               builder: (BuildContext context, GoRouterState state) =>
                   QuestionsAndAnswers(),
@@ -72,7 +71,7 @@ final GoRouter router = GoRouter(
                     return OneQandAScreen(article: article);
                   },
                 ),
-                VerticalSlideGoRoute(
+                GoRoute(
                   path: '$Q_AND_A_VIDEO_PLAYER/:videoId',
                   builder: (BuildContext context, GoRouterState state) {
                     final videoId = state.pathParameters['videoId'];
@@ -81,7 +80,7 @@ final GoRouter router = GoRouter(
                 ),
               ]),
 
-          FadeGoRoute(
+          GoRoute(
               path: BIBLE_STUDY,
               builder: (BuildContext context, GoRouterState state) =>
                   const BibleStudyScreen(),
@@ -133,7 +132,7 @@ final GoRouter router = GoRouter(
                       ),
                     ]),
               ]),
-          FadeGoRoute(
+          GoRoute(
               path: VIDEO,
               builder: (BuildContext context, GoRouterState state) =>
                   ListTopicsScreen(),
@@ -149,7 +148,7 @@ final GoRouter router = GoRouter(
                       );
                     },
                     routes: [
-                      VerticalSlideGoRoute(
+                      GoRoute(
                         path: '$VIDEO_PLAYER/:videoId',
                         builder: (BuildContext context, GoRouterState state) {
                           final videoId = state.pathParameters['videoId'];
@@ -159,13 +158,13 @@ final GoRouter router = GoRouter(
                     ]),
               ]),
 
-          FadeGoRoute(
+          GoRoute(
             path: FEEDBACK_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const FeedbackScreen(),
           ),
 
-          FadeGoRoute(
+          GoRoute(
             path: WEBVIEW_SCREEN,
             builder: (BuildContext context, GoRouterState state) {
               final String? url = state.extra is String
@@ -175,7 +174,7 @@ final GoRouter router = GoRouter(
             },
           ),
 
-          FadeGoRoute(
+          GoRoute(
             path: INSIGHTS,
             builder: (BuildContext context, GoRouterState state) =>
                 const InsightsScreen(),
@@ -209,33 +208,33 @@ final GoRouter router = GoRouter(
 
           //menu screens
 
-          FadeGoRoute(
+          GoRoute(
             path: SETTINGS,
             builder: (BuildContext context, GoRouterState state) =>
                 const GeneralSettingsScreen(),
           ),
-          FadeGoRoute(
+          GoRoute(
             path: NOTIFICATION_SETTINGS,
             builder: (BuildContext context, GoRouterState state) =>
                 const NotificationSettingsScreen(),
           ),
-          FadeGoRoute(
+          GoRoute(
             path: SHARE_APP_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const ShareAppScreen(),
           ),
-          FadeGoRoute(
+          GoRoute(
             path: TERMS_OF_USE,
             builder: (BuildContext context, GoRouterState state) =>
                 const TermsOfUseAndPolicy(),
           ),
-          FadeGoRoute(
+          GoRoute(
             path: ABOUT_APP_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const AboutAppScreen(),
           ),
 
-          FadeGoRoute(
+          GoRoute(
             path: NOTIFICATIONS_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 NotificationsScreen(),

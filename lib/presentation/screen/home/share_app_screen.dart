@@ -28,8 +28,9 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text('Share this app'.tr()),
         centerTitle: true,
         // leading: IconButton(
@@ -107,8 +108,8 @@ class _ShareAppScreenState extends State<ShareAppScreen> {
                         height: 8,
                       ),
                       CustomButton(
-                          onPressed: () => SharePlus.instance
-                              .share(ShareParams(text: link)),
+                          onPressed: () =>
+                              SharePlus.instance.share(ShareParams(text: link)),
                           color: ScreenColors.general,
                           child: FittedBox(
                             child: Text(

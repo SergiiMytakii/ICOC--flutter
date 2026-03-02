@@ -221,8 +221,9 @@ class _InsightInlineYoutubePlayerState
         _isReady = true;
         await youtubeMute(controller);
         if (widget.isActive) {
-          await youtubePlay(controller);
+          await youtubeEnsureAutoplayMuted(controller);
         } else {
+          await youtubeStopAutoplayAttempts(controller);
           await youtubePause(controller);
         }
         if (!mounted || _controllerToken != token) {
@@ -248,13 +249,10 @@ class _InsightInlineYoutubePlayerState
       _hasLoadError = false;
     });
 
-    await loadYoutubeEmbed(
+    await loadYoutubeInlineShortsEmbed(
       controller,
       videoId: widget.videoId,
-      autoplay: widget.isActive,
-      mute: true,
-      showControls: false,
-      showFullscreenButton: false,
+      autoPlay: widget.isActive,
     );
   }
 
@@ -268,7 +266,11 @@ class _InsightInlineYoutubePlayerState
     } else {
       await youtubeUnmute(controller);
     }
-    await youtubePlay(controller);
+    if (_isMuted) {
+      await youtubeEnsureAutoplayMuted(controller);
+    } else {
+      await youtubePlay(controller);
+    }
     if (!mounted) {
       return;
     }
@@ -283,6 +285,7 @@ class _InsightInlineYoutubePlayerState
       return;
     }
     _isMuted = true;
+    await youtubeStopAutoplayAttempts(controller);
     await youtubeMute(controller);
     await youtubePause(controller);
     if (!mounted) {
@@ -304,6 +307,7 @@ class _InsightInlineYoutubePlayerState
       await youtubeMute(controller);
     } else {
       await youtubeUnmute(controller);
+      await youtubePlay(controller);
     }
     if (!mounted) {
       return;
@@ -312,6 +316,10 @@ class _InsightInlineYoutubePlayerState
   }
 
   void _disposePlayer({bool notify = true}) {
+    final WebViewController? controller = _controller;
+    if (controller != null) {
+      unawaited(youtubeStopAutoplayAttempts(controller));
+    }
     _controllerToken++;
     _activationTimer?.cancel();
     _controller = null;
