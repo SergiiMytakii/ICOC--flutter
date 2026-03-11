@@ -31,7 +31,7 @@ class OneSongScreen extends StatefulWidget {
 
 class _OneSongScreenState extends State<OneSongScreen>
     with TickerProviderStateMixin {
-  late TabController tabController;
+  TabController? tabController;
   SongModel? song;
   bool hasChords = true;
   SongVersion? chords;
@@ -45,7 +45,7 @@ class _OneSongScreenState extends State<OneSongScreen>
 
   @override
   void dispose() {
-    tabController.dispose();
+    tabController?.dispose();
     super.dispose();
   }
 
@@ -57,13 +57,10 @@ class _OneSongScreenState extends State<OneSongScreen>
           final List<SongModel> allSongs = context.watch<SongsBloc>().allSongs;
           song = _receiveAndPrepareSong(allSongs);
 
-          return song != null
-              ? DefaultTabController(
-                  length: song!.songVersions.length,
-                  child: Scaffold(
-                    appBar: _buildAppBar(context, song!, hasChords),
-                    body: _tabBarBuilder(song!, hasChords),
-                  ),
+          return song != null && tabController != null
+              ? Scaffold(
+                  appBar: _buildAppBar(context, song!, hasChords),
+                  body: _tabBarBuilder(song!, hasChords),
                 )
               : _buildEmptyScreen();
         }));
@@ -96,6 +93,10 @@ class _OneSongScreenState extends State<OneSongScreen>
       getIt<SongsBloc>().add(const SongsEvent.songsRequested());
       return null;
     }
+
+    hasChords = true;
+    chords = null;
+
     final SongModel song = allSongs.firstWhere(
       (item) => item.id.toString() == widget.songId,
       orElse: SongModel.defaultSong,
@@ -112,9 +113,6 @@ class _OneSongScreenState extends State<OneSongScreen>
       }
     }
 
-    final tabsCount = song.songVersions.length + (hasChords ? 0 : 1);
-    tabController = TabController(length: tabsCount, vsync: this);
-
     //handle case when received song from a deep link has a primaryLang which is not active in app
     if (!song
         .getAllLangs()
@@ -125,13 +123,36 @@ class _OneSongScreenState extends State<OneSongScreen>
               (_) => getIt<SongsBloc>().add(const SongsEvent.songsRequested()));
       return null;
     } else {
-      // open specific tab
       final index =
           song.getAllLangs().indexOf(convertLanguagesEnum(widget.primaryLang));
-      tabController.animateTo(index);
+      _ensureTabController(
+        tabsCount: song.songVersions.length + (hasChords ? 0 : 1),
+        initialIndex: index,
+      );
     }
 
     return song;
+  }
+
+  void _ensureTabController({
+    required int tabsCount,
+    required int initialIndex,
+  }) {
+    final int boundedIndex = initialIndex.clamp(0, tabsCount - 1);
+    final TabController? currentController = tabController;
+    final bool shouldRecreate = currentController == null ||
+        currentController.length != tabsCount;
+
+    if (!shouldRecreate) {
+      return;
+    }
+
+    currentController?.dispose();
+    tabController = TabController(
+      length: tabsCount,
+      vsync: this,
+      initialIndex: boundedIndex,
+    );
   }
 
   AppBar _buildAppBar(BuildContext context, SongModel song, bool hasChords) {
@@ -198,6 +219,9 @@ class _OneSongScreenState extends State<OneSongScreen>
       children: [
         for (final songVersion in song.songVersions)
           SongVersionTab(
+            key: PageStorageKey<String>(
+              'song-version-${song.id}-${songVersion.id}-${songVersion.lang.name}',
+            ),
             songVersion: songVersion,
           ),
         if (!hasChords && chords != null) ChordsTab(chords: chords!)
@@ -206,7 +230,7 @@ class _OneSongScreenState extends State<OneSongScreen>
   }
 
   void shareSong(SongModel song) {
-    final index = tabController.index;
+    final int index = tabController!.index;
     String text = song.songVersions[index].text;
     final String title = song.songVersions[index].title;
     final String description = song.songVersions[index].description ?? '';

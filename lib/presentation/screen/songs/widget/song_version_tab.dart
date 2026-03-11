@@ -28,7 +28,7 @@ class SongVersionTab extends StatefulWidget {
 }
 
 class _SongVersionTabState extends State<SongVersionTab>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   static const double _playerAspectRatio = 16 / 9;
   static const double _miniPlayerHeaderHeight = 48;
   static const double _minimumScrollableContentHeight = 72;
@@ -49,6 +49,9 @@ class _SongVersionTabState extends State<SongVersionTab>
   late String _transposeKey;
   late String _speedKey;
   bool _initialVideoAutoplayStarted = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -99,6 +102,7 @@ class _SongVersionTabState extends State<SongVersionTab>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder<FontSizeBloc, FontSizeState>(
       builder: (context, state) {
         return state.maybeWhen(
