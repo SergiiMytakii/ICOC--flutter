@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:icoc/presentation/bloc/insights/insights_event.dart';
 import 'package:injectable/injectable.dart';
@@ -98,7 +99,8 @@ class PushNotificationService {
     // Topic subscriptions are handled after permission is granted in requestNotificationPermissionIfNeeded
   }
 
-  Future<void> _subscribeTopicSafe(String topic) async {
+  @protected
+  Future<void> subscribeTopicSafe(String topic) async {
     try {
       await FirebaseMessaging.instance.subscribeToTopic(topic);
     } catch (e, st) {
@@ -106,7 +108,8 @@ class PushNotificationService {
     }
   }
 
-  Future<void> _unsubscribeTopicSafe(String topic) async {
+  @protected
+  Future<void> unsubscribeTopicSafe(String topic) async {
     try {
       await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
     } catch (e, st) {
@@ -171,17 +174,9 @@ class PushNotificationService {
           await _syncToken(t);
           final String? locale = _localCache.getString(StorageKeys.locale);
           if (locale != null && locale.isNotEmpty) {
-            await _subscribeTopicSafe('general-lang-$locale');
+            await subscribeTopicSafe('general-lang-$locale');
           }
-          final Map<String, dynamic> songsMap =
-              getIt<SongsUserLanguagesHandler>().languages;
-          final Map<String, dynamic> bibleMap =
-              getIt<BibleStudyUserLanguagesHandler>().languages;
-          final Map<String, dynamic> insightsMap =
-              getIt<InsightsUserLanguagesHandler>().languages;
-          unawaited(syncTopicLangSubscriptionsFor('songbook', songsMap));
-          unawaited(syncTopicLangSubscriptionsFor('biblestudy', bibleMap));
-          unawaited(syncTopicLangSubscriptionsFor('insights', insightsMap));
+          unawaited(_syncAllFeatureLanguageTopics());
           unawaited(_ensureTopicSubscriptionsInitialized());
         } catch (e, st) {
           log.w('Token refresh handler failed', error: e, stackTrace: st);
@@ -323,17 +318,9 @@ class PushNotificationService {
         await _syncToken(token);
         final String? locale = _localCache.getString(StorageKeys.locale);
         if (locale != null && locale.isNotEmpty) {
-          await _subscribeTopicSafe('general-lang-$locale');
+          await subscribeTopicSafe('general-lang-$locale');
         }
-        final Map<String, dynamic> songsMap =
-            getIt<SongsUserLanguagesHandler>().languages;
-        final Map<String, dynamic> bibleMap =
-            getIt<BibleStudyUserLanguagesHandler>().languages;
-        final Map<String, dynamic> insightsMap =
-            getIt<InsightsUserLanguagesHandler>().languages;
-        unawaited(syncTopicLangSubscriptionsFor('songbook', songsMap));
-        unawaited(syncTopicLangSubscriptionsFor('biblestudy', bibleMap));
-        unawaited(syncTopicLangSubscriptionsFor('insights', insightsMap));
+        unawaited(_syncAllFeatureLanguageTopics());
         unawaited(_ensureTopicSubscriptionsInitialized());
       } catch (e, st) {
         if (_isGmsUnavailable(e)) {
@@ -563,9 +550,9 @@ class PushNotificationService {
   Future<void> updateLanguageSubscription(String newLocale) async {
     final String? prev = _localCache.getString(StorageKeys.locale);
     if (prev != null && prev.isNotEmpty && prev != newLocale) {
-      await _unsubscribeTopicSafe('general-lang-$prev');
+      await unsubscribeTopicSafe('general-lang-$prev');
     }
-    await _subscribeTopicSafe('general-lang-$newLocale');
+    await subscribeTopicSafe('general-lang-$newLocale');
     await _localCache.saveString(StorageKeys.locale, newLocale);
   }
 
@@ -584,18 +571,18 @@ class PushNotificationService {
         .map((e) => e.key)
         .toSet();
     for (final l in toUnsub) {
-      await _unsubscribeTopicSafe('$topic-lang-$l');
+      await unsubscribeTopicSafe('$topic-lang-$l');
     }
     // print('Unsubscribed from $topic, ${toUnsub.toString()}');
     for (final l in toSub) {
-      await _subscribeTopicSafe('$topic-lang-$l');
+      await subscribeTopicSafe('$topic-lang-$l');
     }
     print('Subscribed to $topic, ${toSub.toString()}');
   }
 
   Future<void> unsubscribeAllLangsForTopic(String topic) async {
     for (final l in languagesCodes.keys) {
-      await _unsubscribeTopicSafe('$topic-lang-$l');
+      await unsubscribeTopicSafe('$topic-lang-$l');
       // print('Unsubscribed from $topic-lang-$l');
     }
   }
@@ -644,12 +631,12 @@ class PushNotificationService {
     await _localCache.saveMap(StorageKeys.notificationTopics, current);
 
     if (enabled) {
-      await _subscribeTopicSafe(topic);
+      await subscribeTopicSafe(topic);
       final Map<String, dynamic> langs =
           _getLanguagesMapForTopicFromHandler(topic);
       await syncTopicLangSubscriptionsFor(topic, langs);
     } else {
-      await _unsubscribeTopicSafe(topic);
+      await unsubscribeTopicSafe(topic);
       await unsubscribeAllLangsForTopic(topic);
     }
   }
@@ -661,11 +648,11 @@ class PushNotificationService {
     final Set<String> toUnsub = prevActive.difference(activeTopics);
     final Set<String> toSub = activeTopics.difference(prevActive);
     for (final t in toUnsub) {
-      await _unsubscribeTopicSafe(t);
+      await unsubscribeTopicSafe(t);
     }
     // print('Unsubscribed from $toUnsub');
     for (final t in toSub) {
-      await _subscribeTopicSafe(t);
+      await subscribeTopicSafe(t);
     }
     print('Subscribed to ${toSub.toString()}');
     final Map<String, bool> nextMap = {
@@ -685,12 +672,12 @@ class PushNotificationService {
         if (langs.isEmpty) {
           final String? l = _localCache.getString(StorageKeys.locale);
           if (l != null && l.isNotEmpty) {
-            await _subscribeTopicSafe('${entry.key}-lang-$l');
+            await subscribeTopicSafe('${entry.key}-lang-$l');
           }
         } else {
           for (final e in langs.entries) {
             if (e.value == true) {
-              await _subscribeTopicSafe('${entry.key}-lang-${e.key}');
+              await subscribeTopicSafe('${entry.key}-lang-${e.key}');
             }
           }
         }
@@ -698,7 +685,25 @@ class PushNotificationService {
     }
     final String? locale = _localCache.getString(StorageKeys.locale);
     if (locale != null && locale.isNotEmpty) {
-      await _subscribeTopicSafe('general-lang-$locale');
+      await subscribeTopicSafe('general-lang-$locale');
+    }
+  }
+
+  Future<void> _syncAllFeatureLanguageTopics() async {
+    final Map<String, Map<String, dynamic>> topicToLanguages =
+        <String, Map<String, dynamic>>{
+      'songbook': Map<String, dynamic>.from(
+          getIt<SongsUserLanguagesHandler>().languages),
+      'biblestudy': Map<String, dynamic>.from(
+          getIt<BibleStudyUserLanguagesHandler>().languages),
+      'insights': Map<String, dynamic>.from(
+          getIt<InsightsUserLanguagesHandler>().languages),
+      'video': Map<String, dynamic>.from(
+          getIt<VideosUserLanguagesHandler>().languages),
+    };
+
+    for (final entry in topicToLanguages.entries) {
+      await syncTopicLangSubscriptionsFor(entry.key, entry.value);
     }
   }
 
@@ -713,6 +718,9 @@ class PushNotificationService {
       case 'insights':
         return Map<String, dynamic>.from(
             getIt<InsightsUserLanguagesHandler>().languages);
+      case 'video':
+        return Map<String, dynamic>.from(
+            getIt<VideosUserLanguagesHandler>().languages);
       default:
         return {};
     }

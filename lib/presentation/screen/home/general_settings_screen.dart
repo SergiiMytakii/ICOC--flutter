@@ -57,7 +57,8 @@ class _GeneralSettingsScreenState extends State<GeneralSettingsScreen> {
               onTap: () => context.go('/$NOTIFICATION_SETTINGS'),
             ),
             SwitchListTile.adaptive(
-              activeThumbColor: AdaptiveTheme.of(context).theme.focusColor,
+              activeTrackColor: const Color(0xFF4CAF50),
+              inactiveTrackColor: Colors.grey.shade400,
               title: Text(
                 'settings_dark_theme'.tr(),
                 style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,

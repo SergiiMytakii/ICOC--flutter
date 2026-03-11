@@ -2,6 +2,7 @@ enum NotificationTopic {
   songbook,
   insights,
   biblestudy,
+  video,
 }
 
 extension NotificationTopicX on NotificationTopic {
@@ -13,6 +14,8 @@ extension NotificationTopicX on NotificationTopic {
         return 'insights';
       case NotificationTopic.biblestudy:
         return 'biblestudy';
+      case NotificationTopic.video:
+        return 'video';
     }
   }
 
@@ -25,6 +28,8 @@ extension NotificationTopicX on NotificationTopic {
         return 'Insights';
       case NotificationTopic.biblestudy:
         return 'drawer_first_principles';
+      case NotificationTopic.video:
+        return 'Video';
     }
   }
 }

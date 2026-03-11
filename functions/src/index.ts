@@ -11,6 +11,7 @@ const allowedBaseTopics = new Set([
   "songbook",
   "insights",
   "biblestudy",
+  "video",
   "general",
 ]);
 const allowedLangs = new Set([

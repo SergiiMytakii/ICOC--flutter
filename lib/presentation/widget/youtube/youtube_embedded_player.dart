@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/core/user_state/youtube_watch_progress_store.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
@@ -14,6 +17,7 @@ class YoutubeEmbeddedPlayer extends StatefulWidget {
     super.key,
     required this.videoId,
     required this.aspectRatio,
+    this.thumbnailUrl,
     this.autoPlay = true,
     this.mute = false,
     this.showControls = true,
@@ -24,6 +28,7 @@ class YoutubeEmbeddedPlayer extends StatefulWidget {
 
   final String videoId;
   final double aspectRatio;
+  final String? thumbnailUrl;
   final bool autoPlay;
   final bool mute;
   final bool showControls;
@@ -42,10 +47,13 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
 
   final YoutubeWatchProgressStore _progressStore =
       YoutubeWatchProgressStore(getIt<LocalCache>());
-  WebViewController? _controller;
+
+  WebViewController? _iosController;
+  YoutubePlayerController? _androidController;
   bool _hasLoadError = false;
   bool _didInitialize = false;
   bool _pageLoaded = false;
+  bool _lastAndroidFullscreen = false;
   Timer? _progressTimer;
   int _loadGeneration = 0;
 
@@ -88,11 +96,57 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
   }
 
   Future<void> _initializeController() async {
+    if (Platform.isAndroid) {
+      await _initializeAndroidController();
+      return;
+    }
+    await _initializeIosController();
+  }
+
+  Future<void> _initializeAndroidController() async {
     final int generation = ++_loadGeneration;
-    final ThemeData theme = Theme.of(context);
+    _pageLoaded = false;
+    _lastAndroidFullscreen = false;
+    _progressTimer?.cancel();
+
+    _disposeAndroidController();
+
+    final int? resumeFromSeconds = await _readResumePosition();
+    final YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: widget.videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: widget.autoPlay,
+        mute: widget.mute,
+        hideControls: !widget.showControls,
+        controlsVisibleAtStart: widget.showControls,
+        startAt: resumeFromSeconds ?? 0,
+        useHybridComposition: true,
+        enableCaption: true,
+      ),
+    )..addListener(_handleAndroidControllerChanged);
+
+    if (!mounted || generation != _loadGeneration) {
+      controller.removeListener(_handleAndroidControllerChanged);
+      controller.dispose();
+      return;
+    }
+
+    setState(() {
+      _androidController = controller;
+      _iosController = null;
+      _hasLoadError = false;
+    });
+  }
+
+  Future<void> _initializeIosController() async {
+    final int generation = ++_loadGeneration;
     _pageLoaded = false;
     _progressTimer?.cancel();
 
+    _disposeAndroidController();
+    _disposeIosController();
+
+    final ThemeData theme = Theme.of(context);
     final int? resumeFromSeconds = await _readResumePosition();
     final WebViewController controller = await createYoutubeWebViewController(
       backgroundColor: theme.colorScheme.surface,
@@ -103,7 +157,7 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
         setState(() => _hasLoadError = true);
       },
       onPageFinished: widget.onFullscreenChanged == null
-          ? (WebViewController controller) => _handlePageFinished(
+          ? (WebViewController controller) => _handleIosPageFinished(
                 controller,
                 generation: generation,
               )
@@ -112,7 +166,7 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
                 controller,
                 channelName: _fullscreenChannelName,
               );
-              await _handlePageFinished(
+              await _handleIosPageFinished(
                 controller,
                 generation: generation,
               );
@@ -139,13 +193,39 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
     );
 
     if (!mounted || generation != _loadGeneration) {
+      unawaited(_releaseIosController(controller));
       return;
     }
 
     setState(() {
-      _controller = controller;
+      _iosController = controller;
       _hasLoadError = false;
     });
+  }
+
+  void _handleAndroidControllerChanged() {
+    final YoutubePlayerController? controller = _androidController;
+    if (controller == null || !mounted) {
+      return;
+    }
+
+    final YoutubePlayerValue value = controller.value;
+    if (widget.onFullscreenChanged != null &&
+        value.isFullScreen != _lastAndroidFullscreen) {
+      _lastAndroidFullscreen = value.isFullScreen;
+      widget.onFullscreenChanged!(value.isFullScreen);
+    }
+
+    if (value.isReady && !_pageLoaded) {
+      _pageLoaded = true;
+      _startProgressTimer();
+    }
+
+    if (_hasLoadError != value.hasError) {
+      setState(() {
+        _hasLoadError = value.hasError;
+      });
+    }
   }
 
   @override
@@ -153,6 +233,8 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
     WidgetsBinding.instance.removeObserver(this);
     _progressTimer?.cancel();
     unawaited(_syncWatchProgress());
+    _disposeAndroidController();
+    _disposeIosController();
     super.dispose();
   }
 
@@ -165,13 +247,71 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
   }
 
   Widget _player() {
-    final WebViewController? controller = _controller;
+    if (Platform.isAndroid) {
+      return _buildAndroidPlayer();
+    }
+    return _buildIosPlayer();
+  }
+
+  Widget _buildAndroidPlayer() {
+    final YoutubePlayerController? controller = _androidController;
     if (controller == null) {
-      return const Center(
-        child: CircularProgressIndicator.adaptive(),
+      return const ColoredBox(
+        color: Colors.black,
+        child: Center(child: CircularProgressIndicator.adaptive()),
+      );
+    }
+
+    return ColoredBox(
+      color: Colors.black,
+      child: YoutubePlayer(
+        controller: controller,
+        aspectRatio: widget.aspectRatio,
+        showVideoProgressIndicator: false,
+        thumbnail: _buildThumbnail(),
+        onReady: () {
+          if (!_pageLoaded) {
+            _pageLoaded = true;
+            _startProgressTimer();
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildIosPlayer() {
+    final WebViewController? controller = _iosController;
+    if (controller == null) {
+      return const ColoredBox(
+        color: Colors.black,
+        child: Center(child: CircularProgressIndicator.adaptive()),
       );
     }
     return WebViewWidget(controller: controller);
+  }
+
+  Widget _buildThumbnail() {
+    final String posterUrl = widget.thumbnailUrl?.trim().isNotEmpty == true
+        ? widget.thumbnailUrl!.trim()
+        : YoutubeThumbnailHelper.thumbnailForVideoId(widget.videoId);
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ColoredBox(
+          color: Colors.black,
+          child: Image.network(
+            posterUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+          ),
+        ),
+        Container(color: Colors.black.withValues(alpha: 0.12)),
+        const Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      ],
+    );
   }
 
   Widget _fallback(BuildContext context) {
@@ -230,7 +370,7 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
     return progressSeconds.floor();
   }
 
-  Future<void> _handlePageFinished(
+  Future<void> _handleIosPageFinished(
     WebViewController controller, {
     required int generation,
   }) async {
@@ -258,7 +398,30 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
       return;
     }
 
-    final WebViewController? controller = _controller;
+    if (Platform.isAndroid) {
+      try {
+        final YoutubePlayerController? controller = _androidController;
+        if (controller == null || !controller.value.isReady) {
+          return;
+        }
+        final double positionSeconds =
+            controller.value.position.inSeconds.toDouble();
+        if (positionSeconds <= 0) {
+          return;
+        }
+        final Duration duration = controller.metadata.duration;
+        await _progressStore.saveProgress(
+          widget.videoId,
+          positionSeconds,
+          duration.inSeconds <= 0 ? null : duration.inSeconds.toDouble(),
+        );
+      } catch (_) {
+        // Ignore transient controller errors during teardown or reloads.
+      }
+      return;
+    }
+
+    final WebViewController? controller = _iosController;
     if (controller == null) {
       return;
     }
@@ -277,6 +440,35 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
       );
     } catch (_) {
       // Ignore transient WebView/JS errors during teardown or page reloads.
+    }
+  }
+
+  void _disposeAndroidController() {
+    final YoutubePlayerController? controller = _androidController;
+    if (controller == null) {
+      return;
+    }
+    controller.removeListener(_handleAndroidControllerChanged);
+    controller.dispose();
+    _androidController = null;
+  }
+
+  void _disposeIosController() {
+    final WebViewController? controller = _iosController;
+    if (controller == null) {
+      return;
+    }
+    _iosController = null;
+    unawaited(_releaseIosController(controller));
+  }
+
+  Future<void> _releaseIosController(WebViewController controller) async {
+    try {
+      await youtubeStopAutoplayAttempts(controller);
+      await youtubePause(controller);
+      await controller.loadHtmlString('<html><body></body></html>');
+    } catch (_) {
+      // Ignore WebView teardown errors during disposal or controller swaps.
     }
   }
 }

@@ -42,9 +42,7 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<InsightsBloc>()
-        .add(const InsightsEvent.fetchAvailableLanguagesAndPosts());
+    _ensureInsightsLoaded();
   }
 
   @override
@@ -397,6 +395,14 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
     }
   }
 
+  void _ensureInsightsLoaded() {
+    final InsightsState state = context.read<InsightsBloc>().state;
+    state.maybeWhen(
+      initial: () => _refresh(),
+      orElse: () {},
+    );
+  }
+
   void _maybeActivateLanguage(
     Map<String, bool> selectedLanguages,
     List<String> availableLanguages,
@@ -443,11 +449,6 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
           .read<InsightsBloc>()
           .add(InsightsEvent.refreshSinglePost(widget.postId!));
     });
-  }
-
-  Post? _resolvePostFromState(BuildContext context) {
-    final InsightsState state = context.read<InsightsBloc>().state;
-    return state.maybeWhen(loaded: _resolvePost, orElse: () => widget.post);
   }
 
   Post? _resolvePost(

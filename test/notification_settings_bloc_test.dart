@@ -9,6 +9,7 @@ class _FakePushService extends PushNotificationService {
     'songbook': true,
     'insights': true,
     'biblestudy': true,
+    'video': true,
   };
 
   @override
@@ -74,9 +75,9 @@ void main() {
         const NotificationSettingsEvent.toggleRequested(
             topic: 'insights', enabled: false),
       );
-      final state = await bloc.stream
-              .firstWhere((s) => s is NotificationSettingsLoaded)
-          as NotificationSettingsLoaded;
+      final state =
+          await bloc.stream.firstWhere((s) => s is NotificationSettingsLoaded)
+              as NotificationSettingsLoaded;
       expect(state.topicStates['insights'], false);
     });
   });

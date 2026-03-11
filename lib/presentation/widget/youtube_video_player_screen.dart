@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/presentation/widget/youtube/youtube_embedded_player.dart';
 
 class YoutubeVideoPlayerScreen extends StatefulWidget {
@@ -53,8 +56,12 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = AdaptiveTheme.of(context).theme;
+    final Size screenSize = MediaQuery.sizeOf(context);
     final bool isLandscape =
         MediaQuery.orientationOf(context) == Orientation.landscape;
+    final double aspectRatio = isLandscape && screenSize.height > 0
+        ? screenSize.width / screenSize.height
+        : 16 / 9;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -62,7 +69,10 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
           Center(
             child: YoutubeEmbeddedPlayer(
               videoId: widget.videoId,
-              aspectRatio: 16 / 9,
+              aspectRatio: aspectRatio,
+              thumbnailUrl:
+                  YoutubeThumbnailHelper.thumbnailForVideoId(widget.videoId),
+              showControls: !Platform.isAndroid,
               showFullscreenButton: false,
             ),
           ),

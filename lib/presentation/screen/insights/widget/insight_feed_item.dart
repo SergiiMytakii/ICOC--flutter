@@ -233,9 +233,7 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
       );
     }
 
-    if (!Platform.isAndroid &&
-        isShorts &&
-        (widget.autoplayVideo || widget.prepareVideo)) {
+    if (isShorts && (widget.autoplayVideo || widget.prepareVideo)) {
       return InsightInlineYoutubePlayer(
         videoId: videoId,
         aspectRatio: aspectRatio,

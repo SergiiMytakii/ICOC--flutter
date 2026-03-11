@@ -19,11 +19,14 @@ class NotificationSettingsScreen extends StatefulWidget {
 
 class _NotificationSettingsScreenState
     extends State<NotificationSettingsScreen> {
+  static const Color _enabledTileBorder = Color(0xFF4CAF50);
+
   late final NotificationSettingsBloc _bloc;
   final topics = const [
     NotificationTopic.songbook,
     NotificationTopic.insights,
     NotificationTopic.biblestudy,
+    NotificationTopic.video,
   ];
   bool _notificationsDenied = false;
 
@@ -37,6 +40,7 @@ class _NotificationSettingsScreenState
 
   @override
   void dispose() {
+    _bloc.close();
     super.dispose();
   }
 
@@ -63,7 +67,8 @@ class _NotificationSettingsScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Notifications are disabled at the system level.'.tr(),
+                            'Notifications are disabled at the system level.'
+                                .tr(),
                             style: AdaptiveTheme.of(context)
                                 .theme
                                 .textTheme
@@ -117,28 +122,37 @@ class _NotificationSettingsScreenState
     required NotificationTopic topic,
     required bool enabled,
   }) {
-    return SwitchListTile.adaptive(
-      activeThumbColor: AdaptiveTheme.of(context).theme.focusColor,
-      title: Text(
-        topic.labelKey.tr(),
-        style: AdaptiveTheme.of(context).theme.textTheme.bodyLarge,
-      ),
-      value: enabled,
-      onChanged: (val) {
-        if (_notificationsDenied && val) {
-          _showEnableSystemDialog();
-          return;
-        }
-        context.read<NotificationSettingsBloc>().add(
-              NotificationSettingsEvent.toggleRequested(
-                topic: topic.topic,
-                enabled: val,
-              ),
-            );
-      },
-      secondary: Icon(
-        _iconForTopic(topic),
-        color: AdaptiveTheme.of(context).theme.iconTheme.color,
+    final theme = AdaptiveTheme.of(context).theme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        leading: Icon(
+          _iconForTopic(topic),
+          color: theme.iconTheme.color,
+        ),
+        title: Text(
+          topic.labelKey.tr(),
+          style: theme.textTheme.bodyLarge,
+        ),
+        trailing: Switch.adaptive(
+          value: enabled,
+          activeTrackColor: _enabledTileBorder,
+          inactiveTrackColor: Colors.grey.shade400,
+          onChanged: (val) {
+            if (_notificationsDenied && val) {
+              _showEnableSystemDialog();
+              return;
+            }
+            context.read<NotificationSettingsBloc>().add(
+                  NotificationSettingsEvent.toggleRequested(
+                    topic: topic.topic,
+                    enabled: val,
+                  ),
+                );
+          },
+        ),
       ),
     );
   }
@@ -151,14 +165,19 @@ class _NotificationSettingsScreenState
         return Icons.article;
       case NotificationTopic.biblestudy:
         return Icons.import_contacts;
+      case NotificationTopic.video:
+        return Icons.play_circle_fill_rounded;
     }
   }
 
   Future<void> _checkSystemNotificationsStatus() async {
     final settings = await FirebaseMessaging.instance.getNotificationSettings();
+    if (!mounted) {
+      return;
+    }
     setState(() {
-      _notificationsDenied = settings.authorizationStatus ==
-          AuthorizationStatus.denied;
+      _notificationsDenied =
+          settings.authorizationStatus == AuthorizationStatus.denied;
     });
   }
 
@@ -175,7 +194,8 @@ class _NotificationSettingsScreenState
       builder: (ctx) => AlertDialog(
         title: Text('Enable Notifications'.tr()),
         content: Text(
-            'Notifications are disabled in system settings. Please enable them to turn on topics here.'.tr()),
+            'Notifications are disabled in system settings. Please enable them to turn on topics here.'
+                .tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),

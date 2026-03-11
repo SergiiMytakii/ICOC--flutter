@@ -54,7 +54,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scheduleCenteredVideoDetection);
-    _refresh();
+    _ensureInsightsLoaded();
   }
 
   @override
@@ -70,6 +70,14 @@ class _InsightsScreenState extends State<InsightsScreen> {
     context
         .read<InsightsBloc>()
         .add(const InsightsEvent.fetchAvailableLanguagesAndPosts());
+  }
+
+  void _ensureInsightsLoaded() {
+    final InsightsState state = context.read<InsightsBloc>().state;
+    state.maybeWhen(
+      initial: () => _refresh(),
+      orElse: () {},
+    );
   }
 
   @override

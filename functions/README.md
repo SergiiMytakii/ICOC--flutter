@@ -18,16 +18,16 @@ This folder contains Firebase Cloud Functions used to send push notifications to
 
 - `sendTopicByLang`
   - Sends to a composite topic that combines feature and language.
-  - Body: `{ baseTopic: 'songbook'|'insights'|'biblestudy'|'general', lang, title, body, data? }`
+  - Body: `{ baseTopic: 'songbook'|'insights'|'biblestudy'|'video'|'general', lang, title, body, data? }`
   - Topic format: `${baseTopic}-lang-${lang}` (e.g., `insights-lang-uk`).
 
 - `sendTopicForLangs`
   - Sends to multiple composite topics for a feature.
-  - Body: `{ baseTopic: 'songbook'|'insights'|'biblestudy'|'general', langs: string[], title, body, data? }`
+  - Body: `{ baseTopic: 'songbook'|'insights'|'biblestudy'|'video'|'general', langs: string[], title, body, data? }`
 
 ## Topic Naming
 
-- Base topics: `songbook`, `insights`, `biblestudy`, `general`.
+- Base topics: `songbook`, `insights`, `biblestudy`, `video`, `general`.
 - Composite topics: `${baseTopic}-lang-${lang}`.
 - Supported languages: `en, uk, ru, de, fr, it, lt, lv, et, no, pl, ro, sv, bg`.
 

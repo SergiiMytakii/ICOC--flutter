@@ -12,6 +12,7 @@ import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/bloc/video_bloc/video_bloc.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
+import 'package:icoc/presentation/bloc/insights/insights_event.dart';
 
 class MyMultiblocProvider extends StatelessWidget {
   final Widget child;
@@ -55,7 +56,9 @@ class MyMultiblocProvider extends StatelessWidget {
           create: (BuildContext context) => getIt<FeedbackBloc>(),
         ),
         BlocProvider<InsightsBloc>(
-          create: (BuildContext context) => getIt<InsightsBloc>(),
+          create: (BuildContext context) => getIt<InsightsBloc>()
+            ..add(const InsightsEvent.fetchAvailableLanguagesAndPosts()),
+          lazy: false,
         ),
       ],
       child: child,

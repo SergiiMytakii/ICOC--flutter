@@ -31,62 +31,80 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
   final InsightsRepository _insightsRepository;
   final InsightsUserLanguagesHandler _userLanguagesHandler;
   final InsightsInteractionLocalStore _localStore;
+  bool _hasPendingInitialFetch = false;
 
   Future<void> _onFetchAvailableLanguagesAndPosts(
     Emitter<InsightsState> emit,
   ) async {
+    final bool isInitialState = state.maybeWhen(
+      initial: () => true,
+      orElse: () => false,
+    );
+    if (isInitialState) {
+      if (_hasPendingInitialFetch) {
+        return;
+      }
+      _hasPendingInitialFetch = true;
+    } else if (state.maybeWhen(loading: () => true, orElse: () => false)) {
+      return;
+    }
+
     emit(const InsightsState.loading());
 
-    final availableLanguagesResult =
-        await _insightsRepository.getAvailableLanguages();
-    await availableLanguagesResult.fold(
-      (failure) async {
-        emit(InsightsState.error(failure.toUserFriendlyMessage()));
-      },
-      (List<String> availableLanguages) async {
-        final Map<String, dynamic> initializedMap = await _userLanguagesHandler
-            .initializeFromAvailableLanguages(availableLanguages);
-        final Set<String> activeLanguages = initializedMap.entries
-            .where((MapEntry<String, dynamic> entry) => entry.value == true)
-            .map((MapEntry<String, dynamic> entry) => entry.key)
-            .toSet();
+    try {
+      final availableLanguagesResult =
+          await _insightsRepository.getAvailableLanguages();
+      await availableLanguagesResult.fold(
+        (failure) async {
+          emit(InsightsState.error(failure.toUserFriendlyMessage()));
+        },
+        (List<String> availableLanguages) async {
+          final Map<String, dynamic> initializedMap = await _userLanguagesHandler
+              .initializeFromAvailableLanguages(availableLanguages);
+          final Set<String> activeLanguages = initializedMap.entries
+              .where((MapEntry<String, dynamic> entry) => entry.value == true)
+              .map((MapEntry<String, dynamic> entry) => entry.key)
+              .toSet();
 
-        final postsResult =
-            await _insightsRepository.getPosts(languages: activeLanguages);
-        await postsResult.fold(
-          (failure) async =>
-              emit(InsightsState.error(failure.toUserFriendlyMessage())),
-          (List<Post> posts) async {
-            final String deviceId = _localStore.getOrCreateDeviceId();
-            final likedRemote = await _insightsRepository.getLikedPosts(
-              deviceId: deviceId,
-            );
+          final postsResult =
+              await _insightsRepository.getPosts(languages: activeLanguages);
+          await postsResult.fold(
+            (failure) async =>
+                emit(InsightsState.error(failure.toUserFriendlyMessage())),
+            (List<Post> posts) async {
+              final String deviceId = _localStore.getOrCreateDeviceId();
+              final likedRemote = await _insightsRepository.getLikedPosts(
+                deviceId: deviceId,
+              );
 
-            Set<String> likedIds = _localStore.getLikedPostIds();
-            likedRemote.fold(
-              (_) {},
-              (remoteIds) {
-                likedIds = remoteIds.toSet();
-              },
-            );
-            await _localStore.setLikedPostIds(likedIds);
-
-            emit(
-              InsightsState.loaded(
-                posts: posts,
-                availableLanguages: availableLanguages,
-                selectedLanguages: <String, bool>{
-                  for (final MapEntry<String, dynamic> entry
-                      in initializedMap.entries)
-                    entry.key: entry.value == true,
+              Set<String> likedIds = _localStore.getLikedPostIds();
+              likedRemote.fold(
+                (_) {},
+                (remoteIds) {
+                  likedIds = remoteIds.toSet();
                 },
-                likedPostIds: likedIds,
-              ),
-            );
-          },
-        );
-      },
-    );
+              );
+              await _localStore.setLikedPostIds(likedIds);
+
+              emit(
+                InsightsState.loaded(
+                  posts: posts,
+                  availableLanguages: availableLanguages,
+                  selectedLanguages: <String, bool>{
+                    for (final MapEntry<String, dynamic> entry
+                        in initializedMap.entries)
+                      entry.key: entry.value == true,
+                  },
+                  likedPostIds: likedIds,
+                ),
+              );
+            },
+          );
+        },
+      );
+    } finally {
+      _hasPendingInitialFetch = false;
+    }
   }
 
   Future<void> _onLanguagesChanged(

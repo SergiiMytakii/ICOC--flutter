@@ -111,6 +111,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
 
   Widget _primaryLangSwitch(String label) {
     return Switch.adaptive(
+        activeTrackColor: const Color(0xFF4CAF50),
+        inactiveTrackColor: Colors.grey.shade400,
         value: primaryLang == label,
         onChanged: (val) {
           setState(() {

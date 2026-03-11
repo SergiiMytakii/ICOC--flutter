@@ -1,23 +1,22 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'dart:io';
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
+import 'package:icoc/presentation/widget/youtube/youtube_embedded_player.dart';
 import 'package:logger/logger.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SongVersionTab extends StatefulWidget {
   SongVersionTab({super.key, required this.songVersion});
@@ -30,6 +29,10 @@ class SongVersionTab extends StatefulWidget {
 
 class _SongVersionTabState extends State<SongVersionTab>
     with SingleTickerProviderStateMixin {
+  static const double _playerAspectRatio = 16 / 9;
+  static const double _miniPlayerHeaderHeight = 48;
+  static const double _minimumScrollableContentHeight = 72;
+
   final log = Logger();
 
   late AnimationController _controller;
@@ -37,10 +40,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   bool showVideos = false;
   bool miniPlayerOpened = true;
   bool videoIsPlaying = false;
-  WebViewController? iosWebController;
-  WebViewController? androidWebController;
-  bool iosWebFailed = false;
-  bool androidWebFailed = false;
+  String? _currentVideoId;
   final ScrollController _scrollController = ScrollController();
   bool _autoScroll = false;
   double _scrollSpeed = 40;
@@ -48,6 +48,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   int _transpose = 0;
   late String _transposeKey;
   late String _speedKey;
+  bool _initialVideoAutoplayStarted = false;
 
   @override
   void initState() {
@@ -79,6 +80,17 @@ class _SongVersionTabState extends State<SongVersionTab>
   }
 
   @override
+  void didUpdateWidget(covariant SongVersionTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.songVersion.id != widget.songVersion.id) {
+      _initialVideoAutoplayStarted = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _maybeAutoplayFirstVideo();
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     _scrollTimer?.cancel();
@@ -92,193 +104,205 @@ class _SongVersionTabState extends State<SongVersionTab>
         return state.maybeWhen(
           success: (fontSize) => ScaleText(
             fontSize: fontSize ?? 14,
-            child: Column(
-              children: [
-                if (widget.songVersion.isChords &&
-                    _hasChordsFormat(widget.songVersion.text))
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          color: ScreenColors.songBook,
-                          onPressed: () {
-                            setState(() {
-                              _transpose -= 1;
-                            });
-                            getIt<LocalCache>().saveDouble(
-                                _transposeKey, _transpose.toDouble());
-                          },
-                          tooltip: 'Transpose down'.tr(),
-                          icon: const Icon(Icons.music_note_outlined),
-                        ),
-                        Text(
-                          '$_transpose',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: ScreenColors.songBook,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        IconButton(
-                          color: ScreenColors.songBook,
-                          onPressed: () {
-                            setState(() {
-                              _transpose += 1;
-                            });
-                            getIt<LocalCache>().saveDouble(
-                                _transposeKey, _transpose.toDouble());
-                          },
-                          tooltip: 'Transpose up'.tr(),
-                          icon: const Icon(Icons.music_note),
-                        ),
-                        const SizedBox(width: 6),
-                        const SizedBox(width: 10),
-                        IconButton(
-                          color: ScreenColors.songBook,
-                          onPressed: () {
-                            setState(() {
-                              _autoScroll = !_autoScroll;
-                              if (_autoScroll) {
-                                _startAutoScroll();
-                              } else {
-                                _stopAutoScroll();
-                              }
-                            });
-                          },
-                          tooltip: _autoScroll
-                              ? 'Pause autoscroll'.tr()
-                              : 'Start autoscroll'.tr(),
-                          icon: Icon(_autoScroll
-                              ? Icons.pause_circle
-                              : Icons.play_circle_outline),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Tooltip(
-                            message: 'Scroll speed'.tr(),
-                            child: Slider(
-                              value: _scrollSpeed,
-                              min: 20,
-                              max: 100,
-                              activeColor: ScreenColors.songBook,
-                              inactiveColor:
-                                  ScreenColors.songBook.withValues(alpha: 0.5),
-                              onChanged: (v) {
-                                setState(() {
-                                  _scrollSpeed = v;
-                                });
-                                getIt<LocalCache>()
-                                    .saveDouble(_speedKey, _scrollSpeed);
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                Expanded(
-                  child: SingleChildScrollView(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8),
-                      child: SelectionArea(
-                        child: Column(
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Column(
+                  children: [
+                    if (widget.songVersion.isChords &&
+                        _hasChordsFormat(widget.songVersion.text))
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 6),
+                        child: Row(
                           children: [
+                            IconButton(
+                              color: ScreenColors.songBook,
+                              onPressed: () {
+                                setState(() {
+                                  _transpose -= 1;
+                                });
+                                getIt<LocalCache>().saveDouble(
+                                    _transposeKey, _transpose.toDouble());
+                              },
+                              tooltip: 'Transpose down'.tr(),
+                              icon: const Icon(Icons.music_note_outlined),
+                            ),
                             Text(
-                              widget.songVersion.title,
-                              textAlign: TextAlign.center,
+                              '$_transpose',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headlineMedium!
+                                  .bodyMedium!
                                   .copyWith(
-                                      fontSize: (fontSize ?? 14) + 5,
+                                      color: ScreenColors.songBook,
                                       fontWeight: FontWeight.bold),
                             ),
-                            Container(
-                              alignment: Alignment.topRight,
-                              margin: const EdgeInsets.symmetric(vertical: 7),
-                              child: Text(
-                                widget.songVersion.description ?? '',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .copyWith(
-                                        fontSize: (fontSize ?? 14),
-                                        fontStyle: FontStyle.italic),
+                            IconButton(
+                              color: ScreenColors.songBook,
+                              onPressed: () {
+                                setState(() {
+                                  _transpose += 1;
+                                });
+                                getIt<LocalCache>().saveDouble(
+                                    _transposeKey, _transpose.toDouble());
+                              },
+                              tooltip: 'Transpose up'.tr(),
+                              icon: const Icon(Icons.music_note),
+                            ),
+                            const SizedBox(width: 6),
+                            const SizedBox(width: 10),
+                            IconButton(
+                              color: ScreenColors.songBook,
+                              onPressed: () {
+                                setState(() {
+                                  _autoScroll = !_autoScroll;
+                                  if (_autoScroll) {
+                                    _startAutoScroll();
+                                  } else {
+                                    _stopAutoScroll();
+                                  }
+                                });
+                              },
+                              tooltip: _autoScroll
+                                  ? 'Pause autoscroll'.tr()
+                                  : 'Start autoscroll'.tr(),
+                              icon: Icon(_autoScroll
+                                  ? Icons.pause_circle
+                                  : Icons.play_circle_outline),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Tooltip(
+                                message: 'Scroll speed'.tr(),
+                                child: Slider(
+                                  value: _scrollSpeed,
+                                  min: 20,
+                                  max: 100,
+                                  activeColor: ScreenColors.songBook,
+                                  inactiveColor: ScreenColors.songBook
+                                      .withValues(alpha: 0.5),
+                                  onChanged: (v) {
+                                    setState(() {
+                                      _scrollSpeed = v;
+                                    });
+                                    getIt<LocalCache>()
+                                        .saveDouble(_speedKey, _scrollSpeed);
+                                  },
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            widget.songVersion.text.startsWith('<')
-                                ? html.Html(
-                                    data: (widget.songVersion.isChords &&
+                          ],
+                        ),
+                      ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 8),
+                          child: SelectionArea(
+                            child: Column(
+                              children: [
+                                Text(
+                                  widget.songVersion.title,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(
+                                          fontSize: (fontSize ?? 14) + 5,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  alignment: Alignment.topRight,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 7),
+                                  child: Text(
+                                    widget.songVersion.description ?? '',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall!
+                                        .copyWith(
+                                            fontSize: (fontSize ?? 14),
+                                            fontStyle: FontStyle.italic),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                widget.songVersion.text.startsWith('<')
+                                    ? html.Html(
+                                        data: (widget.songVersion.isChords &&
+                                                _hasChordsFormat(
+                                                    widget.songVersion.text))
+                                            ? _highlightChordsHtml(
+                                                _applyTranspose(
+                                                  widget.songVersion.text,
+                                                  _transpose,
+                                                ),
+                                              )
+                                            : widget.songVersion.text,
+                                        style: {
+                                          'body': html.Style(
+                                              alignment: Alignment.center,
+                                              fontSize: html.FontSize(
+                                                  fontSize ?? 14)),
+                                        },
+                                      )
+                                    : (widget.songVersion.isChords &&
                                             _hasChordsFormat(
                                                 widget.songVersion.text))
-                                        ? _highlightChordsHtml(_applyTranspose(
+                                        ? RichText(
+                                            textAlign: TextAlign.center,
+                                            text: TextSpan(
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                      fontSize:
+                                                          fontSize ?? 14),
+                                              children: _buildChordSpans(
+                                                _applyTranspose(
+                                                    widget.songVersion.text,
+                                                    _transpose),
+                                                Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        fontSize:
+                                                            fontSize ?? 14),
+                                                Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                        fontSize:
+                                                            fontSize ?? 14,
+                                                        color: ScreenColors
+                                                            .songBook,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
                                             widget.songVersion.text,
-                                            _transpose))
-                                        : widget.songVersion.text,
-                                    style: {
-                                      'body': html.Style(
-                                          alignment: Alignment.center,
-                                          fontSize:
-                                              html.FontSize(fontSize ?? 14)),
-                                    },
-                                  )
-                                : (widget.songVersion.isChords &&
-                                        _hasChordsFormat(
-                                            widget.songVersion.text))
-                                    ? RichText(
-                                        textAlign: TextAlign.center,
-                                        text: TextSpan(
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(
-                                                  fontSize: fontSize ?? 14),
-                                          children: _buildChordSpans(
-                                            _applyTranspose(
-                                                widget.songVersion.text,
-                                                _transpose),
-                                            Theme.of(context)
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context)
                                                 .textTheme
                                                 .bodyMedium!
                                                 .copyWith(
                                                     fontSize: fontSize ?? 14),
-                                            Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium!
-                                                .copyWith(
-                                                    fontSize: fontSize ?? 14,
-                                                    color:
-                                                        ScreenColors.songBook,
-                                                    fontWeight:
-                                                        FontWeight.bold),
                                           ),
-                                        ),
-                                      )
-                                    : Text(
-                                        widget.songVersion.text,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium!
-                                            .copyWith(fontSize: fontSize ?? 14),
-                                      ),
-                            const SizedBox(
-                              height: 300,
-                            )
-                          ],
-                        ),
-                      )),
-                ),
-                if ((widget.songVersion.youtubeVideos?.isNotEmpty ?? false) &&
-                    !videoIsPlaying)
-                  _buldVideoPreview(widget.songVersion.youtubeVideos!),
-                if (videoIsPlaying) _miniPlayerBuilder(),
-              ],
+                                const SizedBox(
+                                  height: 300,
+                                )
+                              ],
+                            ),
+                          )),
+                    ),
+                    if ((widget.songVersion.youtubeVideos?.isNotEmpty ?? false) &&
+                        !videoIsPlaying)
+                      _buldVideoPreview(widget.songVersion.youtubeVideos!),
+                    if (videoIsPlaying) _miniPlayerBuilder(constraints),
+                  ],
+                );
+              },
             ),
           ),
           orElse: () => const SizedBox.shrink(),
@@ -436,6 +460,25 @@ class _SongVersionTabState extends State<SongVersionTab>
     _autoScroll = false;
   }
 
+  void _maybeAutoplayFirstVideo() {
+    if (!mounted || _initialVideoAutoplayStarted || videoIsPlaying) {
+      return;
+    }
+    final List<YoutubeVideo> videos =
+        widget.songVersion.youtubeVideos ?? <YoutubeVideo>[];
+    if (videos.isEmpty) {
+      return;
+    }
+    final String videoId =
+        YoutubeThumbnailHelper.videoIdFromInput(videos.first.link) ??
+            videos.first.link;
+    if (videoId.isEmpty) {
+      return;
+    }
+    _initialVideoAutoplayStarted = true;
+    unawaited(_startPlayVideo(videoId));
+  }
+
   Widget _buldVideoPreview(List<YoutubeVideo> youtubeVideos) {
     return Stack(
       children: [
@@ -457,72 +500,20 @@ class _SongVersionTabState extends State<SongVersionTab>
     );
   }
 
-  void _startPlayVideo(String videoId) async {
-    if (Platform.isIOS) {
-      late final PlatformWebViewControllerCreationParams params;
-      if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-        params = WebKitWebViewControllerCreationParams(
-          allowsInlineMediaPlayback: true,
-          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-        );
-      } else {
-        params = const PlatformWebViewControllerCreationParams();
-      }
-      final controller = WebViewController.fromPlatformCreationParams(params)
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setUserAgent(
-            'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1')
-        ..setBackgroundColor(
-            AdaptiveTheme.of(context).theme.colorScheme.surface)
-        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
-          setState(() {
-            iosWebFailed = true;
-          });
-        }))
-        ..loadRequest(
-          Uri.parse(
-              'https://www.youtube.com/embed/$videoId?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
-          headers: const {
-            'Referer': ICOC_WEB_PAGE,
-            'Referrer-Policy': 'strict-origin-when-cross-origin',
-          },
-        );
-      iosWebController = controller;
-      setState(() {
-        videoIsPlaying = true;
-      });
-      _controller.forward();
-    } else {
-      const params = PlatformWebViewControllerCreationParams();
-      final controller = WebViewController.fromPlatformCreationParams(params)
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setUserAgent(
-            'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36')
-        ..setBackgroundColor(
-            AdaptiveTheme.of(context).theme.colorScheme.surface)
-        ..setNavigationDelegate(NavigationDelegate(onWebResourceError: (e) {
-          setState(() {
-            androidWebFailed = true;
-          });
-        }))
-        ..loadRequest(
-          Uri.parse(
-              'https://www.youtube.com/embed/$videoId?playsinline=1&autoplay=1&rel=0&modestbranding=1'),
-          headers: const {
-            'Referer': ICOC_WEB_PAGE,
-            'Referrer-Policy': 'strict-origin-when-cross-origin',
-          },
-        );
-      androidWebController = controller;
-      setState(() {
-        videoIsPlaying = true;
-      });
-      _controller.forward();
+  Future<void> _startPlayVideo(String videoId) async {
+    if (videoId.isEmpty) {
+      return;
     }
+    setState(() {
+      _currentVideoId = videoId;
+      videoIsPlaying = true;
+    });
+    _controller.forward();
   }
 
-  Widget _miniPlayerBuilder() {
-    final screenSize = MediaQuery.of(context).size;
+  Widget _miniPlayerBuilder(BoxConstraints constraints) {
+    final double expandedPlayerHeight =
+        _calculateExpandedPlayerHeight(constraints);
     return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -550,13 +541,9 @@ class _SongVersionTabState extends State<SongVersionTab>
               onPressed: () async {
                 _controller.reverse().then((value) => setState(() {
                       videoIsPlaying = false;
+                      _currentVideoId = null;
                       miniPlayerOpened = true;
                     }));
-                if (Platform.isIOS) {
-                  iosWebController = null;
-                } else {
-                  androidWebController = null;
-                }
               },
               icon: const Icon(Icons.close_outlined)),
         ],
@@ -565,34 +552,38 @@ class _SongVersionTabState extends State<SongVersionTab>
         duration: const Duration(seconds: 1),
         child: Container(
           width: double.maxFinite,
-          height: _animation.value * screenSize.width / 16 * 9,
-          child: Platform.isIOS
-              ? (!iosWebFailed && iosWebController != null
-                  ? WebViewWidget(controller: iosWebController!)
-                  : Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          final uri = Uri.parse(
-                              'https://www.youtube.com/watch?v=${widget.songVersion.youtubeVideos?.first.link ?? ''}');
-                          launchUrl(uri, mode: LaunchMode.externalApplication);
-                        },
-                        child: const Text('Open in YouTube'),
-                      ),
-                    ))
-              : (!androidWebFailed && androidWebController != null
-                  ? WebViewWidget(controller: androidWebController!)
-                  : Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          final uri = Uri.parse(
-                              'https://www.youtube.com/watch?v=${widget.songVersion.youtubeVideos?.first.link ?? ''}');
-                          launchUrl(uri, mode: LaunchMode.externalApplication);
-                        },
-                        child: const Text('Open in YouTube'),
-                      ),
-                    )),
+          height: expandedPlayerHeight * _animation.value,
+          child: _currentVideoId == null
+              ? const SizedBox.shrink()
+              : YoutubeEmbeddedPlayer(
+                  videoId: _currentVideoId!,
+                  aspectRatio: _playerAspectRatio,
+                  persistProgress: false,
+                ),
         ),
       )
     ]);
+  }
+
+  double _calculateExpandedPlayerHeight(BoxConstraints constraints) {
+    final bool hasSongTools =
+        widget.songVersion.isChords && _hasChordsFormat(widget.songVersion.text);
+    final double maxWidth = constraints.maxWidth.isFinite
+        ? constraints.maxWidth
+        : MediaQuery.sizeOf(context).width;
+    final double aspectHeight = maxWidth / _playerAspectRatio;
+
+    if (!constraints.maxHeight.isFinite) {
+      return aspectHeight;
+    }
+
+    final double reservedHeight = _miniPlayerHeaderHeight +
+        _minimumScrollableContentHeight +
+        (hasSongTools ? 68 : 0);
+
+    return math.max(
+      0,
+      math.min(aspectHeight, constraints.maxHeight - reservedHeight),
+    );
   }
 }
