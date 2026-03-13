@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/core/helpers/bible_reference_link_handler.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
+import 'package:icoc/core/helpers/linkify_bible_references.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/font_size_bloc/font_size_bloc.dart';
 import 'package:icoc/core/helpers/extract_text_from_html.dart';
@@ -41,11 +39,8 @@ class OneLessonScreen extends StatefulWidget {
 class _OneLessonScreenState extends State<OneLessonScreen>
     with WidgetsBindingObserver {
   late final ScrollController _scrollController;
-  double _lastOffset = 0;
+  double _lastOffset = 0.0;
   bool _restored = false;
-  String? _lastRawHtml;
-  String? _lastLinkedHtml;
-  String? _lastLangHint;
 
   @override
   void initState() {
@@ -89,9 +84,9 @@ class _OneLessonScreenState extends State<OneLessonScreen>
             success: (topics) {
               final topic = _receiveTopic(topics);
               final lesson = _receiveLesson(topic);
-              final lessonHtml = _prepareLessonHtml(
-                lesson.text,
-                langHint: topic.lang.name,
+              final lessonHtml = BibleReferenceLinkifier.linkifyByLanguage(
+                htmlContent: lesson.text,
+                language: topic.lang,
               );
               _tryRestore();
               return Scaffold(
@@ -125,30 +120,9 @@ class _OneLessonScreenState extends State<OneLessonScreen>
                               fontSize: fontSize ?? 14,
                               child: html.Html(
                                 data: lessonHtml,
-                                onLinkTap: (url, __, ___) async {
-                                  final bool handled =
-                                      await BibleReferenceLinkHandler
-                                          .handleLinkTap(
-                                    context,
-                                    url: url,
-                                    langHint: topic.lang.name,
-                                  );
-                                  if (handled) {
-                                    return;
-                                  }
-                                  final Uri? uri = Uri.tryParse(url ?? '');
-                                  if (uri != null &&
-                                      !uri.scheme.contains('wordhtml.com')) {
-                                    launchUrl(uri);
-                                  }
+                                onLinkTap: (url, __, ___) {
+                                  launchUrl(Uri.parse(url ?? ''));
                                 },
-                                extensions: [
-                                  html.OnImageTapExtension(
-                                    onImageTap: (src, __, ___) {
-                                      _showZoomableImage(src);
-                                    },
-                                  ),
-                                ],
                                 style: {
                                   'body': html.Style(
                                       fontSize: html.FontSize(fontSize ?? 14)),
@@ -185,33 +159,18 @@ class _OneLessonScreenState extends State<OneLessonScreen>
     SharePlus.instance.share(ShareParams(text: text));
   }
 
-  BibleStudy _receiveTopic(List<BibleStudy> topics) {
-    return topics.firstWhere(
-      (item) => item.id == int.tryParse(widget.topicId),
-      orElse: () => BibleStudy.defaultBibleStudy,
-    );
-  }
-
   Lesson _receiveLesson(BibleStudy topic) {
     return topic.lessons.firstWhere(
-      (item) => item.id == int.tryParse(widget.lessonId),
+      (item) => item.id == int.parse(widget.lessonId),
       orElse: () => Lesson.defaultLesson,
     );
   }
 
-  String _prepareLessonHtml(String rawHtml, {required String langHint}) {
-    if (_lastRawHtml == rawHtml &&
-        _lastLinkedHtml != null &&
-        _lastLangHint == langHint) {
-      return _lastLinkedHtml!;
-    }
-
-    final String linked =
-        BibleReferenceLinkHandler.preprocessHtml(rawHtml, langHint: langHint);
-    _lastRawHtml = rawHtml;
-    _lastLinkedHtml = linked;
-    _lastLangHint = langHint;
-    return linked;
+  BibleStudy _receiveTopic(List<BibleStudy> topics) {
+    return topics.firstWhere(
+      (item) => item.id == int.parse(widget.topicId),
+      orElse: () => BibleStudy.defaultBibleStudy,
+    );
   }
 
   void _saveReadingPosition() {
@@ -239,75 +198,5 @@ class _OneLessonScreenState extends State<OneLessonScreen>
         }
       });
     }
-  }
-
-  void _showZoomableImage(String? source) {
-    if (!mounted || source == null || source.isEmpty) return;
-
-    final imageWidget = _buildZoomImageWidget(source);
-    if (imageWidget == null) return;
-
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      barrierColor: Colors.black87,
-      builder: (dialogContext) {
-        final size = MediaQuery.sizeOf(dialogContext);
-        return Scaffold(
-          backgroundColor: Colors.black87,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: InteractiveViewer(
-                    minScale: 1,
-                    maxScale: 8,
-                    constrained: false,
-                    boundaryMargin: const EdgeInsets.all(120),
-                    child: SizedBox(
-                      width: size.width,
-                      height: size.height,
-                      child: Center(child: imageWidget),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget? _buildZoomImageWidget(String source) {
-    if (source.startsWith('data:image')) {
-      final commaIndex = source.indexOf(',');
-      if (commaIndex < 0 || commaIndex + 1 >= source.length) return null;
-      final bytes = base64Decode(source.substring(commaIndex + 1));
-      return Image.memory(bytes, fit: BoxFit.contain);
-    }
-
-    if (source.startsWith('asset:')) {
-      final assetPath = source.substring('asset:'.length);
-      return Image.asset(assetPath, fit: BoxFit.contain);
-    }
-
-    if (source.startsWith('http://') || source.startsWith('https://')) {
-      return Image.network(source, fit: BoxFit.contain);
-    }
-
-    if (source.startsWith('assets/')) {
-      return Image.asset(source, fit: BoxFit.contain);
-    }
-
-    return null;
   }
 }
