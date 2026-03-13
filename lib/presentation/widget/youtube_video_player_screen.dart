@@ -120,8 +120,9 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
   Future<void> _enterVideoScreenMode() async {
     await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
       DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     _scheduleSystemUiSync();
   }
 
@@ -162,6 +163,7 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
         return;
       }
       _lastOrientation = orientation;
+      _isManualLandscape = orientation == Orientation.landscape;
       if (orientation == Orientation.landscape) {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       } else {

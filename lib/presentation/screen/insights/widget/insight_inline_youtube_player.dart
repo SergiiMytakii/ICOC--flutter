@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import 'package:icoc/core/user_state/insights_shorts_audio_session.dart';
 import 'package:icoc/presentation/widget/youtube/youtube_embed_helper.dart';
 
 class InsightInlineYoutubePlayer extends StatefulWidget {
@@ -50,6 +51,7 @@ class _InsightInlineYoutubePlayerState
   @override
   void initState() {
     super.initState();
+    _isMuted = _preferredMuted;
     _syncPlayback();
   }
 
@@ -232,6 +234,8 @@ class _InsightInlineYoutubePlayerState
     }
   }
 
+  bool get _preferredMuted => InsightsShortsAudioSession.isMuted;
+
   Future<void> _initializePlayer() async {
     if (!mounted || !widget.shouldPrepare) {
       return;
@@ -249,11 +253,12 @@ class _InsightInlineYoutubePlayerState
     }
 
     final int token = ++_controllerToken;
+    final bool initialMuted = _preferredMuted;
     final YoutubePlayerController controller = YoutubePlayerController(
       initialVideoId: widget.videoId,
-      flags: const YoutubePlayerFlags(
+      flags: YoutubePlayerFlags(
         autoPlay: false,
-        mute: true,
+        mute: initialMuted,
         hideControls: true,
         hideThumbnail: true,
         disableDragSeek: true,
@@ -274,7 +279,7 @@ class _InsightInlineYoutubePlayerState
       _isInitializing = true;
       _isReady = false;
       _isVideoVisible = false;
-      _isMuted = true;
+      _isMuted = _preferredMuted;
       _hasLoadError = false;
       _isPlaying = false;
       _androidAutoplayRequested = false;
@@ -305,9 +310,16 @@ class _InsightInlineYoutubePlayerState
           return;
         }
         _isReady = true;
-        await youtubeMute(controller);
-        if (widget.isActive) {
+        _isMuted = _preferredMuted;
+        if (_isMuted) {
+          await youtubeMute(controller);
+        } else {
+          await youtubeUnmute(controller);
+        }
+        if (widget.isActive && _isMuted) {
           await youtubeEnsureAutoplayMuted(controller);
+        } else if (widget.isActive) {
+          await youtubePlay(controller);
         } else {
           await youtubeStopAutoplayAttempts(controller);
           await youtubePause(controller);
@@ -334,7 +346,7 @@ class _InsightInlineYoutubePlayerState
       _isInitializing = true;
       _isReady = false;
       _isVideoVisible = false;
-      _isMuted = true;
+      _isMuted = _preferredMuted;
       _hasLoadError = false;
       _isPlaying = false;
       _androidAutoplayRequested = false;
@@ -400,6 +412,7 @@ class _InsightInlineYoutubePlayerState
     if (controller == null || !_isReady || _hasLoadError) {
       return;
     }
+    _isMuted = _preferredMuted;
     if (_isMuted) {
       await youtubeMute(controller);
     } else {
@@ -424,6 +437,7 @@ class _InsightInlineYoutubePlayerState
     if (controller == null || !_isReady || _hasLoadError) {
       return;
     }
+    _isMuted = _preferredMuted;
     _androidAutoplayRequested = true;
     if (_isMuted) {
       controller.mute();
@@ -454,7 +468,7 @@ class _InsightInlineYoutubePlayerState
       }
       setState(() {
         _isVideoVisible = false;
-        _isMuted = true;
+        _isMuted = _preferredMuted;
         _isPlaying = false;
       });
       return;
@@ -464,7 +478,7 @@ class _InsightInlineYoutubePlayerState
     if (controller == null || !_isReady) {
       return;
     }
-    _isMuted = true;
+    _isMuted = _preferredMuted;
     await youtubeStopAutoplayAttempts(controller);
     await youtubeMute(controller);
     await youtubePause(controller);
@@ -473,7 +487,7 @@ class _InsightInlineYoutubePlayerState
     }
     setState(() {
       _isVideoVisible = false;
-      _isMuted = true;
+      _isMuted = _preferredMuted;
       _isPlaying = false;
     });
   }
@@ -491,6 +505,7 @@ class _InsightInlineYoutubePlayerState
         controller.unMute();
         controller.play();
       }
+      InsightsShortsAudioSession.setMuted(nextMuted);
       if (!mounted) {
         return;
       }
@@ -509,6 +524,7 @@ class _InsightInlineYoutubePlayerState
       await youtubeUnmute(controller);
       await youtubePlay(controller);
     }
+    InsightsShortsAudioSession.setMuted(nextMuted);
     if (!mounted) {
       return;
     }
@@ -566,7 +582,7 @@ class _InsightInlineYoutubePlayerState
       _isInitializing = false;
       _isReady = false;
       _isVideoVisible = false;
-      _isMuted = true;
+      _isMuted = _preferredMuted;
       _hasLoadError = false;
       _isPlaying = false;
       _androidAutoplayRequested = false;
@@ -576,7 +592,7 @@ class _InsightInlineYoutubePlayerState
       _isInitializing = false;
       _isReady = false;
       _isVideoVisible = false;
-      _isMuted = true;
+      _isMuted = _preferredMuted;
       _hasLoadError = false;
       _isPlaying = false;
       _androidAutoplayRequested = false;
