@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -22,6 +23,7 @@ class YoutubeEmbeddedPlayer extends StatefulWidget {
     this.mute = false,
     this.showControls = true,
     this.showFullscreenButton = true,
+    this.interceptAndroidFullscreen = false,
     this.persistProgress = true,
     this.onFullscreenChanged,
   });
@@ -33,6 +35,7 @@ class YoutubeEmbeddedPlayer extends StatefulWidget {
   final bool mute;
   final bool showControls;
   final bool showFullscreenButton;
+  final bool interceptAndroidFullscreen;
   final bool persistProgress;
   final ValueChanged<bool>? onFullscreenChanged;
 
@@ -53,7 +56,6 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
   bool _hasLoadError = false;
   bool _didInitialize = false;
   bool _pageLoaded = false;
-  bool _lastAndroidFullscreen = false;
   Timer? _progressTimer;
   int _loadGeneration = 0;
 
@@ -106,7 +108,6 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
   Future<void> _initializeAndroidController() async {
     final int generation = ++_loadGeneration;
     _pageLoaded = false;
-    _lastAndroidFullscreen = false;
     _progressTimer?.cancel();
 
     _disposeAndroidController();
@@ -120,8 +121,6 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
         hideControls: !widget.showControls,
         controlsVisibleAtStart: widget.showControls,
         startAt: resumeFromSeconds ?? 0,
-        useHybridComposition: true,
-        enableCaption: true,
       ),
     )..addListener(_handleAndroidControllerChanged);
 
@@ -210,11 +209,6 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
     }
 
     final YoutubePlayerValue value = controller.value;
-    if (widget.onFullscreenChanged != null &&
-        value.isFullScreen != _lastAndroidFullscreen) {
-      _lastAndroidFullscreen = value.isFullScreen;
-      widget.onFullscreenChanged!(value.isFullScreen);
-    }
 
     if (value.isReady && !_pageLoaded) {
       _pageLoaded = true;
@@ -267,8 +261,8 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
       child: YoutubePlayer(
         controller: controller,
         aspectRatio: widget.aspectRatio,
-        showVideoProgressIndicator: false,
         thumbnail: _buildThumbnail(),
+        bottomActions: _buildAndroidBottomActions(controller),
         onReady: () {
           if (!_pageLoaded) {
             _pageLoaded = true;
@@ -312,6 +306,34 @@ class _YoutubeEmbeddedPlayerState extends State<YoutubeEmbeddedPlayer>
         ),
       ],
     );
+  }
+
+  List<Widget>? _buildAndroidBottomActions(YoutubePlayerController controller) {
+    if (!widget.showControls) {
+      return null;
+    }
+    if (!widget.interceptAndroidFullscreen) {
+      return null;
+    }
+    return <Widget>[
+      const SizedBox(width: 14),
+      const CurrentPosition(),
+      const SizedBox(width: 8),
+      const ProgressBar(isExpanded: true),
+      const RemainingDuration(),
+      ValueListenableBuilder<YoutubePlayerValue>(
+        valueListenable: controller,
+        builder: (BuildContext context, YoutubePlayerValue value, _) {
+          return IconButton(
+            onPressed: () => widget.onFullscreenChanged?.call(true),
+            icon: Icon(
+              value.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+              color: Colors.white,
+            ),
+          );
+        },
+      ),
+    ];
   }
 
   Widget _fallback(BuildContext context) {
