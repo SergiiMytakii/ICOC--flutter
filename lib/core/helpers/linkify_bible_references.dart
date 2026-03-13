@@ -49,7 +49,10 @@ class BibleReferenceLinkifier {
     }
 
     final result = text.replaceAllMapped(_englishBibleReferenceRegExp, (match) {
-      final ref = match.group(0)!;
+      final String? ref = match.group(0);
+      if (ref == null || ref.isEmpty) {
+        return match.input.substring(match.start, match.end);
+      }
       final url =
           'https://www.biblegateway.com/passage/?search=${Uri.encodeQueryComponent(ref)}';
       return '<a href="$url">$ref</a>';

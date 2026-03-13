@@ -108,7 +108,7 @@ class _BackgroundHomeScreenState extends State<BackgroundHomeScreen>
         Container(
           width: screenSize.width,
           height: screenSize.height,
-          color: Colors.black.withOpacity(0.1),
+          color: Colors.black.withValues(alpha: 0.1),
         ),
         ValueListenableBuilder(
             valueListenable: launchComet,

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,158 +9,92 @@ part of 'q&a_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-QandAModel _$QandAModelFromJson(Map<String, dynamic> json) {
-  return _QandAModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$QandAModel {
-  int get id => throw _privateConstructorUsedError;
+  int get id;
   @JsonKey(includeToJson: false)
-  String get documentRef => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get question => throw _privateConstructorUsedError;
-  String get answer => throw _privateConstructorUsedError;
-  Languages get lang => throw _privateConstructorUsedError;
-  String? get date => throw _privateConstructorUsedError;
-  String? get author => throw _privateConstructorUsedError;
-  String? get link => throw _privateConstructorUsedError;
-  String? get image => throw _privateConstructorUsedError;
-  String? get source => throw _privateConstructorUsedError;
-  String? get translatedBy => throw _privateConstructorUsedError;
-  String? get youtubeLink => throw _privateConstructorUsedError;
-  List<String>? get tags => throw _privateConstructorUsedError;
+  String get documentRef;
+  String get title;
+  String get question;
+  String get answer;
+  Languages get lang;
+  String? get date;
+  String? get author;
+  String? get link;
+  String? get image;
+  String? get source;
+  String? get translatedBy;
+  String? get youtubeLink;
+  List<String>? get tags;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $QandAModelCopyWith<QandAModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $QandAModelCopyWith<$Res> {
-  factory $QandAModelCopyWith(
-          QandAModel value, $Res Function(QandAModel) then) =
-      _$QandAModelCopyWithImpl<$Res, QandAModel>;
-  @useResult
-  $Res call(
-      {int id,
-      @JsonKey(includeToJson: false) String documentRef,
-      String title,
-      String question,
-      String answer,
-      Languages lang,
-      String? date,
-      String? author,
-      String? link,
-      String? image,
-      String? source,
-      String? translatedBy,
-      String? youtubeLink,
-      List<String>? tags});
-}
-
-/// @nodoc
-class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
-    implements $QandAModelCopyWith<$Res> {
-  _$QandAModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of QandAModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $QandAModelCopyWith<QandAModel> get copyWith =>
+      _$QandAModelCopyWithImpl<QandAModel>(this as QandAModel, _$identity);
+
+  /// Serializes this QandAModel to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? documentRef = null,
-    Object? title = null,
-    Object? question = null,
-    Object? answer = null,
-    Object? lang = null,
-    Object? date = freezed,
-    Object? author = freezed,
-    Object? link = freezed,
-    Object? image = freezed,
-    Object? source = freezed,
-    Object? translatedBy = freezed,
-    Object? youtubeLink = freezed,
-    Object? tags = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      documentRef: null == documentRef
-          ? _value.documentRef
-          : documentRef // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      question: null == question
-          ? _value.question
-          : question // ignore: cast_nullable_to_non_nullable
-              as String,
-      answer: null == answer
-          ? _value.answer
-          : answer // ignore: cast_nullable_to_non_nullable
-              as String,
-      lang: null == lang
-          ? _value.lang
-          : lang // ignore: cast_nullable_to_non_nullable
-              as Languages,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as String?,
-      author: freezed == author
-          ? _value.author
-          : author // ignore: cast_nullable_to_non_nullable
-              as String?,
-      link: freezed == link
-          ? _value.link
-          : link // ignore: cast_nullable_to_non_nullable
-              as String?,
-      image: freezed == image
-          ? _value.image
-          : image // ignore: cast_nullable_to_non_nullable
-              as String?,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String?,
-      translatedBy: freezed == translatedBy
-          ? _value.translatedBy
-          : translatedBy // ignore: cast_nullable_to_non_nullable
-              as String?,
-      youtubeLink: freezed == youtubeLink
-          ? _value.youtubeLink
-          : youtubeLink // ignore: cast_nullable_to_non_nullable
-              as String?,
-      tags: freezed == tags
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is QandAModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.documentRef, documentRef) ||
+                other.documentRef == documentRef) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.question, question) ||
+                other.question == question) &&
+            (identical(other.answer, answer) || other.answer == answer) &&
+            (identical(other.lang, lang) || other.lang == lang) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.author, author) || other.author == author) &&
+            (identical(other.link, link) || other.link == link) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.source, source) || other.source == source) &&
+            (identical(other.translatedBy, translatedBy) ||
+                other.translatedBy == translatedBy) &&
+            (identical(other.youtubeLink, youtubeLink) ||
+                other.youtubeLink == youtubeLink) &&
+            const DeepCollectionEquality().equals(other.tags, tags));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      documentRef,
+      title,
+      question,
+      answer,
+      lang,
+      date,
+      author,
+      link,
+      image,
+      source,
+      translatedBy,
+      youtubeLink,
+      const DeepCollectionEquality().hash(tags));
+
+  @override
+  String toString() {
+    return 'QandAModel(id: $id, documentRef: $documentRef, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
   }
 }
 
 /// @nodoc
-abstract class _$$QandAModelImplCopyWith<$Res>
-    implements $QandAModelCopyWith<$Res> {
-  factory _$$QandAModelImplCopyWith(
-          _$QandAModelImpl value, $Res Function(_$QandAModelImpl) then) =
-      __$$QandAModelImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $QandAModelCopyWith<$Res> {
+  factory $QandAModelCopyWith(
+          QandAModel value, $Res Function(QandAModel) _then) =
+      _$QandAModelCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -180,13 +114,14 @@ abstract class _$$QandAModelImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$QandAModelImplCopyWithImpl<$Res>
-    extends _$QandAModelCopyWithImpl<$Res, _$QandAModelImpl>
-    implements _$$QandAModelImplCopyWith<$Res> {
-  __$$QandAModelImplCopyWithImpl(
-      _$QandAModelImpl _value, $Res Function(_$QandAModelImpl) _then)
-      : super(_value, _then);
+class _$QandAModelCopyWithImpl<$Res> implements $QandAModelCopyWith<$Res> {
+  _$QandAModelCopyWithImpl(this._self, this._then);
 
+  final QandAModel _self;
+  final $Res Function(QandAModel) _then;
+
+  /// Create a copy of QandAModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -205,71 +140,315 @@ class __$$QandAModelImplCopyWithImpl<$Res>
     Object? youtubeLink = freezed,
     Object? tags = freezed,
   }) {
-    return _then(_$QandAModelImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       documentRef: null == documentRef
-          ? _value.documentRef
+          ? _self.documentRef
           : documentRef // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       question: null == question
-          ? _value.question
+          ? _self.question
           : question // ignore: cast_nullable_to_non_nullable
               as String,
       answer: null == answer
-          ? _value.answer
+          ? _self.answer
           : answer // ignore: cast_nullable_to_non_nullable
               as String,
       lang: null == lang
-          ? _value.lang
+          ? _self.lang
           : lang // ignore: cast_nullable_to_non_nullable
               as Languages,
       date: freezed == date
-          ? _value.date
+          ? _self.date
           : date // ignore: cast_nullable_to_non_nullable
               as String?,
       author: freezed == author
-          ? _value.author
+          ? _self.author
           : author // ignore: cast_nullable_to_non_nullable
               as String?,
       link: freezed == link
-          ? _value.link
+          ? _self.link
           : link // ignore: cast_nullable_to_non_nullable
               as String?,
       image: freezed == image
-          ? _value.image
+          ? _self.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
       source: freezed == source
-          ? _value.source
+          ? _self.source
           : source // ignore: cast_nullable_to_non_nullable
               as String?,
       translatedBy: freezed == translatedBy
-          ? _value.translatedBy
+          ? _self.translatedBy
           : translatedBy // ignore: cast_nullable_to_non_nullable
               as String?,
       youtubeLink: freezed == youtubeLink
-          ? _value.youtubeLink
+          ? _self.youtubeLink
           : youtubeLink // ignore: cast_nullable_to_non_nullable
               as String?,
       tags: freezed == tags
-          ? _value._tags
+          ? _self.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [QandAModel].
+extension QandAModelPatterns on QandAModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_QandAModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _QandAModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_QandAModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _QandAModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_QandAModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _QandAModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            int id,
+            @JsonKey(includeToJson: false) String documentRef,
+            String title,
+            String question,
+            String answer,
+            Languages lang,
+            String? date,
+            String? author,
+            String? link,
+            String? image,
+            String? source,
+            String? translatedBy,
+            String? youtubeLink,
+            List<String>? tags)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _QandAModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.documentRef,
+            _that.title,
+            _that.question,
+            _that.answer,
+            _that.lang,
+            _that.date,
+            _that.author,
+            _that.link,
+            _that.image,
+            _that.source,
+            _that.translatedBy,
+            _that.youtubeLink,
+            _that.tags);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int id,
+            @JsonKey(includeToJson: false) String documentRef,
+            String title,
+            String question,
+            String answer,
+            Languages lang,
+            String? date,
+            String? author,
+            String? link,
+            String? image,
+            String? source,
+            String? translatedBy,
+            String? youtubeLink,
+            List<String>? tags)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _QandAModel():
+        return $default(
+            _that.id,
+            _that.documentRef,
+            _that.title,
+            _that.question,
+            _that.answer,
+            _that.lang,
+            _that.date,
+            _that.author,
+            _that.link,
+            _that.image,
+            _that.source,
+            _that.translatedBy,
+            _that.youtubeLink,
+            _that.tags);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            int id,
+            @JsonKey(includeToJson: false) String documentRef,
+            String title,
+            String question,
+            String answer,
+            Languages lang,
+            String? date,
+            String? author,
+            String? link,
+            String? image,
+            String? source,
+            String? translatedBy,
+            String? youtubeLink,
+            List<String>? tags)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _QandAModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.documentRef,
+            _that.title,
+            _that.question,
+            _that.answer,
+            _that.lang,
+            _that.date,
+            _that.author,
+            _that.link,
+            _that.image,
+            _that.source,
+            _that.translatedBy,
+            _that.youtubeLink,
+            _that.tags);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$QandAModelImpl implements _QandAModel {
-  _$QandAModelImpl(
+class _QandAModel implements QandAModel {
+  _QandAModel(
       {required this.id,
       @JsonKey(includeToJson: false) required this.documentRef,
       required this.title,
@@ -285,9 +464,8 @@ class _$QandAModelImpl implements _QandAModel {
       this.youtubeLink,
       final List<String>? tags})
       : _tags = tags;
-
-  factory _$QandAModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$QandAModelImplFromJson(json);
+  factory _QandAModel.fromJson(Map<String, dynamic> json) =>
+      _$QandAModelFromJson(json);
 
   @override
   final int id;
@@ -326,16 +504,26 @@ class _$QandAModelImpl implements _QandAModel {
     return EqualUnmodifiableListView(value);
   }
 
+  /// Create a copy of QandAModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'QandAModel(id: $id, documentRef: $documentRef, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$QandAModelCopyWith<_QandAModel> get copyWith =>
+      __$QandAModelCopyWithImpl<_QandAModel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$QandAModelToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$QandAModelImpl &&
+            other is _QandAModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.documentRef, documentRef) ||
                 other.documentRef == documentRef) &&
@@ -356,7 +544,7 @@ class _$QandAModelImpl implements _QandAModel {
             const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -375,71 +563,123 @@ class _$QandAModelImpl implements _QandAModel {
       youtubeLink,
       const DeepCollectionEquality().hash(_tags));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$QandAModelImplCopyWith<_$QandAModelImpl> get copyWith =>
-      __$$QandAModelImplCopyWithImpl<_$QandAModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$QandAModelImplToJson(
-      this,
-    );
+  String toString() {
+    return 'QandAModel(id: $id, documentRef: $documentRef, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
   }
 }
 
-abstract class _QandAModel implements QandAModel {
-  factory _QandAModel(
-      {required final int id,
-      @JsonKey(includeToJson: false) required final String documentRef,
-      required final String title,
-      required final String question,
-      required final String answer,
-      required final Languages lang,
-      final String? date,
-      final String? author,
-      final String? link,
-      final String? image,
-      final String? source,
-      final String? translatedBy,
-      final String? youtubeLink,
-      final List<String>? tags}) = _$QandAModelImpl;
-
-  factory _QandAModel.fromJson(Map<String, dynamic> json) =
-      _$QandAModelImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$QandAModelCopyWith<$Res>
+    implements $QandAModelCopyWith<$Res> {
+  factory _$QandAModelCopyWith(
+          _QandAModel value, $Res Function(_QandAModel) _then) =
+      __$QandAModelCopyWithImpl;
   @override
-  int get id;
-  @override
-  @JsonKey(includeToJson: false)
-  String get documentRef;
-  @override
-  String get title;
-  @override
-  String get question;
-  @override
-  String get answer;
-  @override
-  Languages get lang;
-  @override
-  String? get date;
-  @override
-  String? get author;
-  @override
-  String? get link;
-  @override
-  String? get image;
-  @override
-  String? get source;
-  @override
-  String? get translatedBy;
-  @override
-  String? get youtubeLink;
-  @override
-  List<String>? get tags;
-  @override
-  @JsonKey(ignore: true)
-  _$$QandAModelImplCopyWith<_$QandAModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {int id,
+      @JsonKey(includeToJson: false) String documentRef,
+      String title,
+      String question,
+      String answer,
+      Languages lang,
+      String? date,
+      String? author,
+      String? link,
+      String? image,
+      String? source,
+      String? translatedBy,
+      String? youtubeLink,
+      List<String>? tags});
 }
+
+/// @nodoc
+class __$QandAModelCopyWithImpl<$Res> implements _$QandAModelCopyWith<$Res> {
+  __$QandAModelCopyWithImpl(this._self, this._then);
+
+  final _QandAModel _self;
+  final $Res Function(_QandAModel) _then;
+
+  /// Create a copy of QandAModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? documentRef = null,
+    Object? title = null,
+    Object? question = null,
+    Object? answer = null,
+    Object? lang = null,
+    Object? date = freezed,
+    Object? author = freezed,
+    Object? link = freezed,
+    Object? image = freezed,
+    Object? source = freezed,
+    Object? translatedBy = freezed,
+    Object? youtubeLink = freezed,
+    Object? tags = freezed,
+  }) {
+    return _then(_QandAModel(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      documentRef: null == documentRef
+          ? _self.documentRef
+          : documentRef // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      question: null == question
+          ? _self.question
+          : question // ignore: cast_nullable_to_non_nullable
+              as String,
+      answer: null == answer
+          ? _self.answer
+          : answer // ignore: cast_nullable_to_non_nullable
+              as String,
+      lang: null == lang
+          ? _self.lang
+          : lang // ignore: cast_nullable_to_non_nullable
+              as Languages,
+      date: freezed == date
+          ? _self.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String?,
+      author: freezed == author
+          ? _self.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String?,
+      link: freezed == link
+          ? _self.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _self.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      source: freezed == source
+          ? _self.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as String?,
+      translatedBy: freezed == translatedBy
+          ? _self.translatedBy
+          : translatedBy // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeLink: freezed == youtubeLink
+          ? _self.youtubeLink
+          : youtubeLink // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tags: freezed == tags
+          ? _self._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+    ));
+  }
+}
+
+// dart format on

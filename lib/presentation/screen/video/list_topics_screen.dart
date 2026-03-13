@@ -26,7 +26,7 @@ class ListTopicsScreen extends StatefulWidget {
 }
 
 class _ListTopicsScreenState extends State<ListTopicsScreen> {
-  final GlobalKey tooltipKey2 = GlobalKey();
+  final GlobalKey<TooltipState> tooltipKey2 = GlobalKey<TooltipState>();
   bool _tooltipVisible = true;
   @override
   void initState() {
@@ -179,7 +179,7 @@ class _ListTopicsScreenState extends State<ListTopicsScreen> {
             0.0;
     if (tooltipShown < 4.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
-        (tooltipKey2.currentState as TooltipState).ensureTooltipVisible();
+        tooltipKey2.currentState?.ensureTooltipVisible();
         Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {

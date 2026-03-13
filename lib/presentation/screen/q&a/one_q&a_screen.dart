@@ -6,6 +6,8 @@ import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:go_router/go_router.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/bible_reference_link_handler.dart';
+import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/injection.dart';
@@ -17,7 +19,6 @@ import 'package:icoc/presentation/widget/font_size_adjust_bottom_sheet.dart';
 import 'package:icoc/presentation/widget/loading.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 
 class OneQandAScreen extends StatefulWidget {
@@ -31,12 +32,16 @@ class OneQandAScreen extends StatefulWidget {
   State<OneQandAScreen> createState() => _OneQandAScreenState();
 }
 
-class _OneQandAScreenState extends State<OneQandAScreen> with WidgetsBindingObserver {
+class _OneQandAScreenState extends State<OneQandAScreen>
+    with WidgetsBindingObserver {
   static const fontStyle =
       TextStyle(color: ScreenColors.QandA, fontWeight: FontWeight.bold);
   late final ScrollController _scrollController;
-  double _lastOffset = 0.0;
+  double _lastOffset = 0;
   bool _restored = false;
+  String? _lastRawHtml;
+  String? _lastLinkedHtml;
+  String? _lastLangHint;
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -143,9 +148,25 @@ class _OneQandAScreenState extends State<OneQandAScreen> with WidgetsBindingObse
                             ),
                             if (article.answer.startsWith('<'))
                               html.Html(
-                                data: article.answer,
-                                onLinkTap: (url, __, ___) {
-                                  launchUrl(Uri.parse(url ?? ''));
+                                data: _prepareAnswerHtml(
+                                  article.answer,
+                                  langHint: article.lang.name,
+                                ),
+                                onLinkTap: (url, __, ___) async {
+                                  final bool handled =
+                                      await BibleReferenceLinkHandler
+                                          .handleLinkTap(
+                                    context,
+                                    url: url,
+                                    langHint: article.lang.name,
+                                  );
+                                  if (handled) {
+                                    return;
+                                  }
+                                  final Uri? uri = Uri.tryParse(url ?? '');
+                                  if (uri != null) {
+                                    launchUrl(uri);
+                                  }
                                 },
                                 style: {
                                   'body': html.Style(
@@ -210,12 +231,27 @@ class _OneQandAScreenState extends State<OneQandAScreen> with WidgetsBindingObse
     );
   }
 
+  String _prepareAnswerHtml(String rawHtml, {required String langHint}) {
+    if (_lastRawHtml == rawHtml &&
+        _lastLinkedHtml != null &&
+        _lastLangHint == langHint) {
+      return _lastLinkedHtml!;
+    }
+
+    final String linked =
+        BibleReferenceLinkHandler.preprocessHtml(rawHtml, langHint: langHint);
+    _lastRawHtml = rawHtml;
+    _lastLinkedHtml = linked;
+    _lastLangHint = langHint;
+    return linked;
+  }
+
   GestureDetector _buildYoutubeLink(
       QandAModel article, BuildContext context, double? fontSize) {
     return GestureDetector(
         onTap: () {
-          final videoId =
-              YoutubePlayerController.convertUrlToId(article.youtubeLink!) ??
+          final String videoId =
+              YoutubeThumbnailHelper.videoIdFromInput(article.youtubeLink!) ??
                   '';
           context.go('/$Q_AND_ANSVERS/$Q_AND_A_VIDEO_PLAYER/$videoId');
         },
@@ -285,7 +321,8 @@ class _OneQandAScreenState extends State<OneQandAScreen> with WidgetsBindingObse
     if (_restored) return;
     final map = getIt<LocalCache>().getMap(StorageKeys.qAndAReadPosition);
     final articleId = map?['articleId'];
-    final offset = (map?['offset'] is num) ? (map?['offset'] as num).toDouble() : 0.0;
+    final offset =
+        (map?['offset'] is num) ? (map?['offset'] as num).toDouble() : 0.0;
     if (articleId == widget.article.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {

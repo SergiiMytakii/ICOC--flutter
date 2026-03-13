@@ -17,9 +17,13 @@ const ONE_TOPIC_SCREEN = 'onetopic';
 const ONE_LESSON_SCREEN = 'onelesson';
 
 const SETTINGS = 'settings';
+const NOTIFICATION_SETTINGS = 'notificationssettings';
 const ABOUT_APP_SCREEN = 'aboutapp';
 const SHARE_APP_SCREEN = 'shareapp';
 const TERMS_OF_USE = 'termsofuse';
 
 const FEEDBACK_SCREEN = 'feedback';
 const NOTIFICATIONS_SCREEN = 'notifications';
+const INSIGHTS = 'insights';
+const ONE_INSIGHT_SCREEN = 'oneinsight';
+const WEBVIEW_SCREEN = 'webview';

@@ -14,6 +14,7 @@
   
   
     "Question:": "Frage:",
+    "Open": "Öffnen",
     "Answer:": "Antwort:",
     "Date:": "Datum:",
     "Author:": "Autor:",
@@ -164,7 +165,15 @@
    "There are not any songs in": "Es gibt keine Lieder in",
     "chords": "Akkorde",
     "Language": "Sprache",
-    "Primary": "Primär"
+    "Primary": "Primär",
+    "Insights": "Einblicke",
+    "Coming soon": "🚧 Demnächst",
+    "notification_choose_topics": "Wählen Sie die Themen, für die Sie Benachrichtigungen erhalten möchten",
+    "comments_title": "Kommentare",
+    "comments_refresh": "Aktualisieren",
+    "comments_retry": "Erneut versuchen",
+    "comments_empty": "Noch keine Kommentare",
+    "comments_input_hint": "Kommentar hinzufügen..."
 
   }
   

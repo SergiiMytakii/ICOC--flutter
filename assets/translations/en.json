@@ -4,6 +4,10 @@
     "Sort articles ascending": "Sort articles ascending",
     "Shuffle": "Shuffle",
 
+    "insights_no_liked_title": "No liked posts yet",
+    "insights_no_liked_subtitle": "Like some posts to see them here.",
+    "insights_show_all_posts": "Show all posts",
+    "insights_show_liked_only": "Show liked only",
     
 "serverError": "Server error. Please check your internet connection and try again.",
     "networkError": "Network error. Please check your internet connection.",
@@ -14,6 +18,7 @@
     
 
 "Question:": "Question:",
+    "Open": "Open",
     "Answer:": "Answer:",
     "Date:": "Date:",
     "Author:": "Author:",
@@ -78,6 +83,20 @@
           "About this app": "About this app",
           "Church of Christ": "Church of Christ",
           "Version": "Version",
+          "bible_variant_contemporary": "Contemporary",
+          "bible_variant_ohienko": "Ohienko",
+          "bible_variant_kulish": "Kulish",
+          "bible_variant_synodal": "Synodal",
+          "bible_variant_rsp": "RSP",
+          "bible_translation_uk_contemporary": "Ukrainian Contemporary",
+          "bible_translation_uk_ohienko": "Ukrainian Ohienko",
+          "bible_translation_uk_kulish": "Ukrainian Kulish",
+          "bible_translation_ru_contemporary": "Russian Contemporary",
+          "bible_translation_ru_synodal": "Russian Synodal",
+          "bible_translation_ru_rsp": "Russian RSP",
+          "bible_translation_en_contemporary": "English Contemporary",
+          "bible_translation_en_asv": "English ASV",
+          "bible_translation_en_kjv": "English KJV",
           "Created by:": "Created by:",
           "Sergii Gaponov": "Sergii Gaponov",
           "Sergii Mytakii": "Sergii Mytakii",
@@ -178,4 +197,17 @@
             "suggestion to get admin panel": "By sending this form, you will send an email to the administrator, who will add the song to the app. \n However, if you are in the worship ministry and want to add and edit songs by yourself, add in the 'Title' field: 'I want access to the admin panel.'",
         "chords": "Chords",
         "Language": "Language",
-        "Primary": "Primary"        }
+        "Primary": "Primary",
+        "Insights": "Insights",
+        "Coming soon": "🚧 Coming soon",
+        "notification_choose_topics": "Choose which topics you want to receive notifications for",
+        "push_permission_reminder_title": "Turn on notifications",
+        "push_permission_reminder_body": "Notifications are currently disabled. Turn them on in system settings so you don't miss new songs, videos, and insights.",
+        "push_permission_reminder_later": "Not now",
+        "push_permission_reminder_open_settings": "Open settings",
+        "comments_title": "Comments",
+        "comments_refresh": "Refresh",
+        "comments_retry": "Retry",
+        "comments_empty": "No comments yet",
+        "comments_input_hint": "Add a comment..."
+        }

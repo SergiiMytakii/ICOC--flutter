@@ -13,6 +13,7 @@
       "internal": "Internt appfel. Försök igen senare. Om felet kvarstår, vänligen kontakta utvecklaren.",
   
     "Question:": "Fråga:",
+    "Open": "Öppna",   
     "Answer:": "Svar:",
     "Date:": "Datum:",
     "Author:": "Författare:",
@@ -166,7 +167,11 @@
    "There are not any songs in": "Det finns inga sånger på",
   "chords": "Ackord",
   "Language": "Språk",
-  "Primary": "Primär"
+  "Primary": "Primär",
+  "Insights": "Insikter",
+  "Coming soon": "🚧 Kommer snart"
 
   }
   
+,
+"notification_choose_topics": "Välj vilka ämnen du vill få aviseringar för"

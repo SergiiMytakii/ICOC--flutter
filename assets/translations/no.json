@@ -13,6 +13,7 @@
       "internal": "Intern appfeil. Vennligst prøv igjen senere. Hvis feilen vedvarer, vennligst kontakt utvikleren.",
   
       "Question:": "Spørsmål:",
+      "Open": "Åpne", 
       "Answer:": "Svar:",
       "Date:": "Dato:",
       "Author:": "Forfatter:",
@@ -164,7 +165,11 @@
   "There are not any songs in": "Det er ingen sanger på",
   "chords": "Akkorder",
   "Language": "Språk",
-  "Primary": "Primær"
+  "Primary": "Primær",
+  "Insights": "Innsikt",
+  "Coming soon": "🚧 Kommer snart"
 
   }
   
+,
+"notification_choose_topics": "Velg hvilke emner du vil motta varsler for"

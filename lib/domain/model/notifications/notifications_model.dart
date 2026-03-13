@@ -4,7 +4,7 @@ part 'notifications_model.freezed.dart';
 part 'notifications_model.g.dart';
 
 @unfreezed
-class NotificationsModel with _$NotificationsModel {
+abstract class NotificationsModel with _$NotificationsModel {
   @JsonSerializable(explicitToJson: true)
   factory NotificationsModel({
     required String id,
@@ -56,8 +56,7 @@ class NotificationsModel with _$NotificationsModel {
 }
 
 @freezed
-// @JsonSerializable()
-class NotificationVersion with _$NotificationVersion {
+abstract class NotificationVersion with _$NotificationVersion {
   const factory NotificationVersion({
     required String id,
     required String title,

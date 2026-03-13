@@ -24,7 +24,7 @@ class QandAAppbar extends StatefulWidget {
 }
 
 class _QandAAppbarState extends State<QandAAppbar> {
-  final GlobalKey tooltipKey7 = GlobalKey();
+  final GlobalKey<TooltipState> tooltipKey7 = GlobalKey<TooltipState>();
 
   bool _tooltipVisible = true;
 
@@ -104,7 +104,7 @@ class _QandAAppbarState extends State<QandAAppbar> {
             0.0;
     if (tooltipShown < 5.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
-        (tooltipKey7.currentState as TooltipState).ensureTooltipVisible();
+        tooltipKey7.currentState?.ensureTooltipVisible();
         Future.delayed(const Duration(seconds: 6), () {
           if (mounted) {
             setState(() {

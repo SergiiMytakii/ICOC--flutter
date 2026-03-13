@@ -37,37 +37,104 @@ class VideoRepositoryImpl extends VideoRepository {
   @override
   Future<Either<Failure, List<YoutubeVideo>>> fetchVideosFromPlaylist(
       String playlistId) async {
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-    };
-    final url = Uri.parse(
-        'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=$playlistId&key=$YOUTUBE_API_KEY&maxResults=40');
     try {
-      final response = await httpClient.get(
-        url,
-        headers: headers,
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final List<dynamic> videosJson = data['items'];
+      final url = Uri.parse(
+          'https://www.youtube.com/playlist?list=$playlistId');
+      final response = await httpClient.get(url);
 
-        final List<YoutubeVideo> playlists = [];
-        videosJson.forEach(
-          (json) => playlists.add(
-            YoutubeVideo.fromJsonYoutubePlaylists(json['snippet']),
-          ),
-        );
-        return Right(playlists);
-      } else {
-        logError(
-            json.decode(response.body)['error']['message'] ??
-                'youtube api error',
-            null);
-        return const Left(Failure.networkError());
+      if (response.statusCode == 200) {
+        final videos = _parsePlaylistPage(response.body, playlistId);
+        if (videos.isNotEmpty) {
+          return Right(videos);
+        }
       }
+      logError('YouTube playlist scraping failed: ${response.statusCode}', null);
+      return const Left(Failure.networkError());
     } catch (e, stackTrace) {
       logError(e, stackTrace);
       return const Left(Failure.networkError());
+    }
+  }
+
+  List<YoutubeVideo> _parsePlaylistPage(String html, String playlistId) {
+    final List<YoutubeVideo> videos = [];
+    final seen = <String>{};
+
+    // YouTube embeds playlist data as JSON inside ytInitialData
+    final dataMatch = RegExp(r'var ytInitialData\s*=\s*(\{.+?\});\s*</script>')
+        .firstMatch(html);
+
+    if (dataMatch != null) {
+      try {
+        final jsonStr = dataMatch.group(1)!;
+        final data = jsonDecode(jsonStr) as Map<String, dynamic>;
+        _extractVideosFromJson(data, playlistId, videos, seen);
+        if (videos.isNotEmpty) return videos;
+      } catch (_) {
+        // fall through to regex fallback
+      }
+    }
+
+    // Regex fallback: extract videoId + title pairs from the HTML
+    final videoIdRegex = RegExp(r'"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"');
+    final titleRegex = RegExp(r'"title"\s*:\s*\{"runs"\s*:\s*\[\{"text"\s*:\s*"([^"]+)"');
+
+    final idMatches = videoIdRegex.allMatches(html).toList();
+    final titleMatches = titleRegex.allMatches(html).toList();
+
+    for (int i = 0; i < idMatches.length; i++) {
+      final videoId = idMatches[i].group(1)!;
+      if (seen.contains(videoId)) continue;
+      seen.add(videoId);
+
+      final title = i < titleMatches.length ? titleMatches[i].group(1) : null;
+      videos.add(YoutubeVideo(
+        lang: Languages.defaultLang,
+        title: title,
+        link: videoId,
+        thumbnail: 'https://i.ytimg.com/vi/$videoId/hqdefault.jpg',
+        playlistId: playlistId,
+      ));
+    }
+
+    return videos;
+  }
+
+  void _extractVideosFromJson(
+    dynamic node,
+    String playlistId,
+    List<YoutubeVideo> videos,
+    Set<String> seen,
+  ) {
+    if (node is Map) {
+      // A playlistVideoRenderer contains videoId + title
+      if (node.containsKey('playlistVideoRenderer')) {
+        final renderer = node['playlistVideoRenderer'] as Map<String, dynamic>;
+        final videoId = renderer['videoId'] as String?;
+        if (videoId != null && !seen.contains(videoId)) {
+          seen.add(videoId);
+          final title = (renderer['title']?['runs'] as List?)
+              ?.firstOrNull?['text'] as String?;
+          final thumbnail = ((renderer['thumbnail']?['thumbnails'] as List?)
+                  ?.lastOrNull)?['url'] as String?;
+          videos.add(YoutubeVideo(
+            lang: Languages.defaultLang,
+            title: title,
+            link: videoId,
+            thumbnail: thumbnail ??
+                'https://i.ytimg.com/vi/$videoId/hqdefault.jpg',
+            playlistId: playlistId,
+          ));
+        }
+        return;
+      }
+      for (final value in node.values) {
+        _extractVideosFromJson(value, playlistId, videos, seen);
+      }
+    } else if (node is List) {
+      for (final item in node) {
+        _extractVideosFromJson(item, playlistId, videos, seen);
+      }
     }
   }
 }

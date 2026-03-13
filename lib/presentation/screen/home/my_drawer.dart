@@ -42,7 +42,8 @@ class AnimatedDrawerItem extends StatelessWidget {
 }
 
 class MyDrawer extends StatefulWidget {
-  MyDrawer(this.animationController, {super.key});
+  final ValueNotifier<bool> isDrawerOpenNotifier;
+  MyDrawer(this.animationController, this.isDrawerOpenNotifier, {super.key});
   final AnimationController animationController;
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -103,16 +104,23 @@ class _MyDrawerState extends State<MyDrawer> {
     ];
 
     return Padding(
-      padding: const EdgeInsets.only(top: 100),
-      child: Column(
-        children: List.generate(drawerItems.length, (index) {
+      padding: const EdgeInsets.only(top: 60),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        IconButton(
+          icon: const Icon(Icons.close, size: 30),
+          color: Colors.white,
+          onPressed: () => widget.animationController.reverse().then((value) {
+            widget.isDrawerOpenNotifier.value = false;
+          }),
+        ),
+        ...List.generate(drawerItems.length, (index) {
           return AnimatedDrawerItem(
               icon: drawerItems[index]['icon'] as IconData,
               title: drawerItems[index]['title'].toString(),
               route: drawerItems[index]['route'].toString(),
               animation: itemAnimations[index]);
         }),
-      ),
+      ]),
     );
   }
 }

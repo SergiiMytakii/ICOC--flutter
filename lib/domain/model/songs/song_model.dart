@@ -6,7 +6,7 @@ part 'song_model.freezed.dart';
 part 'song_model.g.dart';
 
 @freezed
-class SongModel with _$SongModel {
+abstract class SongModel with _$SongModel {
   @JsonSerializable(explicitToJson: true)
   const factory SongModel({
     required int id,
@@ -35,7 +35,7 @@ class SongModel with _$SongModel {
 }
 
 @freezed
-class SongVersion with _$SongVersion {
+abstract class SongVersion with _$SongVersion {
   @JsonSerializable(explicitToJson: true)
   const factory SongVersion({
     required int id,
@@ -52,7 +52,7 @@ class SongVersion with _$SongVersion {
 }
 
 @freezed
-class SongVersionLocal with _$SongVersionLocal {
+abstract class SongVersionLocal with _$SongVersionLocal {
   const factory SongVersionLocal({
     required int id,
     required String lang,

@@ -13,6 +13,7 @@
     "internal": "Erreur interne de l'application. Veuillez réessayer plus tard. Si l'erreur persiste, veuillez contacter le développeur.",
   
   "Question:": "Question :",
+    "Open": "Ouvrir",
   "Answer:": "Réponse :",
   "Date:": "Date :",
   "Author:": "Auteur :",
@@ -161,7 +162,11 @@
  "There are not any songs in": "Il n'y a pas de chansons dans",
   "chords": "Accords",
   "Language": "Langue",
-  "Primary": "Principale"
+  "Primary": "Principale",
+  "Insights": "Perspectives",
+  "Coming soon": "🚧 Bientôt disponible"
 
 }
   
+,
+"notification_choose_topics": "Choisissez les sujets pour lesquels recevoir des notifications"

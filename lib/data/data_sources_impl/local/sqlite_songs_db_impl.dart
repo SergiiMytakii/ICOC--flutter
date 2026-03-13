@@ -51,8 +51,13 @@ class SqliteSongsDbImpl implements LocalSongsDB {
     try {
       return await openDatabase(path, version: 1,
           onCreate: (Database db, int version) async {
-        await db.execute(
-            'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4 ( tokenize = unicode61, id INTEGER PRIMARY KEY AUTOINCREMENT, $ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
+        try {
+          await db.execute(
+              'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4(tokenize=unicode61, $ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
+        } catch (_) {
+          await db.execute(
+              'CREATE VIRTUAL TABLE $TABLE_SONGS USING fts4($ID_SONG INTEGER, $SONG_TITLE TEXT, $SONG_TEXT TEXT, $SONG_LANG TEXT)');
+        }
         await db.execute(
             'CREATE TABLE $TABLE_FAVORITES ($ID_SONG INTEGER PRIMARY KEY, $FAVORITE_STATUS INTEGER)');
         log.i(' !!!!databases hac been opened!!!!!');
@@ -121,7 +126,7 @@ class SqliteSongsDbImpl implements LocalSongsDB {
     final Database? database = await db();
     if (database != null) {
       final List<Map<String, dynamic>> songs =
-          await database.query(TABLE_SONGS, columns: ['id']);
+          await database.query(TABLE_SONGS, columns: [ID_SONG]);
       return songs.length;
     } else {
       return 0;
@@ -228,8 +233,8 @@ class SqliteSongsDbImpl implements LocalSongsDB {
                   $TABLE_SONGS.$SONG_TEXT AS text,
                   $TABLE_SONGS.$SONG_LANG AS lang
                   FROM $TABLE_SONGS
-                  WHERE $TABLE_SONGS.$SONG_TITLE MATCH '$query*'
-                  ''');
+                  WHERE $TABLE_SONGS.$SONG_TITLE MATCH ?
+                  ''', ['${query.trim()}*']);
 
         for (Map map in searchInTitles) {
           final SongVersionLocal song = SongVersionLocal(
@@ -243,15 +248,14 @@ class SqliteSongsDbImpl implements LocalSongsDB {
 
         final List<Map<String, dynamic>> searhInTexts =
             await database.rawQuery('''
-                
                   SELECT $TABLE_SONGS.$ID_SONG,
                   snippet($TABLE_SONGS, '[', ' ', '...') as text,
                   $TABLE_SONGS.$SONG_TITLE AS title,
                   $TABLE_SONGS.$SONG_LANG AS lang
                   FROM $TABLE_SONGS
-                  WHERE $TABLE_SONGS.$SONG_TEXT MATCH '$query*'
+                  WHERE $TABLE_SONGS.$SONG_TEXT MATCH ?
                   ORDER BY $TABLE_SONGS.$ID_SONG 
-                  ''');
+                  ''', ['${query.trim()}*']);
 
         for (Map map in searhInTexts) {
           final SongVersionLocal song = SongVersionLocal(
@@ -266,7 +270,27 @@ class SqliteSongsDbImpl implements LocalSongsDB {
         return songs;
       } catch (e, stackTrace) {
         logError(e, stackTrace);
-        return [];
+        try {
+          final List<Map<String, dynamic>> likeResults = await database.query(
+            TABLE_SONGS,
+            columns: [ID_SONG, SONG_TITLE, SONG_TEXT, SONG_LANG],
+            where: '$SONG_TITLE LIKE ? OR $SONG_TEXT LIKE ?',
+            whereArgs: ['%${query.trim()}%', '%${query.trim()}%'],
+          );
+
+          final Map<int, SongVersionLocal> unique = {};
+          for (final map in likeResults) {
+            unique[map[ID_SONG] as int] = SongVersionLocal(
+              id: map[ID_SONG] as int,
+              title: map[SONG_TITLE] as String,
+              text: map[SONG_TEXT] as String,
+              lang: map[SONG_LANG] as String,
+            );
+          }
+          return unique.values.toList();
+        } catch (_) {
+          return [];
+        }
       }
     } else {
       return [];

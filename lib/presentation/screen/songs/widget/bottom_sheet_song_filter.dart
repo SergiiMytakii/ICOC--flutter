@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/main.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetSongsFilter extends StatefulWidget {
   const BottomSheetSongsFilter({super.key});
@@ -109,6 +111,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
 
   Widget _primaryLangSwitch(String label) {
     return Switch.adaptive(
+        activeTrackColor: const Color(0xFF4CAF50),
+        inactiveTrackColor: Colors.grey.shade400,
         value: primaryLang == label,
         onChanged: (val) {
           setState(() {
@@ -125,6 +129,8 @@ class _BottomSheetSongsFilterState extends State<BottomSheetSongsFilter> {
   Future<void> _saveAndRefresh() async {
     await songsUserLanguagesHandler.saveAllLanguages(allLanguages);
     await songsUserLanguagesHandler.updatePrimaryLanguage(primaryLang);
+    unawaited(getIt<PushNotificationService>()
+        .syncTopicLangSubscriptionsFor('songbook', allLanguages));
     getIt<SongsBloc>().add(const SongsEvent.songsRequested());
     setState(() {});
   }

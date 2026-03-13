@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,136 +9,26 @@ part of 'font_size_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$FontSizeEvent {
-  double? get fontSize => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(double? fontSize) requested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(double? fontSize)? requested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(double? fontSize)? requested,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FontSizeRequested value) requested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FontSizeRequested value)? requested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FontSizeRequested value)? requested,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  double? get fontSize;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FontSizeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $FontSizeEventCopyWith<FontSizeEvent> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $FontSizeEventCopyWith<$Res> {
-  factory $FontSizeEventCopyWith(
-          FontSizeEvent value, $Res Function(FontSizeEvent) then) =
-      _$FontSizeEventCopyWithImpl<$Res, FontSizeEvent>;
-  @useResult
-  $Res call({double? fontSize});
-}
-
-/// @nodoc
-class _$FontSizeEventCopyWithImpl<$Res, $Val extends FontSizeEvent>
-    implements $FontSizeEventCopyWith<$Res> {
-  _$FontSizeEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? fontSize = freezed,
-  }) {
-    return _then(_value.copyWith(
-      fontSize: freezed == fontSize
-          ? _value.fontSize
-          : fontSize // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$FontSizeRequestedImplCopyWith<$Res>
-    implements $FontSizeEventCopyWith<$Res> {
-  factory _$$FontSizeRequestedImplCopyWith(_$FontSizeRequestedImpl value,
-          $Res Function(_$FontSizeRequestedImpl) then) =
-      __$$FontSizeRequestedImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({double? fontSize});
-}
-
-/// @nodoc
-class __$$FontSizeRequestedImplCopyWithImpl<$Res>
-    extends _$FontSizeEventCopyWithImpl<$Res, _$FontSizeRequestedImpl>
-    implements _$$FontSizeRequestedImplCopyWith<$Res> {
-  __$$FontSizeRequestedImplCopyWithImpl(_$FontSizeRequestedImpl _value,
-      $Res Function(_$FontSizeRequestedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? fontSize = freezed,
-  }) {
-    return _then(_$FontSizeRequestedImpl(
-      fontSize: freezed == fontSize
-          ? _value.fontSize
-          : fontSize // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FontSizeRequestedImpl implements FontSizeRequested {
-  const _$FontSizeRequestedImpl({this.fontSize});
-
-  @override
-  final double? fontSize;
-
-  @override
-  String toString() {
-    return 'FontSizeEvent.requested(fontSize: $fontSize)';
-  }
+      _$FontSizeEventCopyWithImpl<FontSizeEvent>(
+          this as FontSizeEvent, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FontSizeRequestedImpl &&
+            other is FontSizeEvent &&
             (identical(other.fontSize, fontSize) ||
                 other.fontSize == fontSize));
   }
@@ -146,238 +36,303 @@ class _$FontSizeRequestedImpl implements FontSizeRequested {
   @override
   int get hashCode => Object.hash(runtimeType, fontSize);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'FontSizeEvent(fontSize: $fontSize)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $FontSizeEventCopyWith<$Res> {
+  factory $FontSizeEventCopyWith(
+          FontSizeEvent value, $Res Function(FontSizeEvent) _then) =
+      _$FontSizeEventCopyWithImpl;
+  @useResult
+  $Res call({double? fontSize});
+}
+
+/// @nodoc
+class _$FontSizeEventCopyWithImpl<$Res>
+    implements $FontSizeEventCopyWith<$Res> {
+  _$FontSizeEventCopyWithImpl(this._self, this._then);
+
+  final FontSizeEvent _self;
+  final $Res Function(FontSizeEvent) _then;
+
+  /// Create a copy of FontSizeEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$FontSizeRequestedImplCopyWith<_$FontSizeRequestedImpl> get copyWith =>
-      __$$FontSizeRequestedImplCopyWithImpl<_$FontSizeRequestedImpl>(
-          this, _$identity);
-
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(double? fontSize) requested,
+  $Res call({
+    Object? fontSize = freezed,
   }) {
-    return requested(fontSize);
+    return _then(_self.copyWith(
+      fontSize: freezed == fontSize
+          ? _self.fontSize
+          : fontSize // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(double? fontSize)? requested,
-  }) {
-    return requested?.call(fontSize);
-  }
+/// Adds pattern-matching-related methods to [FontSizeEvent].
+extension FontSizeEventPatterns on FontSizeEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(double? fontSize)? requested,
-    required TResult orElse(),
-  }) {
-    if (requested != null) {
-      return requested(fontSize);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FontSizeRequested value) requested,
-  }) {
-    return requested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FontSizeRequested value)? requested,
-  }) {
-    return requested?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FontSizeRequested value)? requested,
     required TResult orElse(),
   }) {
-    if (requested != null) {
-      return requested(this);
+    final _that = this;
+    switch (_that) {
+      case FontSizeRequested() when requested != null:
+        return requested(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
   }
-}
 
-abstract class FontSizeRequested implements FontSizeEvent {
-  const factory FontSizeRequested({final double? fontSize}) =
-      _$FontSizeRequestedImpl;
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
 
-  @override
-  double? get fontSize;
-  @override
-  @JsonKey(ignore: true)
-  _$$FontSizeRequestedImplCopyWith<_$FontSizeRequestedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$FontSizeState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(double? fontSize) success,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(double? fontSize)? success,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(double? fontSize)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(FontSizeInitial value) initial,
-    required TResult Function(FontSizeSuccess value) success,
-    required TResult Function(FontSizeErrorState value) error,
-  }) =>
-      throw _privateConstructorUsedError;
+    required TResult Function(FontSizeRequested value) requested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeRequested():
+        return requested(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FontSizeInitial value)? initial,
-    TResult? Function(FontSizeSuccess value)? success,
-    TResult? Function(FontSizeErrorState value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
+    TResult? Function(FontSizeRequested value)? requested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeRequested() when requested != null:
+        return requested(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FontSizeInitial value)? initial,
-    TResult Function(FontSizeSuccess value)? success,
-    TResult Function(FontSizeErrorState value)? error,
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(double? fontSize)? requested,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeRequested() when requested != null:
+        return requested(_that.fontSize);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(double? fontSize) requested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeRequested():
+        return requested(_that.fontSize);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(double? fontSize)? requested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeRequested() when requested != null:
+        return requested(_that.fontSize);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $FontSizeStateCopyWith<$Res> {
-  factory $FontSizeStateCopyWith(
-          FontSizeState value, $Res Function(FontSizeState) then) =
-      _$FontSizeStateCopyWithImpl<$Res, FontSizeState>;
-}
 
-/// @nodoc
-class _$FontSizeStateCopyWithImpl<$Res, $Val extends FontSizeState>
-    implements $FontSizeStateCopyWith<$Res> {
-  _$FontSizeStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$FontSizeInitialImplCopyWith<$Res> {
-  factory _$$FontSizeInitialImplCopyWith(_$FontSizeInitialImpl value,
-          $Res Function(_$FontSizeInitialImpl) then) =
-      __$$FontSizeInitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$FontSizeInitialImplCopyWithImpl<$Res>
-    extends _$FontSizeStateCopyWithImpl<$Res, _$FontSizeInitialImpl>
-    implements _$$FontSizeInitialImplCopyWith<$Res> {
-  __$$FontSizeInitialImplCopyWithImpl(
-      _$FontSizeInitialImpl _value, $Res Function(_$FontSizeInitialImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$FontSizeInitialImpl implements FontSizeInitial {
-  const _$FontSizeInitialImpl();
+class FontSizeRequested implements FontSizeEvent {
+  const FontSizeRequested({this.fontSize});
 
   @override
-  String toString() {
-    return 'FontSizeState.initial()';
-  }
+  final double? fontSize;
+
+  /// Create a copy of FontSizeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FontSizeRequestedCopyWith<FontSizeRequested> get copyWith =>
+      _$FontSizeRequestedCopyWithImpl<FontSizeRequested>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FontSizeInitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is FontSizeRequested &&
+            (identical(other.fontSize, fontSize) ||
+                other.fontSize == fontSize));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, fontSize);
+
+  @override
+  String toString() {
+    return 'FontSizeEvent.requested(fontSize: $fontSize)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $FontSizeRequestedCopyWith<$Res>
+    implements $FontSizeEventCopyWith<$Res> {
+  factory $FontSizeRequestedCopyWith(
+          FontSizeRequested value, $Res Function(FontSizeRequested) _then) =
+      _$FontSizeRequestedCopyWithImpl;
+  @override
+  @useResult
+  $Res call({double? fontSize});
+}
+
+/// @nodoc
+class _$FontSizeRequestedCopyWithImpl<$Res>
+    implements $FontSizeRequestedCopyWith<$Res> {
+  _$FontSizeRequestedCopyWithImpl(this._self, this._then);
+
+  final FontSizeRequested _self;
+  final $Res Function(FontSizeRequested) _then;
+
+  /// Create a copy of FontSizeEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? fontSize = freezed,
+  }) {
+    return _then(FontSizeRequested(
+      fontSize: freezed == fontSize
+          ? _self.fontSize
+          : fontSize // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+mixin _$FontSizeState {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is FontSizeState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(double? fontSize) success,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
+  String toString() {
+    return 'FontSizeState()';
   }
+}
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(double? fontSize)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
+/// @nodoc
+class $FontSizeStateCopyWith<$Res> {
+  $FontSizeStateCopyWith(FontSizeState _, $Res Function(FontSizeState) __);
+}
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(double? fontSize)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
+/// Adds pattern-matching-related methods to [FontSizeState].
+extension FontSizeStatePatterns on FontSizeState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FontSizeInitial value) initial,
-    required TResult Function(FontSizeSuccess value) success,
-    required TResult Function(FontSizeErrorState value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FontSizeInitial value)? initial,
-    TResult? Function(FontSizeSuccess value)? success,
-    TResult? Function(FontSizeErrorState value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FontSizeInitial value)? initial,
@@ -385,42 +340,257 @@ class _$FontSizeInitialImpl implements FontSizeInitial {
     TResult Function(FontSizeErrorState value)? error,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(this);
+    final _that = this;
+    switch (_that) {
+      case FontSizeInitial() when initial != null:
+        return initial(_that);
+      case FontSizeSuccess() when success != null:
+        return success(_that);
+      case FontSizeErrorState() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
     }
-    return orElse();
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FontSizeInitial value) initial,
+    required TResult Function(FontSizeSuccess value) success,
+    required TResult Function(FontSizeErrorState value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeInitial():
+        return initial(_that);
+      case FontSizeSuccess():
+        return success(_that);
+      case FontSizeErrorState():
+        return error(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FontSizeInitial value)? initial,
+    TResult? Function(FontSizeSuccess value)? success,
+    TResult? Function(FontSizeErrorState value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeInitial() when initial != null:
+        return initial(_that);
+      case FontSizeSuccess() when success != null:
+        return success(_that);
+      case FontSizeErrorState() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(double? fontSize)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeInitial() when initial != null:
+        return initial();
+      case FontSizeSuccess() when success != null:
+        return success(_that.fontSize);
+      case FontSizeErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(double? fontSize) success,
+    required TResult Function(String message) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeInitial():
+        return initial();
+      case FontSizeSuccess():
+        return success(_that.fontSize);
+      case FontSizeErrorState():
+        return error(_that.message);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function(double? fontSize)? success,
+    TResult? Function(String message)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FontSizeInitial() when initial != null:
+        return initial();
+      case FontSizeSuccess() when success != null:
+        return success(_that.fontSize);
+      case FontSizeErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return null;
+    }
   }
 }
 
-abstract class FontSizeInitial implements FontSizeState {
-  const factory FontSizeInitial() = _$FontSizeInitialImpl;
+/// @nodoc
+
+class FontSizeInitial implements FontSizeState {
+  const FontSizeInitial();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is FontSizeInitial);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'FontSizeState.initial()';
+  }
 }
 
 /// @nodoc
-abstract class _$$FontSizeSuccessImplCopyWith<$Res> {
-  factory _$$FontSizeSuccessImplCopyWith(_$FontSizeSuccessImpl value,
-          $Res Function(_$FontSizeSuccessImpl) then) =
-      __$$FontSizeSuccessImplCopyWithImpl<$Res>;
+
+class FontSizeSuccess implements FontSizeState {
+  const FontSizeSuccess({required this.fontSize});
+
+  final double? fontSize;
+
+  /// Create a copy of FontSizeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FontSizeSuccessCopyWith<FontSizeSuccess> get copyWith =>
+      _$FontSizeSuccessCopyWithImpl<FontSizeSuccess>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FontSizeSuccess &&
+            (identical(other.fontSize, fontSize) ||
+                other.fontSize == fontSize));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, fontSize);
+
+  @override
+  String toString() {
+    return 'FontSizeState.success(fontSize: $fontSize)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $FontSizeSuccessCopyWith<$Res>
+    implements $FontSizeStateCopyWith<$Res> {
+  factory $FontSizeSuccessCopyWith(
+          FontSizeSuccess value, $Res Function(FontSizeSuccess) _then) =
+      _$FontSizeSuccessCopyWithImpl;
   @useResult
   $Res call({double? fontSize});
 }
 
 /// @nodoc
-class __$$FontSizeSuccessImplCopyWithImpl<$Res>
-    extends _$FontSizeStateCopyWithImpl<$Res, _$FontSizeSuccessImpl>
-    implements _$$FontSizeSuccessImplCopyWith<$Res> {
-  __$$FontSizeSuccessImplCopyWithImpl(
-      _$FontSizeSuccessImpl _value, $Res Function(_$FontSizeSuccessImpl) _then)
-      : super(_value, _then);
+class _$FontSizeSuccessCopyWithImpl<$Res>
+    implements $FontSizeSuccessCopyWith<$Res> {
+  _$FontSizeSuccessCopyWithImpl(this._self, this._then);
 
+  final FontSizeSuccess _self;
+  final $Res Function(FontSizeSuccess) _then;
+
+  /// Create a copy of FontSizeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? fontSize = freezed,
   }) {
-    return _then(_$FontSizeSuccessImpl(
+    return _then(FontSizeSuccess(
       fontSize: freezed == fontSize
-          ? _value.fontSize
+          ? _self.fontSize
           : fontSize // ignore: cast_nullable_to_non_nullable
               as double?,
     ));
@@ -429,252 +599,66 @@ class __$$FontSizeSuccessImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FontSizeSuccessImpl implements FontSizeSuccess {
-  const _$FontSizeSuccessImpl({required this.fontSize});
+class FontSizeErrorState implements FontSizeState {
+  const FontSizeErrorState(this.message);
 
-  @override
-  final double? fontSize;
-
-  @override
-  String toString() {
-    return 'FontSizeState.success(fontSize: $fontSize)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FontSizeSuccessImpl &&
-            (identical(other.fontSize, fontSize) ||
-                other.fontSize == fontSize));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, fontSize);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FontSizeSuccessImplCopyWith<_$FontSizeSuccessImpl> get copyWith =>
-      __$$FontSizeSuccessImplCopyWithImpl<_$FontSizeSuccessImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(double? fontSize) success,
-    required TResult Function(String message) error,
-  }) {
-    return success(fontSize);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(double? fontSize)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return success?.call(fontSize);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(double? fontSize)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(fontSize);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FontSizeInitial value) initial,
-    required TResult Function(FontSizeSuccess value) success,
-    required TResult Function(FontSizeErrorState value) error,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FontSizeInitial value)? initial,
-    TResult? Function(FontSizeSuccess value)? success,
-    TResult? Function(FontSizeErrorState value)? error,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FontSizeInitial value)? initial,
-    TResult Function(FontSizeSuccess value)? success,
-    TResult Function(FontSizeErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FontSizeSuccess implements FontSizeState {
-  const factory FontSizeSuccess({required final double? fontSize}) =
-      _$FontSizeSuccessImpl;
-
-  double? get fontSize;
-  @JsonKey(ignore: true)
-  _$$FontSizeSuccessImplCopyWith<_$FontSizeSuccessImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$FontSizeErrorStateImplCopyWith<$Res> {
-  factory _$$FontSizeErrorStateImplCopyWith(_$FontSizeErrorStateImpl value,
-          $Res Function(_$FontSizeErrorStateImpl) then) =
-      __$$FontSizeErrorStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class __$$FontSizeErrorStateImplCopyWithImpl<$Res>
-    extends _$FontSizeStateCopyWithImpl<$Res, _$FontSizeErrorStateImpl>
-    implements _$$FontSizeErrorStateImplCopyWith<$Res> {
-  __$$FontSizeErrorStateImplCopyWithImpl(_$FontSizeErrorStateImpl _value,
-      $Res Function(_$FontSizeErrorStateImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$FontSizeErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FontSizeErrorStateImpl implements FontSizeErrorState {
-  const _$FontSizeErrorStateImpl(this.message);
-
-  @override
   final String message;
 
-  @override
-  String toString() {
-    return 'FontSizeState.error(message: $message)';
-  }
+  /// Create a copy of FontSizeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FontSizeErrorStateCopyWith<FontSizeErrorState> get copyWith =>
+      _$FontSizeErrorStateCopyWithImpl<FontSizeErrorState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FontSizeErrorStateImpl &&
+            other is FontSizeErrorState &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'FontSizeState.error(message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $FontSizeErrorStateCopyWith<$Res>
+    implements $FontSizeStateCopyWith<$Res> {
+  factory $FontSizeErrorStateCopyWith(
+          FontSizeErrorState value, $Res Function(FontSizeErrorState) _then) =
+      _$FontSizeErrorStateCopyWithImpl;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class _$FontSizeErrorStateCopyWithImpl<$Res>
+    implements $FontSizeErrorStateCopyWith<$Res> {
+  _$FontSizeErrorStateCopyWithImpl(this._self, this._then);
+
+  final FontSizeErrorState _self;
+  final $Res Function(FontSizeErrorState) _then;
+
+  /// Create a copy of FontSizeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$FontSizeErrorStateImplCopyWith<_$FontSizeErrorStateImpl> get copyWith =>
-      __$$FontSizeErrorStateImplCopyWithImpl<_$FontSizeErrorStateImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(double? fontSize) success,
-    required TResult Function(String message) error,
+  $Res call({
+    Object? message = null,
   }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(double? fontSize)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(double? fontSize)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FontSizeInitial value) initial,
-    required TResult Function(FontSizeSuccess value) success,
-    required TResult Function(FontSizeErrorState value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FontSizeInitial value)? initial,
-    TResult? Function(FontSizeSuccess value)? success,
-    TResult? Function(FontSizeErrorState value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FontSizeInitial value)? initial,
-    TResult Function(FontSizeSuccess value)? success,
-    TResult Function(FontSizeErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
+    return _then(FontSizeErrorState(
+      null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class FontSizeErrorState implements FontSizeState {
-  const factory FontSizeErrorState(final String message) =
-      _$FontSizeErrorStateImpl;
-
-  String get message;
-  @JsonKey(ignore: true)
-  _$$FontSizeErrorStateImplCopyWith<_$FontSizeErrorStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "sources": [
+    {
+      "code": "uk_tub",
+      "name": "Ukrainian Contemporary",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/UkrainianTUBBible.xml"
+    },
+    {
+      "code": "uk_ohienko",
+      "name": "Ukrainian Ohienko",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/UkrainianBible.xml"
+    },
+    {
+      "code": "uk_kulish",
+      "name": "Ukrainian Kulish",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/Ukrainian1905Bible.xml"
+    },
+    {
+      "code": "ru_synodal",
+      "name": "Russian Synodal",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/RussianSynodalBible.xml"
+    },
+    {
+      "code": "ru_wbtc",
+      "name": "Russian Contemporary",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/RussianWBTCBible.xml"
+    },
+    {
+      "code": "ru_rsp",
+      "name": "Russian RSP",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/RussianRSPBible.xml"
+    },
+    {
+      "code": "en_kjv",
+      "name": "English KJV",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/EnglishKJBible.xml"
+    },
+    {
+      "code": "en_asv",
+      "name": "English ASV",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/EnglishASVBible.xml"
+    },
+    {
+      "code": "en_easy",
+      "name": "English Contemporary",
+      "source": "https://raw.githubusercontent.com/Beblia/Holy-Bible-XML-Format/master/EnglishEASYBible.xml"
+    }
+  ],
+  "translations": 9,
+  "verses": 279302
+}

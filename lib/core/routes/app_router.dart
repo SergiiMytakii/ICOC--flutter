@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
 import 'package:icoc/core/routes/app_routes.dart';
-import 'package:icoc/core/routes/routes_with_transitions.dart';
 import 'package:icoc/presentation/screen/bible_study/bible_study_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_lesson_screen.dart';
 import 'package:icoc/presentation/screen/bible_study/one_topic_screen.dart';
@@ -11,6 +10,7 @@ import 'package:icoc/presentation/screen/home/about_app_screen.dart';
 import 'package:icoc/presentation/screen/home/general_settings_screen.dart';
 import 'package:icoc/presentation/screen/home/home_screen.dart';
 import 'package:icoc/presentation/screen/home/notifications_screen.dart';
+import 'package:icoc/presentation/screen/home/notification_settings_screen.dart';
 import 'package:icoc/presentation/screen/home/share_app_screen.dart';
 import 'package:icoc/presentation/screen/home/terms_of_use_screen.dart';
 import 'package:icoc/presentation/screen/q&a/one_q&a_screen.dart';
@@ -22,6 +22,10 @@ import 'package:icoc/presentation/screen/songs/widget/bottom_navigation_bar.dart
 import 'package:icoc/presentation/screen/video/list_topics_screen.dart';
 import 'package:icoc/presentation/screen/video/list_videos_screen.dart';
 import 'package:icoc/presentation/screen/video/video_player_screen.dart';
+import 'package:icoc/presentation/screen/insights/insights_screen.dart';
+import 'package:icoc/presentation/screen/insights/one_insight_screen.dart';
+import 'package:icoc/domain/model/insights/post.dart';
+import 'package:icoc/presentation/screen/webview/webview_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <GoRoute>[
@@ -32,7 +36,7 @@ final GoRouter router = GoRouter(
             const HomeScreen(),
         routes: [
           //main sections
-          FadeGoRoute(
+          GoRoute(
               path: SONGBOOK,
               builder: (BuildContext context, GoRouterState state) =>
                   const MyBottomNavigationBar(),
@@ -55,7 +59,7 @@ final GoRouter router = GoRouter(
                       const AddSongScreen(),
                 ),
               ]),
-          FadeGoRoute(
+          GoRoute(
               path: Q_AND_ANSVERS,
               builder: (BuildContext context, GoRouterState state) =>
                   QuestionsAndAnswers(),
@@ -67,7 +71,7 @@ final GoRouter router = GoRouter(
                     return OneQandAScreen(article: article);
                   },
                 ),
-                VerticalSlideGoRoute(
+                GoRoute(
                   path: '$Q_AND_A_VIDEO_PLAYER/:videoId',
                   builder: (BuildContext context, GoRouterState state) {
                     final videoId = state.pathParameters['videoId'];
@@ -76,11 +80,40 @@ final GoRouter router = GoRouter(
                 ),
               ]),
 
-          FadeGoRoute(
+          GoRoute(
               path: BIBLE_STUDY,
               builder: (BuildContext context, GoRouterState state) =>
                   const BibleStudyScreen(),
               routes: [
+                // Alias route to open a lesson directly: /biblestudy/lessons/:topicId/:id
+                GoRoute(
+                  path: 'lessons/:topicId/:id',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final id = state.pathParameters['id'];
+                    final topicId = state.pathParameters['topicId'];
+                    return OneLessonScreen(
+                        lessonId: id ?? '', topicId: topicId ?? '');
+                  },
+                ),
+                // Backward-compatible alias: /biblestudy/topics/:topicId
+                GoRoute(
+                    path: 'topics/:topicId',
+                    builder: (BuildContext context, GoRouterState state) {
+                      final id = state.pathParameters['topicId'];
+                      return OneTopicScreen(topicId: id ?? '');
+                    },
+                    routes: [
+                      // Backward-compatible alias: /biblestudy/topics/:topicId/lessons/:id
+                      GoRoute(
+                        path: 'lessons/:id',
+                        builder: (BuildContext context, GoRouterState state) {
+                          final id = state.pathParameters['id'];
+                          final topicId = state.pathParameters['topicId'];
+                          return OneLessonScreen(
+                              lessonId: id ?? '', topicId: topicId ?? '');
+                        },
+                      ),
+                    ]),
                 GoRoute(
                     path: '$ONE_TOPIC_SCREEN/:topicId',
                     builder: (BuildContext context, GoRouterState state) {
@@ -99,7 +132,7 @@ final GoRouter router = GoRouter(
                       ),
                     ]),
               ]),
-          FadeGoRoute(
+          GoRoute(
               path: VIDEO,
               builder: (BuildContext context, GoRouterState state) =>
                   ListTopicsScreen(),
@@ -115,7 +148,7 @@ final GoRouter router = GoRouter(
                       );
                     },
                     routes: [
-                      VerticalSlideGoRoute(
+                      GoRoute(
                         path: '$VIDEO_PLAYER/:videoId',
                         builder: (BuildContext context, GoRouterState state) {
                           final videoId = state.pathParameters['videoId'];
@@ -125,36 +158,83 @@ final GoRouter router = GoRouter(
                     ]),
               ]),
 
-          FadeGoRoute(
+          GoRoute(
             path: FEEDBACK_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const FeedbackScreen(),
           ),
 
+          GoRoute(
+            path: WEBVIEW_SCREEN,
+            builder: (BuildContext context, GoRouterState state) {
+              final String? url = state.extra is String
+                  ? state.extra as String
+                  : state.uri.queryParameters['url'];
+              return WebViewScreen(url: url ?? '');
+            },
+          ),
+
+          GoRoute(
+            path: INSIGHTS,
+            builder: (BuildContext context, GoRouterState state) =>
+                const InsightsScreen(),
+            routes: [
+              GoRoute(
+                path: ONE_INSIGHT_SCREEN,
+                builder: (BuildContext context, GoRouterState state) {
+                  final Post? post =
+                      state.extra is Post ? state.extra as Post : null;
+                  return OneInsightScreen(post: post);
+                },
+              ),
+              GoRoute(
+                path: 'post/:id',
+                builder: (BuildContext context, GoRouterState state) {
+                  final id = state.pathParameters['id'];
+                  final lang = state.uri.queryParameters['lang'];
+                  return OneInsightScreen(postId: id ?? '', lang: lang);
+                },
+              ),
+              GoRoute(
+                path: 'article/:id',
+                builder: (BuildContext context, GoRouterState state) {
+                  final id = state.pathParameters['id'];
+                  final lang = state.uri.queryParameters['lang'];
+                  return OneInsightScreen(postId: id ?? '', lang: lang);
+                },
+              ),
+            ],
+          ),
+
           //menu screens
 
-          FadeGoRoute(
+          GoRoute(
             path: SETTINGS,
             builder: (BuildContext context, GoRouterState state) =>
                 const GeneralSettingsScreen(),
           ),
-          FadeGoRoute(
+          GoRoute(
+            path: NOTIFICATION_SETTINGS,
+            builder: (BuildContext context, GoRouterState state) =>
+                const NotificationSettingsScreen(),
+          ),
+          GoRoute(
             path: SHARE_APP_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const ShareAppScreen(),
           ),
-          FadeGoRoute(
+          GoRoute(
             path: TERMS_OF_USE,
             builder: (BuildContext context, GoRouterState state) =>
                 const TermsOfUseAndPolicy(),
           ),
-          FadeGoRoute(
+          GoRoute(
             path: ABOUT_APP_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 const AboutAppScreen(),
           ),
 
-          FadeGoRoute(
+          GoRoute(
             path: NOTIFICATIONS_SCREEN,
             builder: (BuildContext context, GoRouterState state) =>
                 NotificationsScreen(),

@@ -412,5 +412,7 @@ fabric.properties
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
+.env
+
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,dart,kotlin,android,androidstudio,gradle,swift

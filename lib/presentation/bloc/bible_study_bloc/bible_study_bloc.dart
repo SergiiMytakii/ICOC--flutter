@@ -53,12 +53,31 @@ Future<void> updateStoredLanguages(List<BibleStudy> bibleStudies,
   final List<Languages> allLangsFrombibleStudies =
       bibleStudies.map((bibleStudy) => bibleStudy.lang).toSet().toList();
 
-  for (final lang in allLangsFrombibleStudies) {
-    if (!bibleStudyUserLanguagesHandler.languages.containsKey(lang.name)) {
-      await bibleStudyUserLanguagesHandler.addLanguage(
-          lang.name, lang.name == locale);
-    }
+  // Get the set of available language names from the database
+  final Set<String> availableLangNames =
+      allLangsFrombibleStudies.map((lang) => lang.name).toSet();
+
+  // Create a new languages map with only available languages
+  final Map<String, dynamic> updatedLanguages = <String, dynamic>{};
+
+  // Add languages that are available in the database
+  for (final langName in availableLangNames) {
+    // Keep the existing active state if the language was already present
+    final bool wasActive =
+        bibleStudyUserLanguagesHandler.languages[langName] ?? false;
+    updatedLanguages[langName] = wasActive || langName == locale;
   }
+
+  // Ensure at least one language is active if none are currently active
+  if (updatedLanguages.isNotEmpty &&
+      !updatedLanguages.values.any((isActive) => isActive == true)) {
+    // Activate the first available language or the user's locale if available
+    final String firstLang = updatedLanguages.keys.first;
+    updatedLanguages[firstLang] = true;
+  }
+
+  // Update the handler with only available languages
+  await bibleStudyUserLanguagesHandler.saveAllLanguages(updatedLanguages);
 }
 
 Future<List<BibleStudy>> filterByLanguages(List<BibleStudy> topics,

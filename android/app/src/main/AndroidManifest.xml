@@ -1,29 +1,41 @@
 <manifest
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="ru.icoc.app"
-	>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.icoc.app"
+    >
 	<!-- io.flutter.app.FlutterApplication is an android.app.Application that
 		 calls FlutterMain.startInitialization(this); in its onCreate method.
 		 In most cases you can leave this as-is, but you if you want to provide
 		 additional functionality it is fine to subclass or reimplement
 		 FlutterApplication and put your custom class here. -->
 
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
-	<uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/>
-	<uses-permission android:name="android.permission.BLUETOOTH"/>
-	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/>
+    <!-- Legacy Bluetooth perms for pre-Android 12 (S) -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
 
-	<application
-		android:name="${applicationName}"
-		android:enableOnBackInvokedCallback="true"
-		android:icon="@mipmap/launcher_icon"
-		android:label="ICOC"
-		android:usesCleartextTraffic="true"
-		>
+    <!-- Android 12+ Bluetooth permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:name="${applicationName}"
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/launcher_icon"
+        android:label="ICOC"
+        android:usesCleartextTraffic="true"
+        >
 		<!--android:name="io.flutter.embedding.android.FlutterActivity"-->
 		<activity
 			android:name="io.flutter.embedding.android.FlutterActivity"
@@ -54,6 +66,9 @@
 				android:name="io.flutter.embedding.android.SplashScreenDrawable"
 				android:resource="@drawable/launch_background"
 				/>
+			<meta-data
+				android:name="com.google.android.gms.phenotype.DISABLE"
+				android:value="true" />
 
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -67,13 +82,19 @@
  				
 			</intent-filter>
 
-		</activity>
-		<!-- Don't delete the meta-data below.
-			 This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
-		<meta-data
-			android:name="flutterEmbedding"
-			android:value="2"
-			/>
+        </activity>
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2"
+            />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="icoc_default_channel" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/launcher_icon" />
 
 		<service
 			android:name="com.ryanheise.audioservice.AudioService"
@@ -93,7 +114,7 @@
 			</intent-filter>
 		</receiver>
 
-	</application>
+    </application>
 
 	<queries>
 		<intent>

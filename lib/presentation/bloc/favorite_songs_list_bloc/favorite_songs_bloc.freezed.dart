@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,208 +9,247 @@ part of 'favorite_songs_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$FavoriteSongsEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() getRequested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? getRequested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getRequested,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsListRequested value) getRequested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsListRequested value)? getRequested,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is FavoriteSongsEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'FavoriteSongsEvent()';
+  }
+}
+
+/// @nodoc
+class $FavoriteSongsEventCopyWith<$Res> {
+  $FavoriteSongsEventCopyWith(
+      FavoriteSongsEvent _, $Res Function(FavoriteSongsEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [FavoriteSongsEvent].
+extension FavoriteSongsEventPatterns on FavoriteSongsEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FavoriteSongsListRequested value)? getRequested,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsListRequested() when getRequested != null:
+        return getRequested(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FavoriteSongsListRequested value) getRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsListRequested():
+        return getRequested(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FavoriteSongsListRequested value)? getRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsListRequested() when getRequested != null:
+        return getRequested(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? getRequested,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsListRequested() when getRequested != null:
+        return getRequested();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() getRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsListRequested():
+        return getRequested();
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? getRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsListRequested() when getRequested != null:
+        return getRequested();
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $FavoriteSongsEventCopyWith<$Res> {
-  factory $FavoriteSongsEventCopyWith(
-          FavoriteSongsEvent value, $Res Function(FavoriteSongsEvent) then) =
-      _$FavoriteSongsEventCopyWithImpl<$Res, FavoriteSongsEvent>;
-}
 
-/// @nodoc
-class _$FavoriteSongsEventCopyWithImpl<$Res, $Val extends FavoriteSongsEvent>
-    implements $FavoriteSongsEventCopyWith<$Res> {
-  _$FavoriteSongsEventCopyWithImpl(this._value, this._then);
+class FavoriteSongsListRequested implements FavoriteSongsEvent {
+  const FavoriteSongsListRequested();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FavoriteSongsListRequested);
+  }
 
-/// @nodoc
-abstract class _$$FavoriteSongsListRequestedImplCopyWith<$Res> {
-  factory _$$FavoriteSongsListRequestedImplCopyWith(
-          _$FavoriteSongsListRequestedImpl value,
-          $Res Function(_$FavoriteSongsListRequestedImpl) then) =
-      __$$FavoriteSongsListRequestedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$FavoriteSongsListRequestedImplCopyWithImpl<$Res>
-    extends _$FavoriteSongsEventCopyWithImpl<$Res,
-        _$FavoriteSongsListRequestedImpl>
-    implements _$$FavoriteSongsListRequestedImplCopyWith<$Res> {
-  __$$FavoriteSongsListRequestedImplCopyWithImpl(
-      _$FavoriteSongsListRequestedImpl _value,
-      $Res Function(_$FavoriteSongsListRequestedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$FavoriteSongsListRequestedImpl implements FavoriteSongsListRequested {
-  const _$FavoriteSongsListRequestedImpl();
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'FavoriteSongsEvent.getRequested()';
   }
+}
 
+/// @nodoc
+mixin _$FavoriteSongsState {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FavoriteSongsListRequestedImpl);
+        (other.runtimeType == runtimeType && other is FavoriteSongsState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() getRequested,
-  }) {
-    return getRequested();
+  String toString() {
+    return 'FavoriteSongsState()';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? getRequested,
-  }) {
-    return getRequested?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getRequested,
-    required TResult orElse(),
-  }) {
-    if (getRequested != null) {
-      return getRequested();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsListRequested value) getRequested,
-  }) {
-    return getRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsListRequested value)? getRequested,
-  }) {
-    return getRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FavoriteSongsListRequested value)? getRequested,
-    required TResult orElse(),
-  }) {
-    if (getRequested != null) {
-      return getRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FavoriteSongsListRequested implements FavoriteSongsEvent {
-  const factory FavoriteSongsListRequested() = _$FavoriteSongsListRequestedImpl;
 }
 
 /// @nodoc
-mixin _$FavoriteSongsState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<SongModel> songs) success,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<SongModel> songs)? success,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<SongModel> songs)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsInitial value) initial,
-    required TResult Function(FavoriteSongsLoadingState value) loading,
-    required TResult Function(GetFavoriteSongsSuccessState value) success,
-    required TResult Function(FavoriteSongsErrorState value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsInitial value)? initial,
-    TResult? Function(FavoriteSongsLoadingState value)? loading,
-    TResult? Function(GetFavoriteSongsSuccessState value)? success,
-    TResult? Function(FavoriteSongsErrorState value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
+class $FavoriteSongsStateCopyWith<$Res> {
+  $FavoriteSongsStateCopyWith(
+      FavoriteSongsState _, $Res Function(FavoriteSongsState) __);
+}
+
+/// Adds pattern-matching-related methods to [FavoriteSongsState].
+extension FavoriteSongsStatePatterns on FavoriteSongsState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(FavoriteSongsInitial value)? initial,
@@ -218,289 +257,304 @@ mixin _$FavoriteSongsState {
     TResult Function(GetFavoriteSongsSuccessState value)? success,
     TResult Function(FavoriteSongsErrorState value)? error,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsInitial() when initial != null:
+        return initial(_that);
+      case FavoriteSongsLoadingState() when loading != null:
+        return loading(_that);
+      case GetFavoriteSongsSuccessState() when success != null:
+        return success(_that);
+      case FavoriteSongsErrorState() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FavoriteSongsInitial value) initial,
+    required TResult Function(FavoriteSongsLoadingState value) loading,
+    required TResult Function(GetFavoriteSongsSuccessState value) success,
+    required TResult Function(FavoriteSongsErrorState value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsInitial():
+        return initial(_that);
+      case FavoriteSongsLoadingState():
+        return loading(_that);
+      case GetFavoriteSongsSuccessState():
+        return success(_that);
+      case FavoriteSongsErrorState():
+        return error(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FavoriteSongsInitial value)? initial,
+    TResult? Function(FavoriteSongsLoadingState value)? loading,
+    TResult? Function(GetFavoriteSongsSuccessState value)? success,
+    TResult? Function(FavoriteSongsErrorState value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsInitial() when initial != null:
+        return initial(_that);
+      case FavoriteSongsLoadingState() when loading != null:
+        return loading(_that);
+      case GetFavoriteSongsSuccessState() when success != null:
+        return success(_that);
+      case FavoriteSongsErrorState() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<SongModel> songs)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsInitial() when initial != null:
+        return initial();
+      case FavoriteSongsLoadingState() when loading != null:
+        return loading();
+      case GetFavoriteSongsSuccessState() when success != null:
+        return success(_that.songs);
+      case FavoriteSongsErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<SongModel> songs) success,
+    required TResult Function(String message) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsInitial():
+        return initial();
+      case FavoriteSongsLoadingState():
+        return loading();
+      case GetFavoriteSongsSuccessState():
+        return success(_that.songs);
+      case FavoriteSongsErrorState():
+        return error(_that.message);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<SongModel> songs)? success,
+    TResult? Function(String message)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case FavoriteSongsInitial() when initial != null:
+        return initial();
+      case FavoriteSongsLoadingState() when loading != null:
+        return loading();
+      case GetFavoriteSongsSuccessState() when success != null:
+        return success(_that.songs);
+      case FavoriteSongsErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $FavoriteSongsStateCopyWith<$Res> {
-  factory $FavoriteSongsStateCopyWith(
-          FavoriteSongsState value, $Res Function(FavoriteSongsState) then) =
-      _$FavoriteSongsStateCopyWithImpl<$Res, FavoriteSongsState>;
-}
 
-/// @nodoc
-class _$FavoriteSongsStateCopyWithImpl<$Res, $Val extends FavoriteSongsState>
-    implements $FavoriteSongsStateCopyWith<$Res> {
-  _$FavoriteSongsStateCopyWithImpl(this._value, this._then);
+class FavoriteSongsInitial implements FavoriteSongsState {
+  const FavoriteSongsInitial();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is FavoriteSongsInitial);
+  }
 
-/// @nodoc
-abstract class _$$FavoriteSongsInitialImplCopyWith<$Res> {
-  factory _$$FavoriteSongsInitialImplCopyWith(_$FavoriteSongsInitialImpl value,
-          $Res Function(_$FavoriteSongsInitialImpl) then) =
-      __$$FavoriteSongsInitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$FavoriteSongsInitialImplCopyWithImpl<$Res>
-    extends _$FavoriteSongsStateCopyWithImpl<$Res, _$FavoriteSongsInitialImpl>
-    implements _$$FavoriteSongsInitialImplCopyWith<$Res> {
-  __$$FavoriteSongsInitialImplCopyWithImpl(_$FavoriteSongsInitialImpl _value,
-      $Res Function(_$FavoriteSongsInitialImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$FavoriteSongsInitialImpl implements FavoriteSongsInitial {
-  const _$FavoriteSongsInitialImpl();
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'FavoriteSongsState.initial()';
   }
+}
+
+/// @nodoc
+
+class FavoriteSongsLoadingState implements FavoriteSongsState {
+  const FavoriteSongsLoadingState();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FavoriteSongsInitialImpl);
+            other is FavoriteSongsLoadingState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<SongModel> songs) success,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<SongModel> songs)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<SongModel> songs)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsInitial value) initial,
-    required TResult Function(FavoriteSongsLoadingState value) loading,
-    required TResult Function(GetFavoriteSongsSuccessState value) success,
-    required TResult Function(FavoriteSongsErrorState value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsInitial value)? initial,
-    TResult? Function(FavoriteSongsLoadingState value)? loading,
-    TResult? Function(GetFavoriteSongsSuccessState value)? success,
-    TResult? Function(FavoriteSongsErrorState value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FavoriteSongsInitial value)? initial,
-    TResult Function(FavoriteSongsLoadingState value)? loading,
-    TResult Function(GetFavoriteSongsSuccessState value)? success,
-    TResult Function(FavoriteSongsErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FavoriteSongsInitial implements FavoriteSongsState {
-  const factory FavoriteSongsInitial() = _$FavoriteSongsInitialImpl;
-}
-
-/// @nodoc
-abstract class _$$FavoriteSongsLoadingStateImplCopyWith<$Res> {
-  factory _$$FavoriteSongsLoadingStateImplCopyWith(
-          _$FavoriteSongsLoadingStateImpl value,
-          $Res Function(_$FavoriteSongsLoadingStateImpl) then) =
-      __$$FavoriteSongsLoadingStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$FavoriteSongsLoadingStateImplCopyWithImpl<$Res>
-    extends _$FavoriteSongsStateCopyWithImpl<$Res,
-        _$FavoriteSongsLoadingStateImpl>
-    implements _$$FavoriteSongsLoadingStateImplCopyWith<$Res> {
-  __$$FavoriteSongsLoadingStateImplCopyWithImpl(
-      _$FavoriteSongsLoadingStateImpl _value,
-      $Res Function(_$FavoriteSongsLoadingStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$FavoriteSongsLoadingStateImpl implements FavoriteSongsLoadingState {
-  const _$FavoriteSongsLoadingStateImpl();
 
   @override
   String toString() {
     return 'FavoriteSongsState.loading()';
   }
+}
+
+/// @nodoc
+
+class GetFavoriteSongsSuccessState implements FavoriteSongsState {
+  const GetFavoriteSongsSuccessState(final List<SongModel> songs)
+      : _songs = songs;
+
+  final List<SongModel> _songs;
+  List<SongModel> get songs {
+    if (_songs is EqualUnmodifiableListView) return _songs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_songs);
+  }
+
+  /// Create a copy of FavoriteSongsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $GetFavoriteSongsSuccessStateCopyWith<GetFavoriteSongsSuccessState>
+      get copyWith => _$GetFavoriteSongsSuccessStateCopyWithImpl<
+          GetFavoriteSongsSuccessState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FavoriteSongsLoadingStateImpl);
+            other is GetFavoriteSongsSuccessState &&
+            const DeepCollectionEquality().equals(other._songs, _songs));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_songs));
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<SongModel> songs) success,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
+  String toString() {
+    return 'FavoriteSongsState.success(songs: $songs)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<SongModel> songs)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<SongModel> songs)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsInitial value) initial,
-    required TResult Function(FavoriteSongsLoadingState value) loading,
-    required TResult Function(GetFavoriteSongsSuccessState value) success,
-    required TResult Function(FavoriteSongsErrorState value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsInitial value)? initial,
-    TResult? Function(FavoriteSongsLoadingState value)? loading,
-    TResult? Function(GetFavoriteSongsSuccessState value)? success,
-    TResult? Function(FavoriteSongsErrorState value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FavoriteSongsInitial value)? initial,
-    TResult Function(FavoriteSongsLoadingState value)? loading,
-    TResult Function(GetFavoriteSongsSuccessState value)? success,
-    TResult Function(FavoriteSongsErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FavoriteSongsLoadingState implements FavoriteSongsState {
-  const factory FavoriteSongsLoadingState() = _$FavoriteSongsLoadingStateImpl;
 }
 
 /// @nodoc
-abstract class _$$GetFavoriteSongsSuccessStateImplCopyWith<$Res> {
-  factory _$$GetFavoriteSongsSuccessStateImplCopyWith(
-          _$GetFavoriteSongsSuccessStateImpl value,
-          $Res Function(_$GetFavoriteSongsSuccessStateImpl) then) =
-      __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>;
+abstract mixin class $GetFavoriteSongsSuccessStateCopyWith<$Res>
+    implements $FavoriteSongsStateCopyWith<$Res> {
+  factory $GetFavoriteSongsSuccessStateCopyWith(
+          GetFavoriteSongsSuccessState value,
+          $Res Function(GetFavoriteSongsSuccessState) _then) =
+      _$GetFavoriteSongsSuccessStateCopyWithImpl;
   @useResult
   $Res call({List<SongModel> songs});
 }
 
 /// @nodoc
-class __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>
-    extends _$FavoriteSongsStateCopyWithImpl<$Res,
-        _$GetFavoriteSongsSuccessStateImpl>
-    implements _$$GetFavoriteSongsSuccessStateImplCopyWith<$Res> {
-  __$$GetFavoriteSongsSuccessStateImplCopyWithImpl(
-      _$GetFavoriteSongsSuccessStateImpl _value,
-      $Res Function(_$GetFavoriteSongsSuccessStateImpl) _then)
-      : super(_value, _then);
+class _$GetFavoriteSongsSuccessStateCopyWithImpl<$Res>
+    implements $GetFavoriteSongsSuccessStateCopyWith<$Res> {
+  _$GetFavoriteSongsSuccessStateCopyWithImpl(this._self, this._then);
 
+  final GetFavoriteSongsSuccessState _self;
+  final $Res Function(GetFavoriteSongsSuccessState) _then;
+
+  /// Create a copy of FavoriteSongsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? songs = null,
   }) {
-    return _then(_$GetFavoriteSongsSuccessStateImpl(
+    return _then(GetFavoriteSongsSuccessState(
       null == songs
-          ? _value._songs
+          ? _self._songs
           : songs // ignore: cast_nullable_to_non_nullable
               as List<SongModel>,
     ));
@@ -509,276 +563,67 @@ class __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GetFavoriteSongsSuccessStateImpl
-    implements GetFavoriteSongsSuccessState {
-  const _$GetFavoriteSongsSuccessStateImpl(final List<SongModel> songs)
-      : _songs = songs;
+class FavoriteSongsErrorState implements FavoriteSongsState {
+  const FavoriteSongsErrorState(this.message);
 
-  final List<SongModel> _songs;
-  @override
-  List<SongModel> get songs {
-    if (_songs is EqualUnmodifiableListView) return _songs;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_songs);
-  }
-
-  @override
-  String toString() {
-    return 'FavoriteSongsState.success(songs: $songs)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GetFavoriteSongsSuccessStateImpl &&
-            const DeepCollectionEquality().equals(other._songs, _songs));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_songs));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GetFavoriteSongsSuccessStateImplCopyWith<
-          _$GetFavoriteSongsSuccessStateImpl>
-      get copyWith => __$$GetFavoriteSongsSuccessStateImplCopyWithImpl<
-          _$GetFavoriteSongsSuccessStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<SongModel> songs) success,
-    required TResult Function(String message) error,
-  }) {
-    return success(songs);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<SongModel> songs)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return success?.call(songs);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<SongModel> songs)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(songs);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsInitial value) initial,
-    required TResult Function(FavoriteSongsLoadingState value) loading,
-    required TResult Function(GetFavoriteSongsSuccessState value) success,
-    required TResult Function(FavoriteSongsErrorState value) error,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsInitial value)? initial,
-    TResult? Function(FavoriteSongsLoadingState value)? loading,
-    TResult? Function(GetFavoriteSongsSuccessState value)? success,
-    TResult? Function(FavoriteSongsErrorState value)? error,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FavoriteSongsInitial value)? initial,
-    TResult Function(FavoriteSongsLoadingState value)? loading,
-    TResult Function(GetFavoriteSongsSuccessState value)? success,
-    TResult Function(FavoriteSongsErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GetFavoriteSongsSuccessState implements FavoriteSongsState {
-  const factory GetFavoriteSongsSuccessState(final List<SongModel> songs) =
-      _$GetFavoriteSongsSuccessStateImpl;
-
-  List<SongModel> get songs;
-  @JsonKey(ignore: true)
-  _$$GetFavoriteSongsSuccessStateImplCopyWith<
-          _$GetFavoriteSongsSuccessStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$FavoriteSongsErrorStateImplCopyWith<$Res> {
-  factory _$$FavoriteSongsErrorStateImplCopyWith(
-          _$FavoriteSongsErrorStateImpl value,
-          $Res Function(_$FavoriteSongsErrorStateImpl) then) =
-      __$$FavoriteSongsErrorStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class __$$FavoriteSongsErrorStateImplCopyWithImpl<$Res>
-    extends _$FavoriteSongsStateCopyWithImpl<$Res,
-        _$FavoriteSongsErrorStateImpl>
-    implements _$$FavoriteSongsErrorStateImplCopyWith<$Res> {
-  __$$FavoriteSongsErrorStateImplCopyWithImpl(
-      _$FavoriteSongsErrorStateImpl _value,
-      $Res Function(_$FavoriteSongsErrorStateImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$FavoriteSongsErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$FavoriteSongsErrorStateImpl implements FavoriteSongsErrorState {
-  const _$FavoriteSongsErrorStateImpl(this.message);
-
-  @override
   final String message;
 
-  @override
-  String toString() {
-    return 'FavoriteSongsState.error(message: $message)';
-  }
+  /// Create a copy of FavoriteSongsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FavoriteSongsErrorStateCopyWith<FavoriteSongsErrorState> get copyWith =>
+      _$FavoriteSongsErrorStateCopyWithImpl<FavoriteSongsErrorState>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FavoriteSongsErrorStateImpl &&
+            other is FavoriteSongsErrorState &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'FavoriteSongsState.error(message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $FavoriteSongsErrorStateCopyWith<$Res>
+    implements $FavoriteSongsStateCopyWith<$Res> {
+  factory $FavoriteSongsErrorStateCopyWith(FavoriteSongsErrorState value,
+          $Res Function(FavoriteSongsErrorState) _then) =
+      _$FavoriteSongsErrorStateCopyWithImpl;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class _$FavoriteSongsErrorStateCopyWithImpl<$Res>
+    implements $FavoriteSongsErrorStateCopyWith<$Res> {
+  _$FavoriteSongsErrorStateCopyWithImpl(this._self, this._then);
+
+  final FavoriteSongsErrorState _self;
+  final $Res Function(FavoriteSongsErrorState) _then;
+
+  /// Create a copy of FavoriteSongsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$FavoriteSongsErrorStateImplCopyWith<_$FavoriteSongsErrorStateImpl>
-      get copyWith => __$$FavoriteSongsErrorStateImplCopyWithImpl<
-          _$FavoriteSongsErrorStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<SongModel> songs) success,
-    required TResult Function(String message) error,
+  $Res call({
+    Object? message = null,
   }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<SongModel> songs)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<SongModel> songs)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FavoriteSongsInitial value) initial,
-    required TResult Function(FavoriteSongsLoadingState value) loading,
-    required TResult Function(GetFavoriteSongsSuccessState value) success,
-    required TResult Function(FavoriteSongsErrorState value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FavoriteSongsInitial value)? initial,
-    TResult? Function(FavoriteSongsLoadingState value)? loading,
-    TResult? Function(GetFavoriteSongsSuccessState value)? success,
-    TResult? Function(FavoriteSongsErrorState value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FavoriteSongsInitial value)? initial,
-    TResult Function(FavoriteSongsLoadingState value)? loading,
-    TResult Function(GetFavoriteSongsSuccessState value)? success,
-    TResult Function(FavoriteSongsErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
+    return _then(FavoriteSongsErrorState(
+      null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class FavoriteSongsErrorState implements FavoriteSongsState {
-  const factory FavoriteSongsErrorState(final String message) =
-      _$FavoriteSongsErrorStateImpl;
-
-  String get message;
-  @JsonKey(ignore: true)
-  _$$FavoriteSongsErrorStateImplCopyWith<_$FavoriteSongsErrorStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

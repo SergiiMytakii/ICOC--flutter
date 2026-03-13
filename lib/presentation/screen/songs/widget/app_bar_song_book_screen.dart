@@ -26,7 +26,7 @@ class SongBookAppbar extends StatefulWidget {
 
 class _SongBookAppbarState extends State<SongBookAppbar> {
   final songsUserLanguagesHandler = getIt<SongsUserLanguagesHandler>();
-  final GlobalKey tooltipKey = GlobalKey();
+  final GlobalKey<TooltipState> tooltipKey = GlobalKey<TooltipState>();
   bool _tooltipVisible = true;
 
   @override
@@ -45,7 +45,7 @@ class _SongBookAppbarState extends State<SongBookAppbar> {
             0.0;
     if (tooltipShown < 4.0) {
       Future.delayed(const Duration(milliseconds: 1500)).then((value) {
-        (tooltipKey.currentState as TooltipState).ensureTooltipVisible();
+        tooltipKey.currentState?.ensureTooltipVisible();
         Future.delayed(const Duration(seconds: 6), () {
           if (mounted)
             setState(() {
