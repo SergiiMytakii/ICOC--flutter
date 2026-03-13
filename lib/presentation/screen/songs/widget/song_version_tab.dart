@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -564,9 +565,11 @@ class _SongVersionTabState extends State<SongVersionTab>
               : YoutubeEmbeddedPlayer(
                   videoId: _currentVideoId!,
                   aspectRatio: _playerAspectRatio,
-                  interceptAndroidFullscreen: true,
+                  interceptAndroidFullscreen: Platform.isAndroid,
                   persistProgress: false,
-                  onFullscreenChanged: _handleMiniPlayerFullscreenChanged,
+                  onFullscreenChanged: Platform.isAndroid
+                      ? _handleMiniPlayerFullscreenChanged
+                      : null,
                 ),
         ),
       )
