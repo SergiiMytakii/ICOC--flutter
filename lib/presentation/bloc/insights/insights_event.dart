@@ -4,8 +4,9 @@ part 'insights_event.freezed.dart';
 
 @freezed
 abstract class InsightsEvent with _$InsightsEvent {
-  const factory InsightsEvent.fetchAvailableLanguagesAndPosts() =
-      _FetchAvailableLanguagesAndPosts;
+  const factory InsightsEvent.fetchAvailableLanguagesAndPosts({
+    @Default(false) bool silent,
+  }) = _FetchAvailableLanguagesAndPosts;
   const factory InsightsEvent.languagesChanged(
     Map<String, bool> selectedLanguages,
   ) = _LanguagesChanged;

@@ -55,6 +55,8 @@ class _InsightsScreenState extends State<InsightsScreen> {
     super.initState();
     _scrollController.addListener(_scheduleCenteredVideoDetection);
     _ensureInsightsLoaded();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _silentRefreshIfLoaded());
   }
 
   @override
@@ -76,6 +78,20 @@ class _InsightsScreenState extends State<InsightsScreen> {
     final InsightsState state = context.read<InsightsBloc>().state;
     state.maybeWhen(
       initial: () => _refresh(),
+      orElse: () {},
+    );
+  }
+
+  void _silentRefreshIfLoaded() {
+    final InsightsState state = context.read<InsightsBloc>().state;
+    state.maybeWhen(
+      loaded: (List<Post> posts, List<String> _, Map<String, bool> __,
+              Set<String> ___, Set<String> ____, String? _____) =>
+          context.read<InsightsBloc>().add(
+                const InsightsEvent.fetchAvailableLanguagesAndPosts(
+                  silent: true,
+                ),
+              ),
       orElse: () {},
     );
   }

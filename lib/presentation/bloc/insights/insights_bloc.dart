@@ -16,8 +16,8 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
   ) : super(const InsightsState.initial()) {
     on<InsightsEvent>((InsightsEvent event, Emitter<InsightsState> emit) async {
       await event.when(
-        fetchAvailableLanguagesAndPosts: () =>
-            _onFetchAvailableLanguagesAndPosts(emit),
+        fetchAvailableLanguagesAndPosts: (bool silent) =>
+            _onFetchAvailableLanguagesAndPosts(emit, silent: silent),
         languagesChanged: (Map<String, bool> selectedLanguages) =>
             _onLanguagesChanged(selectedLanguages, emit),
         toggleLike: (String postId) => _onToggleLike(postId, emit),
@@ -33,9 +33,18 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
   final InsightsInteractionLocalStore _localStore;
   bool _hasPendingInitialFetch = false;
 
+  List<Post> _sortPostsNewestFirst(List<Post> posts) {
+    final List<Post> sortedPosts = List<Post>.from(posts);
+    sortedPosts.sort(
+      (Post left, Post right) => right.createdAt.compareTo(left.createdAt),
+    );
+    return sortedPosts;
+  }
+
   Future<void> _onFetchAvailableLanguagesAndPosts(
-    Emitter<InsightsState> emit,
-  ) async {
+    Emitter<InsightsState> emit, {
+    bool silent = false,
+  }) async {
     final bool isInitialState = state.maybeWhen(
       initial: () => true,
       orElse: () => false,
@@ -49,7 +58,10 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
       return;
     }
 
-    emit(const InsightsState.loading());
+    final bool shouldEmitLoading = !silent || isInitialState;
+    if (shouldEmitLoading) {
+      emit(const InsightsState.loading());
+    }
 
     try {
       final availableLanguagesResult =
@@ -59,8 +71,9 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
           emit(InsightsState.error(failure.toUserFriendlyMessage()));
         },
         (List<String> availableLanguages) async {
-          final Map<String, dynamic> initializedMap = await _userLanguagesHandler
-              .initializeFromAvailableLanguages(availableLanguages);
+          final Map<String, dynamic> initializedMap =
+              await _userLanguagesHandler
+                  .initializeFromAvailableLanguages(availableLanguages);
           final Set<String> activeLanguages = initializedMap.entries
               .where((MapEntry<String, dynamic> entry) => entry.value == true)
               .map((MapEntry<String, dynamic> entry) => entry.key)
@@ -72,6 +85,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
             (failure) async =>
                 emit(InsightsState.error(failure.toUserFriendlyMessage())),
             (List<Post> posts) async {
+              final List<Post> sortedPosts = _sortPostsNewestFirst(posts);
               final String deviceId = _localStore.getOrCreateDeviceId();
               final likedRemote = await _insightsRepository.getLikedPosts(
                 deviceId: deviceId,
@@ -88,7 +102,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
 
               emit(
                 InsightsState.loaded(
-                  posts: posts,
+                  posts: sortedPosts,
                   availableLanguages: availableLanguages,
                   selectedLanguages: <String, bool>{
                     for (final MapEntry<String, dynamic> entry
@@ -146,7 +160,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
       ),
       (List<Post> posts) => emit(
         loadedState.copyWith(
-          posts: posts,
+          posts: _sortPostsNewestFirst(posts),
           selectedLanguages: nextSelected,
           actionMessage: null,
         ),
@@ -319,7 +333,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
         }
         emit(
           currentState.copyWith(
-            posts: nextPosts,
+            posts: _sortPostsNewestFirst(nextPosts),
             actionMessage: null,
           ),
         );

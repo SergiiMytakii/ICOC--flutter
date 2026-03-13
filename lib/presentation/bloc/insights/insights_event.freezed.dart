@@ -168,7 +168,7 @@ extension InsightsEventPatterns on InsightsEvent {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchAvailableLanguagesAndPosts,
+    TResult Function(bool silent)? fetchAvailableLanguagesAndPosts,
     TResult Function(Map<String, bool> selectedLanguages)? languagesChanged,
     TResult Function(String postId)? toggleLike,
     TResult Function(String postId)? shareTapped,
@@ -179,7 +179,7 @@ extension InsightsEventPatterns on InsightsEvent {
     switch (_that) {
       case _FetchAvailableLanguagesAndPosts()
           when fetchAvailableLanguagesAndPosts != null:
-        return fetchAvailableLanguagesAndPosts();
+        return fetchAvailableLanguagesAndPosts(_that.silent);
       case _LanguagesChanged() when languagesChanged != null:
         return languagesChanged(_that.selectedLanguages);
       case _ToggleLike() when toggleLike != null:
@@ -208,7 +208,7 @@ extension InsightsEventPatterns on InsightsEvent {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchAvailableLanguagesAndPosts,
+    required TResult Function(bool silent) fetchAvailableLanguagesAndPosts,
     required TResult Function(Map<String, bool> selectedLanguages)
         languagesChanged,
     required TResult Function(String postId) toggleLike,
@@ -218,7 +218,7 @@ extension InsightsEventPatterns on InsightsEvent {
     final _that = this;
     switch (_that) {
       case _FetchAvailableLanguagesAndPosts():
-        return fetchAvailableLanguagesAndPosts();
+        return fetchAvailableLanguagesAndPosts(_that.silent);
       case _LanguagesChanged():
         return languagesChanged(_that.selectedLanguages);
       case _ToggleLike():
@@ -246,7 +246,7 @@ extension InsightsEventPatterns on InsightsEvent {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? fetchAvailableLanguagesAndPosts,
+    TResult? Function(bool silent)? fetchAvailableLanguagesAndPosts,
     TResult? Function(Map<String, bool> selectedLanguages)? languagesChanged,
     TResult? Function(String postId)? toggleLike,
     TResult? Function(String postId)? shareTapped,
@@ -256,7 +256,7 @@ extension InsightsEventPatterns on InsightsEvent {
     switch (_that) {
       case _FetchAvailableLanguagesAndPosts()
           when fetchAvailableLanguagesAndPosts != null:
-        return fetchAvailableLanguagesAndPosts();
+        return fetchAvailableLanguagesAndPosts(_that.silent);
       case _LanguagesChanged() when languagesChanged != null:
         return languagesChanged(_that.selectedLanguages);
       case _ToggleLike() when toggleLike != null:
@@ -274,21 +274,67 @@ extension InsightsEventPatterns on InsightsEvent {
 /// @nodoc
 
 class _FetchAvailableLanguagesAndPosts implements InsightsEvent {
-  const _FetchAvailableLanguagesAndPosts();
+  const _FetchAvailableLanguagesAndPosts({this.silent = false});
+
+  @JsonKey()
+  final bool silent;
+
+  /// Create a copy of InsightsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$FetchAvailableLanguagesAndPostsCopyWith<_FetchAvailableLanguagesAndPosts>
+      get copyWith => __$FetchAvailableLanguagesAndPostsCopyWithImpl<
+          _FetchAvailableLanguagesAndPosts>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _FetchAvailableLanguagesAndPosts);
+            other is _FetchAvailableLanguagesAndPosts &&
+            (identical(other.silent, silent) || other.silent == silent));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, silent);
 
   @override
   String toString() {
-    return 'InsightsEvent.fetchAvailableLanguagesAndPosts()';
+    return 'InsightsEvent.fetchAvailableLanguagesAndPosts(silent: $silent)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$FetchAvailableLanguagesAndPostsCopyWith<$Res>
+    implements $InsightsEventCopyWith<$Res> {
+  factory _$FetchAvailableLanguagesAndPostsCopyWith(
+          _FetchAvailableLanguagesAndPosts value,
+          $Res Function(_FetchAvailableLanguagesAndPosts) _then) =
+      __$FetchAvailableLanguagesAndPostsCopyWithImpl;
+  @useResult
+  $Res call({bool silent});
+}
+
+/// @nodoc
+class __$FetchAvailableLanguagesAndPostsCopyWithImpl<$Res>
+    implements _$FetchAvailableLanguagesAndPostsCopyWith<$Res> {
+  __$FetchAvailableLanguagesAndPostsCopyWithImpl(this._self, this._then);
+
+  final _FetchAvailableLanguagesAndPosts _self;
+  final $Res Function(_FetchAvailableLanguagesAndPosts) _then;
+
+  /// Create a copy of InsightsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? silent = null,
+  }) {
+    return _then(_FetchAvailableLanguagesAndPosts(
+      silent: null == silent
+          ? _self.silent
+          : silent // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
   }
 }
 

@@ -191,10 +191,32 @@ void main() {
     likes: 2,
     shares: 1,
   );
+  final Post olderPost = Post(
+    id: 'older',
+    type: PostType.image,
+    language: 'en',
+    content: 'Older post',
+    mediaUrls: const <String>['https://example.com/older.jpg'],
+    author: const PostAuthor(name: 'Test', avatarUrl: ''),
+    createdAt: DateTime(2024, 1, 1),
+  );
+  final Post newerPost = Post(
+    id: 'newer',
+    type: PostType.image,
+    language: 'en',
+    content: 'Newer post',
+    mediaUrls: const <String>['https://example.com/newer.jpg'],
+    author: const PostAuthor(name: 'Test', avatarUrl: ''),
+    createdAt: DateTime(2025, 2, 1),
+  );
 
   setUp(() async {
     originalLocale = app.locale;
     repository = _FakeInsightsRepository();
+    repository.getLikedPostsHandler = ({
+      required String deviceId,
+    }) async =>
+        const Right(<String>[]);
     cache = _MemoryLocalCache();
     await cache.saveString(StorageKeys.deviceId, 'device-1');
     userLanguagesHandler = InsightsUserLanguagesHandler(cache);
@@ -210,6 +232,45 @@ void main() {
   test('initial state is correct', () {
     expect(bloc.state, const InsightsState.initial());
   });
+
+  blocTest<InsightsBloc, InsightsState>(
+    'keeps newest posts first after initial fetch',
+    build: () {
+      repository.getAvailableLanguagesHandler =
+          () async => const Right(<String>['en']);
+      repository.getPostsHandler = ({
+        required Set<String> languages,
+      }) async =>
+          Right(<Post>[olderPost, newerPost]);
+      repository.getLikedPostsHandler = ({
+        required String deviceId,
+      }) async =>
+          const Right(<String>[]);
+      return bloc;
+    },
+    act: (InsightsBloc bloc) => bloc.add(
+      const InsightsEvent.fetchAvailableLanguagesAndPosts(),
+    ),
+    expect: () => <dynamic>[
+      const InsightsState.loading(),
+      isA<InsightsState>().having(
+        (InsightsState state) => state.maybeWhen(
+          loaded: (
+            List<Post> posts,
+            List<String> _,
+            Map<String, bool> __,
+            Set<String> ___,
+            Set<String> ____,
+            String? _____,
+          ) =>
+              posts.map((Post post) => post.id).toList(),
+          orElse: () => const <String>[],
+        ),
+        'posts ordered from newest to oldest',
+        <String>['newer', 'older'],
+      ),
+    ],
+  );
 
   blocTest<InsightsBloc, InsightsState>(
     'selects app locale by default when it exists in available languages',
@@ -362,6 +423,30 @@ void main() {
         <String, dynamic>{'en': true, 'uk': true},
       );
     },
+  );
+
+  blocTest<InsightsBloc, InsightsState>(
+    're-sorts posts after refreshing a single older post',
+    build: () {
+      repository.getPostByIdHandler = (String postId) async => Right(olderPost);
+      return bloc;
+    },
+    seed: () => InsightsState.loaded(
+      posts: <Post>[newerPost],
+      availableLanguages: const <String>['en'],
+      selectedLanguages: const <String, bool>{'en': true},
+      likedPostIds: const <String>{},
+    ),
+    act: (InsightsBloc bloc) =>
+        bloc.add(const InsightsEvent.refreshSinglePost('older')),
+    expect: () => <InsightsState>[
+      InsightsState.loaded(
+        posts: <Post>[newerPost, olderPost],
+        availableLanguages: const <String>['en'],
+        selectedLanguages: const <String, bool>{'en': true},
+        likedPostIds: const <String>{},
+      ),
+    ],
   );
 
   blocTest<InsightsBloc, InsightsState>(
