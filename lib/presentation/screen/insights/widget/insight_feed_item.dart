@@ -204,6 +204,7 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
       child: switch (widget.post.type) {
         PostType.video => _buildVideo(context),
         PostType.image => _buildImageCarousel(context),
+        PostType.text => const SizedBox.shrink(),
       },
     );
   }
