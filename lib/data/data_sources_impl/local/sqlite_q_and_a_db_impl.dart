@@ -1,15 +1,10 @@
 import 'package:flutter/services.dart';
-import 'package:html/parser.dart';
-import 'package:icoc/data/data_sources_impl/remote/firebase_data_source_impl.dart';
 import 'package:icoc/domain/data_sources/local/local_q_and_a_db_data_source.dart';
-import 'package:icoc/domain/data_sources/remote/firebase_data_source.dart';
 import 'package:icoc/domain/model/q&a/q&a_model.dart';
-import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
-import 'package:html/parser.dart' show parse;
 
 // @dev
 // @prod

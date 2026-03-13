@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 import 'package:icoc/presentation/widget/custom_button.dart';
-import 'package:icoc/presentation/widget/toast.dart';
 
 class AboutAppScreen extends StatefulWidget {
   const AboutAppScreen({super.key});
@@ -29,18 +29,29 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
     try {
       final canOpen = await canLaunchUrl(uri);
       if (!canOpen) {
-        final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+        final launched =
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
         if (!launched) {
-          showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+          if (context.mounted) {
+            AppToast.show(context,
+                title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+          }
         }
       } else {
-        final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+        final launched =
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
         if (!launched) {
-          showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+          if (context.mounted) {
+            AppToast.show(context,
+                title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+          }
         }
       }
     } catch (_) {
-      showToast(context: context, title: 'Error'.tr(), message: 'Can\'t open Email app'.tr());
+      if (context.mounted) {
+        AppToast.show(context,
+            title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+      }
     }
   }
 
@@ -99,15 +110,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
-              'Antonina Glajevskaya'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              'Oksana Strelchenya'.tr(),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              'Loginova Irina'.tr(),
+              'Anatoliy Mishin'.tr(),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
@@ -153,7 +156,10 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
   Future<void> _copyToClipboard(String text) async {
     await Clipboard.setData(ClipboardData(text: text));
-    showToast(context: context, message: 'Copied to clipboard'.tr());
+    if (mounted) {
+      AppToast.show(context,
+          title: 'Clipboard'.tr(), body: 'Copied to clipboard'.tr());
+    }
   }
 
   Column supportProjectBlock(BuildContext context) {

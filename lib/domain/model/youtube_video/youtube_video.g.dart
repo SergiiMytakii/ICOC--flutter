@@ -6,8 +6,8 @@ part of 'youtube_video.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$YoutubeVideoImpl _$$YoutubeVideoImplFromJson(Map<String, dynamic> json) =>
-    _$YoutubeVideoImpl(
+_YoutubeVideo _$YoutubeVideoFromJson(Map<String, dynamic> json) =>
+    _YoutubeVideo(
       lang: $enumDecode(_$LanguagesEnumMap, json['lang']),
       title: json['title'] as String?,
       link: json['link'] as String,
@@ -18,7 +18,7 @@ _$YoutubeVideoImpl _$$YoutubeVideoImplFromJson(Map<String, dynamic> json) =>
       playlistId: json['playlistId'] as String?,
     );
 
-Map<String, dynamic> _$$YoutubeVideoImplToJson(_$YoutubeVideoImpl instance) =>
+Map<String, dynamic> _$YoutubeVideoToJson(_YoutubeVideo instance) =>
     <String, dynamic>{
       'lang': _$LanguagesEnumMap[instance.lang]!,
       'title': instance.title,

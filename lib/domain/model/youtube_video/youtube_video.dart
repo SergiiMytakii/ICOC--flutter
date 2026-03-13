@@ -5,7 +5,7 @@ part 'youtube_video.freezed.dart';
 part 'youtube_video.g.dart';
 
 @freezed
-class YoutubeVideo with _$YoutubeVideo {
+abstract class YoutubeVideo with _$YoutubeVideo {
   const factory YoutubeVideo({
     required Languages lang,
     required String? title,

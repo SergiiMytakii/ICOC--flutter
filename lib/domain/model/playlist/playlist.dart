@@ -6,7 +6,7 @@ part 'playlist.freezed.dart';
 part 'playlist.g.dart';
 
 @freezed
-class Playlist with _$Playlist {
+abstract class Playlist with _$Playlist {
   const factory Playlist({
     required int id,
     required String title,

@@ -19,7 +19,7 @@ class ScreenColors {
 const String email = 'serjmitaki@gmail.com';
 const String payPalAccount = 'serjmitaki@gmail.com';
 const String usdtWallet = 'TF9irV2F7CoGVpZFvDxvV7hzmT9esWanjf';
-const String monoBankCard = '5375411432482466';
+const String monoBankCard = '4441111042365647';
 const appUrlPlayMarket =
     'https://play.google.com/store/apps/details?id=ru.icoc.app';
 const appUrlAppStore = 'https://apps.apple.com/us/app/icoc/id1585486521';
@@ -43,6 +43,9 @@ class StorageKeys {
   static const String qAndALanguages = 'qAndALanguages';
   static const String qAndAReadPosition = 'qAndAReadPosition';
   static const String notifications = 'notifications';
+  static const String fcmToken = 'fcmToken';
+  static const String notificationLangs = 'notificationLangs';
+  static const String notificationTopics = 'notificationTopics';
   static const String videosAllLanguages = 'videosAllLanguages';
   static const String firstAppRunDate = 'firstAppRunDate';
   static const String shouldVideoFilterAnimate = 'shouldVideoFilterAnimate';
@@ -51,25 +54,46 @@ class StorageKeys {
   static const String shouldBibleStudyFilterAnimate =
       'shouldBibleStudyFilterAnimate';
   static const String bibleStudyReadPosition = 'bibleStudyReadPosition';
+  static const String songTranspose = 'songTranspose';
+  static const String songScrollSpeed = 'songScrollSpeed';
+  static const String wallLanguages = 'wallLanguages';
+  static const String shouldWallFilterAnimate = 'shouldWallFilterAnimate';
+  static const String insightsLanguages = 'insightsLanguages';
+  static const String insightsDisplayName = 'insightsDisplayName';
+  static const String insightsLikedPosts = 'insightsLikedPosts';
+  static const String youtubeWatchProgress = 'youtubeWatchProgress';
+  static const String notificationsPermissionAsked =
+      'notificationsPermissionAsked';
+  static const String notificationsPermissionReminderLastCheckAt =
+      'notificationsPermissionReminderLastCheckAt';
+  static const String notificationsPermissionReminderDeclines =
+      'notificationsPermissionReminderDeclines';
+  static const String deviceId = 'deviceId';
+  static const String bibleVerseTranslation = 'bibleVerseTranslation';
   // Add more keys as needed
+}
+
+class FeatureFlags {
+  static const bool bibleReferencePopup = true;
 }
 
 Map<String, String> languagesCodes = {
   'en': 'English',
+  'uk': 'Ukrainian',
+  'ru': 'Russian',
+  'pl': 'Polish',
+  'lv': 'Latvian',
   'et': 'Estonian',
   'fr': 'French',
   'de': 'German',
   'bg': 'Bulgarian',
   'it': 'Italian',
-  'lv': 'Latvian',
   'lt': 'Lithuanian',
   'no': 'Norwegian',
-  'pl': 'Polish',
   'ro': 'Romanian',
-  'ru': 'Russian',
   'es': 'Spanish',
   'sv': 'Swedish',
-  'uk': 'Ukrainian',
+
   // 'sk': 'Slovak',
   // 'sl': 'Slovenian',
   // 'fi': 'Finnish',
@@ -100,7 +124,8 @@ enum FirebaseCollections {
   QandA,
   Video,
   Feedback,
-  QandALangs
+  QandALangs,
+  Insights
 }
 
 enum OrderEnum { ascending, descending, random }

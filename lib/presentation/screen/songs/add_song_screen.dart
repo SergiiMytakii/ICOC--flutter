@@ -1,4 +1,3 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +5,7 @@ import 'package:icoc/presentation/widget/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:icoc/core/constants.dart';
-import 'package:icoc/presentation/widget/toast.dart';
+import 'package:icoc/core/helpers/app_toast.dart';
 
 class AddSongScreen extends StatefulWidget {
   const AddSongScreen({super.key});
@@ -199,14 +198,16 @@ class _AddSongScreenState extends State<AddSongScreen> {
     if (await canLaunchUrl(uri)) {
       final result = await launchUrl(uri);
       if (result) {
-        showToast(context: context, message: 'Email has been sent'.tr());
-        await Future.delayed(const Duration(seconds: 1));
-        context.pop();
+        if (context.mounted) {
+          AppToast.show(context,
+              title: 'Email'.tr(), body: 'Email has been sent'.tr());
+          await Future.delayed(const Duration(seconds: 1));
+          context.pop();
+        }
       }
-    } else
-      showToast(
-          context: context,
-          title: 'Error'.tr(),
-          message: 'Can\'t open Email app'.tr());
+    } else if (context.mounted) {
+      AppToast.show(context,
+          title: 'Error'.tr(), body: 'Can\'t open Email app'.tr());
+    }
   }
 }

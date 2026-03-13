@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/user_languages.dart';
@@ -6,6 +8,7 @@ import 'package:icoc/presentation/bloc/q&a_bloc/list_q&a/q&a_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetQandAFilter extends StatefulWidget {
   const BottomSheetQandAFilter({super.key});
@@ -80,6 +83,10 @@ class _BottomSheetQandAFilterState extends State<BottomSheetQandAFilter> {
                     callback: (Map<String, dynamic> activeLanguages) async {
                       await qAndAUserLanguagesHandler
                           .saveAllLanguages(activeLanguages);
+
+                      unawaited(getIt<PushNotificationService>()
+                          .syncTopicLangSubscriptionsFor(
+                              'qanda', activeLanguages));
                       getIt<QandABloc>().add(const QandAEvent.requested());
                       setState(() {});
                     },

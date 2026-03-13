@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/main.dart';
@@ -38,7 +40,13 @@ abstract class UserLanguagesHandler {
 @singleton
 class BibleStudyUserLanguagesHandler extends UserLanguagesHandler {
   BibleStudyUserLanguagesHandler(super._localCache) {
-    languages.addAll(_localCache.getMap(StorageKeys.bibleStudyLanguages) ?? {});
+    final cachedLanguages = _localCache.getMap(StorageKeys.bibleStudyLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      // Start with empty map - languages will be populated from actual database content
+      languages = <String, dynamic>{};
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -66,7 +74,16 @@ class BibleStudyUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class QandAUserLanguagesHandler extends UserLanguagesHandler {
   QandAUserLanguagesHandler(super._localCache) {
-    languages.addAll(_localCache.getMap(StorageKeys.qAndALanguages) ?? {});
+    final cachedLanguages = _localCache.getMap(StorageKeys.qAndALanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -93,7 +110,18 @@ class QandAUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class VideosUserLanguagesHandler extends UserLanguagesHandler {
   VideosUserLanguagesHandler(super._localCache) {
-    languages.addAll(_localCache.getMap(StorageKeys.videosAllLanguages) ?? {});
+    final cachedLanguages = _localCache.getMap(StorageKeys.videosAllLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -120,7 +148,18 @@ class VideosUserLanguagesHandler extends UserLanguagesHandler {
 @singleton
 class SongsUserLanguagesHandler extends UserLanguagesHandler {
   SongsUserLanguagesHandler(super._localCache) {
-    languages = _localCache.getMap(StorageKeys.allSongsLanguages) ?? {};
+    final cachedLanguages = _localCache.getMap(StorageKeys.allSongsLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages =
+          Map.from(languagesCodes).map((key, value) => MapEntry(key, false));
+      if (languages.containsKey(locale)) {
+        languages[locale] = true;
+      } else if (languages.isNotEmpty) {
+        languages[languages.keys.first] = true;
+      }
+    } else {
+      languages.addAll(cachedLanguages);
+    }
   }
 
   @override
@@ -152,4 +191,91 @@ class SongsUserLanguagesHandler extends UserLanguagesHandler {
 
   bool get isOneActiveLang =>
       languages.entries.toList().where((entry) => entry.value).length == 1;
+}
+
+@dev
+@prod
+@singleton
+class InsightsUserLanguagesHandler extends UserLanguagesHandler {
+  InsightsUserLanguagesHandler(super._localCache) {
+    final cachedLanguages = _localCache.getMap(StorageKeys.insightsLanguages);
+    if (cachedLanguages == null || cachedLanguages.isEmpty) {
+      languages = <String, dynamic>{};
+    } else {
+      languages.addAll(cachedLanguages);
+    }
+  }
+
+  Future<Map<String, dynamic>> initializeFromAvailableLanguages(
+    List<String> availableLanguages,
+  ) async {
+    final List<String> normalizedAvailable = availableLanguages
+        .map((String lang) => lang.trim())
+        .where((String lang) => lang.isNotEmpty)
+        .toSet()
+        .toList();
+
+    if (normalizedAvailable.isEmpty) {
+      languages = <String, dynamic>{};
+      await _localCache.saveMap(StorageKeys.insightsLanguages, languages);
+      return languages;
+    }
+
+    final Map<String, dynamic> normalized = <String, dynamic>{
+      for (final String lang in normalizedAvailable)
+        lang: languages[lang] == true,
+    };
+
+    if (!normalized.values.any((dynamic value) => value == true)) {
+      final String fallbackLang = _pickDefaultLanguage(normalizedAvailable);
+      normalized[fallbackLang] = true;
+    }
+
+    languages = normalized;
+    await _localCache.saveMap(StorageKeys.insightsLanguages, normalized);
+    return normalized;
+  }
+
+  Future<void> ensureLanguageEnabled(String lang) async {
+    if (lang.isEmpty) {
+      return;
+    }
+    final Map<String, dynamic> next = Map<String, dynamic>.from(languages);
+    next[lang] = true;
+    languages = next;
+    await _localCache.saveMap(StorageKeys.insightsLanguages, next);
+  }
+
+  String _pickDefaultLanguage(List<String> availableLanguages) {
+    final String appLocale = locale;
+    final String deviceLocale =
+        ui.PlatformDispatcher.instance.locale.languageCode;
+
+    if (availableLanguages.contains(appLocale)) {
+      return appLocale;
+    }
+    if (deviceLocale != appLocale &&
+        availableLanguages.contains(deviceLocale)) {
+      return deviceLocale;
+    }
+    return availableLanguages.first;
+  }
+
+  @override
+  Future<void> addLanguage(String lang, bool isActive) async {
+    super.addLanguage(lang, isActive);
+    _localCache.saveMap(StorageKeys.insightsLanguages, languages);
+  }
+
+  @override
+  Future<void> updateLanguage(String lang, bool isActive) async {
+    super.updateLanguage(lang, isActive);
+    _localCache.saveMap(StorageKeys.insightsLanguages, languages);
+  }
+
+  @override
+  Future<void> saveAllLanguages(Map<String, dynamic> updatedLanguages) async {
+    super.saveAllLanguages(updatedLanguages);
+    await _localCache.saveMap(StorageKeys.insightsLanguages, updatedLanguages);
+  }
 }

@@ -5,7 +5,7 @@ part 'bible_study.freezed.dart';
 part 'bible_study.g.dart';
 
 @freezed
-class BibleStudy with _$BibleStudy {
+abstract class BibleStudy with _$BibleStudy {
   @JsonSerializable(explicitToJson: true)
   const factory BibleStudy({
     required String topic,
@@ -28,7 +28,7 @@ class BibleStudy with _$BibleStudy {
 }
 
 @freezed
-class Lesson with _$Lesson {
+abstract class Lesson with _$Lesson {
   const factory Lesson({
     required int id,
     required String title,

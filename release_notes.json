@@ -1,17 +1,38 @@
 [
-    { "language": "cs-CZ", "text": "Opravy chyb a vylepšení" },
-    { "language": "no-NO", "text": "Feilrettinger og forbedringer" },
-    { "language": "en-US", "text": "Bug fixes and improvements" },
-    { "language": "de-DE", "text": "Fehlerbehebungen und Verbesserungen" },
-    { "language": "pl-PL", "text": "Poprawki błędów i ulepszenia" },
-    { "language": "ru-RU", "text": "Исправления ошибок и улучшения" },
-    { "language": "fr-FR", "text": "Corrections de bugs et améliorations" },
-    { "language": "it-IT", "text": "Correzioni di bug e miglioramenti" },
-    { "language": "ro-RO", "text": "Corecții de erori și îmbunătățiri" },
-    { "language": "ro", "text": "Corecții de erori și îmbunătățiri" },
-    { "language": "uk-UA", "text": "Виправлення помилок та покращення" },
-    { "language": "uk", "text": "Виправлення помилок та покращення" },
-    { "language": "es-ES", "text": "Corrección de errores y mejoras" },
-    { "language": "et", "text": "Veaparandused ja täiustused" },
-    { "language": "lv", "text": "Kļūdu labojumi un uzlabojumi" }
+  { "language": "en-US", "text": "Added push notifications for updates and a chords transpose feature in Songs." },
+  { "language": "en",    "text": "Added push notifications for updates and a chords transpose feature in Songs." },
+
+  { "language": "de-DE", "text": "Wir haben Push-Benachrichtigungen für Updates sowie eine neue Akkord-Transponierungsfunktion im Bereich Lieder hinzugefügt." },
+  { "language": "de",    "text": "Wir haben Push-Benachrichtigungen für Updates sowie eine neue Akkord-Transponierungsfunktion im Bereich Lieder hinzugefügt." },
+
+  { "language": "fr-FR", "text": "Nous avons ajouté les notifications push pour recevoir les mises à jour, ainsi qu’une nouvelle fonction de transposition des accords dans la section Chants." },
+  { "language": "fr",    "text": "Nous avons ajouté les notifications push pour recevoir les mises à jour, ainsi qu’une nouvelle fonction de transposition des accords dans la section Chants." },
+
+  { "language": "it-IT", "text": "Abbiamo aggiunto le notifiche push per ricevere gli aggiornamenti e una nuova funzione di trasposizione degli accordi nella sezione Canzoni." },
+  { "language": "it",    "text": "Abbiamo aggiunto le notifiche push per ricevere gli aggiornamenti e una nuova funzione di trasposizione degli accordi nella sezione Canzoni." },
+
+  { "language": "es-ES", "text": "Hemos añadido notificaciones push para las actualizaciones y una nueva función de transposición de acordes en la sección Canciones." },
+  { "language": "es",    "text": "Hemos añadido notificaciones push para las actualizaciones y una nueva función de transposición de acordes en la sección Canciones." },
+
+  { "language": "pl-PL", "text": "Dodaliśmy powiadomienia push o aktualizacjach oraz nową funkcję transpozycji akordów w sekcji Piosenki." },
+  { "language": "pl",    "text": "Dodaliśmy powiadomienia push o aktualizacjach oraz nową funkcję transpozycji akordów w sekcji Piosenki." },
+
+  { "language": "ru-RU", "text": "Мы добавили push‑уведомления об обновлениях и новую функцию транспонирования аккордов в разделе «Песни»." },
+  { "language": "ru",    "text": "Мы добавили push‑уведомления об обновлениях и новую функцию транспонирования аккордов в разделе «Песни»." },
+
+  { "language": "uk-UA", "text": "Додали push‑сповіщення про оновлення та нову функцію транспонування акордів у розділі «Пісні»." },
+  { "language": "uk",    "text": "Додали push‑сповіщення про оновлення та нову функцію транспонування акордів у розділі «Пісні»." },
+
+  { "language": "ro-RO", "text": "Am adăugat notificări push pentru actualizări și o nouă funcție de transpunere a acordurilor în secțiunea Piese." },
+  { "language": "ro",    "text": "Am adăugat notificări push pentru actualizări și o nouă funcție de transpunere a acordurilor în secțiunea Piese." },
+
+  { "language": "no-NO", "text": "Vi har lagt til pushvarsler for oppdateringer og en ny funksjon for transponering av akkorder i seksjonen Sanger." },
+  { "language": "no",    "text": "Vi har lagt til pushvarsler for oppdateringer og en ny funksjon for transponering av akkorder i seksjonen Sanger." },
+
+  { "language": "et",    "text": "Lisatud on push-teated ja akordide transponeerimine Laulude jaotises." },
+  { "language": "lv",    "text": "Pievienotas push paziņojumi par atjauninājumiem un jauna akordu transponēšanas funkcija Dziesmu sadaļā." },
+  { "language": "lt",    "text": "Pridėjome pranešimus (push) apie atnaujinimus ir naują akordų transponavimo funkciją Dainų skiltyje." },
+  { "language": "sv",    "text": "Vi har lagt till pushnotiser för uppdateringar samt en ny funktion för transponering av ackord i avsnittet Sånger." },
+  { "language": "bg",    "text": "Добавихме push известия за актуализации и нова функция за транспониране на акорди в раздела „Песни“." },
+  { "language": "cs-CZ", "text": "Přidali jsme push oznámení pro aktualizace a novou funkci transpozice akordů v sekci Písně." }
 ]

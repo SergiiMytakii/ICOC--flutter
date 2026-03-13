@@ -13,6 +13,7 @@
     "internal": "Eroare internă a aplicației. Vă rugăm să încercați din nou mai târziu. Dacă eroarea persistă, vă rugăm să contactați dezvoltatorul.",
   
   "Question:": "Întrebare:",
+  "Open": "Deschide",   
   "Answer:": "Răspuns:",
   "Date:": "Data:",
   "Author:": "Autor:",
@@ -162,8 +163,12 @@
    "There are not any songs in": "Nu există nicio melodie în",
   "chords": "Acorduri",
   "Language": "Limba",
-  "Primary": "Principal"
+  "Primary": "Principal",
+  "Insights": "Perspective",
+  "Coming soon": "🚧 În curând"
 
   
   }
   
+,
+"notification_choose_topics": "Alegeți pentru ce subiecte doriți notificări"

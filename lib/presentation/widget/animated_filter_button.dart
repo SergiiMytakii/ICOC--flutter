@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/injection.dart';
-import 'package:icoc/main.dart';
 
 class AnimatedFilterIconButton extends StatefulWidget {
   final Function onTap;

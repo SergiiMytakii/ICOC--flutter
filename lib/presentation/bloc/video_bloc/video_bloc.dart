@@ -75,13 +75,31 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     final List<Languages> allLangsFromVideos =
         videos.map((video) => video.lang).toSet().toList();
 
-    //add all new langs and set all new langs to false and locale lang to true
-    allLangsFromVideos.forEach((Languages lang) async {
-      if (!videoUserLanguagesHandler.languages.containsKey(lang.name)) {
-        await videoUserLanguagesHandler.addLanguage(
-            lang.name, lang.name == locale);
-      }
-    });
+    // Get the set of available language names from the database
+    final Set<String> availableLangNames =
+        allLangsFromVideos.map((lang) => lang.name).toSet();
+
+    // Create a new languages map with only available languages
+    final Map<String, dynamic> updatedLanguages = <String, dynamic>{};
+
+    // Add languages that are available in the database
+    for (final langName in availableLangNames) {
+      // Keep the existing active state if the language was already present
+      final bool wasActive =
+          videoUserLanguagesHandler.languages[langName] ?? false;
+      updatedLanguages[langName] = wasActive || langName == locale;
+    }
+
+    // Ensure at least one language is active if none are currently active
+    if (updatedLanguages.isNotEmpty &&
+        !updatedLanguages.values.any((isActive) => isActive == true)) {
+      // Activate the first available language or the user's locale if available
+      final String firstLang = updatedLanguages.keys.first;
+      updatedLanguages[firstLang] = true;
+    }
+
+    // Update the handler with only available languages
+    await videoUserLanguagesHandler.saveAllLanguages(updatedLanguages);
   }
 }
 

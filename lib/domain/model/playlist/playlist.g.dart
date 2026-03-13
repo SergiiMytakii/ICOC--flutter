@@ -6,8 +6,7 @@ part of 'playlist.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PlaylistImpl _$$PlaylistImplFromJson(Map<String, dynamic> json) =>
-    _$PlaylistImpl(
+_Playlist _$PlaylistFromJson(Map<String, dynamic> json) => _Playlist(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       lang: $enumDecode(_$LanguagesEnumMap, json['lang']),
@@ -15,8 +14,7 @@ _$PlaylistImpl _$$PlaylistImplFromJson(Map<String, dynamic> json) =>
       playlistId: json['playlistId'] as String,
     );
 
-Map<String, dynamic> _$$PlaylistImplToJson(_$PlaylistImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$PlaylistToJson(_Playlist instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'lang': _$LanguagesEnumMap[instance.lang]!,

@@ -13,6 +13,7 @@
     "internal": "Vidinė programos klaida. Bandykite dar kartą vėliau. Jei klaida išlieka, susisiekite su kūrėju.",
   
   "Question:": "Klausimas:",
+    "Open": "Atverti",
   "Answer:": "Atsakymas:",
   "Date:": "Data:",
   "Author:": "Autorius:",
@@ -165,7 +166,11 @@
    "There are not any songs in": "Nėra dainų šia kalba",
   "chords": "Akordai",
   "Language": "Kalba",
-  "Primary": "Pagrindinė"
+  "Primary": "Pagrindinė",
+  "Insights": "Įžvalgos",
+  "Coming soon": "🚧 Netrukus"
 
   }
   
+,
+"notification_choose_topics": "Pasirinkite temas, apie kurias norite gauti pranešimus"

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,112 +9,248 @@ part of 'song_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SongModel _$SongModelFromJson(Map<String, dynamic> json) {
-  return _SongModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SongModel {
-  int get id => throw _privateConstructorUsedError;
-  List<SongVersion> get songVersions => throw _privateConstructorUsedError;
+  int get id;
+  List<SongVersion> get songVersions;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $SongModelCopyWith<SongModel> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SongModelCopyWith<$Res> {
-  factory $SongModelCopyWith(SongModel value, $Res Function(SongModel) then) =
-      _$SongModelCopyWithImpl<$Res, SongModel>;
-  @useResult
-  $Res call({int id, List<SongVersion> songVersions});
-}
-
-/// @nodoc
-class _$SongModelCopyWithImpl<$Res, $Val extends SongModel>
-    implements $SongModelCopyWith<$Res> {
-  _$SongModelCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of SongModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $SongModelCopyWith<SongModel> get copyWith =>
+      _$SongModelCopyWithImpl<SongModel>(this as SongModel, _$identity);
+
+  /// Serializes this SongModel to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? songVersions = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      songVersions: null == songVersions
-          ? _value.songVersions
-          : songVersions // ignore: cast_nullable_to_non_nullable
-              as List<SongVersion>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SongModel &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality()
+                .equals(other.songVersions, songVersions));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, id, const DeepCollectionEquality().hash(songVersions));
+
+  @override
+  String toString() {
+    return 'SongModel(id: $id, songVersions: $songVersions)';
   }
 }
 
 /// @nodoc
-abstract class _$$SongModelImplCopyWith<$Res>
-    implements $SongModelCopyWith<$Res> {
-  factory _$$SongModelImplCopyWith(
-          _$SongModelImpl value, $Res Function(_$SongModelImpl) then) =
-      __$$SongModelImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SongModelCopyWith<$Res> {
+  factory $SongModelCopyWith(SongModel value, $Res Function(SongModel) _then) =
+      _$SongModelCopyWithImpl;
   @useResult
   $Res call({int id, List<SongVersion> songVersions});
 }
 
 /// @nodoc
-class __$$SongModelImplCopyWithImpl<$Res>
-    extends _$SongModelCopyWithImpl<$Res, _$SongModelImpl>
-    implements _$$SongModelImplCopyWith<$Res> {
-  __$$SongModelImplCopyWithImpl(
-      _$SongModelImpl _value, $Res Function(_$SongModelImpl) _then)
-      : super(_value, _then);
+class _$SongModelCopyWithImpl<$Res> implements $SongModelCopyWith<$Res> {
+  _$SongModelCopyWithImpl(this._self, this._then);
 
+  final SongModel _self;
+  final $Res Function(SongModel) _then;
+
+  /// Create a copy of SongModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? songVersions = null,
   }) {
-    return _then(_$SongModelImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       songVersions: null == songVersions
-          ? _value._songVersions
+          ? _self.songVersions
           : songVersions // ignore: cast_nullable_to_non_nullable
               as List<SongVersion>,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [SongModel].
+extension SongModelPatterns on SongModel {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_SongModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SongModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_SongModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongModel():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_SongModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int id, List<SongVersion> songVersions)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SongModel() when $default != null:
+        return $default(_that.id, _that.songVersions);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int id, List<SongVersion> songVersions) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongModel():
+        return $default(_that.id, _that.songVersions);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int id, List<SongVersion> songVersions)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongModel() when $default != null:
+        return $default(_that.id, _that.songVersions);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$SongModelImpl extends _SongModel {
-  const _$SongModelImpl(
+class _SongModel extends SongModel {
+  const _SongModel(
       {required this.id, required final List<SongVersion> songVersions})
       : _songVersions = songVersions,
         super._();
-
-  factory _$SongModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SongModelImplFromJson(json);
+  factory _SongModel.fromJson(Map<String, dynamic> json) =>
+      _$SongModelFromJson(json);
 
   @override
   final int id;
@@ -126,156 +262,134 @@ class _$SongModelImpl extends _SongModel {
     return EqualUnmodifiableListView(_songVersions);
   }
 
+  /// Create a copy of SongModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SongModel(id: $id, songVersions: $songVersions)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SongModelCopyWith<_SongModel> get copyWith =>
+      __$SongModelCopyWithImpl<_SongModel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SongModelToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SongModelImpl &&
+            other is _SongModel &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._songVersions, _songVersions));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, const DeepCollectionEquality().hash(_songVersions));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SongModelImplCopyWith<_$SongModelImpl> get copyWith =>
-      __$$SongModelImplCopyWithImpl<_$SongModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SongModelImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SongModel(id: $id, songVersions: $songVersions)';
   }
 }
 
-abstract class _SongModel extends SongModel {
-  const factory _SongModel(
-      {required final int id,
-      required final List<SongVersion> songVersions}) = _$SongModelImpl;
-  const _SongModel._() : super._();
-
-  factory _SongModel.fromJson(Map<String, dynamic> json) =
-      _$SongModelImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$SongModelCopyWith<$Res>
+    implements $SongModelCopyWith<$Res> {
+  factory _$SongModelCopyWith(
+          _SongModel value, $Res Function(_SongModel) _then) =
+      __$SongModelCopyWithImpl;
   @override
-  int get id;
-  @override
-  List<SongVersion> get songVersions;
-  @override
-  @JsonKey(ignore: true)
-  _$$SongModelImplCopyWith<_$SongModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call({int id, List<SongVersion> songVersions});
 }
 
-SongVersion _$SongVersionFromJson(Map<String, dynamic> json) {
-  return _SongVersion.fromJson(json);
+/// @nodoc
+class __$SongModelCopyWithImpl<$Res> implements _$SongModelCopyWith<$Res> {
+  __$SongModelCopyWithImpl(this._self, this._then);
+
+  final _SongModel _self;
+  final $Res Function(_SongModel) _then;
+
+  /// Create a copy of SongModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? songVersions = null,
+  }) {
+    return _then(_SongModel(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      songVersions: null == songVersions
+          ? _self._songVersions
+          : songVersions // ignore: cast_nullable_to_non_nullable
+              as List<SongVersion>,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$SongVersion {
-  int get id => throw _privateConstructorUsedError;
-  Languages get lang => throw _privateConstructorUsedError;
-  String get text => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  bool get isChords => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  List<YoutubeVideo>? get youtubeVideos => throw _privateConstructorUsedError;
+  int get id;
+  Languages get lang;
+  String get text;
+  String get title;
+  bool get isChords;
+  String? get description;
+  List<YoutubeVideo>? get youtubeVideos;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $SongVersionCopyWith<SongVersion> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SongVersionCopyWith<$Res> {
-  factory $SongVersionCopyWith(
-          SongVersion value, $Res Function(SongVersion) then) =
-      _$SongVersionCopyWithImpl<$Res, SongVersion>;
-  @useResult
-  $Res call(
-      {int id,
-      Languages lang,
-      String text,
-      String title,
-      bool isChords,
-      String? description,
-      List<YoutubeVideo>? youtubeVideos});
-}
-
-/// @nodoc
-class _$SongVersionCopyWithImpl<$Res, $Val extends SongVersion>
-    implements $SongVersionCopyWith<$Res> {
-  _$SongVersionCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of SongVersion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $SongVersionCopyWith<SongVersion> get copyWith =>
+      _$SongVersionCopyWithImpl<SongVersion>(this as SongVersion, _$identity);
+
+  /// Serializes this SongVersion to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? lang = null,
-    Object? text = null,
-    Object? title = null,
-    Object? isChords = null,
-    Object? description = freezed,
-    Object? youtubeVideos = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      lang: null == lang
-          ? _value.lang
-          : lang // ignore: cast_nullable_to_non_nullable
-              as Languages,
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      isChords: null == isChords
-          ? _value.isChords
-          : isChords // ignore: cast_nullable_to_non_nullable
-              as bool,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      youtubeVideos: freezed == youtubeVideos
-          ? _value.youtubeVideos
-          : youtubeVideos // ignore: cast_nullable_to_non_nullable
-              as List<YoutubeVideo>?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SongVersion &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.lang, lang) || other.lang == lang) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.isChords, isChords) ||
+                other.isChords == isChords) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            const DeepCollectionEquality()
+                .equals(other.youtubeVideos, youtubeVideos));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, lang, text, title, isChords,
+      description, const DeepCollectionEquality().hash(youtubeVideos));
+
+  @override
+  String toString() {
+    return 'SongVersion(id: $id, lang: $lang, text: $text, title: $title, isChords: $isChords, description: $description, youtubeVideos: $youtubeVideos)';
   }
 }
 
 /// @nodoc
-abstract class _$$SongVersionImplCopyWith<$Res>
-    implements $SongVersionCopyWith<$Res> {
-  factory _$$SongVersionImplCopyWith(
-          _$SongVersionImpl value, $Res Function(_$SongVersionImpl) then) =
-      __$$SongVersionImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SongVersionCopyWith<$Res> {
+  factory $SongVersionCopyWith(
+          SongVersion value, $Res Function(SongVersion) _then) =
+      _$SongVersionCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -288,13 +402,14 @@ abstract class _$$SongVersionImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$SongVersionImplCopyWithImpl<$Res>
-    extends _$SongVersionCopyWithImpl<$Res, _$SongVersionImpl>
-    implements _$$SongVersionImplCopyWith<$Res> {
-  __$$SongVersionImplCopyWithImpl(
-      _$SongVersionImpl _value, $Res Function(_$SongVersionImpl) _then)
-      : super(_value, _then);
+class _$SongVersionCopyWithImpl<$Res> implements $SongVersionCopyWith<$Res> {
+  _$SongVersionCopyWithImpl(this._self, this._then);
 
+  final SongVersion _self;
+  final $Res Function(SongVersion) _then;
+
+  /// Create a copy of SongVersion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -306,44 +421,228 @@ class __$$SongVersionImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? youtubeVideos = freezed,
   }) {
-    return _then(_$SongVersionImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       lang: null == lang
-          ? _value.lang
+          ? _self.lang
           : lang // ignore: cast_nullable_to_non_nullable
               as Languages,
       text: null == text
-          ? _value.text
+          ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       isChords: null == isChords
-          ? _value.isChords
+          ? _self.isChords
           : isChords // ignore: cast_nullable_to_non_nullable
               as bool,
       description: freezed == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
       youtubeVideos: freezed == youtubeVideos
-          ? _value._youtubeVideos
+          ? _self.youtubeVideos
           : youtubeVideos // ignore: cast_nullable_to_non_nullable
               as List<YoutubeVideo>?,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [SongVersion].
+extension SongVersionPatterns on SongVersion {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_SongVersion value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersion() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_SongVersion value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersion():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_SongVersion value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersion() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            int id,
+            Languages lang,
+            String text,
+            String title,
+            bool isChords,
+            String? description,
+            List<YoutubeVideo>? youtubeVideos)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersion() when $default != null:
+        return $default(_that.id, _that.lang, _that.text, _that.title,
+            _that.isChords, _that.description, _that.youtubeVideos);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            int id,
+            Languages lang,
+            String text,
+            String title,
+            bool isChords,
+            String? description,
+            List<YoutubeVideo>? youtubeVideos)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersion():
+        return $default(_that.id, _that.lang, _that.text, _that.title,
+            _that.isChords, _that.description, _that.youtubeVideos);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            int id,
+            Languages lang,
+            String text,
+            String title,
+            bool isChords,
+            String? description,
+            List<YoutubeVideo>? youtubeVideos)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersion() when $default != null:
+        return $default(_that.id, _that.lang, _that.text, _that.title,
+            _that.isChords, _that.description, _that.youtubeVideos);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$SongVersionImpl implements _SongVersion {
-  const _$SongVersionImpl(
+class _SongVersion implements SongVersion {
+  const _SongVersion(
       {required this.id,
       required this.lang,
       required this.text,
@@ -352,9 +651,8 @@ class _$SongVersionImpl implements _SongVersion {
       this.description,
       final List<YoutubeVideo>? youtubeVideos})
       : _youtubeVideos = youtubeVideos;
-
-  factory _$SongVersionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SongVersionImplFromJson(json);
+  factory _SongVersion.fromJson(Map<String, dynamic> json) =>
+      _$SongVersionFromJson(json);
 
   @override
   final int id;
@@ -379,16 +677,26 @@ class _$SongVersionImpl implements _SongVersion {
     return EqualUnmodifiableListView(value);
   }
 
+  /// Create a copy of SongVersion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SongVersion(id: $id, lang: $lang, text: $text, title: $title, isChords: $isChords, description: $description, youtubeVideos: $youtubeVideos)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SongVersionCopyWith<_SongVersion> get copyWith =>
+      __$SongVersionCopyWithImpl<_SongVersion>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SongVersionToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SongVersionImpl &&
+            other is _SongVersion &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.lang, lang) || other.lang == lang) &&
             (identical(other.text, text) || other.text == text) &&
@@ -401,142 +709,146 @@ class _$SongVersionImpl implements _SongVersion {
                 .equals(other._youtubeVideos, _youtubeVideos));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, lang, text, title, isChords,
       description, const DeepCollectionEquality().hash(_youtubeVideos));
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SongVersionImplCopyWith<_$SongVersionImpl> get copyWith =>
-      __$$SongVersionImplCopyWithImpl<_$SongVersionImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SongVersionImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SongVersion(id: $id, lang: $lang, text: $text, title: $title, isChords: $isChords, description: $description, youtubeVideos: $youtubeVideos)';
   }
 }
 
-abstract class _SongVersion implements SongVersion {
-  const factory _SongVersion(
-      {required final int id,
-      required final Languages lang,
-      required final String text,
-      required final String title,
-      final bool isChords,
-      final String? description,
-      final List<YoutubeVideo>? youtubeVideos}) = _$SongVersionImpl;
-
-  factory _SongVersion.fromJson(Map<String, dynamic> json) =
-      _$SongVersionImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$SongVersionCopyWith<$Res>
+    implements $SongVersionCopyWith<$Res> {
+  factory _$SongVersionCopyWith(
+          _SongVersion value, $Res Function(_SongVersion) _then) =
+      __$SongVersionCopyWithImpl;
   @override
-  int get id;
-  @override
-  Languages get lang;
-  @override
-  String get text;
-  @override
-  String get title;
-  @override
-  bool get isChords;
-  @override
-  String? get description;
-  @override
-  List<YoutubeVideo>? get youtubeVideos;
-  @override
-  @JsonKey(ignore: true)
-  _$$SongVersionImplCopyWith<_$SongVersionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call(
+      {int id,
+      Languages lang,
+      String text,
+      String title,
+      bool isChords,
+      String? description,
+      List<YoutubeVideo>? youtubeVideos});
 }
 
-SongVersionLocal _$SongVersionLocalFromJson(Map<String, dynamic> json) {
-  return _SongVersionLocal.fromJson(json);
+/// @nodoc
+class __$SongVersionCopyWithImpl<$Res> implements _$SongVersionCopyWith<$Res> {
+  __$SongVersionCopyWithImpl(this._self, this._then);
+
+  final _SongVersion _self;
+  final $Res Function(_SongVersion) _then;
+
+  /// Create a copy of SongVersion
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? lang = null,
+    Object? text = null,
+    Object? title = null,
+    Object? isChords = null,
+    Object? description = freezed,
+    Object? youtubeVideos = freezed,
+  }) {
+    return _then(_SongVersion(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      lang: null == lang
+          ? _self.lang
+          : lang // ignore: cast_nullable_to_non_nullable
+              as Languages,
+      text: null == text
+          ? _self.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      isChords: null == isChords
+          ? _self.isChords
+          : isChords // ignore: cast_nullable_to_non_nullable
+              as bool,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeVideos: freezed == youtubeVideos
+          ? _self._youtubeVideos
+          : youtubeVideos // ignore: cast_nullable_to_non_nullable
+              as List<YoutubeVideo>?,
+    ));
+  }
 }
 
 /// @nodoc
 mixin _$SongVersionLocal {
-  int get id => throw _privateConstructorUsedError;
-  String get lang => throw _privateConstructorUsedError;
-  String get text => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  int get id;
+  String get lang;
+  String get text;
+  String get title;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $SongVersionLocalCopyWith<SongVersionLocal> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SongVersionLocalCopyWith<$Res> {
-  factory $SongVersionLocalCopyWith(
-          SongVersionLocal value, $Res Function(SongVersionLocal) then) =
-      _$SongVersionLocalCopyWithImpl<$Res, SongVersionLocal>;
-  @useResult
-  $Res call({int id, String lang, String text, String title});
-}
-
-/// @nodoc
-class _$SongVersionLocalCopyWithImpl<$Res, $Val extends SongVersionLocal>
-    implements $SongVersionLocalCopyWith<$Res> {
-  _$SongVersionLocalCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of SongVersionLocal
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $SongVersionLocalCopyWith<SongVersionLocal> get copyWith =>
+      _$SongVersionLocalCopyWithImpl<SongVersionLocal>(
+          this as SongVersionLocal, _$identity);
+
+  /// Serializes this SongVersionLocal to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? lang = null,
-    Object? text = null,
-    Object? title = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      lang: null == lang
-          ? _value.lang
-          : lang // ignore: cast_nullable_to_non_nullable
-              as String,
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SongVersionLocal &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.lang, lang) || other.lang == lang) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.title, title) || other.title == title));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, lang, text, title);
+
+  @override
+  String toString() {
+    return 'SongVersionLocal(id: $id, lang: $lang, text: $text, title: $title)';
   }
 }
 
 /// @nodoc
-abstract class _$$SongVersionLocalImplCopyWith<$Res>
-    implements $SongVersionLocalCopyWith<$Res> {
-  factory _$$SongVersionLocalImplCopyWith(_$SongVersionLocalImpl value,
-          $Res Function(_$SongVersionLocalImpl) then) =
-      __$$SongVersionLocalImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SongVersionLocalCopyWith<$Res> {
+  factory $SongVersionLocalCopyWith(
+          SongVersionLocal value, $Res Function(SongVersionLocal) _then) =
+      _$SongVersionLocalCopyWithImpl;
   @useResult
   $Res call({int id, String lang, String text, String title});
 }
 
 /// @nodoc
-class __$$SongVersionLocalImplCopyWithImpl<$Res>
-    extends _$SongVersionLocalCopyWithImpl<$Res, _$SongVersionLocalImpl>
-    implements _$$SongVersionLocalImplCopyWith<$Res> {
-  __$$SongVersionLocalImplCopyWithImpl(_$SongVersionLocalImpl _value,
-      $Res Function(_$SongVersionLocalImpl) _then)
-      : super(_value, _then);
+class _$SongVersionLocalCopyWithImpl<$Res>
+    implements $SongVersionLocalCopyWith<$Res> {
+  _$SongVersionLocalCopyWithImpl(this._self, this._then);
 
+  final SongVersionLocal _self;
+  final $Res Function(SongVersionLocal) _then;
+
+  /// Create a copy of SongVersionLocal
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -545,38 +857,195 @@ class __$$SongVersionLocalImplCopyWithImpl<$Res>
     Object? text = null,
     Object? title = null,
   }) {
-    return _then(_$SongVersionLocalImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       lang: null == lang
-          ? _value.lang
+          ? _self.lang
           : lang // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
-          ? _value.text
+          ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
 }
 
+/// Adds pattern-matching-related methods to [SongVersionLocal].
+extension SongVersionLocalPatterns on SongVersionLocal {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_SongVersionLocal value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersionLocal() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_SongVersionLocal value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersionLocal():
+        return $default(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_SongVersionLocal value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersionLocal() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(int id, String lang, String text, String title)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersionLocal() when $default != null:
+        return $default(_that.id, _that.lang, _that.text, _that.title);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(int id, String lang, String text, String title) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersionLocal():
+        return $default(_that.id, _that.lang, _that.text, _that.title);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(int id, String lang, String text, String title)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _SongVersionLocal() when $default != null:
+        return $default(_that.id, _that.lang, _that.text, _that.title);
+      case _:
+        return null;
+    }
+  }
+}
+
 /// @nodoc
 @JsonSerializable()
-class _$SongVersionLocalImpl implements _SongVersionLocal {
-  const _$SongVersionLocalImpl(
+class _SongVersionLocal implements SongVersionLocal {
+  const _SongVersionLocal(
       {required this.id,
       required this.lang,
       required this.text,
       required this.title});
-
-  factory _$SongVersionLocalImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SongVersionLocalImplFromJson(json);
+  factory _SongVersionLocal.fromJson(Map<String, dynamic> json) =>
+      _$SongVersionLocalFromJson(json);
 
   @override
   final int id;
@@ -587,61 +1056,90 @@ class _$SongVersionLocalImpl implements _SongVersionLocal {
   @override
   final String title;
 
+  /// Create a copy of SongVersionLocal
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SongVersionLocal(id: $id, lang: $lang, text: $text, title: $title)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SongVersionLocalCopyWith<_SongVersionLocal> get copyWith =>
+      __$SongVersionLocalCopyWithImpl<_SongVersionLocal>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SongVersionLocalToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SongVersionLocalImpl &&
+            other is _SongVersionLocal &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.lang, lang) || other.lang == lang) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.title, title) || other.title == title));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, lang, text, title);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SongVersionLocalImplCopyWith<_$SongVersionLocalImpl> get copyWith =>
-      __$$SongVersionLocalImplCopyWithImpl<_$SongVersionLocalImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SongVersionLocalImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SongVersionLocal(id: $id, lang: $lang, text: $text, title: $title)';
   }
 }
 
-abstract class _SongVersionLocal implements SongVersionLocal {
-  const factory _SongVersionLocal(
-      {required final int id,
-      required final String lang,
-      required final String text,
-      required final String title}) = _$SongVersionLocalImpl;
-
-  factory _SongVersionLocal.fromJson(Map<String, dynamic> json) =
-      _$SongVersionLocalImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$SongVersionLocalCopyWith<$Res>
+    implements $SongVersionLocalCopyWith<$Res> {
+  factory _$SongVersionLocalCopyWith(
+          _SongVersionLocal value, $Res Function(_SongVersionLocal) _then) =
+      __$SongVersionLocalCopyWithImpl;
   @override
-  int get id;
-  @override
-  String get lang;
-  @override
-  String get text;
-  @override
-  String get title;
-  @override
-  @JsonKey(ignore: true)
-  _$$SongVersionLocalImplCopyWith<_$SongVersionLocalImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @useResult
+  $Res call({int id, String lang, String text, String title});
 }
+
+/// @nodoc
+class __$SongVersionLocalCopyWithImpl<$Res>
+    implements _$SongVersionLocalCopyWith<$Res> {
+  __$SongVersionLocalCopyWithImpl(this._self, this._then);
+
+  final _SongVersionLocal _self;
+  final $Res Function(_SongVersionLocal) _then;
+
+  /// Create a copy of SongVersionLocal
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? lang = null,
+    Object? text = null,
+    Object? title = null,
+  }) {
+    return _then(_SongVersionLocal(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      lang: null == lang
+          ? _self.lang
+          : lang // ignore: cast_nullable_to_non_nullable
+              as String,
+      text: null == text
+          ? _self.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+// dart format on

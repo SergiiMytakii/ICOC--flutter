@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc/core/user_languages.dart';
@@ -6,6 +8,7 @@ import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/widget/checkbox_list_tile.dart';
 
 import 'package:icoc/core/constants.dart';
+import 'package:icoc/core/notifications/push_notification_service.dart';
 
 class BottomSheetBibleStudyFilter extends StatefulWidget {
   const BottomSheetBibleStudyFilter({super.key});
@@ -41,23 +44,38 @@ class _BottomSheetBibleStudyFilterState
             ),
           ),
           Expanded(
-            child: ListView(
-              children: List.generate(
-                  bibleStudyUserLanguagesHandler.languages.length, (index) {
-                return MyCheckboxListTile(
-                    allLanguages: bibleStudyUserLanguagesHandler.languages,
-                    color: ScreenColors.bibleStudy,
-                    label: bibleStudyUserLanguagesHandler.languages.keys
-                        .toList()[index],
-                    callback: (Map<String, dynamic> activeLanguages) async {
-                      await bibleStudyUserLanguagesHandler
-                          .saveAllLanguages(activeLanguages);
-                      getIt<BibleStudyBloc>()
-                          .add(const BibleStudyEvent.listRequested());
-                    },
-                    key: ValueKey('$index'));
-              }),
-            ),
+            child: bibleStudyUserLanguagesHandler.languages.isEmpty
+                ? Center(
+                    child: Text(
+                      'No languages available'.tr(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  )
+                : ListView(
+                    children: List.generate(
+                        bibleStudyUserLanguagesHandler.languages.length,
+                        (index) {
+                      return MyCheckboxListTile(
+                          allLanguages:
+                              bibleStudyUserLanguagesHandler.languages,
+                          color: ScreenColors.bibleStudy,
+                          label: bibleStudyUserLanguagesHandler.languages.keys
+                              .toList()[index],
+                          callback:
+                              (Map<String, dynamic> activeLanguages) async {
+                            await bibleStudyUserLanguagesHandler
+                                .saveAllLanguages(activeLanguages);
+
+                            unawaited(getIt<PushNotificationService>()
+                                .syncTopicLangSubscriptionsFor(
+                                    'biblestudy', activeLanguages));
+                            getIt<BibleStudyBloc>()
+                                .add(const BibleStudyEvent.listRequested());
+                            setState(() {});
+                          },
+                          key: ValueKey('$index'));
+                    }),
+                  ),
           ),
         ],
       ),

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,212 +9,242 @@ part of 'bible_study_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$BibleStudyEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() listRequested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? listRequested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? listRequested,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyListRequested value) listRequested,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyListRequested value)? listRequested,
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is BibleStudyEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'BibleStudyEvent()';
+  }
+}
+
+/// @nodoc
+class $BibleStudyEventCopyWith<$Res> {
+  $BibleStudyEventCopyWith(
+      BibleStudyEvent _, $Res Function(BibleStudyEvent) __);
+}
+
+/// Adds pattern-matching-related methods to [BibleStudyEvent].
+extension BibleStudyEventPatterns on BibleStudyEvent {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyListRequested value)? listRequested,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyListRequested() when listRequested != null:
+        return listRequested(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(BibleStudyListRequested value) listRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyListRequested():
+        return listRequested(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(BibleStudyListRequested value)? listRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyListRequested() when listRequested != null:
+        return listRequested(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? listRequested,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyListRequested() when listRequested != null:
+        return listRequested();
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() listRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyListRequested():
+        return listRequested();
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? listRequested,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyListRequested() when listRequested != null:
+        return listRequested();
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $BibleStudyEventCopyWith<$Res> {
-  factory $BibleStudyEventCopyWith(
-          BibleStudyEvent value, $Res Function(BibleStudyEvent) then) =
-      _$BibleStudyEventCopyWithImpl<$Res, BibleStudyEvent>;
-}
 
-/// @nodoc
-class _$BibleStudyEventCopyWithImpl<$Res, $Val extends BibleStudyEvent>
-    implements $BibleStudyEventCopyWith<$Res> {
-  _$BibleStudyEventCopyWithImpl(this._value, this._then);
+class BibleStudyListRequested implements BibleStudyEvent {
+  const BibleStudyListRequested();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is BibleStudyListRequested);
+  }
 
-/// @nodoc
-abstract class _$$BibleStudyListRequestedImplCopyWith<$Res> {
-  factory _$$BibleStudyListRequestedImplCopyWith(
-          _$BibleStudyListRequestedImpl value,
-          $Res Function(_$BibleStudyListRequestedImpl) then) =
-      __$$BibleStudyListRequestedImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$BibleStudyListRequestedImplCopyWithImpl<$Res>
-    extends _$BibleStudyEventCopyWithImpl<$Res, _$BibleStudyListRequestedImpl>
-    implements _$$BibleStudyListRequestedImplCopyWith<$Res> {
-  __$$BibleStudyListRequestedImplCopyWithImpl(
-      _$BibleStudyListRequestedImpl _value,
-      $Res Function(_$BibleStudyListRequestedImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$BibleStudyListRequestedImpl implements BibleStudyListRequested {
-  const _$BibleStudyListRequestedImpl();
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'BibleStudyEvent.listRequested()';
   }
+}
 
+/// @nodoc
+mixin _$BibleStudyState {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$BibleStudyListRequestedImpl);
+        (other.runtimeType == runtimeType && other is BibleStudyState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() listRequested,
-  }) {
-    return listRequested();
+  String toString() {
+    return 'BibleStudyState()';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? listRequested,
-  }) {
-    return listRequested?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? listRequested,
-    required TResult orElse(),
-  }) {
-    if (listRequested != null) {
-      return listRequested();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyListRequested value) listRequested,
-  }) {
-    return listRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyListRequested value)? listRequested,
-  }) {
-    return listRequested?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(BibleStudyListRequested value)? listRequested,
-    required TResult orElse(),
-  }) {
-    if (listRequested != null) {
-      return listRequested(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class BibleStudyListRequested implements BibleStudyEvent {
-  const factory BibleStudyListRequested() = _$BibleStudyListRequestedImpl;
 }
 
 /// @nodoc
-mixin _$BibleStudyState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyInitial value) initial,
-    required TResult Function(BibleStudyLoadingState value) loading,
-    required TResult Function(BibleStudyEmptyState value) empty,
-    required TResult Function(GetBibleStudyListSuccessState value) success,
-    required TResult Function(BibleStudyErrorState value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyInitial value)? initial,
-    TResult? Function(BibleStudyLoadingState value)? loading,
-    TResult? Function(BibleStudyEmptyState value)? empty,
-    TResult? Function(GetBibleStudyListSuccessState value)? success,
-    TResult? Function(BibleStudyErrorState value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
+class $BibleStudyStateCopyWith<$Res> {
+  $BibleStudyStateCopyWith(
+      BibleStudyState _, $Res Function(BibleStudyState) __);
+}
+
+/// Adds pattern-matching-related methods to [BibleStudyState].
+extension BibleStudyStatePatterns on BibleStudyState {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyInitial value)? initial,
@@ -223,420 +253,340 @@ mixin _$BibleStudyState {
     TResult Function(GetBibleStudyListSuccessState value)? success,
     TResult Function(BibleStudyErrorState value)? error,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyInitial() when initial != null:
+        return initial(_that);
+      case BibleStudyLoadingState() when loading != null:
+        return loading(_that);
+      case BibleStudyEmptyState() when empty != null:
+        return empty(_that);
+      case GetBibleStudyListSuccessState() when success != null:
+        return success(_that);
+      case BibleStudyErrorState() when error != null:
+        return error(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(BibleStudyInitial value) initial,
+    required TResult Function(BibleStudyLoadingState value) loading,
+    required TResult Function(BibleStudyEmptyState value) empty,
+    required TResult Function(GetBibleStudyListSuccessState value) success,
+    required TResult Function(BibleStudyErrorState value) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyInitial():
+        return initial(_that);
+      case BibleStudyLoadingState():
+        return loading(_that);
+      case BibleStudyEmptyState():
+        return empty(_that);
+      case GetBibleStudyListSuccessState():
+        return success(_that);
+      case BibleStudyErrorState():
+        return error(_that);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(BibleStudyInitial value)? initial,
+    TResult? Function(BibleStudyLoadingState value)? loading,
+    TResult? Function(BibleStudyEmptyState value)? empty,
+    TResult? Function(GetBibleStudyListSuccessState value)? success,
+    TResult? Function(BibleStudyErrorState value)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyInitial() when initial != null:
+        return initial(_that);
+      case BibleStudyLoadingState() when loading != null:
+        return loading(_that);
+      case BibleStudyEmptyState() when empty != null:
+        return empty(_that);
+      case GetBibleStudyListSuccessState() when success != null:
+        return success(_that);
+      case BibleStudyErrorState() when error != null:
+        return error(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? empty,
+    TResult Function(List<BibleStudy> topics)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyInitial() when initial != null:
+        return initial();
+      case BibleStudyLoadingState() when loading != null:
+        return loading();
+      case BibleStudyEmptyState() when empty != null:
+        return empty();
+      case GetBibleStudyListSuccessState() when success != null:
+        return success(_that.topics);
+      case BibleStudyErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() empty,
+    required TResult Function(List<BibleStudy> topics) success,
+    required TResult Function(String message) error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyInitial():
+        return initial();
+      case BibleStudyLoadingState():
+        return loading();
+      case BibleStudyEmptyState():
+        return empty();
+      case GetBibleStudyListSuccessState():
+        return success(_that.topics);
+      case BibleStudyErrorState():
+        return error(_that.message);
+      case _:
+        throw StateError('Unexpected subclass');
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? empty,
+    TResult? Function(List<BibleStudy> topics)? success,
+    TResult? Function(String message)? error,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case BibleStudyInitial() when initial != null:
+        return initial();
+      case BibleStudyLoadingState() when loading != null:
+        return loading();
+      case BibleStudyEmptyState() when empty != null:
+        return empty();
+      case GetBibleStudyListSuccessState() when success != null:
+        return success(_that.topics);
+      case BibleStudyErrorState() when error != null:
+        return error(_that.message);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
-abstract class $BibleStudyStateCopyWith<$Res> {
-  factory $BibleStudyStateCopyWith(
-          BibleStudyState value, $Res Function(BibleStudyState) then) =
-      _$BibleStudyStateCopyWithImpl<$Res, BibleStudyState>;
-}
 
-/// @nodoc
-class _$BibleStudyStateCopyWithImpl<$Res, $Val extends BibleStudyState>
-    implements $BibleStudyStateCopyWith<$Res> {
-  _$BibleStudyStateCopyWithImpl(this._value, this._then);
+class BibleStudyInitial implements BibleStudyState {
+  const BibleStudyInitial();
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is BibleStudyInitial);
+  }
 
-/// @nodoc
-abstract class _$$BibleStudyInitialImplCopyWith<$Res> {
-  factory _$$BibleStudyInitialImplCopyWith(_$BibleStudyInitialImpl value,
-          $Res Function(_$BibleStudyInitialImpl) then) =
-      __$$BibleStudyInitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$BibleStudyInitialImplCopyWithImpl<$Res>
-    extends _$BibleStudyStateCopyWithImpl<$Res, _$BibleStudyInitialImpl>
-    implements _$$BibleStudyInitialImplCopyWith<$Res> {
-  __$$BibleStudyInitialImplCopyWithImpl(_$BibleStudyInitialImpl _value,
-      $Res Function(_$BibleStudyInitialImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$BibleStudyInitialImpl implements BibleStudyInitial {
-  const _$BibleStudyInitialImpl();
+  @override
+  int get hashCode => runtimeType.hashCode;
 
   @override
   String toString() {
     return 'BibleStudyState.initial()';
   }
+}
+
+/// @nodoc
+
+class BibleStudyLoadingState implements BibleStudyState {
+  const BibleStudyLoadingState();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$BibleStudyInitialImpl);
+        (other.runtimeType == runtimeType && other is BibleStudyLoadingState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyInitial value) initial,
-    required TResult Function(BibleStudyLoadingState value) loading,
-    required TResult Function(BibleStudyEmptyState value) empty,
-    required TResult Function(GetBibleStudyListSuccessState value) success,
-    required TResult Function(BibleStudyErrorState value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyInitial value)? initial,
-    TResult? Function(BibleStudyLoadingState value)? loading,
-    TResult? Function(BibleStudyEmptyState value)? empty,
-    TResult? Function(GetBibleStudyListSuccessState value)? success,
-    TResult? Function(BibleStudyErrorState value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(BibleStudyInitial value)? initial,
-    TResult Function(BibleStudyLoadingState value)? loading,
-    TResult Function(BibleStudyEmptyState value)? empty,
-    TResult Function(GetBibleStudyListSuccessState value)? success,
-    TResult Function(BibleStudyErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class BibleStudyInitial implements BibleStudyState {
-  const factory BibleStudyInitial() = _$BibleStudyInitialImpl;
-}
-
-/// @nodoc
-abstract class _$$BibleStudyLoadingStateImplCopyWith<$Res> {
-  factory _$$BibleStudyLoadingStateImplCopyWith(
-          _$BibleStudyLoadingStateImpl value,
-          $Res Function(_$BibleStudyLoadingStateImpl) then) =
-      __$$BibleStudyLoadingStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$BibleStudyLoadingStateImplCopyWithImpl<$Res>
-    extends _$BibleStudyStateCopyWithImpl<$Res, _$BibleStudyLoadingStateImpl>
-    implements _$$BibleStudyLoadingStateImplCopyWith<$Res> {
-  __$$BibleStudyLoadingStateImplCopyWithImpl(
-      _$BibleStudyLoadingStateImpl _value,
-      $Res Function(_$BibleStudyLoadingStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$BibleStudyLoadingStateImpl implements BibleStudyLoadingState {
-  const _$BibleStudyLoadingStateImpl();
 
   @override
   String toString() {
     return 'BibleStudyState.loading()';
   }
+}
+
+/// @nodoc
+
+class BibleStudyEmptyState implements BibleStudyState {
+  const BibleStudyEmptyState();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$BibleStudyLoadingStateImpl);
+        (other.runtimeType == runtimeType && other is BibleStudyEmptyState);
   }
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyInitial value) initial,
-    required TResult Function(BibleStudyLoadingState value) loading,
-    required TResult Function(BibleStudyEmptyState value) empty,
-    required TResult Function(GetBibleStudyListSuccessState value) success,
-    required TResult Function(BibleStudyErrorState value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyInitial value)? initial,
-    TResult? Function(BibleStudyLoadingState value)? loading,
-    TResult? Function(BibleStudyEmptyState value)? empty,
-    TResult? Function(GetBibleStudyListSuccessState value)? success,
-    TResult? Function(BibleStudyErrorState value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(BibleStudyInitial value)? initial,
-    TResult Function(BibleStudyLoadingState value)? loading,
-    TResult Function(BibleStudyEmptyState value)? empty,
-    TResult Function(GetBibleStudyListSuccessState value)? success,
-    TResult Function(BibleStudyErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class BibleStudyLoadingState implements BibleStudyState {
-  const factory BibleStudyLoadingState() = _$BibleStudyLoadingStateImpl;
-}
-
-/// @nodoc
-abstract class _$$BibleStudyEmptyStateImplCopyWith<$Res> {
-  factory _$$BibleStudyEmptyStateImplCopyWith(_$BibleStudyEmptyStateImpl value,
-          $Res Function(_$BibleStudyEmptyStateImpl) then) =
-      __$$BibleStudyEmptyStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$BibleStudyEmptyStateImplCopyWithImpl<$Res>
-    extends _$BibleStudyStateCopyWithImpl<$Res, _$BibleStudyEmptyStateImpl>
-    implements _$$BibleStudyEmptyStateImplCopyWith<$Res> {
-  __$$BibleStudyEmptyStateImplCopyWithImpl(_$BibleStudyEmptyStateImpl _value,
-      $Res Function(_$BibleStudyEmptyStateImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$BibleStudyEmptyStateImpl implements BibleStudyEmptyState {
-  const _$BibleStudyEmptyStateImpl();
 
   @override
   String toString() {
     return 'BibleStudyState.empty()';
   }
+}
+
+/// @nodoc
+
+class GetBibleStudyListSuccessState implements BibleStudyState {
+  const GetBibleStudyListSuccessState(final List<BibleStudy> topics)
+      : _topics = topics;
+
+  final List<BibleStudy> _topics;
+  List<BibleStudy> get topics {
+    if (_topics is EqualUnmodifiableListView) return _topics;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_topics);
+  }
+
+  /// Create a copy of BibleStudyState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $GetBibleStudyListSuccessStateCopyWith<GetBibleStudyListSuccessState>
+      get copyWith => _$GetBibleStudyListSuccessStateCopyWithImpl<
+          GetBibleStudyListSuccessState>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BibleStudyEmptyStateImpl);
+            other is GetBibleStudyListSuccessState &&
+            const DeepCollectionEquality().equals(other._topics, _topics));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_topics));
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
-    required TResult Function(String message) error,
-  }) {
-    return empty();
+  String toString() {
+    return 'BibleStudyState.success(topics: $topics)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return empty?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyInitial value) initial,
-    required TResult Function(BibleStudyLoadingState value) loading,
-    required TResult Function(BibleStudyEmptyState value) empty,
-    required TResult Function(GetBibleStudyListSuccessState value) success,
-    required TResult Function(BibleStudyErrorState value) error,
-  }) {
-    return empty(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyInitial value)? initial,
-    TResult? Function(BibleStudyLoadingState value)? loading,
-    TResult? Function(BibleStudyEmptyState value)? empty,
-    TResult? Function(GetBibleStudyListSuccessState value)? success,
-    TResult? Function(BibleStudyErrorState value)? error,
-  }) {
-    return empty?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(BibleStudyInitial value)? initial,
-    TResult Function(BibleStudyLoadingState value)? loading,
-    TResult Function(BibleStudyEmptyState value)? empty,
-    TResult Function(GetBibleStudyListSuccessState value)? success,
-    TResult Function(BibleStudyErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class BibleStudyEmptyState implements BibleStudyState {
-  const factory BibleStudyEmptyState() = _$BibleStudyEmptyStateImpl;
 }
 
 /// @nodoc
-abstract class _$$GetBibleStudyListSuccessStateImplCopyWith<$Res> {
-  factory _$$GetBibleStudyListSuccessStateImplCopyWith(
-          _$GetBibleStudyListSuccessStateImpl value,
-          $Res Function(_$GetBibleStudyListSuccessStateImpl) then) =
-      __$$GetBibleStudyListSuccessStateImplCopyWithImpl<$Res>;
+abstract mixin class $GetBibleStudyListSuccessStateCopyWith<$Res>
+    implements $BibleStudyStateCopyWith<$Res> {
+  factory $GetBibleStudyListSuccessStateCopyWith(
+          GetBibleStudyListSuccessState value,
+          $Res Function(GetBibleStudyListSuccessState) _then) =
+      _$GetBibleStudyListSuccessStateCopyWithImpl;
   @useResult
   $Res call({List<BibleStudy> topics});
 }
 
 /// @nodoc
-class __$$GetBibleStudyListSuccessStateImplCopyWithImpl<$Res>
-    extends _$BibleStudyStateCopyWithImpl<$Res,
-        _$GetBibleStudyListSuccessStateImpl>
-    implements _$$GetBibleStudyListSuccessStateImplCopyWith<$Res> {
-  __$$GetBibleStudyListSuccessStateImplCopyWithImpl(
-      _$GetBibleStudyListSuccessStateImpl _value,
-      $Res Function(_$GetBibleStudyListSuccessStateImpl) _then)
-      : super(_value, _then);
+class _$GetBibleStudyListSuccessStateCopyWithImpl<$Res>
+    implements $GetBibleStudyListSuccessStateCopyWith<$Res> {
+  _$GetBibleStudyListSuccessStateCopyWithImpl(this._self, this._then);
 
+  final GetBibleStudyListSuccessState _self;
+  final $Res Function(GetBibleStudyListSuccessState) _then;
+
+  /// Create a copy of BibleStudyState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? topics = null,
   }) {
-    return _then(_$GetBibleStudyListSuccessStateImpl(
+    return _then(GetBibleStudyListSuccessState(
       null == topics
-          ? _value._topics
+          ? _self._topics
           : topics // ignore: cast_nullable_to_non_nullable
               as List<BibleStudy>,
     ));
@@ -645,286 +595,67 @@ class __$$GetBibleStudyListSuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GetBibleStudyListSuccessStateImpl
-    implements GetBibleStudyListSuccessState {
-  const _$GetBibleStudyListSuccessStateImpl(final List<BibleStudy> topics)
-      : _topics = topics;
+class BibleStudyErrorState implements BibleStudyState {
+  const BibleStudyErrorState(this.message);
 
-  final List<BibleStudy> _topics;
-  @override
-  List<BibleStudy> get topics {
-    if (_topics is EqualUnmodifiableListView) return _topics;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_topics);
-  }
-
-  @override
-  String toString() {
-    return 'BibleStudyState.success(topics: $topics)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GetBibleStudyListSuccessStateImpl &&
-            const DeepCollectionEquality().equals(other._topics, _topics));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_topics));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GetBibleStudyListSuccessStateImplCopyWith<
-          _$GetBibleStudyListSuccessStateImpl>
-      get copyWith => __$$GetBibleStudyListSuccessStateImplCopyWithImpl<
-          _$GetBibleStudyListSuccessStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
-    required TResult Function(String message) error,
-  }) {
-    return success(topics);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return success?.call(topics);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(topics);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyInitial value) initial,
-    required TResult Function(BibleStudyLoadingState value) loading,
-    required TResult Function(BibleStudyEmptyState value) empty,
-    required TResult Function(GetBibleStudyListSuccessState value) success,
-    required TResult Function(BibleStudyErrorState value) error,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyInitial value)? initial,
-    TResult? Function(BibleStudyLoadingState value)? loading,
-    TResult? Function(BibleStudyEmptyState value)? empty,
-    TResult? Function(GetBibleStudyListSuccessState value)? success,
-    TResult? Function(BibleStudyErrorState value)? error,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(BibleStudyInitial value)? initial,
-    TResult Function(BibleStudyLoadingState value)? loading,
-    TResult Function(BibleStudyEmptyState value)? empty,
-    TResult Function(GetBibleStudyListSuccessState value)? success,
-    TResult Function(BibleStudyErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GetBibleStudyListSuccessState implements BibleStudyState {
-  const factory GetBibleStudyListSuccessState(final List<BibleStudy> topics) =
-      _$GetBibleStudyListSuccessStateImpl;
-
-  List<BibleStudy> get topics;
-  @JsonKey(ignore: true)
-  _$$GetBibleStudyListSuccessStateImplCopyWith<
-          _$GetBibleStudyListSuccessStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$BibleStudyErrorStateImplCopyWith<$Res> {
-  factory _$$BibleStudyErrorStateImplCopyWith(_$BibleStudyErrorStateImpl value,
-          $Res Function(_$BibleStudyErrorStateImpl) then) =
-      __$$BibleStudyErrorStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class __$$BibleStudyErrorStateImplCopyWithImpl<$Res>
-    extends _$BibleStudyStateCopyWithImpl<$Res, _$BibleStudyErrorStateImpl>
-    implements _$$BibleStudyErrorStateImplCopyWith<$Res> {
-  __$$BibleStudyErrorStateImplCopyWithImpl(_$BibleStudyErrorStateImpl _value,
-      $Res Function(_$BibleStudyErrorStateImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$BibleStudyErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$BibleStudyErrorStateImpl implements BibleStudyErrorState {
-  const _$BibleStudyErrorStateImpl(this.message);
-
-  @override
   final String message;
 
-  @override
-  String toString() {
-    return 'BibleStudyState.error(message: $message)';
-  }
+  /// Create a copy of BibleStudyState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $BibleStudyErrorStateCopyWith<BibleStudyErrorState> get copyWith =>
+      _$BibleStudyErrorStateCopyWithImpl<BibleStudyErrorState>(
+          this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BibleStudyErrorStateImpl &&
+            other is BibleStudyErrorState &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
   @override
+  String toString() {
+    return 'BibleStudyState.error(message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $BibleStudyErrorStateCopyWith<$Res>
+    implements $BibleStudyStateCopyWith<$Res> {
+  factory $BibleStudyErrorStateCopyWith(BibleStudyErrorState value,
+          $Res Function(BibleStudyErrorState) _then) =
+      _$BibleStudyErrorStateCopyWithImpl;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class _$BibleStudyErrorStateCopyWithImpl<$Res>
+    implements $BibleStudyErrorStateCopyWith<$Res> {
+  _$BibleStudyErrorStateCopyWithImpl(this._self, this._then);
+
+  final BibleStudyErrorState _self;
+  final $Res Function(BibleStudyErrorState) _then;
+
+  /// Create a copy of BibleStudyState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  _$$BibleStudyErrorStateImplCopyWith<_$BibleStudyErrorStateImpl>
-      get copyWith =>
-          __$$BibleStudyErrorStateImplCopyWithImpl<_$BibleStudyErrorStateImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
-    required TResult Function(String message) error,
+  $Res call({
+    Object? message = null,
   }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(BibleStudyInitial value) initial,
-    required TResult Function(BibleStudyLoadingState value) loading,
-    required TResult Function(BibleStudyEmptyState value) empty,
-    required TResult Function(GetBibleStudyListSuccessState value) success,
-    required TResult Function(BibleStudyErrorState value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(BibleStudyInitial value)? initial,
-    TResult? Function(BibleStudyLoadingState value)? loading,
-    TResult? Function(BibleStudyEmptyState value)? empty,
-    TResult? Function(GetBibleStudyListSuccessState value)? success,
-    TResult? Function(BibleStudyErrorState value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(BibleStudyInitial value)? initial,
-    TResult Function(BibleStudyLoadingState value)? loading,
-    TResult Function(BibleStudyEmptyState value)? empty,
-    TResult Function(GetBibleStudyListSuccessState value)? success,
-    TResult Function(BibleStudyErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
+    return _then(BibleStudyErrorState(
+      null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class BibleStudyErrorState implements BibleStudyState {
-  const factory BibleStudyErrorState(final String message) =
-      _$BibleStudyErrorStateImpl;
-
-  String get message;
-  @JsonKey(ignore: true)
-  _$$BibleStudyErrorStateImplCopyWith<_$BibleStudyErrorStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

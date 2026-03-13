@@ -13,6 +13,7 @@
     "internal": "Errore interno dell'app. Riprova più tardi. Se l'errore persiste, contatta lo sviluppatore.",
   
   "Question:": "Domanda:",
+    "Open": "Apri",
   "Answer:": "Risposta:",
   "Date:": "Data:",
   "Author:": "Autore:",
@@ -163,7 +164,11 @@
   "There are not any songs in": "Non ci sono canzoni in",
   "chords": "Accordi",
   "Language": "Lingua",
-  "Primary": "Principale"
+  "Primary": "Principale",
+  "Insights": "Approfondimenti",
+  "Coming soon": "🚧 In arrivo"
+  ,
+  "notification_choose_topics": "Scegli gli argomenti per cui ricevere notifiche"
 
   }
   

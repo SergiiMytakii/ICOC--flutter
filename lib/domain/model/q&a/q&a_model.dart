@@ -7,7 +7,7 @@ part 'q&a_model.freezed.dart';
 part 'q&a_model.g.dart';
 
 @freezed
-class QandAModel with _$QandAModel {
+abstract class QandAModel with _$QandAModel {
   factory QandAModel(
       {required int id,
       @JsonKey(includeToJson: false) required String documentRef,

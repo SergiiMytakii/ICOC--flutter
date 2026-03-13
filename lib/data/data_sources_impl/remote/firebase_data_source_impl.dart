@@ -26,7 +26,11 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
     Query query = db.collection(collectionName);
     if (filters != null && filters.isNotEmpty) {
       for (var filter in filters.entries) {
-        query = query.where(filter.key, isEqualTo: filter.value);
+        if (filter.value is List) {
+          query = query.where(filter.key, whereIn: filter.value);
+        } else {
+          query = query.where(filter.key, isEqualTo: filter.value);
+        }
       }
     }
     if (search != null && search.isNotEmpty) {
