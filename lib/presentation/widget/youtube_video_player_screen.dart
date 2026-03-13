@@ -24,6 +24,7 @@ class YoutubeVideoPlayerScreen extends StatefulWidget {
 class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
     with WidgetsBindingObserver {
   Orientation? _lastOrientation;
+  bool _isManualLandscape = false;
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
     final double aspectRatio = isLandscape && screenSize.height > 0
         ? screenSize.width / screenSize.height
         : 16 / 9;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -89,20 +91,27 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
               ),
             ),
           ),
-          if (!isLandscape)
-            const IgnorePointer(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 18),
-                  child: Icon(
-                    Icons.screen_rotation_alt_rounded,
-                    color: Colors.white54,
+          SafeArea(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 18),
+                child: IconButton(
+                  onPressed: _toggleManualRotation,
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.black.withValues(alpha: 0.45),
+                    foregroundColor: theme.colorScheme.onPrimary,
+                  ),
+                  icon: Icon(
+                    isLandscape
+                        ? Icons.stay_current_portrait_rounded
+                        : Icons.screen_rotation_alt_rounded,
                     size: 20,
                   ),
                 ),
               ),
             ),
+          ),
         ],
       ),
     );
@@ -111,8 +120,6 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
   Future<void> _enterVideoScreenMode() async {
     await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
       DeviceOrientation.portraitUp,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
     ]);
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     _scheduleSystemUiSync();
@@ -123,6 +130,26 @@ class _YoutubeVideoPlayerScreenState extends State<YoutubeVideoPlayerScreen>
     await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
       DeviceOrientation.portraitUp,
     ]);
+  }
+
+  Future<void> _toggleManualRotation() async {
+    if (_isManualLandscape) {
+      _isManualLandscape = false;
+      await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
+        DeviceOrientation.portraitUp,
+      ]);
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    } else {
+      _isManualLandscape = true;
+      await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    }
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _scheduleSystemUiSync() {

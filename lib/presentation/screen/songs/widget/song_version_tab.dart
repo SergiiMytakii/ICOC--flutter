@@ -12,6 +12,7 @@ import 'package:icoc/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc/presentation/screen/songs/widget/video_card.dart';
 import 'package:icoc/presentation/widget/scale_text.dart';
 import 'package:icoc/presentation/widget/youtube/youtube_embedded_player.dart';
+import 'package:icoc/presentation/widget/youtube_video_player_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
@@ -49,6 +50,7 @@ class _SongVersionTabState extends State<SongVersionTab>
   late String _transposeKey;
   late String _speedKey;
   bool _initialVideoAutoplayStarted = false;
+  bool _openingFullscreenVideo = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -259,8 +261,7 @@ class _SongVersionTabState extends State<SongVersionTab>
                                                   .textTheme
                                                   .bodyMedium!
                                                   .copyWith(
-                                                      fontSize:
-                                                          fontSize ?? 14),
+                                                      fontSize: fontSize ?? 14),
                                               children: _buildChordSpans(
                                                 _applyTranspose(
                                                     widget.songVersion.text,
@@ -300,7 +301,8 @@ class _SongVersionTabState extends State<SongVersionTab>
                             ),
                           )),
                     ),
-                    if ((widget.songVersion.youtubeVideos?.isNotEmpty ?? false) &&
+                    if ((widget.songVersion.youtubeVideos?.isNotEmpty ??
+                            false) &&
                         !videoIsPlaying)
                       _buldVideoPreview(widget.songVersion.youtubeVideos!),
                     if (videoIsPlaying) _miniPlayerBuilder(constraints),
@@ -562,16 +564,35 @@ class _SongVersionTabState extends State<SongVersionTab>
               : YoutubeEmbeddedPlayer(
                   videoId: _currentVideoId!,
                   aspectRatio: _playerAspectRatio,
+                  interceptAndroidFullscreen: true,
                   persistProgress: false,
+                  onFullscreenChanged: _handleMiniPlayerFullscreenChanged,
                 ),
         ),
       )
     ]);
   }
 
+  void _handleMiniPlayerFullscreenChanged(bool isFullscreen) {
+    if (!isFullscreen || _currentVideoId == null || _openingFullscreenVideo) {
+      return;
+    }
+
+    _openingFullscreenVideo = true;
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute<void>(
+        builder: (_) => YoutubeVideoPlayerScreen(videoId: _currentVideoId!),
+      ),
+    )
+        .whenComplete(() {
+      _openingFullscreenVideo = false;
+    });
+  }
+
   double _calculateExpandedPlayerHeight(BoxConstraints constraints) {
-    final bool hasSongTools =
-        widget.songVersion.isChords && _hasChordsFormat(widget.songVersion.text);
+    final bool hasSongTools = widget.songVersion.isChords &&
+        _hasChordsFormat(widget.songVersion.text);
     final double maxWidth = constraints.maxWidth.isFinite
         ? constraints.maxWidth
         : MediaQuery.sizeOf(context).width;
