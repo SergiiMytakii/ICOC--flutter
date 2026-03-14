@@ -12,7 +12,7 @@ class AiDataSourceImpl implements AiDataSource {
   final llm = ChatOpenAI(
     apiKey: openAIKey,
     defaultOptions: const ChatOpenAIOptions(
-        model: 'gpt-4o-mini',
+        model: 'gpt-5-mini-2025-08-07',
         temperature: 0.2,
         responseFormat: ChatOpenAIResponseFormat.jsonObject),
   );
