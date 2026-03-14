@@ -1,76 +1,45 @@
-workflows: 
-  android-deploy-workflow:
-    name : Android Deployment Workflow
-    instance_type: mac_mini_m1
-    max_build_duration: 30
-    triggering: 
+workflows:
+  android-prod:
+    name: Android prod
+    instance_type: linux_x2
+    max_build_duration: 60
+    triggering:
       events:
-      - tag
+        - push
+        - tag
+      branch_patterns:
+        - pattern: production
+          include: true
+          source: true
       cancel_previous_builds: true
     environment:
       groups:
-      - google_credentials # — (Includes GCLOUD_ 
+        - google_credentials
       vars:
         FIREBASE_PROJECT: "icoc-8f075"
-      flutter: stable 
-      xcode: latest 
-      cocoapods: default
+      flutter: stable
+      java: 17
     scripts:
-      - name: Setup the keystore
-        script: | 
-          echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
-          cat >> "$CM_BUILD_DIR/android/key-properties << EOF
+      - name: Set up Android keystore
+        script: |
+          echo "$KEYSTORE_FILE" | base64 --decode > /tmp/keystore.jks
+          cat > "$CM_BUILD_DIR/android/key.properties" <<EOF
           storePassword=$KEYSTORE_PASSWORD
           keyPassword=$KEYSTORE_KEY_PASSWORD
-          keyAlias=key2020 
+          keyAlias=key2020
           storeFile=/tmp/keystore.jks
           EOF
-      - name: Build AAB
-        script: |
-          cd SCM_BUILD_DIR
-          flutter packages pub get
-          flutter build appbundle
-    artifacts:
-      - build/**/outputs/**/*.aab
-    publishing:
-      google_play:
-        credentials: §GOOGLE_PLAY_SERVICE_ACCOUNT
-        track: alpha
-  ios-workflow:
-    name: iOS Workflow
-    environment:
-      xcode: latest
-      cocoapods: default
- # Specify architecture as ARM for M1 VM
-    scripts:
-      - name: Set up Ruby environment
-        script: |
-            brew install rbenv
-            rbenv init
-            eval "$(rbenv init -)"
-            rbenv install 2.7.4  # Choose a version compatible with your requirements
-            rbenv global 2.7.4
-            gem install bundler
-      - name: Install CocoaPods
-        script: |
-          sudo gem install cocoapods -v 1.15.2
-          pod repo update
-
-      - name: Run Flutter pub get
+      - name: Install Flutter dependencies
         script: |
           flutter pub get
-
-      - name: Update CocoaPods Repositories
+      - name: Build Android App Bundle
         script: |
-          cd ios
-          pod repo update
-
-      - name: Update Firebase/CoreOnly
-        script: |
-          cd ios
-          pod update Firebase/CoreOnly
-
-      - name: Install Pods
-        script: |
-          cd ios
-          pod install
+          flutter build appbundle --release --dart-define=openAIKey=$openAIKey
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
+    publishing:
+      google_play:
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT
+        track: production

@@ -710,6 +710,7 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
               ? 'https://www.youtube.com/watch?v=$videoId'
               : null),
       PostType.image => post.primaryMediaUrl,
+      PostType.text => null,
     };
     if (shareUrl != null && shareUrl.isNotEmpty) {
       if (buffer.isNotEmpty) {

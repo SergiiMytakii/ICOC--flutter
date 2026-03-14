@@ -631,6 +631,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
               ? 'https://www.youtube.com/watch?v=$videoId'
               : null),
       PostType.image => post.primaryMediaUrl,
+      PostType.text => null,
     };
     if (shareUrl != null && shareUrl.isNotEmpty) {
       if (buffer.isNotEmpty) {

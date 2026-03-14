@@ -104,6 +104,10 @@ class InsightsDataSourceImpl implements InsightsFeedDataSource {
               null) {
         return null;
       }
+      if (post.type == PostType.text &&
+          (post.content == null || post.content!.trim().isEmpty)) {
+        return null;
+      }
       return post;
     } catch (_) {
       return null;

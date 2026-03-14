@@ -53,4 +53,5 @@ Map<String, dynamic> _$PostToJson(_Post instance) => <String, dynamic>{
 const _$PostTypeEnumMap = {
   PostType.image: 'image',
   PostType.video: 'video',
+  PostType.text: 'text',
 };
