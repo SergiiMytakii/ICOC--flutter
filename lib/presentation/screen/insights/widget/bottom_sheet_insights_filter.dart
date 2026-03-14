@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,10 +74,12 @@ class BottomSheetInsightsFilter extends StatelessWidget {
                                       .any((bool selected) => selected)) {
                                     nextSelected[langCode] = true;
                                   }
-                                  await getIt<PushNotificationService>()
-                                      .syncTopicLangSubscriptionsFor(
-                                    'insights',
-                                    nextSelected,
+                                  unawaited(
+                                    getIt<PushNotificationService>()
+                                        .syncTopicLangSubscriptionsFor(
+                                      'insights',
+                                      nextSelected,
+                                    ),
                                   );
                                   if (!context.mounted) {
                                     return;
