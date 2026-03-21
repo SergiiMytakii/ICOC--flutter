@@ -162,6 +162,7 @@ extension InsightsStatePatterns on InsightsState {
             Map<String, bool> selectedLanguages,
             Set<String> likedPostIds,
             Set<String> busyPostIds,
+            int unreadCount,
             String? actionMessage)?
         loaded,
     TResult Function(String message)? error,
@@ -180,6 +181,7 @@ extension InsightsStatePatterns on InsightsState {
             _that.selectedLanguages,
             _that.likedPostIds,
             _that.busyPostIds,
+            _that.unreadCount,
             _that.actionMessage);
       case _Error() when error != null:
         return error(_that.message);
@@ -211,6 +213,7 @@ extension InsightsStatePatterns on InsightsState {
             Map<String, bool> selectedLanguages,
             Set<String> likedPostIds,
             Set<String> busyPostIds,
+            int unreadCount,
             String? actionMessage)
         loaded,
     required TResult Function(String message) error,
@@ -228,6 +231,7 @@ extension InsightsStatePatterns on InsightsState {
             _that.selectedLanguages,
             _that.likedPostIds,
             _that.busyPostIds,
+            _that.unreadCount,
             _that.actionMessage);
       case _Error():
         return error(_that.message);
@@ -258,6 +262,7 @@ extension InsightsStatePatterns on InsightsState {
             Map<String, bool> selectedLanguages,
             Set<String> likedPostIds,
             Set<String> busyPostIds,
+            int unreadCount,
             String? actionMessage)?
         loaded,
     TResult? Function(String message)? error,
@@ -275,6 +280,7 @@ extension InsightsStatePatterns on InsightsState {
             _that.selectedLanguages,
             _that.likedPostIds,
             _that.busyPostIds,
+            _that.unreadCount,
             _that.actionMessage);
       case _Error() when error != null:
         return error(_that.message);
@@ -333,6 +339,7 @@ class _Loaded implements InsightsState {
       final Map<String, bool> selectedLanguages = const <String, bool>{},
       final Set<String> likedPostIds = const <String>{},
       final Set<String> busyPostIds = const <String>{},
+      this.unreadCount = 0,
       this.actionMessage})
       : _posts = posts,
         _availableLanguages = availableLanguages,
@@ -381,6 +388,8 @@ class _Loaded implements InsightsState {
     return EqualUnmodifiableSetView(_busyPostIds);
   }
 
+  @JsonKey()
+  final int unreadCount;
   final String? actionMessage;
 
   /// Create a copy of InsightsState
@@ -404,6 +413,8 @@ class _Loaded implements InsightsState {
                 .equals(other._likedPostIds, _likedPostIds) &&
             const DeepCollectionEquality()
                 .equals(other._busyPostIds, _busyPostIds) &&
+            (identical(other.unreadCount, unreadCount) ||
+                other.unreadCount == unreadCount) &&
             (identical(other.actionMessage, actionMessage) ||
                 other.actionMessage == actionMessage));
   }
@@ -416,11 +427,12 @@ class _Loaded implements InsightsState {
       const DeepCollectionEquality().hash(_selectedLanguages),
       const DeepCollectionEquality().hash(_likedPostIds),
       const DeepCollectionEquality().hash(_busyPostIds),
+      unreadCount,
       actionMessage);
 
   @override
   String toString() {
-    return 'InsightsState.loaded(posts: $posts, availableLanguages: $availableLanguages, selectedLanguages: $selectedLanguages, likedPostIds: $likedPostIds, busyPostIds: $busyPostIds, actionMessage: $actionMessage)';
+    return 'InsightsState.loaded(posts: $posts, availableLanguages: $availableLanguages, selectedLanguages: $selectedLanguages, likedPostIds: $likedPostIds, busyPostIds: $busyPostIds, unreadCount: $unreadCount, actionMessage: $actionMessage)';
   }
 }
 
@@ -436,6 +448,7 @@ abstract mixin class _$LoadedCopyWith<$Res>
       Map<String, bool> selectedLanguages,
       Set<String> likedPostIds,
       Set<String> busyPostIds,
+      int unreadCount,
       String? actionMessage});
 }
 
@@ -455,6 +468,7 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
     Object? selectedLanguages = null,
     Object? likedPostIds = null,
     Object? busyPostIds = null,
+    Object? unreadCount = null,
     Object? actionMessage = freezed,
   }) {
     return _then(_Loaded(
@@ -478,6 +492,10 @@ class __$LoadedCopyWithImpl<$Res> implements _$LoadedCopyWith<$Res> {
           ? _self._busyPostIds
           : busyPostIds // ignore: cast_nullable_to_non_nullable
               as Set<String>,
+      unreadCount: null == unreadCount
+          ? _self.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
       actionMessage: freezed == actionMessage
           ? _self.actionMessage
           : actionMessage // ignore: cast_nullable_to_non_nullable

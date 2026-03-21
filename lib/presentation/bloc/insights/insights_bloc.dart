@@ -24,6 +24,8 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
         shareTapped: (String postId) => _onShareTapped(postId, emit),
         refreshSinglePost: (String postId) =>
             _onRefreshSinglePost(postId, emit),
+        postViewed: (String postId, DateTime createdAt) =>
+            _onPostViewed(postId, createdAt, emit),
       );
     });
   }
@@ -39,6 +41,22 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
       (Post left, Post right) => right.createdAt.compareTo(left.createdAt),
     );
     return sortedPosts;
+  }
+
+  int _calculateUnreadCount(List<Post> posts) {
+    if (posts.isEmpty) {
+      return 0;
+    }
+    return posts
+        .where(
+          (Post post) =>
+              _localStore.comparePostAgainstLastViewed(
+                postId: post.id,
+                createdAt: post.createdAt,
+              ) >
+              0,
+        )
+        .length;
   }
 
   Future<void> _onFetchAvailableLanguagesAndPosts(
@@ -110,6 +128,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
                       entry.key: entry.value == true,
                   },
                   likedPostIds: likedIds,
+                  unreadCount: _calculateUnreadCount(sortedPosts),
                 ),
               );
             },
@@ -162,6 +181,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
         loadedState.copyWith(
           posts: _sortPostsNewestFirst(posts),
           selectedLanguages: nextSelected,
+          unreadCount: _calculateUnreadCount(posts),
           actionMessage: null,
         ),
       ),
@@ -334,10 +354,43 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
         emit(
           currentState.copyWith(
             posts: _sortPostsNewestFirst(nextPosts),
+            unreadCount: _calculateUnreadCount(nextPosts),
             actionMessage: null,
           ),
         );
       },
+    );
+  }
+
+  Future<void> _onPostViewed(
+    String postId,
+    DateTime createdAt,
+    Emitter<InsightsState> emit,
+  ) async {
+    await _localStore.saveLastViewedPost(
+      postId: postId,
+      createdAt: createdAt,
+    );
+
+    final loadedState = state.maybeMap(
+      loaded: (value) => value,
+      orElse: () => null,
+    );
+    if (loadedState == null) {
+      return;
+    }
+
+    final int unreadCount = _calculateUnreadCount(loadedState.posts);
+    if (unreadCount == loadedState.unreadCount &&
+        loadedState.actionMessage == null) {
+      return;
+    }
+
+    emit(
+      loadedState.copyWith(
+        unreadCount: unreadCount,
+        actionMessage: null,
+      ),
     );
   }
 }

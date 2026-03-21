@@ -13,6 +13,7 @@ abstract class InsightsState with _$InsightsState {
     @Default(<String, bool>{}) Map<String, bool> selectedLanguages,
     @Default(<String>{}) Set<String> likedPostIds,
     @Default(<String>{}) Set<String> busyPostIds,
+    @Default(0) int unreadCount,
     String? actionMessage,
   }) = _Loaded;
   const factory InsightsState.error(String message) = _Error;

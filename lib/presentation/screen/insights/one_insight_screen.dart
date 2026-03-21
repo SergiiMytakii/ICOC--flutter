@@ -38,11 +38,13 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
   bool _attemptedLangActivation = false;
   bool _attemptedSinglePostRefresh = false;
   String? _lastSubmittedCommentId;
+  String? _lastTrackedViewedPostId;
 
   @override
   void initState() {
     super.initState();
     _ensureInsightsLoaded();
+    _markPostAsViewedIfNeeded(widget.post);
   }
 
   @override
@@ -63,13 +65,17 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
         listener: (BuildContext context, InsightsState state) {
           state.maybeWhen(
             loaded: (
-              List<Post> _,
+              List<Post> posts,
               List<String> __,
               Map<String, bool> ___,
               Set<String> ____,
               Set<String> _____,
+              int ______,
               String? actionMessage,
             ) {
+              _markPostAsViewedIfNeeded(
+                _resolvePost(posts),
+              );
               if (actionMessage != null && actionMessage.isNotEmpty) {
                 AppToast.show(
                   context,
@@ -93,7 +99,8 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
                 Map<String, bool> ___,
                 Set<String> likedPostIds,
                 Set<String> ____,
-                String? _____,
+                int _____,
+                String? ______,
               ) =>
                   likedPostIds,
               orElse: () =>
@@ -106,7 +113,8 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
                 Map<String, bool> ___,
                 Set<String> ____,
                 Set<String> busyPostIds,
-                String? _____,
+                int _____,
+                String? ______,
               ) =>
                   busyPostIds,
               orElse: () => <String>{},
@@ -143,7 +151,8 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
               Map<String, bool> selectedLanguages,
               Set<String> _,
               Set<String> __,
-              String? ___,
+              int ___,
+              String? ____,
             ) {
               _maybeActivateLanguage(selectedLanguages, availableLanguages);
               _maybeRefreshSinglePost(posts);
@@ -189,7 +198,6 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
         return DraggableScrollableSheet(
           expand: false,
           minChildSize: 0.5,
-          initialChildSize: 0.5,
           maxChildSize: 0.95,
           builder: (BuildContext sheetContext, ScrollController controller) {
             final EdgeInsets viewInsets = MediaQuery.viewInsetsOf(sheetContext);
@@ -453,12 +461,22 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
 
   Post? _resolvePost(
     List<Post> posts, [
-    List<String>? _availableLanguages,
-    Map<String, bool>? _selectedLanguages,
-    Set<String>? _likedPostIds,
-    Set<String>? _busyPostIds,
-    String? _actionMessage,
+    List<String>? availableLanguages,
+    Map<String, bool>? selectedLanguages,
+    Set<String>? likedPostIds,
+    Set<String>? busyPostIds,
+    int? unreadCount,
+    String? actionMessage,
   ]) {
+    assert(() {
+      availableLanguages;
+      selectedLanguages;
+      likedPostIds;
+      busyPostIds;
+      unreadCount;
+      actionMessage;
+      return true;
+    }());
     if (widget.post != null) {
       return posts.firstWhere(
         (Post item) => item.id == widget.post!.id,
@@ -473,6 +491,19 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
     } catch (_) {
       return null;
     }
+  }
+
+  void _markPostAsViewedIfNeeded(Post? post) {
+    if (!mounted || post == null || _lastTrackedViewedPostId == post.id) {
+      return;
+    }
+    _lastTrackedViewedPostId = post.id;
+    context.read<InsightsBloc>().add(
+          InsightsEvent.postViewed(
+            postId: post.id,
+            createdAt: post.createdAt,
+          ),
+        );
   }
 
   Widget _buildLoadedBody(

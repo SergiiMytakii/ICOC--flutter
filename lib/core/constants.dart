@@ -61,6 +61,9 @@ class StorageKeys {
   static const String insightsLanguages = 'insightsLanguages';
   static const String insightsDisplayName = 'insightsDisplayName';
   static const String insightsLikedPosts = 'insightsLikedPosts';
+  static const String insightsLastViewedPostId = 'insightsLastViewedPostId';
+  static const String insightsLastViewedPostCreatedAt =
+      'insightsLastViewedPostCreatedAt';
   static const String youtubeWatchProgress = 'youtubeWatchProgress';
   static const String notificationsPermissionAsked =
       'notificationsPermissionAsked';

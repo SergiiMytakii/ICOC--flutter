@@ -28,6 +28,7 @@ class BottomSheetInsightsFilter extends StatelessWidget {
               Map<String, bool> selectedLanguages,
               Set<String> likedPostIds,
               Set<String> busyPostIds,
+              int unreadCount,
               String? actionMessage,
             ) {
               return Column(

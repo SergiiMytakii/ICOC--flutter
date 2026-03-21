@@ -56,6 +56,7 @@ extension InsightsEventPatterns on InsightsEvent {
     TResult Function(_ToggleLike value)? toggleLike,
     TResult Function(_ShareTapped value)? shareTapped,
     TResult Function(_RefreshSinglePost value)? refreshSinglePost,
+    TResult Function(_PostViewed value)? postViewed,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -71,6 +72,8 @@ extension InsightsEventPatterns on InsightsEvent {
         return shareTapped(_that);
       case _RefreshSinglePost() when refreshSinglePost != null:
         return refreshSinglePost(_that);
+      case _PostViewed() when postViewed != null:
+        return postViewed(_that);
       case _:
         return orElse();
     }
@@ -97,6 +100,7 @@ extension InsightsEventPatterns on InsightsEvent {
     required TResult Function(_ToggleLike value) toggleLike,
     required TResult Function(_ShareTapped value) shareTapped,
     required TResult Function(_RefreshSinglePost value) refreshSinglePost,
+    required TResult Function(_PostViewed value) postViewed,
   }) {
     final _that = this;
     switch (_that) {
@@ -110,6 +114,8 @@ extension InsightsEventPatterns on InsightsEvent {
         return shareTapped(_that);
       case _RefreshSinglePost():
         return refreshSinglePost(_that);
+      case _PostViewed():
+        return postViewed(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -135,6 +141,7 @@ extension InsightsEventPatterns on InsightsEvent {
     TResult? Function(_ToggleLike value)? toggleLike,
     TResult? Function(_ShareTapped value)? shareTapped,
     TResult? Function(_RefreshSinglePost value)? refreshSinglePost,
+    TResult? Function(_PostViewed value)? postViewed,
   }) {
     final _that = this;
     switch (_that) {
@@ -149,6 +156,8 @@ extension InsightsEventPatterns on InsightsEvent {
         return shareTapped(_that);
       case _RefreshSinglePost() when refreshSinglePost != null:
         return refreshSinglePost(_that);
+      case _PostViewed() when postViewed != null:
+        return postViewed(_that);
       case _:
         return null;
     }
@@ -173,6 +182,7 @@ extension InsightsEventPatterns on InsightsEvent {
     TResult Function(String postId)? toggleLike,
     TResult Function(String postId)? shareTapped,
     TResult Function(String postId)? refreshSinglePost,
+    TResult Function(String postId, DateTime createdAt)? postViewed,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -188,6 +198,8 @@ extension InsightsEventPatterns on InsightsEvent {
         return shareTapped(_that.postId);
       case _RefreshSinglePost() when refreshSinglePost != null:
         return refreshSinglePost(_that.postId);
+      case _PostViewed() when postViewed != null:
+        return postViewed(_that.postId, _that.createdAt);
       case _:
         return orElse();
     }
@@ -214,6 +226,7 @@ extension InsightsEventPatterns on InsightsEvent {
     required TResult Function(String postId) toggleLike,
     required TResult Function(String postId) shareTapped,
     required TResult Function(String postId) refreshSinglePost,
+    required TResult Function(String postId, DateTime createdAt) postViewed,
   }) {
     final _that = this;
     switch (_that) {
@@ -227,6 +240,8 @@ extension InsightsEventPatterns on InsightsEvent {
         return shareTapped(_that.postId);
       case _RefreshSinglePost():
         return refreshSinglePost(_that.postId);
+      case _PostViewed():
+        return postViewed(_that.postId, _that.createdAt);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -251,6 +266,7 @@ extension InsightsEventPatterns on InsightsEvent {
     TResult? Function(String postId)? toggleLike,
     TResult? Function(String postId)? shareTapped,
     TResult? Function(String postId)? refreshSinglePost,
+    TResult? Function(String postId, DateTime createdAt)? postViewed,
   }) {
     final _that = this;
     switch (_that) {
@@ -265,6 +281,8 @@ extension InsightsEventPatterns on InsightsEvent {
         return shareTapped(_that.postId);
       case _RefreshSinglePost() when refreshSinglePost != null:
         return refreshSinglePost(_that.postId);
+      case _PostViewed() when postViewed != null:
+        return postViewed(_that.postId, _that.createdAt);
       case _:
         return null;
     }
@@ -597,6 +615,77 @@ class __$RefreshSinglePostCopyWithImpl<$Res>
           ? _self.postId
           : postId // ignore: cast_nullable_to_non_nullable
               as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _PostViewed implements InsightsEvent {
+  const _PostViewed({required this.postId, required this.createdAt});
+
+  final String postId;
+  final DateTime createdAt;
+
+  /// Create a copy of InsightsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PostViewedCopyWith<_PostViewed> get copyWith =>
+      __$PostViewedCopyWithImpl<_PostViewed>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PostViewed &&
+            (identical(other.postId, postId) || other.postId == postId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, postId, createdAt);
+
+  @override
+  String toString() {
+    return 'InsightsEvent.postViewed(postId: $postId, createdAt: $createdAt)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$PostViewedCopyWith<$Res>
+    implements $InsightsEventCopyWith<$Res> {
+  factory _$PostViewedCopyWith(
+          _PostViewed value, $Res Function(_PostViewed) _then) =
+      __$PostViewedCopyWithImpl;
+  @useResult
+  $Res call({String postId, DateTime createdAt});
+}
+
+/// @nodoc
+class __$PostViewedCopyWithImpl<$Res> implements _$PostViewedCopyWith<$Res> {
+  __$PostViewedCopyWithImpl(this._self, this._then);
+
+  final _PostViewed _self;
+  final $Res Function(_PostViewed) _then;
+
+  /// Create a copy of InsightsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? postId = null,
+    Object? createdAt = null,
+  }) {
+    return _then(_PostViewed(
+      postId: null == postId
+          ? _self.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }

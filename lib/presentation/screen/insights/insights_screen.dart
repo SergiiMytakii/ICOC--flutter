@@ -49,12 +49,14 @@ class _InsightsScreenState extends State<InsightsScreen> {
   Timer? _videoActivationTimer;
   String? _pendingVideoPostId;
   bool _showLikedOnly = false;
+  String? _lastTrackedViewedPostId;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_scheduleCenteredVideoDetection);
     _ensureInsightsLoaded();
+    _resetUnreadCountIfLoaded();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _silentRefreshIfLoaded());
   }
@@ -82,11 +84,24 @@ class _InsightsScreenState extends State<InsightsScreen> {
     );
   }
 
+  void _resetUnreadCountIfLoaded() {
+    final InsightsState state = context.read<InsightsBloc>().state;
+    state.maybeWhen(
+      loaded: (List<Post> posts, List<String> _, Map<String, bool> __,
+          Set<String> ___, Set<String> ____, int _____, String? ______) {
+        if (posts.isNotEmpty) {
+          _markPostAsViewedIfNeeded(posts.first);
+        }
+      },
+      orElse: () {},
+    );
+  }
+
   void _silentRefreshIfLoaded() {
     final InsightsState state = context.read<InsightsBloc>().state;
     state.maybeWhen(
       loaded: (List<Post> posts, List<String> _, Map<String, bool> __,
-              Set<String> ___, Set<String> ____, String? _____) =>
+              Set<String> ___, Set<String> ____, int _____, String? ______) =>
           context.read<InsightsBloc>().add(
                 const InsightsEvent.fetchAvailableLanguagesAndPosts(
                   silent: true,
@@ -129,13 +144,15 @@ class _InsightsScreenState extends State<InsightsScreen> {
         listener: (BuildContext context, InsightsState state) {
           state.maybeWhen(
             loaded: (
-              List<Post> _,
+              List<Post> posts,
               List<String> __,
               Map<String, bool> ___,
               Set<String> ____,
               Set<String> _____,
+              int ______,
               String? actionMessage,
             ) {
+              _markPostAsViewedIfNeeded(posts.isEmpty ? null : posts.first);
               if (actionMessage != null && actionMessage.isNotEmpty) {
                 AppToast.show(
                   context,
@@ -190,8 +207,10 @@ class _InsightsScreenState extends State<InsightsScreen> {
               Map<String, bool> selectedLanguages,
               Set<String> likedPostIds,
               Set<String> busyPostIds,
+              int unreadCount,
               String? _,
             ) {
+              assert(unreadCount >= 0);
               final List<Post> visiblePosts = _showLikedOnly
                   ? posts
                       .where((Post post) => likedPostIds.contains(post.id))
@@ -281,6 +300,19 @@ class _InsightsScreenState extends State<InsightsScreen> {
     );
   }
 
+  void _markPostAsViewedIfNeeded(Post? post) {
+    if (!mounted || post == null || _lastTrackedViewedPostId == post.id) {
+      return;
+    }
+    _lastTrackedViewedPostId = post.id;
+    context.read<InsightsBloc>().add(
+          InsightsEvent.postViewed(
+            postId: post.id,
+            createdAt: post.createdAt,
+          ),
+        );
+  }
+
   void _openPost(Post post) {
     context.go('/$INSIGHTS/$ONE_INSIGHT_SCREEN', extra: post);
   }
@@ -306,7 +338,6 @@ class _InsightsScreenState extends State<InsightsScreen> {
         return DraggableScrollableSheet(
           expand: false,
           minChildSize: 0.5,
-          initialChildSize: 0.5,
           maxChildSize: 0.95,
           builder: (BuildContext context, ScrollController controller) {
             return BlocProvider<InsightsCommentsBloc>.value(
