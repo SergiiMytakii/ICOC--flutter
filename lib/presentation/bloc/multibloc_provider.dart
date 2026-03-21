@@ -24,7 +24,9 @@ class MyMultiblocProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SongsBloc>(
-          create: (BuildContext context) => getIt<SongsBloc>(),
+          create: (BuildContext context) =>
+              getIt<SongsBloc>()..add(const SongsEvent.songsRequested()),
+          lazy: false,
         ),
         BlocProvider<FontSizeBloc>(
           create: (BuildContext context) =>
@@ -37,7 +39,9 @@ class MyMultiblocProvider extends StatelessWidget {
           create: (BuildContext context) => getIt<FavoriteSongStatusBloc>(),
         ),
         BlocProvider<BibleStudyBloc>(
-          create: (BuildContext context) => getIt<BibleStudyBloc>(),
+          create: (BuildContext context) => getIt<BibleStudyBloc>()
+            ..add(const BibleStudyEvent.listRequested()),
+          lazy: false,
         ),
         BlocProvider<QandABloc>(
           create: (BuildContext context) =>

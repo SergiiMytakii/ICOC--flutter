@@ -52,12 +52,21 @@ extension BibleStudyEventPatterns on BibleStudyEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyListRequested value)? listRequested,
+    TResult Function(BibleStudyScreenOpened value)? screenOpened,
+    TResult Function(_TopicOpened value)? topicOpened,
+    TResult Function(_LessonOpened value)? lessonOpened,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case BibleStudyListRequested() when listRequested != null:
         return listRequested(_that);
+      case BibleStudyScreenOpened() when screenOpened != null:
+        return screenOpened(_that);
+      case _TopicOpened() when topicOpened != null:
+        return topicOpened(_that);
+      case _LessonOpened() when lessonOpened != null:
+        return lessonOpened(_that);
       case _:
         return orElse();
     }
@@ -79,11 +88,20 @@ extension BibleStudyEventPatterns on BibleStudyEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyListRequested value) listRequested,
+    required TResult Function(BibleStudyScreenOpened value) screenOpened,
+    required TResult Function(_TopicOpened value) topicOpened,
+    required TResult Function(_LessonOpened value) lessonOpened,
   }) {
     final _that = this;
     switch (_that) {
       case BibleStudyListRequested():
         return listRequested(_that);
+      case BibleStudyScreenOpened():
+        return screenOpened(_that);
+      case _TopicOpened():
+        return topicOpened(_that);
+      case _LessonOpened():
+        return lessonOpened(_that);
     }
   }
 
@@ -102,11 +120,20 @@ extension BibleStudyEventPatterns on BibleStudyEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyListRequested value)? listRequested,
+    TResult? Function(BibleStudyScreenOpened value)? screenOpened,
+    TResult? Function(_TopicOpened value)? topicOpened,
+    TResult? Function(_LessonOpened value)? lessonOpened,
   }) {
     final _that = this;
     switch (_that) {
       case BibleStudyListRequested() when listRequested != null:
         return listRequested(_that);
+      case BibleStudyScreenOpened() when screenOpened != null:
+        return screenOpened(_that);
+      case _TopicOpened() when topicOpened != null:
+        return topicOpened(_that);
+      case _LessonOpened() when lessonOpened != null:
+        return lessonOpened(_that);
       case _:
         return null;
     }
@@ -127,12 +154,21 @@ extension BibleStudyEventPatterns on BibleStudyEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? listRequested,
+    TResult Function()? screenOpened,
+    TResult Function(int topicId)? topicOpened,
+    TResult Function(int lessonId)? lessonOpened,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case BibleStudyListRequested() when listRequested != null:
         return listRequested();
+      case BibleStudyScreenOpened() when screenOpened != null:
+        return screenOpened();
+      case _TopicOpened() when topicOpened != null:
+        return topicOpened(_that.topicId);
+      case _LessonOpened() when lessonOpened != null:
+        return lessonOpened(_that.lessonId);
       case _:
         return orElse();
     }
@@ -154,11 +190,20 @@ extension BibleStudyEventPatterns on BibleStudyEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() listRequested,
+    required TResult Function() screenOpened,
+    required TResult Function(int topicId) topicOpened,
+    required TResult Function(int lessonId) lessonOpened,
   }) {
     final _that = this;
     switch (_that) {
       case BibleStudyListRequested():
         return listRequested();
+      case BibleStudyScreenOpened():
+        return screenOpened();
+      case _TopicOpened():
+        return topicOpened(_that.topicId);
+      case _LessonOpened():
+        return lessonOpened(_that.lessonId);
     }
   }
 
@@ -177,11 +222,20 @@ extension BibleStudyEventPatterns on BibleStudyEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? listRequested,
+    TResult? Function()? screenOpened,
+    TResult? Function(int topicId)? topicOpened,
+    TResult? Function(int lessonId)? lessonOpened,
   }) {
     final _that = this;
     switch (_that) {
       case BibleStudyListRequested() when listRequested != null:
         return listRequested();
+      case BibleStudyScreenOpened() when screenOpened != null:
+        return screenOpened();
+      case _TopicOpened() when topicOpened != null:
+        return topicOpened(_that.topicId);
+      case _LessonOpened() when lessonOpened != null:
+        return lessonOpened(_that.lessonId);
       case _:
         return null;
     }
@@ -205,6 +259,154 @@ class BibleStudyListRequested implements BibleStudyEvent {
   @override
   String toString() {
     return 'BibleStudyEvent.listRequested()';
+  }
+}
+
+/// @nodoc
+
+class BibleStudyScreenOpened implements BibleStudyEvent {
+  const BibleStudyScreenOpened();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is BibleStudyScreenOpened);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'BibleStudyEvent.screenOpened()';
+  }
+}
+
+/// @nodoc
+
+class _TopicOpened implements BibleStudyEvent {
+  const _TopicOpened(this.topicId);
+
+  final int topicId;
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TopicOpenedCopyWith<_TopicOpened> get copyWith =>
+      __$TopicOpenedCopyWithImpl<_TopicOpened>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _TopicOpened &&
+            (identical(other.topicId, topicId) || other.topicId == topicId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, topicId);
+
+  @override
+  String toString() {
+    return 'BibleStudyEvent.topicOpened(topicId: $topicId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$TopicOpenedCopyWith<$Res>
+    implements $BibleStudyEventCopyWith<$Res> {
+  factory _$TopicOpenedCopyWith(
+          _TopicOpened value, $Res Function(_TopicOpened) _then) =
+      __$TopicOpenedCopyWithImpl;
+  @useResult
+  $Res call({int topicId});
+}
+
+/// @nodoc
+class __$TopicOpenedCopyWithImpl<$Res> implements _$TopicOpenedCopyWith<$Res> {
+  __$TopicOpenedCopyWithImpl(this._self, this._then);
+
+  final _TopicOpened _self;
+  final $Res Function(_TopicOpened) _then;
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? topicId = null,
+  }) {
+    return _then(_TopicOpened(
+      null == topicId
+          ? _self.topicId
+          : topicId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _LessonOpened implements BibleStudyEvent {
+  const _LessonOpened(this.lessonId);
+
+  final int lessonId;
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LessonOpenedCopyWith<_LessonOpened> get copyWith =>
+      __$LessonOpenedCopyWithImpl<_LessonOpened>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _LessonOpened &&
+            (identical(other.lessonId, lessonId) ||
+                other.lessonId == lessonId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, lessonId);
+
+  @override
+  String toString() {
+    return 'BibleStudyEvent.lessonOpened(lessonId: $lessonId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$LessonOpenedCopyWith<$Res>
+    implements $BibleStudyEventCopyWith<$Res> {
+  factory _$LessonOpenedCopyWith(
+          _LessonOpened value, $Res Function(_LessonOpened) _then) =
+      __$LessonOpenedCopyWithImpl;
+  @useResult
+  $Res call({int lessonId});
+}
+
+/// @nodoc
+class __$LessonOpenedCopyWithImpl<$Res>
+    implements _$LessonOpenedCopyWith<$Res> {
+  __$LessonOpenedCopyWithImpl(this._self, this._then);
+
+  final _LessonOpened _self;
+  final $Res Function(_LessonOpened) _then;
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? lessonId = null,
+  }) {
+    return _then(_LessonOpened(
+      null == lessonId
+          ? _self.lessonId
+          : lessonId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
   }
 }
 
@@ -363,7 +565,9 @@ extension BibleStudyStatePatterns on BibleStudyState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? empty,
-    TResult Function(List<BibleStudy> topics)? success,
+    TResult Function(List<BibleStudy> topics, int unreadCount,
+            Set<int> newTopicIds, Set<int> newLessonIds)?
+        success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -376,7 +580,8 @@ extension BibleStudyStatePatterns on BibleStudyState {
       case BibleStudyEmptyState() when empty != null:
         return empty();
       case GetBibleStudyListSuccessState() when success != null:
-        return success(_that.topics);
+        return success(_that.topics, _that.unreadCount, _that.newTopicIds,
+            _that.newLessonIds);
       case BibleStudyErrorState() when error != null:
         return error(_that.message);
       case _:
@@ -402,7 +607,9 @@ extension BibleStudyStatePatterns on BibleStudyState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() empty,
-    required TResult Function(List<BibleStudy> topics) success,
+    required TResult Function(List<BibleStudy> topics, int unreadCount,
+            Set<int> newTopicIds, Set<int> newLessonIds)
+        success,
     required TResult Function(String message) error,
   }) {
     final _that = this;
@@ -414,7 +621,8 @@ extension BibleStudyStatePatterns on BibleStudyState {
       case BibleStudyEmptyState():
         return empty();
       case GetBibleStudyListSuccessState():
-        return success(_that.topics);
+        return success(_that.topics, _that.unreadCount, _that.newTopicIds,
+            _that.newLessonIds);
       case BibleStudyErrorState():
         return error(_that.message);
       case _:
@@ -439,7 +647,9 @@ extension BibleStudyStatePatterns on BibleStudyState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? empty,
-    TResult? Function(List<BibleStudy> topics)? success,
+    TResult? Function(List<BibleStudy> topics, int unreadCount,
+            Set<int> newTopicIds, Set<int> newLessonIds)?
+        success,
     TResult? Function(String message)? error,
   }) {
     final _that = this;
@@ -451,7 +661,8 @@ extension BibleStudyStatePatterns on BibleStudyState {
       case BibleStudyEmptyState() when empty != null:
         return empty();
       case GetBibleStudyListSuccessState() when success != null:
-        return success(_that.topics);
+        return success(_that.topics, _that.unreadCount, _that.newTopicIds,
+            _that.newLessonIds);
       case BibleStudyErrorState() when error != null:
         return error(_that.message);
       case _:
@@ -523,14 +734,38 @@ class BibleStudyEmptyState implements BibleStudyState {
 /// @nodoc
 
 class GetBibleStudyListSuccessState implements BibleStudyState {
-  const GetBibleStudyListSuccessState(final List<BibleStudy> topics)
-      : _topics = topics;
+  const GetBibleStudyListSuccessState(
+      {required final List<BibleStudy> topics,
+      this.unreadCount = 0,
+      final Set<int> newTopicIds = const <int>{},
+      final Set<int> newLessonIds = const <int>{}})
+      : _topics = topics,
+        _newTopicIds = newTopicIds,
+        _newLessonIds = newLessonIds;
 
   final List<BibleStudy> _topics;
   List<BibleStudy> get topics {
     if (_topics is EqualUnmodifiableListView) return _topics;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_topics);
+  }
+
+  @JsonKey()
+  final int unreadCount;
+  final Set<int> _newTopicIds;
+  @JsonKey()
+  Set<int> get newTopicIds {
+    if (_newTopicIds is EqualUnmodifiableSetView) return _newTopicIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_newTopicIds);
+  }
+
+  final Set<int> _newLessonIds;
+  @JsonKey()
+  Set<int> get newLessonIds {
+    if (_newLessonIds is EqualUnmodifiableSetView) return _newLessonIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_newLessonIds);
   }
 
   /// Create a copy of BibleStudyState
@@ -546,16 +781,26 @@ class GetBibleStudyListSuccessState implements BibleStudyState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is GetBibleStudyListSuccessState &&
-            const DeepCollectionEquality().equals(other._topics, _topics));
+            const DeepCollectionEquality().equals(other._topics, _topics) &&
+            (identical(other.unreadCount, unreadCount) ||
+                other.unreadCount == unreadCount) &&
+            const DeepCollectionEquality()
+                .equals(other._newTopicIds, _newTopicIds) &&
+            const DeepCollectionEquality()
+                .equals(other._newLessonIds, _newLessonIds));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_topics));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_topics),
+      unreadCount,
+      const DeepCollectionEquality().hash(_newTopicIds),
+      const DeepCollectionEquality().hash(_newLessonIds));
 
   @override
   String toString() {
-    return 'BibleStudyState.success(topics: $topics)';
+    return 'BibleStudyState.success(topics: $topics, unreadCount: $unreadCount, newTopicIds: $newTopicIds, newLessonIds: $newLessonIds)';
   }
 }
 
@@ -567,7 +812,11 @@ abstract mixin class $GetBibleStudyListSuccessStateCopyWith<$Res>
           $Res Function(GetBibleStudyListSuccessState) _then) =
       _$GetBibleStudyListSuccessStateCopyWithImpl;
   @useResult
-  $Res call({List<BibleStudy> topics});
+  $Res call(
+      {List<BibleStudy> topics,
+      int unreadCount,
+      Set<int> newTopicIds,
+      Set<int> newLessonIds});
 }
 
 /// @nodoc
@@ -583,12 +832,27 @@ class _$GetBibleStudyListSuccessStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? topics = null,
+    Object? unreadCount = null,
+    Object? newTopicIds = null,
+    Object? newLessonIds = null,
   }) {
     return _then(GetBibleStudyListSuccessState(
-      null == topics
+      topics: null == topics
           ? _self._topics
           : topics // ignore: cast_nullable_to_non_nullable
               as List<BibleStudy>,
+      unreadCount: null == unreadCount
+          ? _self.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      newTopicIds: null == newTopicIds
+          ? _self._newTopicIds
+          : newTopicIds // ignore: cast_nullable_to_non_nullable
+              as Set<int>,
+      newLessonIds: null == newLessonIds
+          ? _self._newLessonIds
+          : newLessonIds // ignore: cast_nullable_to_non_nullable
+              as Set<int>,
     ));
   }
 }

@@ -35,6 +35,11 @@ class _SongBookScreenState extends State<SongBookScreen> {
     bloc.state.whenOrNull(
       searchSuccess: (songVersions) => bloc.add(const SongsEvent.clearSearch()),
     );
+    // Fire for re-entry when songs are already loaded
+    bloc.state.maybeWhen(
+      success: (_, __, ___) => bloc.add(const SongsEvent.screenOpened()),
+      orElse: () {},
+    );
     super.initState();
   }
 
@@ -58,7 +63,12 @@ class _SongBookScreenState extends State<SongBookScreen> {
             SongBookAppbar(
               _handleQuery,
             ),
-            BlocBuilder<SongsBloc, SongsState>(
+            BlocConsumer<SongsBloc, SongsState>(
+              listenWhen: (prev, curr) =>
+                  prev is! GetSongsSuccessState && curr is GetSongsSuccessState,
+              listener: (context, state) {
+                getIt<SongsBloc>().add(const SongsEvent.screenOpened());
+              },
               builder: (context, state) {
                 return state.when(
                   initial: () {
@@ -66,7 +76,8 @@ class _SongBookScreenState extends State<SongBookScreen> {
                     return const SliverToBoxAdapter();
                   },
                   loading: () => _buildLoading(),
-                  success: (songs) => _buildSongList(songs),
+                  success: (songs, unreadCount, newSongIds) =>
+                      _buildSongList(songs, newSongIds: newSongIds),
                   empty: () => _buildEmptyWarning(context),
                   searchSuccess: (songVersions) =>
                       _buildSearchResult(songVersions),
@@ -113,15 +124,25 @@ class _SongBookScreenState extends State<SongBookScreen> {
     );
   }
 
-  SliverList _buildSongList(List<SongModel> songs) {
+  SliverList _buildSongList(
+    List<SongModel> songs, {
+    Set<int> newSongIds = const {},
+  }) {
+    final sorted = newSongIds.isEmpty
+        ? songs
+        : [
+            ...songs.where((s) => newSongIds.contains(s.id)),
+            ...songs.where((s) => !newSongIds.contains(s.id)),
+          ];
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return SongCard(
-            song: songs[index],
+            song: sorted[index],
             dividerColor: getDividerColor(index),
+            isNew: newSongIds.contains(sorted[index].id),
             slideActions: [
-              AddToFavorites(songId: songs[index].id),
+              AddToFavorites(songId: sorted[index].id),
             ],
           );
         },

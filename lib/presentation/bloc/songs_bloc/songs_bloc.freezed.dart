@@ -54,6 +54,8 @@ extension SongsEventPatterns on SongsEvent {
     TResult Function(_SearchSongByNumber value)? searchByNumber,
     TResult Function(_SearchSongByText value)? searchByText,
     TResult Function(_SearchSongClear value)? clearSearch,
+    TResult Function(_SongsScreenOpened value)? screenOpened,
+    TResult Function(_SongOpened value)? songOpened,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -66,6 +68,10 @@ extension SongsEventPatterns on SongsEvent {
         return searchByText(_that);
       case _SearchSongClear() when clearSearch != null:
         return clearSearch(_that);
+      case _SongsScreenOpened() when screenOpened != null:
+        return screenOpened(_that);
+      case _SongOpened() when songOpened != null:
+        return songOpened(_that);
       case _:
         return orElse();
     }
@@ -90,6 +96,8 @@ extension SongsEventPatterns on SongsEvent {
     required TResult Function(_SearchSongByNumber value) searchByNumber,
     required TResult Function(_SearchSongByText value) searchByText,
     required TResult Function(_SearchSongClear value) clearSearch,
+    required TResult Function(_SongsScreenOpened value) screenOpened,
+    required TResult Function(_SongOpened value) songOpened,
   }) {
     final _that = this;
     switch (_that) {
@@ -101,6 +109,10 @@ extension SongsEventPatterns on SongsEvent {
         return searchByText(_that);
       case _SearchSongClear():
         return clearSearch(_that);
+      case _SongsScreenOpened():
+        return screenOpened(_that);
+      case _SongOpened():
+        return songOpened(_that);
     }
   }
 
@@ -122,6 +134,8 @@ extension SongsEventPatterns on SongsEvent {
     TResult? Function(_SearchSongByNumber value)? searchByNumber,
     TResult? Function(_SearchSongByText value)? searchByText,
     TResult? Function(_SearchSongClear value)? clearSearch,
+    TResult? Function(_SongsScreenOpened value)? screenOpened,
+    TResult? Function(_SongOpened value)? songOpened,
   }) {
     final _that = this;
     switch (_that) {
@@ -133,6 +147,10 @@ extension SongsEventPatterns on SongsEvent {
         return searchByText(_that);
       case _SearchSongClear() when clearSearch != null:
         return clearSearch(_that);
+      case _SongsScreenOpened() when screenOpened != null:
+        return screenOpened(_that);
+      case _SongOpened() when songOpened != null:
+        return songOpened(_that);
       case _:
         return null;
     }
@@ -156,6 +174,8 @@ extension SongsEventPatterns on SongsEvent {
     TResult Function(String query)? searchByNumber,
     TResult Function(String query)? searchByText,
     TResult Function()? clearSearch,
+    TResult Function()? screenOpened,
+    TResult Function(int songId)? songOpened,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -168,6 +188,10 @@ extension SongsEventPatterns on SongsEvent {
         return searchByText(_that.query);
       case _SearchSongClear() when clearSearch != null:
         return clearSearch();
+      case _SongsScreenOpened() when screenOpened != null:
+        return screenOpened();
+      case _SongOpened() when songOpened != null:
+        return songOpened(_that.songId);
       case _:
         return orElse();
     }
@@ -192,6 +216,8 @@ extension SongsEventPatterns on SongsEvent {
     required TResult Function(String query) searchByNumber,
     required TResult Function(String query) searchByText,
     required TResult Function() clearSearch,
+    required TResult Function() screenOpened,
+    required TResult Function(int songId) songOpened,
   }) {
     final _that = this;
     switch (_that) {
@@ -203,6 +229,10 @@ extension SongsEventPatterns on SongsEvent {
         return searchByText(_that.query);
       case _SearchSongClear():
         return clearSearch();
+      case _SongsScreenOpened():
+        return screenOpened();
+      case _SongOpened():
+        return songOpened(_that.songId);
     }
   }
 
@@ -224,6 +254,8 @@ extension SongsEventPatterns on SongsEvent {
     TResult? Function(String query)? searchByNumber,
     TResult? Function(String query)? searchByText,
     TResult? Function()? clearSearch,
+    TResult? Function()? screenOpened,
+    TResult? Function(int songId)? songOpened,
   }) {
     final _that = this;
     switch (_that) {
@@ -235,6 +267,10 @@ extension SongsEventPatterns on SongsEvent {
         return searchByText(_that.query);
       case _SearchSongClear() when clearSearch != null:
         return clearSearch();
+      case _SongsScreenOpened() when screenOpened != null:
+        return screenOpened();
+      case _SongOpened() when songOpened != null:
+        return songOpened(_that.songId);
       case _:
         return null;
     }
@@ -410,6 +446,89 @@ class _SearchSongClear implements SongsEvent {
 }
 
 /// @nodoc
+
+class _SongsScreenOpened implements SongsEvent {
+  const _SongsScreenOpened();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _SongsScreenOpened);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'SongsEvent.screenOpened()';
+  }
+}
+
+/// @nodoc
+
+class _SongOpened implements SongsEvent {
+  const _SongOpened(this.songId);
+
+  final int songId;
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SongOpenedCopyWith<_SongOpened> get copyWith =>
+      __$SongOpenedCopyWithImpl<_SongOpened>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _SongOpened &&
+            (identical(other.songId, songId) || other.songId == songId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, songId);
+
+  @override
+  String toString() {
+    return 'SongsEvent.songOpened(songId: $songId)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$SongOpenedCopyWith<$Res>
+    implements $SongsEventCopyWith<$Res> {
+  factory _$SongOpenedCopyWith(
+          _SongOpened value, $Res Function(_SongOpened) _then) =
+      __$SongOpenedCopyWithImpl;
+  @useResult
+  $Res call({int songId});
+}
+
+/// @nodoc
+class __$SongOpenedCopyWithImpl<$Res> implements _$SongOpenedCopyWith<$Res> {
+  __$SongOpenedCopyWithImpl(this._self, this._then);
+
+  final _SongOpened _self;
+  final $Res Function(_SongOpened) _then;
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? songId = null,
+  }) {
+    return _then(_SongOpened(
+      null == songId
+          ? _self.songId
+          : songId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
 mixin _$SongsState {
   @override
   bool operator ==(Object other) {
@@ -572,7 +691,9 @@ extension SongsStatePatterns on SongsState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? empty,
-    TResult Function(List<SongModel> songs)? success,
+    TResult Function(
+            List<SongModel> songs, int unreadCount, Set<int> newSongIds)?
+        success,
     TResult Function(List<SongVersionLocal> songVersions)? searchSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -586,7 +707,7 @@ extension SongsStatePatterns on SongsState {
       case EmptySongsState() when empty != null:
         return empty();
       case GetSongsSuccessState() when success != null:
-        return success(_that.songs);
+        return success(_that.songs, _that.unreadCount, _that.newSongIds);
       case SearchSongsSuccessState() when searchSuccess != null:
         return searchSuccess(_that.songVersions);
       case SongsErrorState() when error != null:
@@ -614,7 +735,9 @@ extension SongsStatePatterns on SongsState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() empty,
-    required TResult Function(List<SongModel> songs) success,
+    required TResult Function(
+            List<SongModel> songs, int unreadCount, Set<int> newSongIds)
+        success,
     required TResult Function(List<SongVersionLocal> songVersions)
         searchSuccess,
     required TResult Function(String message) error,
@@ -628,7 +751,7 @@ extension SongsStatePatterns on SongsState {
       case EmptySongsState():
         return empty();
       case GetSongsSuccessState():
-        return success(_that.songs);
+        return success(_that.songs, _that.unreadCount, _that.newSongIds);
       case SearchSongsSuccessState():
         return searchSuccess(_that.songVersions);
       case SongsErrorState():
@@ -655,7 +778,9 @@ extension SongsStatePatterns on SongsState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? empty,
-    TResult? Function(List<SongModel> songs)? success,
+    TResult? Function(
+            List<SongModel> songs, int unreadCount, Set<int> newSongIds)?
+        success,
     TResult? Function(List<SongVersionLocal> songVersions)? searchSuccess,
     TResult? Function(String message)? error,
   }) {
@@ -668,7 +793,7 @@ extension SongsStatePatterns on SongsState {
       case EmptySongsState() when empty != null:
         return empty();
       case GetSongsSuccessState() when success != null:
-        return success(_that.songs);
+        return success(_that.songs, _that.unreadCount, _that.newSongIds);
       case SearchSongsSuccessState() when searchSuccess != null:
         return searchSuccess(_that.songVersions);
       case SongsErrorState() when error != null:
@@ -742,13 +867,28 @@ class EmptySongsState implements SongsState {
 /// @nodoc
 
 class GetSongsSuccessState implements SongsState {
-  const GetSongsSuccessState(final List<SongModel> songs) : _songs = songs;
+  const GetSongsSuccessState(
+      {required final List<SongModel> songs,
+      this.unreadCount = 0,
+      final Set<int> newSongIds = const <int>{}})
+      : _songs = songs,
+        _newSongIds = newSongIds;
 
   final List<SongModel> _songs;
   List<SongModel> get songs {
     if (_songs is EqualUnmodifiableListView) return _songs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_songs);
+  }
+
+  @JsonKey()
+  final int unreadCount;
+  final Set<int> _newSongIds;
+  @JsonKey()
+  Set<int> get newSongIds {
+    if (_newSongIds is EqualUnmodifiableSetView) return _newSongIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableSetView(_newSongIds);
   }
 
   /// Create a copy of SongsState
@@ -764,16 +904,23 @@ class GetSongsSuccessState implements SongsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is GetSongsSuccessState &&
-            const DeepCollectionEquality().equals(other._songs, _songs));
+            const DeepCollectionEquality().equals(other._songs, _songs) &&
+            (identical(other.unreadCount, unreadCount) ||
+                other.unreadCount == unreadCount) &&
+            const DeepCollectionEquality()
+                .equals(other._newSongIds, _newSongIds));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_songs));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_songs),
+      unreadCount,
+      const DeepCollectionEquality().hash(_newSongIds));
 
   @override
   String toString() {
-    return 'SongsState.success(songs: $songs)';
+    return 'SongsState.success(songs: $songs, unreadCount: $unreadCount, newSongIds: $newSongIds)';
   }
 }
 
@@ -784,7 +931,7 @@ abstract mixin class $GetSongsSuccessStateCopyWith<$Res>
           $Res Function(GetSongsSuccessState) _then) =
       _$GetSongsSuccessStateCopyWithImpl;
   @useResult
-  $Res call({List<SongModel> songs});
+  $Res call({List<SongModel> songs, int unreadCount, Set<int> newSongIds});
 }
 
 /// @nodoc
@@ -800,12 +947,22 @@ class _$GetSongsSuccessStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? songs = null,
+    Object? unreadCount = null,
+    Object? newSongIds = null,
   }) {
     return _then(GetSongsSuccessState(
-      null == songs
+      songs: null == songs
           ? _self._songs
           : songs // ignore: cast_nullable_to_non_nullable
               as List<SongModel>,
+      unreadCount: null == unreadCount
+          ? _self.unreadCount
+          : unreadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      newSongIds: null == newSongIds
+          ? _self._newSongIds
+          : newSongIds // ignore: cast_nullable_to_non_nullable
+              as Set<int>,
     ));
   }
 }

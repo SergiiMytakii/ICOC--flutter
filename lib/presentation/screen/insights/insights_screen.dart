@@ -49,14 +49,19 @@ class _InsightsScreenState extends State<InsightsScreen> {
   Timer? _videoActivationTimer;
   String? _pendingVideoPostId;
   bool _showLikedOnly = false;
-  String? _lastTrackedViewedPostId;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_scheduleCenteredVideoDetection);
     _ensureInsightsLoaded();
-    _resetUnreadCountIfLoaded();
+    // Fire for re-entry when posts are already loaded
+    context.read<InsightsBloc>().state.maybeWhen(
+          loaded: (_, __, ___, ____, _____, ______, _______) => context
+              .read<InsightsBloc>()
+              .add(const InsightsEvent.screenOpened()),
+          orElse: () {},
+        );
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _silentRefreshIfLoaded());
   }
@@ -80,19 +85,6 @@ class _InsightsScreenState extends State<InsightsScreen> {
     final InsightsState state = context.read<InsightsBloc>().state;
     state.maybeWhen(
       initial: () => _refresh(),
-      orElse: () {},
-    );
-  }
-
-  void _resetUnreadCountIfLoaded() {
-    final InsightsState state = context.read<InsightsBloc>().state;
-    state.maybeWhen(
-      loaded: (List<Post> posts, List<String> _, Map<String, bool> __,
-          Set<String> ___, Set<String> ____, int _____, String? ______) {
-        if (posts.isNotEmpty) {
-          _markPostAsViewedIfNeeded(posts.first);
-        }
-      },
       orElse: () {},
     );
   }
@@ -152,7 +144,9 @@ class _InsightsScreenState extends State<InsightsScreen> {
               int ______,
               String? actionMessage,
             ) {
-              _markPostAsViewedIfNeeded(posts.isEmpty ? null : posts.first);
+              context
+                  .read<InsightsBloc>()
+                  .add(const InsightsEvent.screenOpened());
               if (actionMessage != null && actionMessage.isNotEmpty) {
                 AppToast.show(
                   context,
@@ -298,19 +292,6 @@ class _InsightsScreenState extends State<InsightsScreen> {
         },
       ),
     );
-  }
-
-  void _markPostAsViewedIfNeeded(Post? post) {
-    if (!mounted || post == null || _lastTrackedViewedPostId == post.id) {
-      return;
-    }
-    _lastTrackedViewedPostId = post.id;
-    context.read<InsightsBloc>().add(
-          InsightsEvent.postViewed(
-            postId: post.id,
-            createdAt: post.createdAt,
-          ),
-        );
   }
 
   void _openPost(Post post) {

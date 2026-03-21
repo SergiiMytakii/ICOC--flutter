@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/user_languages.dart';
+import 'package:icoc/core/user_state/new_items_local_store.dart';
 import 'package:icoc/domain/model/bible_study/bible_study.dart';
 import 'package:icoc/domain/repository/bible_study_repository.dart';
 import 'package:icoc/main.dart';
@@ -15,14 +16,66 @@ part 'bible_study_bloc.freezed.dart';
 class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   final BibleStudyRepository bibleStudyRepository;
   final BibleStudyUserLanguagesHandler bibleStudyUserLanguagesHandler;
+  final NewItemsLocalStore _newItemsStore;
   List<BibleStudy> allTopics = [];
-  BibleStudyBloc(this.bibleStudyRepository, this.bibleStudyUserLanguagesHandler)
-      : super(const BibleStudyState.initial()) {
+  BibleStudyBloc(
+    this.bibleStudyRepository,
+    this.bibleStudyUserLanguagesHandler,
+    this._newItemsStore,
+  ) : super(const BibleStudyState.initial()) {
     on<BibleStudyEvent>((event, emit) async {
       await event.map(
         listRequested: (event) => _onBibleStudyListRequested(event, emit),
+        screenOpened: (event) => _onScreenOpened(emit),
+        topicOpened: (event) => _onTopicOpened(event.topicId, emit),
+        lessonOpened: (event) => _onLessonOpened(event.lessonId, emit),
       );
     });
+  }
+
+  Future<void> _onTopicOpened(
+      int topicId, Emitter<BibleStudyState> emit) async {
+    final s = state.maybeMap(success: (s) => s, orElse: () => null);
+    if (s == null || !s.newTopicIds.contains(topicId)) return;
+
+    final updatedTopicIds = Set<int>.from(s.newTopicIds)..remove(topicId);
+    final known = _newItemsStore.getKnownTopicIds()..add(topicId);
+    await _newItemsStore.saveKnownTopicIds(known);
+    emit(s.copyWith(
+      unreadCount: updatedTopicIds.length + s.newLessonIds.length,
+      newTopicIds: updatedTopicIds,
+    ));
+  }
+
+  Future<void> _onLessonOpened(
+      int lessonId, Emitter<BibleStudyState> emit) async {
+    final s = state.maybeMap(success: (s) => s, orElse: () => null);
+    if (s == null || !s.newLessonIds.contains(lessonId)) return;
+
+    final updatedLessonIds = Set<int>.from(s.newLessonIds)..remove(lessonId);
+    final known = _newItemsStore.getKnownLessonIds()..add(lessonId);
+    await _newItemsStore.saveKnownLessonIds(known);
+    emit(s.copyWith(
+      unreadCount: s.newTopicIds.length + updatedLessonIds.length,
+      newLessonIds: updatedLessonIds,
+    ));
+  }
+
+  Future<void> _onScreenOpened(Emitter<BibleStudyState> emit) async {
+    final loadedState = state.maybeMap(
+      success: (s) => s,
+      orElse: () => null,
+    );
+    if (loadedState == null) return;
+
+    final allTopicIds = loadedState.topics.map((t) => t.id).toSet();
+    final allLessonIds =
+        loadedState.topics.expand((t) => t.lessons).map((l) => l.id).toSet();
+    await _newItemsStore.saveKnownTopicIds(allTopicIds);
+    await _newItemsStore.saveKnownLessonIds(allLessonIds);
+
+    if (loadedState.unreadCount == 0) return;
+    emit(loadedState.copyWith(unreadCount: 0));
   }
 
   Future<void> _onBibleStudyListRequested(
@@ -39,7 +92,20 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
         final List<BibleStudy> filteredTopics =
             await filterByLanguages(allTopics, bibleStudyUserLanguagesHandler);
         if (filteredTopics.isNotEmpty) {
-          emit(BibleStudyState.success(filteredTopics));
+          final currentTopicIds = filteredTopics.map((t) => t.id).toSet();
+          final currentLessonIds =
+              filteredTopics.expand((t) => t.lessons).map((l) => l.id).toSet();
+          final (:newTopicIds, :newLessonIds) =
+              _newItemsStore.computeNewBibleStudyIds(
+            currentTopicIds: currentTopicIds,
+            currentLessonIds: currentLessonIds,
+          );
+          emit(BibleStudyState.success(
+            topics: filteredTopics,
+            unreadCount: newTopicIds.length + newLessonIds.length,
+            newTopicIds: newTopicIds,
+            newLessonIds: newLessonIds,
+          ));
         } else {
           emit(const BibleStudyState.empty());
         }

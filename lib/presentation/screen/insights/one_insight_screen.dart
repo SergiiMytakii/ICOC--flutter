@@ -38,13 +38,10 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
   bool _attemptedLangActivation = false;
   bool _attemptedSinglePostRefresh = false;
   String? _lastSubmittedCommentId;
-  String? _lastTrackedViewedPostId;
-
   @override
   void initState() {
     super.initState();
     _ensureInsightsLoaded();
-    _markPostAsViewedIfNeeded(widget.post);
   }
 
   @override
@@ -73,9 +70,6 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
               int ______,
               String? actionMessage,
             ) {
-              _markPostAsViewedIfNeeded(
-                _resolvePost(posts),
-              );
               if (actionMessage != null && actionMessage.isNotEmpty) {
                 AppToast.show(
                   context,
@@ -491,19 +485,6 @@ class _OneInsightScreenState extends State<OneInsightScreen> {
     } catch (_) {
       return null;
     }
-  }
-
-  void _markPostAsViewedIfNeeded(Post? post) {
-    if (!mounted || post == null || _lastTrackedViewedPostId == post.id) {
-      return;
-    }
-    _lastTrackedViewedPostId = post.id;
-    context.read<InsightsBloc>().add(
-          InsightsEvent.postViewed(
-            postId: post.id,
-            createdAt: post.createdAt,
-          ),
-        );
   }
 
   Widget _buildLoadedBody(

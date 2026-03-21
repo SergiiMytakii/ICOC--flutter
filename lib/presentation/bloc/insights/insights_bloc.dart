@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/core/user_state/insights_interaction_local_store.dart';
+import 'package:icoc/core/user_state/new_items_local_store.dart';
 import 'package:icoc/domain/model/insights/post.dart';
 import 'package:icoc/domain/repository/insights_repository.dart';
 import 'package:icoc/presentation/bloc/insights/insights_event.dart';
@@ -13,6 +14,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
     this._insightsRepository,
     this._userLanguagesHandler,
     this._localStore,
+    this._newItemsStore,
   ) : super(const InsightsState.initial()) {
     on<InsightsEvent>((InsightsEvent event, Emitter<InsightsState> emit) async {
       await event.when(
@@ -24,8 +26,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
         shareTapped: (String postId) => _onShareTapped(postId, emit),
         refreshSinglePost: (String postId) =>
             _onRefreshSinglePost(postId, emit),
-        postViewed: (String postId, DateTime createdAt) =>
-            _onPostViewed(postId, createdAt, emit),
+        screenOpened: () => _onScreenOpened(emit),
       );
     });
   }
@@ -33,6 +34,7 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
   final InsightsRepository _insightsRepository;
   final InsightsUserLanguagesHandler _userLanguagesHandler;
   final InsightsInteractionLocalStore _localStore;
+  final NewItemsLocalStore _newItemsStore;
   bool _hasPendingInitialFetch = false;
 
   List<Post> _sortPostsNewestFirst(List<Post> posts) {
@@ -44,19 +46,9 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
   }
 
   int _calculateUnreadCount(List<Post> posts) {
-    if (posts.isEmpty) {
-      return 0;
-    }
-    return posts
-        .where(
-          (Post post) =>
-              _localStore.comparePostAgainstLastViewed(
-                postId: post.id,
-                createdAt: post.createdAt,
-              ) >
-              0,
-        )
-        .length;
+    if (posts.isEmpty) return 0;
+    final currentIds = posts.map((p) => p.id).toSet();
+    return _newItemsStore.computeNewPostIds(currentIds).length;
   }
 
   Future<void> _onFetchAvailableLanguagesAndPosts(
@@ -362,35 +354,19 @@ class InsightsBloc extends Bloc<InsightsEvent, InsightsState> {
     );
   }
 
-  Future<void> _onPostViewed(
-    String postId,
-    DateTime createdAt,
-    Emitter<InsightsState> emit,
-  ) async {
-    await _localStore.saveLastViewedPost(
-      postId: postId,
-      createdAt: createdAt,
-    );
-
+  Future<void> _onScreenOpened(Emitter<InsightsState> emit) async {
     final loadedState = state.maybeMap(
       loaded: (value) => value,
       orElse: () => null,
     );
-    if (loadedState == null) {
+    if (loadedState == null) return;
+
+    final allIds = loadedState.posts.map((p) => p.id).toSet();
+    await _newItemsStore.saveKnownPostIds(allIds);
+
+    if (loadedState.unreadCount == 0 && loadedState.actionMessage == null) {
       return;
     }
-
-    final int unreadCount = _calculateUnreadCount(loadedState.posts);
-    if (unreadCount == loadedState.unreadCount &&
-        loadedState.actionMessage == null) {
-      return;
-    }
-
-    emit(
-      loadedState.copyWith(
-        unreadCount: unreadCount,
-        actionMessage: null,
-      ),
-    );
+    emit(loadedState.copyWith(unreadCount: 0, actionMessage: null));
   }
 }

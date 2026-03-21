@@ -34,6 +34,11 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   void initState() {
     showTooltip();
     FirebaseAnalytics.instance.logScreenView(screenName: 'Bible Study');
+    // Fire for re-entry when topics are already loaded
+    getIt<BibleStudyBloc>().state.maybeWhen(
+          success: (_, __, ___, ____) => _notifyScreenOpened(),
+          orElse: () {},
+        );
     super.initState();
   }
 
@@ -45,7 +50,11 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppbar(),
-      body: BlocBuilder<BibleStudyBloc, BibleStudyState>(
+      body: BlocConsumer<BibleStudyBloc, BibleStudyState>(
+        listenWhen: (prev, curr) =>
+            prev is! GetBibleStudyListSuccessState &&
+            curr is GetBibleStudyListSuccessState,
+        listener: (context, state) => _notifyScreenOpened(),
         builder: (context, state) {
           return state.when(
             initial: () {
@@ -61,7 +70,9 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
 
               return const NoContentWarning();
             },
-            success: (topics) => _buildBody(topics),
+            success: (topics, unreadCount, newTopicIds, newLessonIds) =>
+                _buildBody(topics,
+                    newTopicIds: newTopicIds, newLessonIds: newLessonIds),
             error: (message) => RefreshIndicator.adaptive(
               onRefresh: _getBibleStudyList,
               child: ListView(
@@ -129,24 +140,34 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
     );
   }
 
-  Widget _buildBody(List<BibleStudy> topics) {
+  Widget _buildBody(
+    List<BibleStudy> topics, {
+    Set<int> newTopicIds = const {},
+    Set<int> newLessonIds = const {},
+  }) {
+    final sorted = newTopicIds.isEmpty
+        ? topics
+        : [
+            ...topics.where((t) => newTopicIds.contains(t.id)),
+            ...topics.where((t) => !newTopicIds.contains(t.id)),
+          ];
     return RefreshIndicator.adaptive(
       onRefresh: () => _getBibleStudyList(),
       child: topics.isNotEmpty
           ? ListView.builder(
               cacheExtent: 0,
-              itemCount: topics.length,
+              itemCount: sorted.length,
               itemBuilder: (context, index) {
                 return AnimationWrapper(
                   child: Column(
                     children: [
                       ListTile(
                         contentPadding: EdgeInsets.zero,
-                        leading: Container(
-                          width: 40,
-                        ),
+                        leading: newTopicIds.contains(sorted[index].id)
+                            ? const _NewDot()
+                            : Container(width: 40),
                         title: Text(
-                          topics[index].topic,
+                          sorted[index].topic,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context)
@@ -155,15 +176,20 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          topics[index].subtopic,
+                          sorted[index].subtopic,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () => context.go(
-                          '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${topics[index].id}',
-                        ),
+                        onTap: () {
+                          getIt<BibleStudyBloc>().add(
+                            BibleStudyEvent.topicOpened(sorted[index].id),
+                          );
+                          context.go(
+                            '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/${sorted[index].id}',
+                          );
+                        },
                       ),
                       Divider(
                         indent: 50,
@@ -197,5 +223,30 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
       getIt<LocalCache>()
           .saveDouble(StorageKeys.shouldShowTooltip, tooltipShown + 1);
     }
+  }
+
+  void _notifyScreenOpened() {
+    getIt<BibleStudyBloc>().add(const BibleStudyEvent.screenOpened());
+  }
+}
+
+class _NewDot extends StatelessWidget {
+  const _NewDot();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 40,
+      child: Center(
+        child: Container(
+          width: 10,
+          height: 10,
+          decoration: const BoxDecoration(
+            color: Colors.redAccent,
+            shape: BoxShape.circle,
+          ),
+        ),
+      ),
+    );
   }
 }

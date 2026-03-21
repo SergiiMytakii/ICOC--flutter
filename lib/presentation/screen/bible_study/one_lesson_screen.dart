@@ -81,7 +81,7 @@ class _OneLessonScreenState extends State<OneLessonScreen>
             initial: () => const Scaffold(body: SizedBox()),
             loading: () => const Scaffold(
                 body: Center(child: CircularProgressIndicator())),
-            success: (topics) {
+            success: (topics, unreadCount, newTopicIds, newLessonIds) {
               final topic = _receiveTopic(topics);
               final lesson = _receiveLesson(topic);
               final lessonHtml = BibleReferenceLinkifier.linkifyByLanguage(

@@ -15,6 +15,7 @@ import 'package:icoc/core/notifications/push_notification_service.dart'
 import 'package:icoc/core/user_languages.dart' as _i707;
 import 'package:icoc/core/user_state/insights_interaction_local_store.dart'
     as _i397;
+import 'package:icoc/core/user_state/new_items_local_store.dart' as _i903;
 import 'package:icoc/data/data_sources_impl/local/local_cache_impl.dart'
     as _i263;
 import 'package:icoc/data/data_sources_impl/local/sqlite_bible_db_impl.dart'
@@ -142,6 +143,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i397.InsightsInteractionLocalStore(gh<_i868.LocalCache>()));
     gh.singleton<_i706.PushNotificationService>(
         () => _i706.PushNotificationService(gh<_i868.LocalCache>()));
+    gh.singleton<_i903.NewItemsLocalStore>(
+        () => _i903.NewItemsLocalStore(gh<_i868.LocalCache>()));
     gh.factory<_i955.AiDataSource>(
       () => _i719.AiDataSourceImpl(),
       registerFor: {
@@ -258,6 +261,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i1018.InsightsRepository>(),
           gh<_i707.InsightsUserLanguagesHandler>(),
           gh<_i397.InsightsInteractionLocalStore>(),
+          gh<_i903.NewItemsLocalStore>(),
         ));
     gh.singleton<_i1016.NotificationsBloc>(
         () => _i1016.NotificationsBloc(gh<_i1025.NotificationsRepository>()));
@@ -268,10 +272,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i397.InsightsInteractionLocalStore>(),
         ));
     gh.singleton<_i182.FavoriteSongsListBloc>(() => _i182.FavoriteSongsListBloc(
-          gh<_i1034.SongsRepository>(),
-          gh<_i707.SongsUserLanguagesHandler>(),
-        ));
-    gh.singleton<_i1025.SongsBloc>(() => _i1025.SongsBloc(
           gh<_i1034.SongsRepository>(),
           gh<_i707.SongsUserLanguagesHandler>(),
         ));
@@ -289,9 +289,15 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i516.QandARepository>(),
           gh<_i707.QandAUserLanguagesHandler>(),
         ));
+    gh.singleton<_i1025.SongsBloc>(() => _i1025.SongsBloc(
+          gh<_i1034.SongsRepository>(),
+          gh<_i707.SongsUserLanguagesHandler>(),
+          gh<_i903.NewItemsLocalStore>(),
+        ));
     gh.singleton<_i724.BibleStudyBloc>(() => _i724.BibleStudyBloc(
           gh<_i299.BibleStudyRepository>(),
           gh<_i707.BibleStudyUserLanguagesHandler>(),
+          gh<_i903.NewItemsLocalStore>(),
         ));
     return this;
   }

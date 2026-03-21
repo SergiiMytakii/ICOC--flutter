@@ -14,8 +14,5 @@ abstract class InsightsEvent with _$InsightsEvent {
   const factory InsightsEvent.shareTapped(String postId) = _ShareTapped;
   const factory InsightsEvent.refreshSinglePost(String postId) =
       _RefreshSinglePost;
-  const factory InsightsEvent.postViewed({
-    required String postId,
-    required DateTime createdAt,
-  }) = _PostViewed;
+  const factory InsightsEvent.screenOpened() = _ScreenOpened;
 }

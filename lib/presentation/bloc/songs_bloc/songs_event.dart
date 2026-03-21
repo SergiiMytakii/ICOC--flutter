@@ -6,4 +6,6 @@ sealed class SongsEvent with _$SongsEvent {
   const factory SongsEvent.searchByNumber(String query) = _SearchSongByNumber;
   const factory SongsEvent.searchByText(String query) = _SearchSongByText;
   const factory SongsEvent.clearSearch() = _SearchSongClear;
+  const factory SongsEvent.screenOpened() = _SongsScreenOpened;
+  const factory SongsEvent.songOpened(int songId) = _SongOpened;
 }

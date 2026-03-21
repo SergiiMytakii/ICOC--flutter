@@ -7,6 +7,7 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/errors/failures.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/core/user_state/insights_interaction_local_store.dart';
+import 'package:icoc/core/user_state/new_items_local_store.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/domain/model/insights/insight_like_result.dart';
 import 'package:icoc/domain/model/insights/insight_comment.dart';
@@ -221,7 +222,9 @@ void main() {
     await cache.saveString(StorageKeys.deviceId, 'device-1');
     userLanguagesHandler = InsightsUserLanguagesHandler(cache);
     localStore = InsightsInteractionLocalStore(cache);
-    bloc = InsightsBloc(repository, userLanguagesHandler, localStore);
+    final newItemsStore = NewItemsLocalStore(cache);
+    bloc = InsightsBloc(
+        repository, userLanguagesHandler, localStore, newItemsStore);
   });
 
   tearDown(() async {
@@ -261,7 +264,8 @@ void main() {
             Map<String, bool> __,
             Set<String> ___,
             Set<String> ____,
-            String? _____,
+            int _____,
+            String? ______,
           ) =>
               posts.map((Post post) => post.id).toList(),
           orElse: () => const <String>[],
@@ -325,7 +329,8 @@ void main() {
             Map<String, bool> selectedLanguages,
             Set<String> ___,
             Set<String> ____,
-            String? _____,
+            int _____,
+            String? ______,
           ) =>
               selectedLanguages.values.where((bool enabled) => enabled).single,
           orElse: () => false,
@@ -370,7 +375,8 @@ void main() {
             Map<String, bool> selectedLanguages,
             Set<String> ___,
             Set<String> ____,
-            String? _____,
+            int _____,
+            String? ______,
           ) =>
               selectedLanguages.entries
                   .firstWhere((MapEntry<String, bool> entry) => entry.value)

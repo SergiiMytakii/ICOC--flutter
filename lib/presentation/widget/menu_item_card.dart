@@ -3,8 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/routes/app_routes.dart';
+import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_bloc.dart';
 import 'package:icoc/presentation/bloc/insights/insights_state.dart';
+import 'package:icoc/presentation/bloc/songs_bloc/songs_bloc.dart';
 import 'package:icoc/presentation/screen/home/widget/menu_items.dart';
 
 class MenuItemCard extends StatelessWidget {
@@ -69,6 +71,53 @@ class _MenuItemIcon extends StatelessWidget {
         ),
       ],
     );
+
+    if (item.routeName == SONGBOOK) {
+      return BlocSelector<SongsBloc, SongsState, int>(
+        selector: (SongsState state) => state.maybeWhen(
+          success: (songs, unreadCount, newSongIds) => unreadCount,
+          orElse: () => 0,
+        ),
+        builder: (BuildContext context, int unreadCount) {
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              icon,
+              if (unreadCount > 0)
+                Positioned(
+                  top: -6,
+                  right: -10,
+                  child: _UnreadBadge(count: unreadCount),
+                ),
+            ],
+          );
+        },
+      );
+    }
+
+    if (item.routeName == BIBLE_STUDY) {
+      return BlocSelector<BibleStudyBloc, BibleStudyState, int>(
+        selector: (BibleStudyState state) => state.maybeWhen(
+          success: (topics, unreadCount, newTopicIds, newLessonIds) =>
+              unreadCount,
+          orElse: () => 0,
+        ),
+        builder: (BuildContext context, int unreadCount) {
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              icon,
+              if (unreadCount > 0)
+                Positioned(
+                  top: -6,
+                  right: -10,
+                  child: _UnreadBadge(count: unreadCount),
+                ),
+            ],
+          );
+        },
+      );
+    }
 
     if (item.routeName != INSIGHTS) {
       return icon;

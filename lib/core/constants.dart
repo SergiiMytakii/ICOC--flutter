@@ -73,6 +73,12 @@ class StorageKeys {
       'notificationsPermissionReminderDeclines';
   static const String deviceId = 'deviceId';
   static const String bibleVerseTranslation = 'bibleVerseTranslation';
+  static const String insightsLastKnownPostIds = 'insightsLastKnownPostIds';
+  static const String songsLastKnownIds = 'songsLastKnownIds';
+  static const String bibleStudyLastKnownTopicIds =
+      'bibleStudyLastKnownTopicIds';
+  static const String bibleStudyLastKnownLessonIds =
+      'bibleStudyLastKnownLessonIds';
   // Add more keys as needed
 }
 

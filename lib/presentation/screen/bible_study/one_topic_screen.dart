@@ -24,7 +24,7 @@ class OneTopicScreen extends StatelessWidget {
           loading: () => Scaffold(
             body: CustomRefreshIndicator(onRefresh: _getBibleStudyList),
           ),
-          success: (topics) {
+          success: (topics, unreadCount, newTopicIds, newLessonIds) {
             final bibleStudy = _receiveAndPrepareBibleStudy(topics);
 
             return bibleStudy != null
@@ -40,15 +40,18 @@ class OneTopicScreen extends StatelessWidget {
                         cacheExtent: 0,
                         itemCount: bibleStudy.lessons.length,
                         itemBuilder: (context, index) {
+                          final lesson = bibleStudy.lessons[index];
+                          final isNew = newLessonIds.contains(lesson.id);
                           return AnimationWrapper(
                             child: Column(
                               children: [
                                 ListTile(
-                                  leading: Text(
-                                      ' ${bibleStudy.lessons[index].id + 1}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge),
+                                  leading: isNew
+                                      ? _NewDot(number: lesson.id + 1)
+                                      : Text(' ${lesson.id + 1}',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge),
                                   title: Text(
                                     bibleStudy.lessons[index].title,
                                     overflow: TextOverflow.ellipsis,
@@ -59,9 +62,15 @@ class OneTopicScreen extends StatelessWidget {
                                         .copyWith(fontWeight: FontWeight.bold),
                                   ),
                                   trailing: const Icon(Icons.arrow_forward_ios),
-                                  onTap: () => context.go(
-                                    '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/$topicId/$ONE_LESSON_SCREEN/${bibleStudy.lessons[index].id}',
-                                  ),
+                                  onTap: () {
+                                    getIt<BibleStudyBloc>().add(
+                                      BibleStudyEvent.lessonOpened(
+                                          bibleStudy.lessons[index].id),
+                                    );
+                                    context.go(
+                                      '/$BIBLE_STUDY/$ONE_TOPIC_SCREEN/$topicId/$ONE_LESSON_SCREEN/${bibleStudy.lessons[index].id}',
+                                    );
+                                  },
                                 ),
                                 Divider(
                                   indent: 50,
@@ -110,5 +119,32 @@ class OneTopicScreen extends StatelessWidget {
         ..sort((a, b) => a.id.compareTo(b.id));
       return bibleStudy.copyWith(lessons: sortedLessons);
     }
+  }
+}
+
+class _NewDot extends StatelessWidget {
+  const _NewDot({required this.number});
+  final int number;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(' $number', style: Theme.of(context).textTheme.titleLarge),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Container(
+            width: 8,
+            height: 8,
+            decoration: const BoxDecoration(
+              color: Colors.redAccent,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

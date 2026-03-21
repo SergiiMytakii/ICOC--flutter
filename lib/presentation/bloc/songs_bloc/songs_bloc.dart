@@ -4,6 +4,7 @@ import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/errors/failures.dart';
 import 'package:icoc/core/helpers/filter_songs_halper.dart';
 import 'package:icoc/core/helpers/order_song_helper.dart';
+import 'package:icoc/core/user_state/new_items_local_store.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/domain/repository/songs_repository.dart';
@@ -17,20 +18,26 @@ part 'songs_bloc.freezed.dart';
 
 @singleton
 class SongsBloc extends Bloc<SongsEvent, SongsState> {
-  SongsBloc(this.songsRepositoryImpl, this.songsUserLanguagesHandler)
-      : super(const SongsState.initial()) {
+  SongsBloc(
+    this.songsRepositoryImpl,
+    this.songsUserLanguagesHandler,
+    this._newItemsStore,
+  ) : super(const SongsState.initial()) {
     on<SongsEvent>((event, emit) async {
       await event.map(
         songsRequested: (e) => _onSongsRequested(e, emit),
         searchByNumber: (e) => _onSearchByNumber(e, emit),
         searchByText: (e) => _onSearchByText(e, emit),
         clearSearch: (e) => _onClearSearch(e, emit),
+        screenOpened: (e) => _onScreenOpened(emit),
+        songOpened: (e) => _onSongOpened(e.songId, emit),
       );
     });
   }
 
   final SongsRepository songsRepositoryImpl;
   final SongsUserLanguagesHandler songsUserLanguagesHandler;
+  final NewItemsLocalStore _newItemsStore;
   List<SongModel> allSongs = [];
   List<SongModel> rawSongs = [];
 
@@ -48,7 +55,13 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
         if (songs.isNotEmpty) {
           allSongs = songs;
           songsRepositoryImpl.insertAllSongsToLocalTable(songs);
-          emit(SongsState.success(songs));
+          final currentIds = songs.map((s) => s.id).toSet();
+          final newSongIds = _newItemsStore.computeNewSongIds(currentIds);
+          emit(SongsState.success(
+            songs: songs,
+            unreadCount: newSongIds.length,
+            newSongIds: newSongIds,
+          ));
         } else {
           emit(const SongsState.empty());
         }
@@ -58,12 +71,20 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   Future<void> _onSearchByNumber(
       _SearchSongByNumber event, Emitter<SongsState> emit) async {
+    final (int prevUnread, Set<int> prevNewIds) = state.maybeWhen(
+      success: (songs, unreadCount, newSongIds) => (unreadCount, newSongIds),
+      orElse: () => (0, const <int>{}),
+    );
     emit(const SongsState.loading());
     if (allSongs.isNotEmpty) {
       final searchResults = allSongs
           .where((song) => song.id.toString() == event.query.trim())
           .toList();
-      emit(SongsState.success(searchResults));
+      emit(SongsState.success(
+        songs: searchResults,
+        unreadCount: prevUnread,
+        newSongIds: prevNewIds,
+      ));
     } else {
       final result = await songsRepositoryImpl.getSongs();
       return result.fold(
@@ -74,7 +95,11 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
           final searchResults = songs
               .where((song) => song.id.toString() == event.query.trim())
               .toList();
-          emit(SongsState.success(searchResults));
+          emit(SongsState.success(
+            songs: searchResults,
+            unreadCount: prevUnread,
+            newSongIds: prevNewIds,
+          ));
         },
       );
     }
@@ -98,6 +123,37 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
         emit(SongsState.searchSuccess(searchResult));
       },
     );
+  }
+
+  Future<void> _onSongOpened(int songId, Emitter<SongsState> emit) async {
+    final loadedState = state.maybeMap(
+      success: (s) => s,
+      orElse: () => null,
+    );
+    if (loadedState == null) return;
+    if (!loadedState.newSongIds.contains(songId)) return;
+
+    final updatedNewIds = Set<int>.from(loadedState.newSongIds)..remove(songId);
+    final known = _newItemsStore.getKnownSongIds()..add(songId);
+    await _newItemsStore.saveKnownSongIds(known);
+    emit(loadedState.copyWith(
+      unreadCount: updatedNewIds.length,
+      newSongIds: updatedNewIds,
+    ));
+  }
+
+  Future<void> _onScreenOpened(Emitter<SongsState> emit) async {
+    final loadedState = state.maybeMap(
+      success: (s) => s,
+      orElse: () => null,
+    );
+    if (loadedState == null) return;
+
+    final allIds = loadedState.songs.map((s) => s.id).toSet();
+    await _newItemsStore.saveKnownSongIds(allIds);
+
+    if (loadedState.unreadCount == 0) return;
+    emit(loadedState.copyWith(unreadCount: 0));
   }
 
   Future<Either<Failure, List<SongModel>>> _fetchSongs() async {
