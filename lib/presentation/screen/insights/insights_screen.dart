@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:async';
 import 'package:icoc/core/constants.dart';
 import 'package:icoc/core/helpers/app_toast.dart';
+import 'package:icoc/core/helpers/insights_share_helper.dart';
 import 'package:icoc/core/helpers/youtube_thumbnail_helper.dart';
 import 'package:icoc/core/routes/app_routes.dart';
 import 'package:icoc/core/user_state/insights_interaction_local_store.dart';
@@ -631,27 +632,7 @@ class _InsightsScreenState extends State<InsightsScreen> {
   }
 
   String _buildShareContent(Post post) {
-    final StringBuffer buffer = StringBuffer(post.content?.trim() ?? '');
-    final String? videoId = YoutubeThumbnailHelper.resolveVideoId(
-      youtubeId: post.youtubeId,
-      articleUrl: post.articleUrl,
-    );
-    final String? shareUrl = switch (post.type) {
-      PostType.video => (post.articleUrl ?? '').trim().isNotEmpty
-          ? post.articleUrl!.trim()
-          : (videoId != null
-              ? 'https://www.youtube.com/watch?v=$videoId'
-              : null),
-      PostType.image => post.primaryMediaUrl,
-      PostType.text => null,
-    };
-    if (shareUrl != null && shareUrl.isNotEmpty) {
-      if (buffer.isNotEmpty) {
-        buffer.writeln();
-      }
-      buffer.write(shareUrl);
-    }
-    return buffer.toString().trim();
+    return InsightsShareHelper.buildShareContent(post);
   }
 
   void _syncRenderedPosts(List<Post> posts) {

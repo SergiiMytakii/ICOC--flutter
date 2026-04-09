@@ -67,8 +67,19 @@ final GoRouter router = GoRouter(
                 GoRoute(
                   path: ONE_Q_AND_A_SCREEN,
                   builder: (BuildContext context, GoRouterState state) {
-                    final QandAModel article = state.extra as QandAModel;
+                    final QandAModel? article = state.extra is QandAModel
+                        ? state.extra as QandAModel
+                        : null;
                     return OneQandAScreen(article: article);
+                  },
+                ),
+                GoRoute(
+                  path: 'article/:id',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final int? id =
+                        int.tryParse(state.pathParameters['id'] ?? '');
+                    final String? lang = state.uri.queryParameters['lang'];
+                    return OneQandAScreen(articleId: id, langCode: lang);
                   },
                 ),
                 GoRoute(

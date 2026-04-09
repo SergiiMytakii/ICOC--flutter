@@ -73,7 +73,7 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
     final ThemeData theme = Theme.of(context);
     final Color dividerColor = theme.dividerColor.withValues(alpha: 0.18);
 
-    return Container(
+    final Widget content = Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         border: Border(
@@ -141,6 +141,18 @@ class _InsightFeedItemState extends State<InsightFeedItem> {
             ),
           ),
         ],
+      ),
+    );
+
+    if (widget.post.type != PostType.text) {
+      return content;
+    }
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: widget.onOpenDetails,
+        child: content,
       ),
     );
   }

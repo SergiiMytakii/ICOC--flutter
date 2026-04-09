@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc/core/helpers/app_badge_sync.dart';
 import 'package:icoc/presentation/bloc/bible_study_bloc/bible_study_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
@@ -65,7 +66,7 @@ class MyMultiblocProvider extends StatelessWidget {
           lazy: false,
         ),
       ],
-      child: child,
+      child: AppBadgeSync(child: child),
     );
   }
 }
