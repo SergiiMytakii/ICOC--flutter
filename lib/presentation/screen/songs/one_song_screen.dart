@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc/core/user_languages.dart';
 import 'package:icoc/core/helpers/convert_languages_enum.dart';
 import 'package:icoc/domain/model/songs/song_model.dart';
+import 'package:icoc/core/helpers/language_display_helper.dart';
 import 'package:icoc/injection.dart';
 import 'package:icoc/presentation/bloc/favorite_song_status_bloc/favorite_songs_status_bloc.dart';
 import 'package:icoc/presentation/bloc/favorite_songs_list_bloc/favorite_songs_bloc.dart';
@@ -140,8 +141,8 @@ class _OneSongScreenState extends State<OneSongScreen>
   }) {
     final int boundedIndex = initialIndex.clamp(0, tabsCount - 1);
     final TabController? currentController = tabController;
-    final bool shouldRecreate = currentController == null ||
-        currentController.length != tabsCount;
+    final bool shouldRecreate =
+        currentController == null || currentController.length != tabsCount;
 
     if (!shouldRecreate) {
       return;
@@ -162,10 +163,7 @@ class _OneSongScreenState extends State<OneSongScreen>
     return AppBar(
       bottom: TabBar(isScrollable: true, controller: tabController, tabs: [
         for (var songVersion in song.songVersions)
-          Tab(
-              text: songVersion.isChords
-                  ? '${'chords'.tr()} ${songVersion.lang.name.tr().substring(0, 3)}'
-                  : songVersion.lang.name.tr().substring(0, 3)),
+          Tab(text: _languageTabText(songVersion)),
         //suggest chords tab if no chords versions in current lang
         if (!hasChords)
           Tab(
@@ -211,6 +209,15 @@ class _OneSongScreenState extends State<OneSongScreen>
             onPressed: () => fontSizeAdjust.bottomSheet()),
       ],
     );
+  }
+
+  String _languageTabText(SongVersion songVersion) {
+    final String languageLabel =
+        LanguageDisplayHelper.translatedShortLabel(songVersion.lang.name);
+    if (!songVersion.isChords) {
+      return languageLabel;
+    }
+    return '${'chords'.tr()} $languageLabel';
   }
 
   TabBarView _tabBarBuilder(SongModel song, bool hasChords) {
