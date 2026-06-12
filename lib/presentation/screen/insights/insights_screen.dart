@@ -668,7 +668,9 @@ class _InsightsScreenState extends State<InsightsScreen> {
     }
     final RenderObject? viewportRenderObject =
         viewportContext.findRenderObject();
-    if (viewportRenderObject is! RenderBox || !viewportRenderObject.attached) {
+    if (viewportRenderObject is! RenderBox ||
+        !viewportRenderObject.attached ||
+        !viewportRenderObject.hasSize) {
       _setActiveVideoPostId(null);
       return;
     }
@@ -692,7 +694,9 @@ class _InsightsScreenState extends State<InsightsScreen> {
         continue;
       }
       final RenderObject? itemRenderObject = itemContext.findRenderObject();
-      if (itemRenderObject is! RenderBox || !itemRenderObject.attached) {
+      if (itemRenderObject is! RenderBox ||
+          !itemRenderObject.attached ||
+          !itemRenderObject.hasSize) {
         continue;
       }
 

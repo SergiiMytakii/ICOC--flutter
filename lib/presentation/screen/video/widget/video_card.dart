@@ -47,7 +47,7 @@ class _VideoCardState extends State<VideoCard> {
   @override
   Widget build(BuildContext context) {
     getVideoId(context);
-    // log.i('with to lirics  ' + widget.withToLyrics.toString());
+    final double thumbnailHeight = MediaQuery.of(context).size.width / 16 * 9;
     return widget.youtubeVideos.thumbnail != null
         ? Column(
             children: [
@@ -57,12 +57,18 @@ class _VideoCardState extends State<VideoCard> {
                     '/$VIDEO/$LIST_VIDEOS_SCREEN/${widget.youtubeVideos.playlistId}/$VIDEO_PLAYER/$videoId',
                   );
                 },
-                child: Container(
-                  width: double.maxFinite,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: thumbnailHeight,
                   child: Image.network(
                     widget.youtubeVideos.thumbnail!,
-                    height: MediaQuery.of(context).size.width / 16 * 9,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const ColoredBox(
+                      color: Colors.black12,
+                      child: Center(
+                        child: Icon(Icons.broken_image_outlined),
+                      ),
+                    ),
                   ),
                 ),
               ),

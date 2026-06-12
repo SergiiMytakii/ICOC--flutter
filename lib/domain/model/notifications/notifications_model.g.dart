@@ -9,16 +9,14 @@ part of 'notifications_model.dart';
 _NotificationsModel _$NotificationsModelFromJson(Map<String, dynamic> json) =>
     _NotificationsModel(
       id: json['id'] as String,
-      notifications: (json['notifications'] as List<dynamic>)
-          .map((e) => NotificationVersion.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      notifications: _notificationVersionsFromJson(json['notifications']),
       isRead: json['isRead'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NotificationsModelToJson(_NotificationsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'notifications': instance.notifications.map((e) => e.toJson()).toList(),
+      'notifications': _notificationVersionsToJson(instance.notifications),
       'isRead': instance.isRead,
     };
 

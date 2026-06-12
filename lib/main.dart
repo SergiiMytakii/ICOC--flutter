@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:icoc/core/helpers/crashlytics_error_classifier.dart';
 import 'package:icoc/domain/data_sources/local/local_cache.dart';
 import 'package:icoc/presentation/bloc/bloc_observer.dart';
 import 'package:icoc/presentation/bloc/multibloc_provider.dart';
@@ -175,7 +176,13 @@ void _activateCrashlitics() {
   final logger = Logger();
   FlutterError.onError = (errorDetails) {
     logger.e(errorDetails);
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    if (CrashlyticsErrorClassifier.shouldRecordFlutterErrorAsFatal(
+      errorDetails,
+    )) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    } else {
+      FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+    }
   };
   // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {

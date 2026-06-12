@@ -8,6 +8,10 @@ abstract class NotificationsModel with _$NotificationsModel {
   @JsonSerializable(explicitToJson: true)
   factory NotificationsModel({
     required String id,
+    @JsonKey(
+      fromJson: _notificationVersionsFromJson,
+      toJson: _notificationVersionsToJson,
+    )
     required List<NotificationVersion> notifications,
     @Default(false) bool isRead,
   }) = _NotificationsModel;
@@ -54,6 +58,31 @@ abstract class NotificationsModel with _$NotificationsModel {
         .toList();
   }
 }
+
+List<NotificationVersion> _notificationVersionsFromJson(Object? json) {
+  if (json is List) {
+    return json
+        .map((item) => NotificationVersion.fromJson(
+              Map<String, dynamic>.from(item as Map),
+            ))
+        .toList();
+  }
+
+  if (json is Map) {
+    return json.entries.map((entry) {
+      final notificationJson = Map<String, dynamic>.from(entry.value as Map);
+      notificationJson.putIfAbsent('id', () => entry.key.toString());
+      return NotificationVersion.fromJson(notificationJson);
+    }).toList();
+  }
+
+  return const <NotificationVersion>[];
+}
+
+List<Map<String, dynamic>> _notificationVersionsToJson(
+  List<NotificationVersion> notifications,
+) =>
+    notifications.map((notification) => notification.toJson()).toList();
 
 @freezed
 abstract class NotificationVersion with _$NotificationVersion {
